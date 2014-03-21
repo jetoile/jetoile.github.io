@@ -30,12 +30,18 @@
 <ul class='sf-menu dropdown'>
 <!--li><a href='{{ root_url }}'>Home</a></li-->
 <li><a href='{{ root_url }}/p/a-propos.html'>A propos du blog</a></li>
-<li><a href='i{{ root_url }}/p/a-propos-de-lauteur.html'>A propos de l'auteur</a></li>
+<li><a href='{{ root_url }}/p/a-propos-de-lauteur.html'>A propos de l'auteur</a></li>
 <!--li><a href='http://jetoile.blogspot.fr/p/me-contacter.html'>Me contacter</a></li-->
 </ul>
-</div>
-</div>
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:{{ root_url }}" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
 
+</div>
+</div>
 </div>
 
 <!--div id='header-wrapper'>

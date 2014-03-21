@@ -3,6 +3,8 @@ layout: post
 title: "JBI : Qu'est ce que c'est?"
 date: 2019-12-07 09:58:58 +0100
 comments: true
+sharing: true
+footer: true
 categories: 
 - java
 - jbi

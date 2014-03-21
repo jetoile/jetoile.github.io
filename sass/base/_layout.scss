@@ -36,7 +36,7 @@
 }
 
 .home-page {
-  margin-top: 500px;
+  margin-top: 300px;
 }
 
 .her-row {
@@ -83,19 +83,20 @@
       text-align : justify;
     }
   }
+
+  ul{
+	  list-style:square
+	}
+	li li{
+	  list-style:circle;
+	  margin-left: 30px;
+	}
+	ol{list-style-type:decimal;padding-left:30px}
+	ol ol{list-style:upper-alpha}
+	ol ol ol{list-style:lower-roman}
+	ol ol ol ol{list-style:lower-alpha}
 }
 
-ul{
-  list-style:square
-}
-li li{
-  list-style:circle;
-  margin-left: 30px;
-}
-ol{list-style-type:decimal;padding-left:30px}
-ol ol{list-style:upper-alpha}
-ol ol ol{list-style:lower-roman}
-ol ol ol ol{list-style:lower-alpha}
 
 article {
   .meta {
@@ -121,17 +122,29 @@ article {
   }
 
   blockquote {
-  padding-top: 10px;
-  margin: 0 0 $line-height-computed;
-  font-size: $blockquote-font-size;
-  border-left: 5px solid $blockquote-border-color;
+	  padding-top: 10px;
+	  margin: 0 0 $line-height-computed;
+	  font-size: $blockquote-font-size;
+	  border-left: 5px solid $blockquote-border-color;
 
-  p {
-      line-height: 1.5;
-      font-style:italic;
-      margin: 0px 0px 0px 0px;
-    }
-  }
+	  p {
+	      line-height: 1.5;
+	      font-style:italic;
+	      margin: 0px 0px 0px 0px;
+	    }
+	  }
+
+  ul{
+	  list-style:square
+	}
+	li li{
+	  list-style:circle;
+	  margin-left: 30px;
+	}
+	ol{list-style-type:decimal;padding-left:30px}
+	ol ol{list-style:upper-alpha}
+	ol ol ol{list-style:lower-roman}
+	ol ol ol ol{list-style:lower-alpha}
 }
 
 
@@ -199,6 +212,76 @@ img[alt=left] {
     .social-icon-list {
       margin-top: 22px;
     }
+
+.social {
+	li {
+	  float:left;margin:0 5px;padding:0
+	}
+
+	li a {
+	  float:left;
+	  background-image:url(https://lh4.googleusercontent.com/-HdCCwjhZA04/Tu2qrAWC9wI/AAAAAAAABR4/yFaTnalH5VI/h1600/social.png);
+	  background-position:0 0;
+	  background-repeat:no-repeat;
+	  display:inline-block;
+	  text-indent:-9999px;
+	  overflow:hidden;
+	  width:24px; 
+	  height:24px;
+	  position:relative
+	}
+
+	
+
+	li a.twitter{
+	  background-position:-25px 0
+	}
+
+	li a.twitter:hover{
+	  background-position:-25px -25px
+	}
+
+	li a.linkedin{
+	  background-position:-50px 0
+	}
+
+	social li a.linkedin:hover{
+	  background-position:-50px -25px
+	}
+
+	li a.vimeo{
+	  background-position:-75px 0
+	}
+
+	li a.vimeo:hover {
+	  background-position:-75px -25px
+	}
+
+	li a.google{
+	  background-position:-100px 0
+	}
+
+	li a.google:hover{
+	  background-position:-100px -25px
+	}
+
+	li a.rss{
+	  background-position:-125px 0
+	}
+
+	li a.rss:hover{
+	  background-position:-125px -25px 
+	}
+}
+
+    ul {
+	
+	  list-style:none;
+	  margin:0;
+	  padding:0;
+	
+  
+    }
   }
 }
 
@@ -246,77 +329,7 @@ img[alt=left] {
   margin:15px 0
 }
 
-ul {
-	social{
-	  list-style:none;
-	  margin:0;padding:0
-	}
 
-	social li {
-	  float:left;margin:0 5px;padding:0
-	}
-
-	social li a {
-	  float:left;
-	  background-image:url(https://lh4.googleusercontent.com/-HdCCwjhZA04/Tu2qrAWC9wI/AAAAAAAABR4/yFaTnalH5VI/h1600/social.png);
-	  background-position:0 0;
-	//  background:repeat:no-repeat;
-	  display:inline-block;
-	  text-indent:-9999px;
-	  overflow:hidden;
-	  width:24px; 
-	  height:24px;
-	  position:relative
-	}
-
-	social li a.facebook {
-	  background-position:0 0
-	}
-
-	social li a.facebook:hover {
-	  background-position:0 -25px
-	}
-
-	social li a.twitter{
-	  background-position:-25px 0
-	}
-
-	social li a.twitter:hover{
-	  background-position:-25px -25px
-	}
-
-	social li a.linkedin{
-	  background-position:-50px 0
-	}
-
-	social li a.linkedin:hover{
-	  background-position:-50px -25px
-	}
-
-	social li a.vimeo{
-	  background-position:-75px 0
-	}
-
-	social li a.vimeo:hover {
-	  background-position:-75px -25px
-	}
-
-	social li a.google{
-	  background-position:-100px 0
-	}
-
-	social li a.google:hover{
-	  background-position:-100px -25px
-	}
-
-	social li a.rss{
-	  background-position:-125px 0
-	}
-
-	social li a.rss:hover{
-	  background-position:-125px -25px 
-	}
-}
 
 .sf-menu,.sf-menu *{
   margin:0;padding:0;list-style:none

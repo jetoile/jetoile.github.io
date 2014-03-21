@@ -9,15 +9,45 @@ single: true
       <div class="col-md-8 col-md-offset-2">
         <h1>{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
         <div class="meta">
-          written {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %} in 
-          {% include post/categories.html %}
+          written {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}  
         </div>
         {{ content }}
+
+<!--<hr class="divider-short"/>
+
+{% unless page.sharing == false %}
+        {% include post/sharing.html %}
+      {% endunless %}
+
+{% if site.disqus_short_name and page.comments == true %}
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
+  </section>
+{% endif %}
+-->
       </div>
     </div>
   </div>
-</article>
 
+<footer>
+    <p class="meta">
+      {% include post/author.html %}
+      {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
+      {% include post/categories.html %}
+    </p>
+    {% unless page.sharing == false %}
+      {% include post/sharing.html %}
+    {% endunless %}
+</footer>
+
+</article>
+{% if site.disqus_short_name and page.comments == true %}
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
+  </section>
+{% endif %}
 <hr class="divider-short"/>
 
 <div class="archive-link">

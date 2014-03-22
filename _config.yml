@@ -5,9 +5,9 @@
 url: http://jetoile.github.io
 title: Jetoile
 subtitle: Je toile ou J* au choix...
-author: Khanh Tuong Maudoux
+author: Khanh Maudoux
 simple_search: https://www.google.com/search
-description: sample description
+description: 
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -95,7 +95,7 @@ disqus_short_name: jetoile
 disqus_show_comment_count: true
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-11955429-1
 
 # Facebook Like
 facebook_like: false

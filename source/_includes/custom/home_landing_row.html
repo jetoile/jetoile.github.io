@@ -13,7 +13,7 @@
 <div id='header-wrapper'>
 <div class='logo section' id='logo'><div class='widget Header' id='Header1'>
 <div id='header-inner'>
-<a href='{{ root_url }}' style='display: block'>
+<a href='{{ site.url }}' style='display: block'>
 <img alt='Je toile ou j* au choix...' height='65px; ' id='Header1_headerimg' src='/images/logoJetoile_v51.png' style='display: block' width='233px; '/>
 </a>
 </div>
@@ -29,8 +29,8 @@
 <div class='block_right' id='block_right'>
 <ul class='sf-menu dropdown'>
 <!--li><a href='{{ root_url }}'>Home</a></li-->
-<li><a href='{{ root_url }}/p/a-propos.html'>A propos du blog</a></li>
-<li><a href='{{ root_url }}/p/a-propos-de-lauteur.html'>A propos de l'auteur</a></li>
+<li><a href='{{ root_url }}/a-propos'>A propos du blog</a></li>
+<li><a href='{{ root_url }}/a-propos-auteur'>A propos de l'auteur</a></li>
 <!--li><a href='http://jetoile.blogspot.fr/p/me-contacter.html'>Me contacter</a></li-->
 </ul>
   {% if site.simple_search %}

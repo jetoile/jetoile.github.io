@@ -17,7 +17,8 @@ code {
   font-size: 90%;
   color: $code-color;
   background-color: $code-bg;
-  white-space: nowrap;
+  white-space: pre;
+  overflow: auto;
   border-radius: $border-radius-base;
 }
 
@@ -50,7 +51,8 @@ pre {
     padding: 0;
     font-size: inherit;
     color: inherit;
-    white-space: pre-wrap;
+    white-space: pre;
+    overflow: auto;
     background-color: transparent;
     border-radius: 0;
   }

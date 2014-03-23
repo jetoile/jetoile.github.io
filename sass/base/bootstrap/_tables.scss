@@ -8,7 +8,8 @@ table {
   background-color: $table-bg;
 }
 th {
-  text-align: left;
+  text-align: center;
+  font-weight: bold;
 }
 
 
@@ -138,11 +139,16 @@ table col[class*="col-"] {
   display: table-column;
 }
 table {
-  td,
+  border: 1px solid $table-border-color;  
+
+  td {
+    border: 1px solid $table-border-color;  
+  }
   th {
     &[class*="col-"] {
       position: static; // Prevent border hiding in Firefox and IE9/10 (see https://github.com/twbs/bootstrap/issues/11623)
       float: none;
+      border: 1px solid $table-border-color;  
       display: table-cell;
     }
   }

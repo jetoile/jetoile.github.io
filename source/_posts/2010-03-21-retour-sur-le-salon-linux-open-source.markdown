@@ -8,7 +8,7 @@ footer: true
 categories: 
 - divers
 ---
-![left](http://2.bp.blogspot.com/_XLL8sJPQ97g/S6YuBykK7AI/AAAAAAAAAJI/e0dJSZ0_k2k/s200/logoSalonLinux.gif)
+![left-small](http://2.bp.blogspot.com/_XLL8sJPQ97g/S6YuBykK7AI/AAAAAAAAAJI/e0dJSZ0_k2k/s200/logoSalonLinux.gif)
 Voilà, le salon [Linux Open Source](http://www.solutionslinux.fr/) a fermé ses portes. Résultat des courses, 3 jours bien remplis où j'ai pu assister à pas mal de conférences sur divers sujets tels que :
 
 * l'atelier sur "Développement logiciel collaboratif : bonnes pratiques, premiers bilans"

@@ -10,7 +10,7 @@ categories:
 - jrebel
 - maven
 ---
-![left](http://3.bp.blogspot.com/_XLL8sJPQ97g/S4VHVRtCwTI/AAAAAAAAAI4/TexL6XUuprc/s200/jrebel.png)
+![left-small](http://3.bp.blogspot.com/_XLL8sJPQ97g/S4VHVRtCwTI/AAAAAAAAAI4/TexL6XUuprc/s200/jrebel.png)
 Dans des posts précédents (ici et là), j'avais parlé d'une façon d'utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d'applications web avec Cargo. Cependant, afin d'optimiser le temps de développement, il est préférable, plutôt que d'avoir à redéployer l'application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n'avoir pas à le faire mais d'avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.
 
 Il existe différentes approches telles que :

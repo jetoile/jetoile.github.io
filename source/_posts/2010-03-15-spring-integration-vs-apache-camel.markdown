@@ -13,7 +13,7 @@ categories:
 - soa
 - spring integration
 ---
-![left](http://4.bp.blogspot.com/_XLL8sJPQ97g/S56PashF4SI/AAAAAAAAAJA/OVagPG4D-g0/s320/apache_spring.png)
+![left-small](http://4.bp.blogspot.com/_XLL8sJPQ97g/S56PashF4SI/AAAAAAAAAJA/OVagPG4D-g0/s320/apache_spring.png)
 Lors d'un post précédent, j'avais parlé des [EIPs](/blog/2009/12/13/eip-quest-ce-que-cest/) (__Enterprise Integration Patterns__) en expliquant qu'il s'agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
 
 Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : [Spring Integration](http://projects.spring.io/spring-integration/) et [Apache Camel](https://camel.apache.org/.

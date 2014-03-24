@@ -522,11 +522,11 @@ public class RunCucumberFeatures {
 }
 ```
 
-![medium](http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s400/screenshot01.png)
+![medium](http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s1600/screenshot01.png)
 
 <br/>
 
-![medium](http://3.bp.blogspot.com/-FkF8ZO6r6co/UWXnUNjqjII/AAAAAAAAA4g/obtSC7BS6kI/s400/screenshot02.png)
+![medium](http://3.bp.blogspot.com/-FkF8ZO6r6co/UWXnUNjqjII/AAAAAAAAA4g/obtSC7BS6kI/s1600/screenshot02.png)
 
 Enfin, pour rappel, mon usecase étant de tester mon application web en boite noire, un prérequis était que mon application web soit démarrée au préalable.
 

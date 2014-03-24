@@ -19,6 +19,8 @@ Parmi ces produits, on peut y trouver :
 * [Apache ActiveMQ](http://activemq.apache.org/) (Fuse Message Broker)
 * [Apache Camel](http://camel.apache.org/) (Fuse Mediation Router)
 
+<!-- more -->
+
 ![medium](http://2.bp.blogspot.com/-S69Ivzc92UU/Tp9O7SJIdJI/AAAAAAAAAck/9c-fMf6vfe4/s1600/FuseCommunityDay02.png)
 En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l'accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.
 

@@ -23,6 +23,8 @@ Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique p
 * [Jean-Louis Rigau](https://twitter.com/#%21/jlrigau)
 * [Emmanuel Servent](https://twitter.com/#%21/eservent)
 
+<!-- more -->
+
 Comme d'habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n'est pas le but de mon article...
 
 L'objectif de cet article est, pour ceux qui n'étaient pas présents, de faire un rapide tour d'horizon de ce qui m'a marqué dans la solution qu'apporte Cloudbees avec ses offres DEV@Cloud et RUN@Cloud. Cet article sera surtout focalisé sur la partie usine logicielle offerte par Cloudbees car c'est celle qui a été mise en avant pendant l'atelier et c'est aussi celle qui me semble la plus intéressante du point de vue de mes besoins actuels.
@@ -34,7 +36,7 @@ Cet article s'articulera donc en deux parties :
 * la première consistant en un très rapide retour sur ce que propose CloudBees,
 * et la deuxième sur ce qui me plait dans une approche telle que celle proposée par CloudBees.
 
-<!-- more -->
+
 
 PS : au passage, encore un grand merci aux organisateurs de l'atelier!
 

@@ -8,6 +8,7 @@ categories:
 - jmx
 - jolokia
 ---
+![left-small](http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png)
 
  Dans des articles précédents, je m'étais déjà exprimé sur le fait que je trouvais qu'il était important de monitorer son application (qu'il s'agisse d'une application web, d'un batch ou d'une application standalone) (cf. [ici](http://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html)). J'avais même creusé un peu la spécification JMX (cf. [là](http://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html)).
 
@@ -16,6 +17,8 @@ Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un 
 Comme à mon habitude, pour présenter cet outils, je m'appuierai sur la document officielle dans sa version courante, à savoir la 1.2.0.
 
 Cependant, je ne ferai pas un plagiat exhaustif de la documentation qui est très complète (et surtout, je n'ai pas envie de me traduire les 92 pages de cette dernière... ;-) ) mais j'essaierai de faire un focus sur les points que je trouve les plus intéressants (à savoir les principes ainsi que le mode agent JVM (cf. plus tard) ).
+
+<!-- more -->
 
 #Principes et concepts
 

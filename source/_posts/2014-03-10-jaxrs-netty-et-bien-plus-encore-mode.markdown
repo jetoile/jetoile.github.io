@@ -14,6 +14,7 @@ categories:
 - maven
 ---
 
+![left-small](http://1.bp.blogspot.com/-HYBTn5anFdE/Uxdv3cRgu_I/AAAAAAAABP4/gsCZjUIxDyQ/s1600/resteasy_jolokia_metrics.png)
 
 L'informatique évolue constamment et c'est également le cas des architectures qui ont tendance à s'orienter de plus en plus vers l'utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d'un point de vue temps de réponse mais également d'un point de vue charge suportée). C'est dans ce contexte que des solutions comme [Restlet](http://restlet.org/) ou [RestX](http://restx.io/) (pour n'en citer que quelques-unes) ont vu le jour.
 

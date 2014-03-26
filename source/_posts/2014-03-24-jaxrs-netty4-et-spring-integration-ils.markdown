@@ -110,7 +110,7 @@ Jusque là, ça ne casse pas trois pattes à un canard ;-)
 
 Pour rappel, Spring Integration est une implémentation des [EIP](http://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html) (_Enterprise Integration Patterns_) et propose donc une mise en oeuvre de l'architecture __Pipes and Filters__.
 
-![large](http://91.68.209.10/bmi/3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png)
+![large](http://3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png)
 
 Au niveau écriture dans un répertoire, le `file-outbound-adapter` offert par Spring Integration sera utilisé :
 ```xml
@@ -335,9 +335,7 @@ Avec la configuration Spring suivante :
 
 Pour montrer que je ne mens pas, on a donc (ici, utilisation de Hawt.io via Jolokia) :
 
-![medium](http://91.68.209.10/bmi/4.bp.blogspot.com/-CZebCZS47aE/Ux8fk-EwKQI/AAAAAAAABRY/C7OwMBMZNEc/s1600/si-hawtio-connextion.png)
-
-<br/>
+![medium](http://4.bp.blogspot.com/-CZebCZS47aE/Ux8fk-EwKQI/AAAAAAAABRY/C7OwMBMZNEc/s1600/si-hawtio-connextion.png)
 
 ![medium](http://2.bp.blogspot.com/-H-LmsIrivjA/Ux8fo7ORYpI/AAAAAAAABRg/EIp_-F6LzF4/s1600/si-hawtio-metrics.png)
 

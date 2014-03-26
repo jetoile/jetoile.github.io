@@ -31,16 +31,8 @@
 <!--li><a href='{{ root_url }}'>Home</a></li-->
 <li><a href='{{ root_url }}/a-propos'>A propos du blog</a></li>
 <li><a href='{{ root_url }}/a-propos-auteur'>A propos de l'auteur</a></li>
-<!--li><a href='http://jetoile.blogspot.fr/p/me-contacter.html'>Me contacter</a></li-->
+<li><a href='{{ root_url }}/blogotheque'>Liens</a></li>
 </ul>
-  {% if site.simple_search %}
-<form action="{{ site.simple_search }}" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:{{ site.url | shorthand_url }}" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  {% endif %}
 
 
 </div>

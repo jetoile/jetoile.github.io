@@ -12,6 +12,8 @@ categories:
 - jolokia
 ---
 
+![left-small](http://3.bp.blogspot.com/-Vzol1CndcjY/Uxib17Rlf2I/AAAAAAAABQI/Qi4u0DWe2s4/s1600/resteasy_jolokia_metrics.png)
+
 Pour faire suite à mon [article précédent](/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html) qui montrait comment il était possible de construire une _stack_ légère basée sur Resteasy-Netty3, Jackson, [Jolokia](http://www.jolokia.org/) et [Swagger](https://helloreverb.com/developers/swagger), cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
 
 Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d'être exhaustif, cela permet de faire le tour complet... ;-)
@@ -83,7 +85,7 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
         return objectMapper;
     }
 }
-```java
+```
 
 #Support de JodaTime dans Jackson 2
 
@@ -163,18 +165,15 @@ Ainsi, on obtient bien :
 #Support du CORS dans Resteasy-Netty4
 
 Précédemment, avec Resteast-netty 3, nous avions remarqué un problème de CORS avec Swagger-UI.
-
 Pour en venir à bout, un hack avait été fait mais ce n'était pas très propre...
 
-Malheureusement, Resteasy-netty4 n'offre pas, non plus, de manière simple pour surmonter ce problème.
-
-En fouillant un peu sur internet, un [article](http://stackoverflow.com/questions/18857546/implement-cross-origin-resource-sharing-cors-on-resteasy-netty-server) propose de rajouter un `ChannelInboundHandler` au _pipeline_ Netty.
+Malheureusement, Resteasy-netty4 n'offre pas, non plus, de manière simple pour surmonter ce problème. Heureusement, en fouillant un peu sur internet, un [article](http://stackoverflow.com/questions/18857546/implement-cross-origin-resource-sharing-cors-on-resteasy-netty-server) propose de rajouter un `ChannelInboundHandler` au _pipeline_ Netty.
 
 Cependant, je n'ai pas trouvé de moyen simple de le faire mis à part la surcharge de la méthode...
 
 Le code obtenu est donc le suivant :
 
-La classe ChannedInboundHandler :
+La classe `ChannedInboundHandler` :
 ```java
 public class CorsHeadersChannelHandler extends SimpleChannelInboundHandler<NettyHttpRequest> {
     protected void channelRead0(ChannelHandlerContext ctx, NettyHttpRequest request) throws Exception {

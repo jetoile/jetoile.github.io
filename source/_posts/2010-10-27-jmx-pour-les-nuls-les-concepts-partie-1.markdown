@@ -8,53 +8,53 @@ categories:
 - jmx 
 ---
 ![left](http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png)
-Comme promis lors de mon [article précédent](/blog/2010/10/26/jmx-pour-les-nuls-dot-dot-dot-introduction/) (et pour éviter de vous faire languir ;-) ) la première partie de cette série d'article sur JMX!
+Comme promis lors de mon [article précédent](/2010/10/jmx-pour-les-nuls-introduction.html) (et pour éviter de vous faire languir ;-) ) la première partie de cette série d'article sur JMX!
 
 <!-- more -->
 
 #Table des matières
 
 * JMX, qu'est ce que c'est?
-	* [Généralités](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#generalite)
-	* [Architecture JMX](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#architecture)
-		* [Niveau instrumentation](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#instrumentation)
-		* [Niveau agent](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#agent)
-		* [Niveau service distribué](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#distribue)
-	* [Composants JMX](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#composant)
-		* [MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#mbean)
-		* [Modèle de notifications](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#notification)
-		* [Classe de métadonnées de MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/metadonnee)
-		* [Serveur de MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#serveur)
-		* [Service d'agents](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#service)
+	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
+	* [Architecture JMX](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture)
+		* [Niveau instrumentation](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation)
+		* [Niveau agent](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent)
+		* [Niveau service distribué](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue)
+	* [Composants JMX](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant)
+		* [MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean)
+		* [Modèle de notifications](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification)
+		* [Classe de métadonnées de MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee)
+		* [Serveur de MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur)
+		* [Service d'agents](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service)
 * Spécifications
-	* [JMX Instrumentation](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/)
-		* [MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean)
-			* [MBean Standard](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_standard)
-			* [Dynamic MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_dynamic)
-		* [Notification](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#notification)
-		* [Open MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_open)
-		* [Model MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_model)
-	* [Agent JMX](/blog/2010/11/08/jmx-pour-les-nuls-dot-dot-dot-les-agents-jmx-partie-3/#agent)
-	* [Concepts](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/)
-		* [ObjectName](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#objectName)
-		* [ObjectInstance](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#objectInstance)
-		* [Attribute et AttributeList](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#attribute)
-		* [Les Exceptions](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#exception)
-	* [MBean Server](/blog/2010/11/29/jmx-pour-les-nuls-dot-dot-dot-le-mbean-server-partie-5/#mbean_server)
-	* [Chargement dynamique des MBeans](/blog/2010/12/06/jmx-pour-les-nuls-dot-dot-dot-chargement-dynamique-de-mbeans-partie-6/#mbean_dynamic)
-	* [Les services JMX](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/)
-		* [Service Monitoring](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#monitoring)
-		* [Service Timer](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#timer)
-		* [Service Relation](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#relation)
-		* [Service Sécurité](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#securite)
-	* [Les Connecteurs](/blog/2010/12/20/jmx-pour-les-nuls-dot-dot-dot-les-connecteurs-partie-8/#connector)
+	* [JMX Instrumentation](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html)
+		* [MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean)
+			* [MBean Standard](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard)
+			* [Dynamic MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic)
+		* [Notification](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification)
+		* [Open MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open)
+		* [Model MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model)
+	* [Agent JMX](/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent)
+	* [Concepts](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html)
+		* [ObjectName](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName)
+		* [ObjectInstance](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance)
+		* [Attribute et AttributeList](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute)
+		* [Les Exceptions](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception)
+	* [MBean Server](/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server)
+	* [Chargement dynamique des MBeans](/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic)
+	* [Les services JMX](/2010/12/jmx-pour-les-nuls-les-services-jmx.html)
+		* [Service Monitoring](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring)
+		* [Service Timer](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer)
+		* [Service Relation](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation)
+		* [Service Sécurité](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite)
+	* [Les Connecteurs](/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector)
 
 
 #JMX, qu'est ce que c'est?
 
 <a name="generalite"></a>
 ##Généralités
-Java Management eXtensions (JMX) définit une architecture, un design pattern, une API et les services permettant de superviser et d’administrer une application au travers du langage Java.
+_Java Management eXtensions_ (JMX) définit une architecture, un design pattern, une API et les services permettant de superviser et d’administrer une application au travers du langage Java.
 
 JMX permet, en effet :
 
@@ -67,9 +67,9 @@ JMX permet, en effet :
 ##Architecture JMX
 L’architecture JMX peut se décomposer en trois niveaux :
 
-* le niveau instrumentation (instrumentation level),
-* le niveau agent (agent level),
-* et le niveau service distribué (distributed services level).
+* le niveau instrumentation (__instrumentation level__),
+* le niveau agent (__agent level__),
+* et le niveau service distribué (__distributed services level__).
 
 ![medium](http://3.bp.blogspot.com/_XLL8sJPQ97g/TMdQmiH7InI/AAAAAAAAALY/rXNS-iCKg6A/s1600/jmx-01.png)
 
@@ -77,10 +77,10 @@ L’architecture JMX peut se décomposer en trois niveaux :
 ###Niveau instrumentation
 Le niveau instrumentation spécifie comment implémenter des ressources administrable et supervisable par JMX ; une ressource pouvant être une application, une implémentation d’un service, un périphérique, ou autre tant qu’elle est développée en Java (ou qu’un wrapper existe) et qu’elle a été instrumentée pour être compatible JMX.
 
-L’instrumentation d’une ressource donnée est fournit par la présence d’un ou plusieurs Beans supervisables et administrables (ou MBeans pour Managed Beans) qui peuvent être de plusieurs sortes :
+L’instrumentation d’une ressource donnée est fournit par la présence d’un ou plusieurs Beans supervisables et administrables (ou MBeans pour _Managed Beans_) qui peuvent être de plusieurs sortes :
 
-* MBean standard,
-* MBean dynamique.
+* __MBean standard__,
+* __MBean dynamique__.
 
 Ainsi, l’instrumentation d’une ressource permet de la rendre administrable et supervisable au travers du niveau agent. Cela permet aux MBean de s’abstraire du niveau agent et ainsi que de les rendre plus simple et évolutifs. 
 
@@ -91,7 +91,7 @@ Le niveau agent spécifie comment implémenter les agents qui permettent le cont
 
 Ce niveau s’appuie et utilise le niveau d’instrumentation pour définir des agents standards utilisés pour se superviser et s’administrer elle-même.
 
-L’agent JMX est constitué d’un serveur de MBeans (MBeanServer) et d’un ensemble de services permettant de manipuler les MBeans. En outre, le MBeanServer nécessite au moins un connecteur ou adaptateur.
+L’__agent JMX__ est constitué d’un serveur de MBeans (__MBeanServer__) et d’un ensemble de services permettant de manipuler les MBeans. En outre, le MBeanServer nécessite au moins un connecteur ou adaptateur.
 L’agent JMX peut être embarqué dans la machine virtuelle Java qui accueille les ressources JMX à administrer et superviser, ou peut être instancié dans un élément de médiation quand la ressource n’est pas une ressource Java.
 
 Enfin, l’agent JMX n’a pas besoin de connaitre les ressources qui doivent être administrées et supervisées.
@@ -133,7 +133,7 @@ L’interface de gestion d’un MBean peut être composée :
 * de notifications qui peuvent être émises,
 * de constructeurs (au sens Java du terme)
 
-En fait, un MBean encapsule les attributs et les opérations au travers de leurs méthodes publiques : par exemple, un attribut en lecture-seule dans un MBean standard n’aura qu’un getter alors qu’un attribut accessible en lecture-écriture disposera d’un getter et d’un setter.
+En fait, un MBean encapsule les attributs et les opérations au travers de leurs méthodes publiques : par exemple, un attribut en lecture-seule dans un MBean standard n’aura qu’un _getter_ alors qu’un attribut accessible en lecture-écriture disposera d’un _getter_ et d’un _setter_.
 
 Ainsi, n’importe quel objet qui implémentera un MBean et qui sera déclaré auprès de l’agent JMX pourra être géré.
 
@@ -187,10 +187,10 @@ Ces services d’agents sont généralement eux-mêmes des MBeans et permettent 
 
 Par défaut, doivent être présents les services suivants : 
 
-* Management Applet (m-let) qui permet le chargement dynamique de classes
-* Service Timers qui permet de déclencher des actions sur les MBeans de façon régulière
-* Service Relation qui permet d’associer des MBeans entre eux
-* Service Monitor qui permet de scruter certaines valeurs d’attribut afin de notifier d’autres objets lors d’un changement
+* __Management Applet__ (m-let) qui permet le chargement dynamique de classes
+* __Service Timers__ qui permet de déclencher des actions sur les MBeans de façon régulière
+* __Service Relation__ qui permet d’associer des MBeans entre eux
+* __Service Monitor__ qui permet de scruter certaines valeurs d’attribut afin de notifier d’autres objets lors d’un changement
 
 #Le mot de la fin de cette partie
 

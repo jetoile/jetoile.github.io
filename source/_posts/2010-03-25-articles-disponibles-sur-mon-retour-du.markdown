@@ -10,7 +10,7 @@ categories:
 ---
 <img style="float: left; margin: 0pt 10px 10px 0pt; cursor: pointer; width: 140px; height: 109px;" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/S6vbrDSb_DI/AAAAAAAAAJY/uykch0YNZec/s200/logoSalonLinux.gif" alt="" id="BLOGGER_PHOTO_ID_5452693306525613106" border="0" />
 <img style="float: left; margin: 0pt 10px 10px 0pt; cursor: pointer; width: 143px; height: 49px;" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/S6vbdHDI9zI/AAAAAAAAAJQ/r-9O-dQcr9E/s200/ow2.png" alt="" id="BLOGGER_PHOTO_ID_5452693067017025330" border="0" />
-Dans mon précédent [post](/blog/2010/03/21/retour-sur-le-salon-linux-open-source/), j'avais annoncé la mise à disposition prochaine d'une série d'articles sur le Salon [Linux Open Source](http://www.solutionslinux.fr/) qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
+Dans mon précédent [post](/2010/03/salon-linux-open-source.html), j'avais annoncé la mise à disposition prochaine d'une série d'articles sur le Salon [Linux Open Source](http://www.solutionslinux.fr/) qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
 
 C'est désormais chose faite et les articles sont disponibles sur le blog de So@t.
 

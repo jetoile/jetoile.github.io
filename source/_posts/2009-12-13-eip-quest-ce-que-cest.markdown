@@ -10,7 +10,7 @@ categories:
 - soa
 ---
 ![left](http://rcm-images.amazon.com/images/I/51tVn4YqQUL._SL110_.jpg)
-Dans l'article sur [JBI](/blog/2009/12/07/jbi-quest-ce-que-cest/), j'ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l'on doit jongler avec des messages asynchrones.
+Dans l'article sur [JBI](/2009/12/jbi-une-solution-enterree.html), j'ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l'on doit jongler avec des messages asynchrones.
 
 En fait, les EIP (_Enterprise Integration Patterns_) sont issus de l'excellent livre éponyme de G. Hohpe et B. Woolf chez Addisson Wesley. Ne pouvant que vous recommandez sa lecture si vous trempez dans cette problématique, cet article ne sera qu'une brève introduction à son contenu (il fait quand même plus de 600 pages, donc je ne vais pas prétendre le résumer... ;-)). Cet article se voudra très théorique et d'autres articles ultérieurs couvriront quelques implémentations d'EIP comme Apache Camel ou Spring Integration (et peut être, un jour, iBeans). En outre, il suivra le plan du livre dont il est tiré.
 
@@ -90,8 +90,8 @@ Enfin, les EIP classifient les messages (qui peuvent être utilisés dans des é
 * __Command Message__ qui sont des messages utilisés pour invoquer une méthode ou une procédure.
 Document Message qui sont des messages utilisés pour transmettre des données en laissant aux consommateurs de ces derniers le soin de décider de leur traitement.
 * __Event Message__ qui sont des messages utilisés pour émettre un événement et qui peut se décliner en deux modèles :
-* __Push Model__  : le message est une combinaison du contenu du nouvel élément et de l’événement.
-* __Pull Model__ : le message est juste une notification devant être suivie d’une demande du nouvel élément par le consommateur via un Command Message qui reçoit alors un Document Message de l’émetteur.
+	* __Push Model__  : le message est une combinaison du contenu du nouvel élément et de l’événement.
+	* __Pull Model__ : le message est juste une notification devant être suivie d’une demande du nouvel élément par le consommateur via un Command Message qui reçoit alors un Document Message de l’émetteur.
 
 <img border="0" height="53" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaC-t6iMxI/AAAAAAAAAGQ/wG2Vj6ffxh0/s200/Image8.png" width="149" alt="center"/>
 
@@ -207,6 +207,6 @@ Au niveau de ses implémentations, on trouve l'excellent Spring Integration ains
 
 #Pour aller plus loin...
 
-* Enterprise Integration Patterns de G. Hohpe et B. Woolf chez Addisson Wesley
+* __Enterprise Integration Patterns__ de G. Hohpe et B. Woolf chez Addisson Wesley
 * Site de référence sur les EIP : http://www.eaipatterns.com/ 
 * Article d’IBM sur les EIP : http://www.ibm.com/developerworks/library/ws-intpatterns/index.html?S_TACT=105AGX20&S_CMP=EDU

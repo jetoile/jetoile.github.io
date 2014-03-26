@@ -66,13 +66,13 @@ private static class ArrayList<E> extends AbstractList<E>
     ...
 }
 ```
-Je cherche alors ma méthode `remove()` mais ne la trouve pas... tous s'explique : mon horrible `UnsupportedOperationException` vient de `AbstractList`... Mais pourquoi Sun a-t-il fait un truc aussi bizarre que de redéfinir son `ArrayList` en inner class de `Arrays` et en plus en n'implémentant pas certaines méthodes susceptibles de créer des erreurs au Runtime... ? Je râle, je vais en parler à un collègue et là, il me dit : ben oui, dans la javadoc, il est indiqué la chose suivante :
+Je cherche alors ma méthode `remove()` mais ne la trouve pas... tout s'explique : mon horrible `UnsupportedOperationException` vient de `AbstractList`... Mais pourquoi Sun a-t-il fait un truc aussi bizarre que de redéfinir son `ArrayList` en inner class de `Arrays` et en plus en n'implémentant pas certaines méthodes susceptibles de créer des erreurs au Runtime... ? Je râle, je vais en parler à un collègue et là, il me dit : ben oui, dans la javadoc, il est indiqué la chose suivante :
 
 >Returns a fixed-size list backed by the specified array.
 
 En plus, première ligne... je n'avais pas lu le fixed-size... :( Voilà, conclusion, 15 minutes de perdu... tout ça parce que, trop confiant, je n'ai pas lu consciencieusement la documentation. Bien sûr, cela s'applique à tous types de cas et cette anecdote n'en est qu'un exemple... (il n'empêche que je trouve quand même cela vraiment trompeur cette méthode asList... :( ).
 
-[update : un collègue m'a fait remarqué que je n'avais pas été très précis quant au pourquoi du comment j'avais eu cette erreur... : le fait que la classe interne `ArrayList` de `Arrays` n'implémente pas la méthode `remove()` implique que c'est l'implémentation de la méthode `remove()` de `AbstractList` qui est utilisée. Cette méthode lançant un `UnsupportedOperationException`, c'est donc ce qui remonte. Ce choix ayant été fait en raison de la volonté de renvoyer un ArrayList de taille fixe et donc de ne pas implémenter cette méthode.]
+[__update__ : un collègue m'a fait remarqué que je n'avais pas été très précis quant au pourquoi du comment j'avais eu cette erreur... : le fait que la classe interne `ArrayList` de `Arrays` n'implémente pas la méthode `remove()` implique que c'est l'implémentation de la méthode `remove()` de `AbstractList` qui est utilisée. Cette méthode lançant un `UnsupportedOperationException`, c'est donc ce qui remonte. Ce choix ayant été fait en raison de la volonté de renvoyer un ArrayList de taille fixe et donc de ne pas implémenter cette méthode.]
 
 #Conclusion
 

@@ -20,7 +20,7 @@ Ce livre, qui ne se veut pas une bible maven, raconte la mise en place de maven 
 
 En outre, les auteurs dispensent tout au long de l'ouvrage des astuces et des bonnes pratiques.
 
-Utilisateur de maven, je n'avais pas eu l'occasion, jusqu'à récemment, de mettre en œuvre un processus complet (cf. mon post précédent) et j'ai été content et rassuré de voir que je n'avais pas été le seul à me poser les questions que je me suis posé et qu'en plus, cerise sur le gâteau, j'avais traité la mise en place de mon environnement comme les acteurs de l'ouvrage ;-).
+Utilisateur de maven, je n'avais pas eu l'occasion, jusqu'à récemment, de mettre en œuvre un processus complet (cf. [mon post précédent](/2010/01/retour-sur-la-mise-en-uvre-d_04.html)) et j'ai été content et rassuré de voir que je n'avais pas été le seul à me poser les questions que je me suis posé et qu'en plus, cerise sur le gâteau, j'avais traité la mise en place de mon environnement comme les acteurs de l'ouvrage ;-).
 
 Un livre à conseiller donc pour tous ceux qui s'intéressent à ce que le code peut devenir après le clique sur le bouton "commit" de notre IDE et pour tous ceux qui s'étaient déjà posés la question mais qui n'avaient jamais eu l'occasion de prendre le temps pour creuser.
 
@@ -31,7 +31,7 @@ A conseiller donc pour tous les gens curieux et pour tous ceux qui ont besoins d
 
 ##Enterprise Integration Patterns de G. Hohpe et B. Woolf chez Addisson Wesley
 <img height="183" src="http://www.eyrolles.com/Scan/9780321200686.gif" style="float: left; margin-bottom: 10px; margin-right: 10px; margin-top: 10px; max-width: 800px;" width="138" />
-Excellent livre qui présente les EIP (cf. post précédent) et qui clarifie bon nombre de notions et concepts courants dans les architectures cotés back-office. Je le conseille donc plus que vivement et les notions qui y sont abordées doivent être connues ou au moins considérés dans toute problématique d'architecture où des messages transitent (ie. presque toutes architectures).
+Excellent livre qui présente les EIP (cf. [post précédent](/2009/12/eip-quest-ce-que-cest.html)) et qui clarifie bon nombre de notions et concepts courants dans les architectures cotés back-office. Je le conseille donc plus que vivement et les notions qui y sont abordées doivent être connues ou au moins considérés dans toute problématique d'architecture où des messages transitent (ie. presque toutes architectures).
 
 ##Java, plus rapide, plus léger de B. Tate et J. Gehland, traduction de P. Ensarguet et F. Laurent chez O'Reilly
 <img height="186" src="http://www.decitre.fr/gi/21/9782841773121FS.gif" style="float: left; margin-bottom: 10px; margin-right: 10px; margin-top: 10px; max-width: 800px;" width="136" />

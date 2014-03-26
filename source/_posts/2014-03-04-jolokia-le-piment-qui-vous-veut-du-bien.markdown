@@ -10,7 +10,7 @@ categories:
 ---
 ![left-small](http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png)
 
- Dans des articles précédents, je m'étais déjà exprimé sur le fait que je trouvais qu'il était important de monitorer son application (qu'il s'agisse d'une application web, d'un batch ou d'une application standalone) (cf. [ici](http://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html)). J'avais même creusé un peu la spécification JMX (cf. [là](http://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html)).
+ Dans des articles précédents, je m'étais déjà exprimé sur le fait que je trouvais qu'il était important de monitorer son application (qu'il s'agisse d'une application web, d'un batch ou d'une application standalone) (cf. [ici](/2010/05/jmx-ou-comment-administrer-et.html)). J'avais même creusé un peu la spécification JMX (cf. [là](/2010/10/jmx-pour-les-nuls-introduction.html)).
 
 Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j'ai découvert récemment (merci Romain ;-) ) mais qui existe depuis un moment (la version 1.0.0 est apparue en octobre 2011 sur le repo Maven central et le premier commit apparaissant sur Github date de Juillet 2010) : cet outils est Jolokia.
 
@@ -348,7 +348,7 @@ Cependant, un des gros avantage de Jolokia est un point qui n'a pas été abord�
 * [HawtIO, écrire un plugin](http://blog.zenika.com/index.php?post/2014/01/14/HawtIO-ecrire-un-plugin)
 
 
-Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d'énormes avantages comme, par exemple, accèder aux informations de n'importe quelle application qui, généralement, n'est pas accessible pour des raisons de sécurité (cf. http://blog.jetoile.fr/2010/05/jmx-et-firewall.html).
+Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d'énormes avantages comme, par exemple, accèder aux informations de n'importe quelle application qui, généralement, n'est pas accessible pour des raisons de sécurité (cf. /2010/05/jmx-et-firewall.html).
 Bien sûr, il existe d'autres solutions comme l'utilisation de CraSH mais exposer ses MBeans via JSON over HTTP est tellement simple et peut surtout être exploité simplement par les équipes de production ;-) .
 
 #Pour aller plus loin...

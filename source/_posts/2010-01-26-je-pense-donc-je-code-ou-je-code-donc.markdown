@@ -11,7 +11,7 @@ categories:
 ---
 
 <img height="179" src="http://2.bp.blogspot.com/_o_pANlMZn3M/Rbp_szFyo1I/AAAAAAAAAG8/u76G5SqTowY/s400/Get+the+message.jpg" style="float: left; margin-bottom: 10px; margin-right: 10px; margin-top: 10px; max-width: 800px;" width="217" alt="left"/>
-Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c'est Yukihiro Matsumoto (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu...) qui l'a tenue.
+Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c'est [Yukihiro Matsumoto](http://en.wikipedia.org/wiki/Yukihiro_Matsumoto) (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu...) qui l'a tenue.
 
 Il nous a expliqué ce qui l'avait amené à créer le langage Ruby : écrire du code dans un langage qui correspond à notre façon de penser; mais il a aussi tenté de nous démontrer pourquoi on devrait utiliser Ruby (chose difficile devant un public de Javaistes...) : utiliser Ruby fluidifierait notre façon de penser.
 

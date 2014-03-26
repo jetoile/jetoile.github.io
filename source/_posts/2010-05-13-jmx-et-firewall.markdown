@@ -8,10 +8,12 @@ categories:
 - jmx
 ---
 ![left-small](http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png)
-Cet article fait suite à mon post précédent qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu'à la fin ;-), avait pour objectif de rappeler en quoi JMX (_Java Management eXtension_) pouvait être une bonne réponse aux problématiques de supervision et d'administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall. Cette problématique est indiquée sur le site de Sun/Oracle mais je vais, ici, faire un résumer de la méthode à suivre.
+Cet article fait suite à mon [post précédent](/2010-05-05-jmx-ou-comment-administrer-et.html) qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu'à la fin ;-), avait pour objectif de rappeler en quoi JMX (_Java Management eXtension_) pouvait être une bonne réponse aux problématiques de supervision et d'administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall. Cette problématique est indiquée sur le site de Sun/Oracle mais je vais, ici, faire un résumer de la méthode à suivre.
+
 <!-- more -->
-En effet, supposions que nous ayons l'architecture suivante (image sous licence Creative Commons Attribution-Share Alike) :
-![center](http://4.bp.blogspot.com/_XLL8sJPQ97g/S-vg1m-cF6I/AAAAAAAAAKI/glTWe7EakaA/s1600/Firewall2.png)
+
+En effet, supposions que nous ayons l'architecture suivante :
+![center](http://4.bp.blogspot.com/_XLL8sJPQ97g/S-vg1m-cF6I/AAAAAAAAAKI/glTWe7EakaA/s1600/Firewall2.png "licence : Creative Commons Attribution-Share Alike")
 
 En fait, dans ce cas, le client sur lequel la jConsole, jVisualVM ou autre est lancée, ne verra pas le serveur JMX, et cela, même en précisant le port.
 En effet, le connecteur JMX RMI ouvre deux ports :
@@ -22,6 +24,7 @@ En effet, le connecteur JMX RMI ouvre deux ports :
 Cependant, ce dernier port est, par défaut, alloué de manière dynamique et aléatoirement (puisqu'il n'est pas nécessaire de connaitre ce port pour se connecter à l'agent JMX).
 
 C'est cela qui pose problème lorsque l'on tente de se connecter à un serveur JMX se trouvant derrière un firewall puisqu'il n'est, alors, pas possible de demander l'ouverture d'un port que l'on ne connait pas...
+
 Aussi, la seule possibilité pour résoudre ce problème est de passer par la déclaration de son JMXServiceURL pour spécifier le port permettant d'exporter les objets utilisés par le connexion JMX RMI. Cependant, ce JMXServiceURL ne peut pas être modifié dans l'agent JMX utilisé par défaut...
 
 Heureusement, il est possible de définir programmatiquement son propre agent JMX.
@@ -34,7 +37,7 @@ En fonction de l'usage, deux choix sont possibles :
 Il est à noter que l'implémentation présentée ici ne prend pas en compte la problématique de sécurité (et en particulier SSL) où deux ports différents doivent être utilisés. En outre, il sera supposé que le RMI Registry sera démarré dans l'application.
 
 #1ère méthode
-Ainsi, si vous avez la main sur la méthode main sur l'application, il suffit de rajouter le code qui va bien, à savoir :
+Ainsi, si vous avez la main sur la méthode `main` sur l'application, il suffit de rajouter le code qui va bien, à savoir :
 ```java
 package example;
  
@@ -83,7 +86,7 @@ Pour tester ce code, exécuter le code suivant :
 ```bash
 java -Dexample.rmi.agent.port=3010 -classpath . example.MyApp
 ```
-puis lancer une jconsole et renseigner le champ "Remote Process" :
+puis lancer une jconsole et renseigner le champ `Remote Process` :
 
 ```text
 service:jmx:rmi://localhost:3010/jndi/rmi://localhost:3010/jmxrmi
@@ -92,7 +95,7 @@ service:jmx:rmi://localhost:3010/jndi/rmi://localhost:3010/jmxrmi
 #2ième méthode
 Par contre, la solution précédente n'est parfois pas applicable car le code de l'application à exécuter peut ne pas être disponible ou car récupérer ses sources, les modifiés et recompiler la dite application (par exemple, si c'est un conteneur de Servlet que vous voulez administrer...) peut être un peu problématique (je ne suis pas sûr que l'équipe de production soit enchantée d'utiliser une version modifiée d'Apache Tomcat...).
 
-Aussi, dans ce cas, il est possible de déclarer son propre agent à enregistrer dans la JVM (en définissant la méthode premain et en renseignant l'attribut `Premain-Class` du fichier MANIFEST.MF) qui se chargera de définir et de lancer l'agent JMX (une sorte de wrapper). Cependant, dans ce cas, l'agent JMX lancé par l'agent java ne sera pas arrêté par l'envoie du signal de fin de l'application. Il convient alors de lancer un Thread chargé de scrupter le processus de l'agentJMX.
+Aussi, dans ce cas, il est possible de déclarer son propre agent à enregistrer dans la JVM (en définissant la méthode `premain` et en renseignant l'attribut `Premain-Class` du fichier `MANIFEST.MF`) qui se chargera de définir et de lancer l'agent JMX (une sorte de wrapper). Cependant, dans ce cas, l'agent JMX lancé par l'agent java ne sera pas arrêté par l'envoie du signal de fin de l'application. Il convient alors de lancer un Thread chargé de scrupter le processus de l'agentJMX.
 
 Ci-dessous un exemple de l'agent JVM :
 
@@ -261,7 +264,7 @@ public class CustomAgent {
 }
 ```
 
-Pour créer l'agent, il est possible d'utiliser le script ant suivant qui renseigne de manière adéquate le fichier MANIFEST :
+Pour créer l'agent, il est possible d'utiliser le script _ant_ suivant qui renseigne de manière adéquate le fichier `MANIFEST` :
 ```xml
 <project basedir="." default="build-agent-jar" name="customAgent">
  
@@ -293,13 +296,13 @@ Pour créer l'agent, il est possible d'utiliser le script ant suivant qui rensei
   </target>
 </project>
 ```
-Pour tester ce code, ajouter le jar customAgent.jar au classpath de l'application et exécuter la commande suivante :
+Pour tester ce code, ajouter le jar `customAgent.jar` au classpath de l'application et exécuter la commande suivante :
 
 ```bash
 java -Dexample.rmi.agent.port=3010 -javaagent:customAgent.jar -classpath customAgent.jar example.MyApp2
 
 ```
-Le dernier point à prendre en compte est le fait que pour rendre visible le serveur RMI, il peut être nécessaire de préciser le nom du serveur avec l'option java.rmi.server.hostname. Aussi, si le serveur RMI utilisé est embarqué dans votre conteneur de servlet ou autre, il peut s'avérer utile de le préciser lors du lancement de la JVM.
+Le dernier point à prendre en compte est le fait que pour rendre visible le serveur RMI, il peut être nécessaire de préciser le nom du serveur avec l'option `java.rmi.server.hostname`. Aussi, si le serveur RMI utilisé est embarqué dans votre conteneur de servlet ou autre, il peut s'avérer utile de le préciser lors du lancement de la JVM.
 
 Par exemple, dans le cas d'Apache Tomcat, il est possible d'ajouter l'option Java suivante :
 

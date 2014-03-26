@@ -6,10 +6,11 @@ comments: true
 categories: 
 - réflexion
 ---
-<img height="171" src="http://farm3.static.flickr.com/2089/2172462686_56d3373111.jpg" width="171" alt="left"/>
+![left-small](http://farm3.static.flickr.com/2089/2172462686_56d3373111.jpg)
+
 Bon, voilà, cela fait un moment que je n'ai pas bloggé... manque d'inspiration peut être... manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard...
 
-Dans cet article, je voudrais revenir sur un point que j'avais légèrement abordé dans ce post portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l'importance de s'intégrer aux processus de compilation et de livraison au plus tôt... en fait, pour être plus précis, je n'avais pas vraiment abordé cette problématique mais cela vient du même constat... ;-)
+Dans cet article, je voudrais revenir sur un point que j'avais légèrement abordé dans ce [post](/2010/02/de-l-du-livrable.html) portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l'importance de s'intégrer aux processus de compilation et de livraison au plus tôt... en fait, pour être plus précis, je n'avais pas vraiment abordé cette problématique mais cela vient du même constat... ;-)
 
 <!-- more -->
 
@@ -19,10 +20,10 @@ Pour moi, il s'agit d'une erreur!
 
 Je vais donc lister un ensemble d'idées reçues ou entendues à ce sujet et en dire ce que j'en pense... : 
 
-* Le développeur peut se concentrer sur les fonctionnalités à développer : Si ses fonctionnalités ne peuvent être intégrées au livrable, cela met en péril la totalité de l'équipe et est, donc, source de retard qui seront, généralement, totalement incompris par vos manageurs.
-* Il faut livrer au plus vite car la fonctionnalité était demandée pour hier : De même que pour le point précédent, si la fonctionnalité ne marche QUE sur le poste du développeur, elle ne pourra être exploitable en production. En outre, si l'équipe de production est incapable de déployer sur l'environnement cible simplement, si un fait technique (Rapport d'anomalie ou demande d'évolution) apparait (qui peut assurer que son code est bugs-free...? ;-) ), alors il faudra refaire le travail de déploiement et de configuration manuellement (et qui dit manuellement dit aussi facteur humain et donc soucis...). Et puis, entre nous, je trouverai ça assez drôle d'être obligé de lancer eclipse sur une machine de production... ;-)
-* Ce n'est pas le travail du développeur : Cela fait aussi parti de son travail que de penser aux problématiques transverses : il se doit de prendre en compte les problématiques transverses et non d'être passif et d'attendre les spécifications pour coder sans se poser de questions. 
-* Il y a une équipe (personne?) dédiée pour faire ce boulot et intégrer le code à l'existant : Une équipe est peut être dédiée à cette tache, mais qui est le plus au courant des subtilités de comment faire fonctionner le code (présence de fichier de configuration, de variables systèmes, de pré-requis, ...) si ce n'est le développeur lui-même? De toute façon, le développeur devra re-tester le code intégrer dans le référentiel, donc autant que ce soit lui qui le fasse.
+* _Le développeur peut se concentrer sur les fonctionnalités à développer_ : Si ses fonctionnalités ne peuvent être intégrées au livrable, cela met en péril la totalité de l'équipe et est, donc, source de retard qui seront, généralement, totalement incompris par vos manageurs.
+* _Il faut livrer au plus vite car la fonctionnalité était demandée pour hier_ : De même que pour le point précédent, si la fonctionnalité ne marche QUE sur le poste du développeur, elle ne pourra être exploitable en production. En outre, si l'équipe de production est incapable de déployer sur l'environnement cible simplement, si un fait technique (Rapport d'anomalie ou demande d'évolution) apparait (qui peut assurer que son code est bugs-free...? ;-) ), alors il faudra refaire le travail de déploiement et de configuration manuellement (et qui dit manuellement dit aussi facteur humain et donc soucis...). Et puis, entre nous, je trouverai ça assez drôle d'être obligé de lancer eclipse sur une machine de production... ;-)
+* _Ce n'est pas le travail du développeur_ : Cela fait aussi parti de son travail que de penser aux problématiques transverses : il se doit de prendre en compte les problématiques transverses et non d'être passif et d'attendre les spécifications pour coder sans se poser de questions. 
+* _Il y a une équipe (personne?) dédiée pour faire ce boulot et intégrer le code à l'existant_ : Une équipe est peut être dédiée à cette tache, mais qui est le plus au courant des subtilités de comment faire fonctionner le code (présence de fichier de configuration, de variables systèmes, de pré-requis, ...) si ce n'est le développeur lui-même? De toute façon, le développeur devra re-tester le code intégrer dans le référentiel, donc autant que ce soit lui qui le fasse.
 
 De plus, à ces points, j'aimerais ajouter les suivants :
 

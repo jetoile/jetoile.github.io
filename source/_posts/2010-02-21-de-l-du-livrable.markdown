@@ -14,7 +14,8 @@ Au cours de certaines missions, je suis arrivé à un constat qui était que le 
 
 C'est vrai qu'il peut être concevable qu'il ne s'agit que de la dernière étape d'un processus de développement, cependant, avec l'introduction de cycles courts (agilité, ...), pouvoir fournir rapidement un livrable de qualité au client est primordial.
 
-Dans un [post précédent](/blog/2010/01/04/retour-sur-la-mise-en-oeuvre-dun-environnement-de-developpement/), j'avais parler de la façon dont j'avais en place maven dans un processus d'usine logicielle. J'y avais également abordé succinctement comment il était possible de générer un livrable.
+Dans un [post précédent](/2010/01/retour-sur-la-mise-en-uvre-d_04.html), j'avais parler de la façon dont j'avais en place maven dans un processus d'usine logicielle. J'y avais également abordé succinctement comment il était possible de générer un livrable.
+
 Ce post présente donc plus précisément comment cela est possible avec maven (je ne reviendrai pas sur le pourquoi car cela me parait évident dans le sens où c'est ce que verra le client final et que, tout le monde le sait, la première impression est très souvent importante - un peu comme lorsque l'on offre un cadeau à quelqu'un, l'emballage à son importance même si, au final, le cadeau est pourri... ;-) - ).
 
 <!-- more --> 
@@ -218,7 +219,7 @@ Il est à noter que la problématique est identique avec d'autres outils (ant, g
 
 #Pour aller plus loin...
 
-* Apache Maven de N. De Loof, A. Héritier chez Pearson
+* __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf
 * Maven. Definitive Guide : http://www.sonatype.com/products/maven/documentation/book-defguide
 * Site de maven : http://maven.apache.org/

@@ -9,8 +9,9 @@ categories:
 ---
 
 ![left-small](http://1.bp.blogspot.com/_XLL8sJPQ97g/TTr8YAhjHqI/AAAAAAAAAUA/nx8ug8MDDNA/s320/jmx02.png)
-Ce rapide article fournit un petit retour d'expérience de quelques galères que j'ai pu avoir avec JMX (Java Management eXtension), galères certes stupides mais qui pourront peut être servir à d'autres... ;-)
-Sera donc abordé deux points :
+Ce rapide article fournit un petit retour d'expérience de quelques galères que j'ai pu avoir avec JMX (_Java Management eXtension_), galères certes stupides mais qui pourront peut être servir à d'autres... ;-)
+
+Seront donc abordés deux points :
 
 * Erreur lors de l'arrêt de tomcat configuré avec JMX
 * Impossibilité de se connecter à l'agent JMX

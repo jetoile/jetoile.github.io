@@ -13,6 +13,7 @@ categories:
 ---
 ![left](http://maven.apache.org/images/maven-logo-2.gif)
 Cet article présente la mise en œuvre que j'ai appliquée lors de la mise en place d'un environnement de développement devant s'interfacer, dans une démarche pseudo-agile, avec des outils d'intégration continue.
+
 Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j'ai tenté de répondre à ces problématiques que ce soit d'un point de vue méthodologique que d'un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c'est aussi pour cela que j'ai créé ce blog (afin de faire partager mon expérience et d'avoir un retour) ;-)
 
 Il ne présentera ni l'utilité des outils d'intégration continue ni celle d'une démarche agile (ce projet ne fonctionnait pas en agile mais mettait en œuvre quelques-unes de ses pratiques) qui sont très bien expliqués sur d'autres sites ou blogs. Enfin, il est à noter que ce projet possédait un existant et que mon rôle n'était pas de remettre en cause les solutions retenues.
@@ -23,6 +24,7 @@ Il ne présentera ni l'utilité des outils d'intégration continue ni celle d'un
 Le projet concerné avait pour but, entre autre, de fournir un site web à destination du grand public. Il s'appuyait sur le portail Jetspeed 2 (qui pour rappel est un portail permettant d'héberger des portlets 2 - JSR 286 à l'image de Liferay ou GateIn) dont les fonctionnalités d'édition avaient été désactivées. Aussi, le portail Jetspeed n'était utilisé que pour ses capacités à "modularisé" les composants d'affichage à l'aide de portlets qui étaient figés dans les pages. Des services web étaient également utilisés pour permettre de s'interconnecter avec un progiciel utilisé pour implémenter le cœur du métier.
 
 Les outils de build utilisés étaient maven 2 et plus précisément le plugin Jetspeed fournit par ce dernier.
+
 Enfin, le cycle d'itération des développements étaient de 2 semaines... 2 semaines qui incluaient la définition de ce qu'allait embarquer la livraison (ou si on peut l'appeler comme cela, ce qu'il y aurait dans le sprint), les tests fonctionnels ainsi que la mise en production du livrable... 
 
 L'équipe incluait 12 développeurs et, dans la globalité, un environnement de développement hétérogène (la faute n'incubant pas foncièrement aux développeurs mais plutôt à des délais beaucoup trop serrés ainsi qu'à une très grosse charge de travail).
@@ -32,7 +34,7 @@ Au vu du contexte, un certain nombre de constatation pouvait être fait rapideme
 
 * des cycles de développement très court,
 * un grand nombre de développeurs dont il fallait intégrer le code,
-* un environnement très hétérogène (eclipse, netbeans, intelliJ idea pour la partie IDE, des PCs sous Windows, * des PCs sous Linux et des macs pour la partie matérielle),
+* un environnement très hétérogène (eclipse, netbeans, intelliJ idea pour la partie IDE, des PCs sous Windows, des PCs sous Linux et des Macs pour la partie matérielle),
 * une procédure de livraison difficile...
 
 En effet, pour revenir sur ce dernier point, les développeurs utilisaient, pour développer, pluto (le moteur de portlet de référence) en raison de machines pas suffisamment véloces et déployaient en local en utilisant directement le plugin mis à disposition par Jetspeed qui construisait le portail, créait sa base de données dans derby, associait son schéma et la peuplait à l'aide de son mécanisme utilisant Torque. Les fichiers de configurations utilisés par les applications web et contenant des paramètres dépendant de l'environnement où elles étaient déployées étaient embarqués dans les jars qui étaient eux-mêmes embarqués dans les applications web (portlets et services web) (ndlr : pour rappel, Jetspeed ainsi que ses portlets sont packagés sous forme de war).
@@ -80,8 +82,10 @@ parent
 ```
 
 #Mise en oeuvre
+
 ## Un environnement de développement "propre" avec Maven 2
-Le but de ce point était de proposer une meilleure façon de faire pour générer les wars (ie. modules portail, portlet1, portlet2, ws1 et ws2), à savoir, n'avoir à faire qu'un mvn install pour avoir une application web qu'il était possible de déployer automatiquement dans notre conteneur de Servlet (et non plus un obscur mvn jetspeed:mvn -Pdeploy). En effet, le plugin maven2 de Jetpseed permettait de compiler, générer les wars (le sien et les portlets), et de les déployer dans le conteneur de servlet indiqué. En outre, il permettait également de créer et peupler la base de données utile à son fonctionnement ; la base de données (ie. ses accès et son type) pouvant être indiquée via un fichier de configuration. Pour ce dernier point, le peuplement était fait via la mécanique interne de Jetspeed, à savoir, l'utilisation du framework Torque.
+
+Le but de ce point était de proposer une meilleure façon de faire pour générer les wars (ie. modules portail, portlet1, portlet2, ws1 et ws2), à savoir, n'avoir à faire qu'un mvn install pour avoir une application web qu'il était possible de déployer automatiquement dans notre conteneur de Servlet (et non plus un obscur `mvn jetspeed:mvn -Pdeploy`). En effet, le plugin maven2 de Jetpseed permettait de compiler, générer les wars (le sien et les portlets), et de les déployer dans le conteneur de servlet indiqué. En outre, il permettait également de créer et peupler la base de données utile à son fonctionnement ; la base de données (ie. ses accès et son type) pouvant être indiquée via un fichier de configuration. Pour ce dernier point, le peuplement était fait via la mécanique interne de Jetspeed, à savoir, l'utilisation du framework Torque.
 
 La première tache a été de dumper la base de données afin d'obtenir un fichier sql pouvant être utilisé sur la base de données cible et afin de s'abstraire de Torque.
 
@@ -93,9 +97,9 @@ Une fois la base de données créée et peuplée à l'aide de ce fichier sql, el
  <resource name="jdbc/jetspeed" auth="Container" factory="org.apache.commons.dbcp.BasicDataSourceFactory" type="javax.sql.DataSource" username="xxx" password="xxx" driverclassname="xxx" url="jdbc:xxx://xxx:xxx/j2" maxactive="100" maxidle="30" maxwait="10000"></resource>
 </Context>
 ```
-Ce fichier a également été mis dans le module config dans le répertoire src/main/resources.
+Ce fichier a également été mis dans le module config dans le répertoire `src/main/resources`.
 
-La seconde tache a été de mettre le plugin Jetspeed dans le cycle de vie maven utilisé par défaut lors de l'exécution du goal maven compile du module portail afin de générer un war qu'il était possible de copier directement dans le répertoire adéquate du conteneur de Servlet afin de permettre son déploiement :
+La seconde tache a été de mettre le plugin Jetspeed dans le cycle de vie maven utilisé par défaut lors de l'exécution du goal maven `compile` du module portail afin de générer un war qu'il était possible de copier directement dans le répertoire adéquate du conteneur de Servlet afin de permettre son déploiement :
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <parent>
@@ -212,7 +216,7 @@ La seconde tache a été de mettre le plugin Jetspeed dans le cycle de vie maven
 </project>
 ```
 
-De la même manière, les portlets (et donc les modules portlet1 et portlet2) devaient pouvoir être générés avec l'exécution du goal maven2 compile (n'oublions pas que les portlets devaient pouvoir être enregistrés dans le portail Jetspeed sans avoir à être déposés dans son répertoire deploy mais juste dans le répertoire de déploiement du conteneur de Servlet). Pour ce faire, le projet maven n'avait qu'à être indiqué comme étant un type war et le web.xml contenu dans le répertoire src/main/webapps/WEB-INF n'avait qu'à être renseigné comme utilisant le Servlet controleur de Jetspeed :
+De la même manière, les portlets (et donc les modules portlet1 et portlet2) devaient pouvoir être générés avec l'exécution du goal maven2 `compile` (n'oublions pas que les portlets devaient pouvoir être enregistrés dans le portail Jetspeed sans avoir à être déposés dans son répertoire deploy mais juste dans le répertoire de déploiement du conteneur de Servlet). Pour ce faire, le projet maven n'avait qu'à être indiqué comme étant un type war et le web.xml contenu dans le répertoire `src/main/webapps/WEB-INF` n'avait qu'à être renseigné comme utilisant le Servlet controleur de Jetspeed :
 
 ```xml
 <!--?xml version="1.0" encoding="UTF-8"?-->
@@ -259,11 +263,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5" xmlns="http://j
  </jsp-config>
 </web-app>
 ```
-Grâce à ces actions simples, la simple exécution du goal maven 2 compile était suffisant pour générer les war directement exploitables dans le conteneur de Servlet.
+Grâce à ces actions simples, la simple exécution du goal maven `compile` était suffisant pour générer les war directement exploitables dans le conteneur de Servlet.
+
 Il est à noter que la base de données originellement peuplée par le portail ne l'est pas ici. Ce point est traité par le paragraphe suivant.
 
 ##Une gestion maitrisée des bases de données
-Comme il a été indiqué dans le paragraphe précédent la base de données utilisée par Jetspeed a été dissociée de son processus de génération. Afin de permettre sa création et son peuplement simplement, le plugin maven sql associé à un profile particulié a été utilisé :
+Comme il a été indiqué dans le paragraphe précédent la base de données utilisée par Jetspeed a été dissociée de son processus de génération. Afin de permettre sa création et son peuplement simplement, le plugin maven sql associé à un _profile_ particulié a été utilisé :
 ```xml
 <profile>
  <id>initdb</id>
@@ -361,7 +366,7 @@ Il est à noter également que différentes phases du cycle de vie ont été uti
 
 ##Un déploiement automatisé avec Cargo
 
-Le plugin Jetspeed permettait un déploiement automatique dans le conteneur de Servlet indiqué. Afin de fournir un comportement plus ou moins iso-fonctionnel, j'ai utilisé le plugin maven Cargo pour permettre un déploiement sur le conteneur de Servlet cible (dans notre cas, en local). Pour ce faire, un profile maven a été utilisé :
+Le plugin Jetspeed permettait un déploiement automatique dans le conteneur de Servlet indiqué. Afin de fournir un comportement plus ou moins iso-fonctionnel, j'ai utilisé le plugin maven Cargo pour permettre un déploiement sur le conteneur de Servlet cible (dans notre cas, en local). Pour ce faire, un _profile_ maven a été utilisé :
 
 ```xml
 <profiles>
@@ -454,7 +459,7 @@ En outre, les fichiers utilisés par l'application et par les tests unitaires ma
  <scope>test</scope>
 </dependency>
 ```
-Afin de templatiser ces fichiers de configuration, la fonctionnalité de filtrage de maven a été utilisée en complément de l'utilisation de profiles maven :
+Afin de _templatiser_ ces fichiers de configuration, la fonctionnalité de filtrage de maven a été utilisée en complément de l'utilisation de profiles maven :
 
 ```xml
 <build>
@@ -498,7 +503,7 @@ Suite au travail décrit dans les paragraphes précédents, cela avait permis de
 
 Pour cela, nous avons décidé d'utiliser le plugin assembly de maven en créant un module supplémentaire (module assembly) et dont le rôle était de générer notre livrable. 
 
-Ci-joint notre fichier assembly se trouvant dans le répertoire src/main/assembly du module assembly :
+Ci-joint notre fichier assembly se trouvant dans le répertoire `src/main/assembly` du module `assembly` :
 ```xml
 <assembly>
  <id>1.0</id>
@@ -557,7 +562,7 @@ Ci-joint notre fichier assembly se trouvant dans le répertoire src/main/assembl
  </fileSets>
 </assembly>
 ```
-et où le pom.xml utilisant le plugin était :
+et où le `pom.xml` utilisant le plugin était :
 ```xml
 <build>
  <plugins>
@@ -782,16 +787,18 @@ Pour ce faire, le plugin maven cargo a été utilisé conjointement à un profil
 ```
 
 Il est à noter qu'ici, les phases utilisés ne sont pas foncièrement cohérente... en effet, j'ai supprimé quelques petites actions afin de ne pas géner à la visibilité ;-)
-#Conclusion
-Il a été vu dans les paragraphes précédents que maven 2 a servi de point central à la mise en place de l'environnement de développement même s'il est vrai que je n'ai pas utilisé pleinement ses fonctionnalités (les goals deploy ou release par exemple)...
 
-En outre, je n'ai pas mentionné les outils d'intégration continue qui, bien sûr, exécutait périodiquement certaines de ces phases ainsi qu'une phase transverse où était exécutés des tests d'intégration et d'acceptance sur une instance de type embedded déployée via le plugin cargo.
+#Conclusion
+
+Il a été vu dans les paragraphes précédents que maven 2 a servi de point central à la mise en place de l'environnement de développement même s'il est vrai que je n'ai pas utilisé pleinement ses fonctionnalités (les goals `deploy` ou `release` par exemple)...
+
+En outre, je n'ai pas mentionné les outils d'intégration continue qui, bien sûr, exécutait périodiquement certaines de ces phases ainsi qu'une phase transverse où était exécutés des tests d'intégration et d'acceptance sur une instance de type _embedded_ déployée via le plugin cargo.
 
 De même, les outils mis en place de type Sonar n'ont pas été mentionnés ici : cet article n'avait pour but que de présenter une mise en oeuvre d'un environnement de développement (bonne ou mauvaise, je vous laisse en juger...) qui j'espère donnera quelques idées...
 
 #Pour aller plus loin...
 
-* Apache Maven de N. De Loof, A. Héritier chez Pearson
+* __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf
 * Maven. Definitive Guide : http://www.sonatype.com/products/maven/documentation/book-defguide
 * Site de maven : http://maven.apache.org/

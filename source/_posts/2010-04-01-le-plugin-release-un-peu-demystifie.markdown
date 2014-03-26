@@ -8,7 +8,7 @@ categories:
 - maven
 ---
 ![left](http://maven.apache.org/images/maven-logo-2.gif)
-J'ai déjà longuement parlé de maven 2 dans des posts précédents ([Petites astuces avec maven 2](/blog/2010/03/29/petites-astuces-avec-maven-2/), [De l'art du livrable](/blog/2010/02/22/de-lart-du-livrable/) et  [Retour sur la mise en œuvre d'un environnement de développement](/blog/2010/01/04/retour-sur-la-mise-en-oeuvre-dun-environnement-de-developpement/)). Ici, je vais revenir sur le plugin [release](http://maven.apache.org/plugins/maven-release-plugin/) en version 2.0 en explicitant ce que font ses goals `prepare` et `perform` plus concrètement. 
+J'ai déjà longuement parlé de maven 2 dans des posts précédents ([Petites astuces avec maven 2](/2010/03/petites-astuces-avec-maven-2.html), [De l'art du livrable](/2010/02/de-l-du-livrable.html) et  [Retour sur la mise en œuvre d'un environnement de développement](/2010/01/retour-sur-la-mise-en-uvre-d_04.html)). Ici, je vais revenir sur le plugin [release](http://maven.apache.org/plugins/maven-release-plugin/) en version 2.0 en explicitant ce que font ses goals `prepare` et `perform` plus concrètement. 
 
 En effet, il peut être utile de vouloir savoir quels sont les actions appelées et comment il est possible d'y ajouter son petit grain de sel... ;-)
 
@@ -55,13 +55,13 @@ map-release-versions qui appelle la classe `MapVersionsPhase` qui demande à l'u
 map-development-versions qui appelle la classe `MapVersionsPhase` qui demande à l'utilisateur le numéro de version à mettre dans les pom pour le trunk ou la branche courante suite à la phase prepare,
 rewrite-poms-for-release qui appelle la classe `RewritePomsForReleasePhase` qui réécrit les poms à la version qui sera taggée,
 * __generate-release-poms__ qui appelle la classe `GenerateReleasePomsPhase`,
-* run-preparation-goals qui appelle la classe `RunPrepareGoalsPhase` qui appelle les goals maven par défaut (`clean` et `verify`) pour vérifier le projet,
+* __run-preparation-goals__ qui appelle la classe `RunPrepareGoalsPhase` qui appelle les goals maven par défaut (`clean` et `verify`) pour vérifier le projet,
 * __scm-commit-release__ qui appelle la classe `ScmCommitPhase` qui commite le projet dans le SCM,
 * __scm-tag__ qui appelle la classe ScmTagPhase qui pose le tag indiqué,
 * __rewrite-poms-for-development__ qui appelle la classe `RewritePomsForDevelopmentPhase` qui réécrit les poms avec la version suivante de développement,
 * __remove-release-poms__ qui appelle la classe `RemoveReleasePomsPhase`,
 * __scm-commit-development__ qui appelle la classe `ScmCommitPhase` qui commite le projet dans le SCM,
-* __end-release__ qui appelle la classe `EndReleasePhase` qui finalise le processus en indiquant dans le fichier release.properties que la dernière phase du cycle s'est bien déroulée.
+* __end-release__ qui appelle la classe `EndReleasePhase` qui finalise le processus en indiquant dans le fichier `release.properties` que la dernière phase du cycle s'est bien déroulée.
 
 Il est à noter également que chaque action peuple le fichier `release.properties` qui indique, entre autre, la dernière action qui s'est déroulée sans erreur. 
 
@@ -74,7 +74,7 @@ Le goal `perform` dispose, quant à lui, de la liste d'actions suivantes :
 #et sinon, comment qu'on l'utilise?
 On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut parfois être utile de redéfinir certaines de ses actions, soit en précisant le profile à utiliser lors de la phase de déploiement (si le plugin [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/) est utilisé par exemple), soit si l'environnement où est effectué le livrable dispose d'une configuration folklorique (oui, oui, c'est possible... :( ).
 
-En fait, il est possible de préciser les goals à exécuter lors de l'action run-preparation-goal de la goal `prepare` (qui, pour rappel, exécute par défaut les goals `clean` et `verify`) en configurant le plugin release via la balise &lt;preparationGoals&gt; :
+En fait, il est possible de préciser les goals à exécuter lors de l'action run-preparation-goal de la goal `prepare` (qui, pour rappel, exécute par défaut les goals `clean` et `verify`) en configurant le plugin release via la balise `<preparationGoals>` :
 
 exemple :
 ```xml
@@ -88,7 +88,7 @@ exemple :
   </configuration>
 </plugin>
 ```
-De même, il est également possible de préciser le profile à utiliser lors de l'action run-perform-goals de la phase perform via la balise.
+De même, il est également possible de préciser le profile à utiliser lors de l'action run-perform-goals de la phase `perform` via la balise.
 
 exemple : 
 
@@ -130,7 +130,7 @@ A noter que certains points n'ont pas été traités dans cet article puisque le
 * la création de branches permettant ainsi de produire des correctifs sur une version déjà livrée.
 
 #Pour aller plus loin...
-* Apache Maven de N. De Loof, A. Héritier chez Pearson
+* __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf
 * Maven. Definitive Guide : http://www.sonatype.com/products/maven/documentation/book-defguide
 * Site de maven : http://maven.apache.org/

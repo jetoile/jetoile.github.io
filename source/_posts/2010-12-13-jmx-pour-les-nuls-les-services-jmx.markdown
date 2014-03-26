@@ -10,51 +10,60 @@ categories:
 
 ![left](http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png)
 
-Ce septième et avant dernier article sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base, partie 5 sur le MBeanServer et partie 6 sur le chargement dynamique des MBeans) abordera les différents types de services JMX.
+Ce septième et avant dernier article sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html), [partie 1](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html) portant sur les généralités, [partie 2](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html) portant sur les différents MBeans et le concept de Notification, [partie 3](/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html) sur les agents JMX, [partie 4](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html) sur les classes de base, [partie 5](/2010/11/jmx-pour-les-nuls-le-mbean-server.html) sur le MBeanServer et [partie 6](/2010/12/jmx-pour-les-nuls-chargement-dynamique.html) sur le chargement dynamique des MBeans) abordera les différents types de services JMX.
+
+Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se présente sous forme de services JMX (ie. de MBeans), à savoir :
+
+* __Service Monitoring__
+* __Service Timer__
+* __Service de relation__
+* __Service de sécurité__
 
 <!-- more -->
 #Table des matières
+
 * JMX, qu'est ce que c'est?
-	* [Généralités](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#generalite)
-	* [Architecture JMX](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#architecture)
-		* [Niveau instrumentation](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#instrumentation)
-		* [Niveau agent](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#agent)
-		* [Niveau service distribué](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#distribue)
-	* [Composants JMX](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#composant)
-		* [MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#mbean)
-		* [Modèle de notifications](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#notification)
-		* [Classe de métadonnées de MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/metadonnee)
-		* [Serveur de MBeans](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#serveur)
-		* [Service d'agents](/blog/2010/10/27/jmx-pour-les-nuls-dot-dot-dot-les-concepts-partie-1/#service)
+	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
+	* [Architecture JMX](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture)
+		* [Niveau instrumentation](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation)
+		* [Niveau agent](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent)
+		* [Niveau service distribué](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue)
+	* [Composants JMX](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant)
+		* [MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean)
+		* [Modèle de notifications](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification)
+		* [Classe de métadonnées de MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee)
+		* [Serveur de MBeans](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur)
+		* [Service d'agents](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service)
 * Spécifications
-	* [JMX Instrumentation](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/)
-		* [MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean)
-			* [MBean Standard](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_standard)
-			* [Dynamic MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_dynamic)
-		* [Notification](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#notification)
-		* [Open MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_open)
-		* [Model MBean](/blog/2010/11/03/jmx-pour-les-nuls-dot-dot-dot-les-differents-mbeans-et-la-notion-de-notification-partie-2/#mbean_model)
-	* [Agent JMX](/blog/2010/11/08/jmx-pour-les-nuls-dot-dot-dot-les-agents-jmx-partie-3/#agent)
-	* [Concepts](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/)
-		* [ObjectName](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#objectName)
-		* [ObjectInstance](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#objectInstance)
-		* [Attribute et AttributeList](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#attribute)
-		* [Les Exceptions](/blog/2010/11/21/jmx-pour-les-nuls-dot-dot-dot-les-classes-de-base-partie-4/#exception)
-	* [MBean Server](/blog/2010/11/29/jmx-pour-les-nuls-dot-dot-dot-le-mbean-server-partie-5/#mbean_server)
-	* [Chargement dynamique des MBeans](/blog/2010/12/06/jmx-pour-les-nuls-dot-dot-dot-chargement-dynamique-de-mbeans-partie-6/#mbean_dynamic)
-	* [Les services JMX](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/)
-		* [Service Monitoring](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#monitoring)
-		* [Service Timer](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#timer)
-		* [Service Relation](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#relation)
-		* [Service Sécurité](/blog/2010/12/13/jmx-pour-les-nuls-dot-dot-dot-les-services-jmx-partie-7/#securite)
-	* [Les Connecteurs](/blog/2010/12/20/jmx-pour-les-nuls-dot-dot-dot-les-connecteurs-partie-8/#connector)
+	* [JMX Instrumentation](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html)
+		* [MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean)
+			* [MBean Standard](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard)
+			* [Dynamic MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic)
+		* [Notification](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification)
+		* [Open MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open)
+		* [Model MBean](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model)
+	* [Agent JMX](/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent)
+	* [Concepts](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html)
+		* [ObjectName](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName)
+		* [ObjectInstance](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance)
+		* [Attribute et AttributeList](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute)
+		* [Les Exceptions](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception)
+	* [MBean Server](/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server)
+	* [Chargement dynamique des MBeans](/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic)
+	* [Les services JMX](/2010/12/jmx-pour-les-nuls-les-services-jmx.html)
+		* [Service Monitoring](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring)
+		* [Service Timer](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer)
+		* [Service Relation](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation)
+		* [Service Sécurité](/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite)
+	* [Les Connecteurs](/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector)
+
 
 <a name="monitoring"></a>
 #Service Monitoring
 
 Il existe une famille de MBeans de monitoring qui se présentent qui permettent de scrupter les variations au cours du temps de la valeur des attributs des autres MBeans et qui permet d'émettre des notifications à intervalle régulier. Ils sont aussi classifiés comme des services de monitoring.
 
-En fait, un service de monitoring (et donc un MBean de monitoring) permet d'observer la valeur d'un attribut donné présent dans un ou plusieurs MBeans (on dit qu'il s'agit alors du MBean observé) à un intervalle à régulier. Cette valeur peut être indifféremment la valeur d'un attribut ou la valeur contenue dans la valeur d'un attribut s'il est de type complexe. Pour chaque MBean observé, le moniteur interpole une seconde valeur qui est appelé le pas dérivé (derived gauge) et qui correspond, soit à la valeur observée, soit à la différence entre deux valeurs numériques obtenues consécutivement.
+En fait, un service de monitoring (et donc un MBean de monitoring) permet d'observer la valeur d'un attribut donné présent dans un ou plusieurs MBeans (on dit qu'il s'agit alors du __MBean observé__) à un intervalle à régulier. Cette valeur peut être indifféremment la valeur d'un attribut ou la valeur contenue dans la valeur d'un attribut s'il est de type complexe. Pour chaque MBean observé, le moniteur interpole une seconde valeur qui est appelé le _pas dérivé_ (__derived gauge__) et qui correspond, soit à la valeur observée, soit à la différence entre deux valeurs numériques obtenues consécutivement.
 
 Un type de notification spécifique est alors émis à chaque service de monitoring lorsque le pas dérivé répond à un ou un ensemble de conditions (ou lorsque certaines erreurs se produisent) qui peuvent être initialisées lors de l'initialisation du moniteur ou dynamiquement au travers de l'interface d'administration du MBean moniteur. 
 
@@ -67,7 +76,7 @@ Il existe trois types de moniteurs :
 * __GaugeMonitor__ qui permet de scrupter des valeurs de types entier ou flottantes (Float, Double) et qui se comporte comme un pas
 * __StringMonitor__ qui permet de scrupter des valeurs de type String.
 
-Tous ces moniteurs doivent étendre la classe abstraite Monitor alors que les types des valeurs surveillées doivent être supportés par le type de moniteur utilisé. Cependant, il est à noter que le moniteur vérifie le type de la valeur de l'instance retournée et non le te type de l'attribué déclaré dans les méta-données du MBean observé.
+Tous ces moniteurs doivent étendre la classe abstraite `Monitor` alors que les types des valeurs surveillées doivent être supportés par le type de moniteur utilisé. Cependant, il est à noter que le moniteur vérifie le type de la valeur de l'instance retournée et non le te type de l'attribué déclaré dans les méta-données du MBean observé.
 
 ![medium](http://1.bp.blogspot.com/_XLL8sJPQ97g/TPKLxHRkZAI/AAAAAAAAAP4/eZfErdqRqWE/s1600/jmx58.png)
 
@@ -77,7 +86,7 @@ Tous ces moniteurs doivent étendre la classe abstraite Monitor alors que les ty
 
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TPKNgMBobwI/AAAAAAAAAQI/NyLwm_9d4oc/s1600/jmx76.png)
 
-Pour les notifications, une sous classe spécifique de Notification est définie pour être utilisée par tous les services de monitoring. Il s'agit de la classe MonitorNotification. 
+Pour les notifications, une sous classe spécifique de `Notification` est définie pour être utilisée par tous les services de monitoring. Il s'agit de la classe `MonitorNotification`. 
 
 Ainsi, elle est utilisée pour rapporter les cas suivants :
 
@@ -93,15 +102,15 @@ La figure suivante représente tous les types de notifications qui peuvent être
 <a name="timer"></a>
 #Service Timer
 
-Le service Timer permet de déclencher des notifications à des dates et heures spécifiques ou à intervalles réguliers. Les notifications sont émises à tous les objets déclarés comme étant interessés par les notifications émises par le timer (patron Observer). 
+Le service Timer permet de déclencher des notifications à des dates et heures spécifiques ou à intervalles réguliers. Les notifications sont émises à tous les objets déclarés comme étant interessés par les notifications émises par le timer (patron __Observer__). 
 
-Le service Timer est un MBean qui peut être managé en permettant, entre autre, aux applications de modifier la configuration de son ordonnanceur (scheduler).
+Le service Timer est un MBean qui peut être managé en permettant, entre autre, aux applications de modifier la configuration de son ordonnanceur (__scheduler__).
 
 En fait, la classe Timer gère une liste de notifications datées qui sont émises quand leur date et heure arrivent. Les méthodes de cette classe permettent d'ajouter et de supprimer des notifications de sa liste. En fait, les types de notifications sont fournis par l'utilisateur avec la date et optionnellement la fréquence et le nombre de répétitions.
 
 ![medium](http://1.bp.blogspot.com/_XLL8sJPQ97g/TPKPT0nrpwI/AAAAAAAAAQU/_P4QW-Dln5I/s1600/jmx64.png)
 
-Pour les notifications, une sous classe spécifique de Notification est définie pour être utilisée par le service Timer. Il s'agit de la classe TimerNotification. 
+Pour les notifications, une sous classe spécifique de `Notification` est définie pour être utilisée par le service __Timer__. Il s'agit de la classe `TimerNotification`. 
 
 Ainsi, elle est utilisée pour rapporter les cas suivants :
 
@@ -124,7 +133,7 @@ Si la date d'émission d'une notification est mise à jour alors qu'elle est dé
 </ul></td></tr>
 </tbody></table>
 
-Le service Timer MBean est un émetteur standard de notifications (qui possèdent un type et une date définis dans la liste de notifications ajoutées à l'aide de la méthode addNotification()). Tous les écouteurs d'un MBean Timer donnés reçoivent toutes les notifications. Les écouteurs interessés par un type de notifications Timer particulier doivent spécifier un objet filtre lors de leur enregistrement.
+Le service Timer MBean est un émetteur standard de notifications (qui possèdent un type et une date définis dans la liste de notifications ajoutées à l'aide de la méthode `addNotification()`). Tous les écouteurs d'un MBean Timer donnés reçoivent toutes les notifications. Les écouteurs interessés par un type de notifications Timer particulier doivent spécifier un objet filtre lors de leur enregistrement.
 
 Lorsqu'un timer est actif et que la date d'une notification de type Timer arrive à son terme, le service Timer émet cette notification en fournissant son type, message, données utilisateurs ainsi que l'identifiant de la notification. S'il s'agit d'une notification périodique disposant d'un nombre d'occurrence, il est décrémenté.
 
@@ -172,12 +181,12 @@ Relation Service |	MBean qui peut accéder et maintenir la consistance de tous l
 En JMX, le type de relation est un ensemble statique de rôles. Les types de relations peuvent être définis à l'exécution mais, une fois défini, ces rôles et informations sur les rôles ne peuvent être modifiés. 
 
 <u>Exemple de relations :</u>
-Dans cet exemple, des livres (Books) et les propriétaires (Owner) représente des rôles : 
+Dans cet exemple, des livres (_Books_) et les propriétaires (_Owner_) représente des rôles : 
 
 * Books représente le nombre de livres que possède la classe d'un MBean donnée. 
 * Owner représente un propriétaire de livres d'une autre classe d'un MBean.
 
-Un type de relations (Personal Library) peut être défini comme étant la notion d'appartenance de livres.
+Un type de relations (_Personal Library_) peut être défini comme étant la notion d'appartenance de livres.
 
 ![medium](http://2.bp.blogspot.com/_XLL8sJPQ97g/TPKRennmH-I/AAAAAAAAAQg/l79ynOUIw8k/s1600/jmx65.png)
 
@@ -226,8 +235,8 @@ Les permissions sont des objets java qui étendent la classe <i>Permission</i>.<
 
 En fait, JMX défini, par défaut, sa propre permission MBeanServerPermission qui peut être configurée comme suit :
 
-* __MBeanServerPermission__ qui prend en paramètre de son constructeur une chaine de caractère représentant la liste des opérations autorisées sur le MBeanServer (ex : MBeanServerPermission("createMBeanServer") qui permet de controler l'accès aux méthodes MBeanServerFactory.createMBeanServer )
-* __MBeanPermission__ qui prend en paramètre deux chaines de caractères :
+* `MBeanServerPermission` qui prend en paramètre de son constructeur une chaine de caractère représentant la liste des opérations autorisées sur le MBeanServer (ex : `MBeanServerPermission("createMBeanServer")` qui permet de controler l'accès aux méthodes `MBeanServerFactory.createMBeanServer` )
+* `MBeanPermission` qui prend en paramètre deux chaines de caractères :
 	* la première représente la cible et peut être composée du nom canonique de la classe ou d'une expression régulière, du membre (c'est-à-dire le nom de l'attribut ou de l'opération qui doit être accédé), et de l'ObjetName du MBean cible. 
 
 <u>Exemples de cible :</u>
@@ -239,22 +248,22 @@ com.example.Resource#*[com.example.main:type=resource]
 <ul><li><ul>
 <li>la  deuxième représente l'action une ou plusieurs méthodes du MBean Server parmi les suivantes :</li>
 <li><ul>
-	<li>addNotificationListener</li>
-	<li>getAttribute</li>
-	<li>getClassLoader</li>
-	<li>getClassLoaderFor</li>
-	<li>getClassLoaderRepository</li>
-	<li>getMBeanInfo</li>
-	<li>getObjectInstance</li>
-	<li>instantiate</li>
-	<li>invoke</li>
-	<li>isInstanceOf</li>
-	<li>queryMBeans</li>
-	<li>queryNames</li>
-	<li>registerMBean</li>
-	<li>removeNotificationListener</li>
-	<li>setAttribute</li>
-	<li>unregisterMBean</li>
+	<li>`addNotificationListener`</li>
+	<li>`getAttribute`</li>
+	<li>`getClassLoader`</li>
+	<li>`getClassLoaderFor`</li>
+	<li>`getClassLoaderRepository`</li>
+	<li>`getMBeanInfo`</li>
+	<li>`getObjectInstance`</li>
+	<li>`instantiate`</li>
+	<li>`invoke`</li>
+	<li>`isInstanceOf`</li>
+	<li>`queryMBeans`</li>
+	<li>`queryNames`</li>
+	<li>`registerMBean`</li>
+	<li>`removeNotificationListener`</li>
+	<li>`setAttribute`</li>
+	<li>`unregisterMBean`</li>
 </ul>
 </li>
 </ul></li></ul>
@@ -269,11 +278,11 @@ Les opérations suivantes ne sont pas soumises à la sécurisation du MBean Serv
 </ul></td></tr>
 </tbody></table>
 
-De plus, JMX propose la permission MBeanTrustPermission qui permet de faire confiance à un certain utilisateur ou code source signé. Si le signataire ou le code source possède cette permission, le MBean est considéré comme étant de confiance. Seuls les MBeans de confiance peuvent alors être enregistrés dans le MBean Server.
+De plus, JMX propose la permission `MBeanTrustPermission` qui permet de faire confiance à un certain utilisateur ou code source signé. Si le signataire ou le code source possède cette permission, le MBean est considéré comme étant de confiance. Seuls les MBeans de confiance peuvent alors être enregistrés dans le MBean Server.
 
-Une permission MBeanTrustPermission est configurée soit avec la valeur "register", soit avec la valeur  "*" qui signifient toutes deux la même chose dans la version courante de la version JMX.
+Une permission `MBeanTrustPermission` est configurée soit avec la valeur "register", soit avec la valeur  "*" qui signifient toutes deux la même chose dans la version courante de la version JMX.
 
-Ainsi, utilisé en complément de la permission MBeanPermission, la permission MBeanTrustPermission permet une gestion de la sécurité plus fine sur l'enregistrement des MBeans : la permission MBeanPermission vérifie qui enregistre alors que la permission MBeanTrustPermission vérifie ce qui est enregistré.
+Ainsi, utilisé en complément de la permission `MBeanPermission`, la permission `MBeanTrustPermission` permet une gestion de la sécurité plus fine sur l'enregistrement des MBeans : la permission `MBeanPermission` vérifie qui enregistre alors que la permission `MBeanTrustPermission` vérifie ce qui est enregistré.
 
 <u>Exemples de fichier de policy :</u>
 

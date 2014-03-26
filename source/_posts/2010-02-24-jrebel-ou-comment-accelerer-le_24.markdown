@@ -11,7 +11,8 @@ categories:
 - maven
 ---
 ![left-small](http://3.bp.blogspot.com/_XLL8sJPQ97g/S4VHVRtCwTI/AAAAAAAAAI4/TexL6XUuprc/s200/jrebel.png)
-Dans des posts précédents (ici et là), j'avais parlé d'une façon d'utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d'applications web avec Cargo. Cependant, afin d'optimiser le temps de développement, il est préférable, plutôt que d'avoir à redéployer l'application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n'avoir pas à le faire mais d'avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.
+
+Dans des posts précédents ([ici](/2010/01/retour-sur-la-mise-en-uvre-d_04.html) et [là](http://jetoile.blogspot.com/2010/02/de-l-du-livrable.html)), j'avais parlé d'une façon d'utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d'applications web avec Cargo. Cependant, afin d'optimiser le temps de développement, il est préférable, plutôt que d'avoir à redéployer l'application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n'avoir pas à le faire mais d'avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.
 
 Il existe différentes approches telles que :
 
@@ -30,13 +31,13 @@ Cet article va donc donner mon retour d'expérience.
 #JRebel, quesako?
 JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement permettant de prendre en compte des modifications de code sans avoir à redéployer l'application ou à redémarrer le serveur. Pour ce faire, il utilise un agent java qui lui permet d'instrumenter le classloader de la JVM (opération rendu possible depuis java 5).
 
-Ainsi, lorsque qu'une classe est chargée, JRebel essaie d'y associer un fichier .class qui est recherché dans le classpath ainsi que dans les répertoires cibles précisés par le fichier de configuration rebel.xml. Si un fichier .class est trouvé, JRebel instrumente la classe chargée et y associe le fichier trouvé. Le timestamp du fichier .class est alors monitoré afin de détecter les changements et les modifications sont propagées au travers du class loader à l'application.
+Ainsi, lorsque qu'une classe est chargée, JRebel essaie d'y associer un fichier .class qui est recherché dans le classpath ainsi que dans les répertoires cibles précisés par le fichier de configuration `rebel.xml`. Si un fichier .class est trouvé, JRebel instrumente la classe chargée et y associe le fichier trouvé. Le timestamp du fichier .class est alors monitoré afin de détecter les changements et les modifications sont propagées au travers du class loader à l'application.
 
 En outre, JRebel permet de monitorer les fichiers .class présents dans les JARs s'ils possèdent un fichier rebel.xml.
 
 Enfin, JRebel permet également la prise en compte d'autres types de ressources telles que les CSS, javascript, HTML, XML, JSP et properties.
 
-Ce fichier rebel.xml contient, en fait, l'emplacement des ressources à surveiller, c'est à dire quelque chose de la forme :
+Ce fichier `rebel.xml` contient, en fait, l'emplacement des ressources à surveiller, c'est à dire quelque chose de la forme :
 ```xml
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemalocation="http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
  <classpath>
@@ -96,7 +97,7 @@ Je ne rentrerai pas dans la procédure d'installation de JRebel puisque cela est
 
 Dans notre cas, il sera donc nécessaire d'instrumenter le jar métier issu du module métier et embarqué par l'application web avec le fichier rebel.xml. Ce fichier devra se trouver à la racine du jar produit. De la même manière, l'application web devra embarqué son fichier rebel.xml dans son répertoire WEB-INF/classes. Ce sont ces fichiers rebel.xml qui sont la clé de tous...
 
-Plutôt que de générer ces fichiers manuellement, le plugin maven ~~~javarebel-maven-plugin~~~ jrebel-maven-plugin sera utilisé :
+Plutôt que de générer ces fichiers manuellement, le plugin maven ~~javarebel-maven-plugin~~ jrebel-maven-plugin sera utilisé :
 
 ```xml
 <build>
@@ -108,7 +109,7 @@ Plutôt que de générer ces fichiers manuellement, le plugin maven ~~~javarebel
  </plugins>
 </build>
 ```
-Cependant, le fichier rebel.xml, comme vu dans le paragraphe précédent, contient l'emplacement où se trouvent les ressources (au sens large du terme). Afin d'éviter d'être dépendant d'un chemin en dur, il est possible d'utiliser une variable qui devra soit être déclarée comme variable système, soit déclarée dans le fichier de configuration de JRebel (fichier jrebel.properties se trouvant dans le répertoire conf où a été installé JRebel).
+Cependant, le fichier rebel.xml, comme vu dans le paragraphe précédent, contient l'emplacement où se trouvent les ressources (au sens large du terme). Afin d'éviter d'être dépendant d'un chemin en dur, il est possible d'utiliser une variable qui devra soit être déclarée comme variable système, soit déclarée dans le fichier de configuration de JRebel (fichier `jrebel.properties` se trouvant dans le répertoire conf où a été installé JRebel).
 
 extrait du pom du module parent :
 
@@ -148,7 +149,7 @@ extrait du pom du module parent :
  </modules>
 </project>
 ```
-On remarquera que la génération du fichier rebel.xml a été positionnée sur la phase generate-resources de maven afin de le regénérer à chaque fois qu'un packaging est effectué.
+On remarquera que la génération du fichier rebel.xml a été positionnée sur la phase `generate-resources` de maven afin de le regénérer à chaque fois qu'un packaging est effectué.
 
 extrait du pom du module métier :
 ```xml
@@ -207,9 +208,9 @@ extrait du pom du module webapp :
  </plugins>
 </build>
 ```
-Il ne reste alors plus qu'à packager notre application web instrumenté à l'aide du fichier rebel.xml, à la déployer et à lancer notre conteneur de servlet ou server d'application en positionnant l'agent JRebel sur la JVM.
+Il ne reste alors plus qu'à packager notre application web instrumenté à l'aide du fichier `rebel.xml`, à la déployer et à lancer notre conteneur de servlet ou server d'application en positionnant l'agent JRebel sur la JVM.
 
-exemple de fichier startup-jrebel.sh pour tomcat :
+exemple de fichier `startup-jrebel.sh` pour tomcat :
 ```xml
 #!/bin/bash
 export JAVA_OPTS="-noverify -javaagent:/opt/jrebel/jrebel.jar $JAVA_OPTS"

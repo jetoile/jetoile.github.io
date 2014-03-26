@@ -108,7 +108,7 @@ Jusque là, ça ne casse pas trois pattes à un canard ;-)
 
 ##Intégration complète de Spring Integration
 
-Pour rappel, Spring Integration est une implémentation des [EIP](http://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html) (_Enterprise Integration Patterns_) et propose donc une mise en oeuvre de l'architecture __Pipes and Filters__.
+Pour rappel, Spring Integration est une implémentation des [EIP](/2009/12/eip-quest-ce-que-cest.html) (_Enterprise Integration Patterns_) et propose donc une mise en oeuvre de l'architecture __Pipes and Filters__.
 
 ![large](http://3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png)
 

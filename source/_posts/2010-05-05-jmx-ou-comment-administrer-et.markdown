@@ -9,7 +9,7 @@ categories:
 - réflexion
 ---
 ![left-small](http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png)
-Je n'ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu'il s'agit d'une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de "comment ça marche" ou je ne fournirai pas de tutoriaux. Il s'agit juste d'un petit coup de gueule parce que j'en ai marre d'entendre toujours les mêmes inepties sur JMX...
+Je n'ai encore fait aucun article sur JMX (_Java Management eXtension_). Pourtant, je pense qu'il s'agit d'une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de "comment ça marche" ou je ne fournirai pas de tutoriaux. Il s'agit juste d'un petit coup de gueule parce que j'en ai marre d'entendre toujours les mêmes inepties sur JMX...
 
 Bon, pourquoi JMX me direz-vous? Encore une technologie? Encore un nouveau truc dans mon architecture à mettre en œuvre sur lequel il va falloir faire monter des gens en compétence et qu'il va falloir maintenir?
 <!-- more -->

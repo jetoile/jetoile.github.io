@@ -110,7 +110,10 @@ En fait, pour déployer un SU dans l’environnement JBI, il faut utiliser un SA
 #Notion de Normalized Message Router
 En introduction, il a été dit que c'était l'environnement JBI qui avait à sa charge l'émission des messages transitant entre services. En fait, c'est le routeur de messages normalisés (_Normalized Message Router_) qui reçoit les messages échangés et qui les redirige vers leurs destinataires respectifs. C'est lui qui permet de découpler les fournisseurs de service et les consommateurs de service.
 
-En outre, il est essentiel de noter que dans les spécifications il est dit que quand un message échangé est routé par le fournisseur de service, il doit toujours être renvoyé au composant initiateur de l’échange ["When a message exchange is routed from the service provider, it MUST always be sent to the component that originated the exchange. Subsequent sending of the exchange from the consumer to provider MUST always send the exchange to the provider endpoint selected during the initial send of the exchange" - JBI_Spec]. Cela implique qu'il n'est pas possible de chainer directement les appels entre les services (en fait, techniquement, cela est possible mais les composants deviendraient alors fortement couplé ce qui est contraire à la philosophie JBI et SOA) : un composant (qui est alors un SE) doit donc être garant de la médiation des messages.
+En outre, il est essentiel de noter que dans les spécifications il est dit que quand un message échangé est routé par le fournisseur de service, il doit toujours être renvoyé au composant initiateur de l’échange : 
+>"When a message exchange is routed from the service provider, it MUST always be sent to the component that originated the exchange. Subsequent sending of the exchange from the consumer to provider MUST always send the exchange to the provider endpoint selected during the initial send of the exchange" - JBI_Spec
+
+Cela implique qu'il n'est pas possible de chainer directement les appels entre les services (en fait, techniquement, cela est possible mais les composants deviendraient alors fortement couplé ce qui est contraire à la philosophie JBI et SOA) : un composant (qui est alors un SE) doit donc être garant de la médiation des messages.
 
 Ce composant JBI chargé d'offrir la notion de médiation entre les messages (cela sort du périmètre des spécifications JBI) est généralement fourni par les JBI Provider et est implémenté de manière spécifique :
 * le JBI Provider PEtALS de EBM Websourcing propose son propre composant SE EIP,
@@ -218,8 +221,8 @@ Suite à cet article, la question qui peut se poser est : Ai-je vraiment besoin 
 En conclusion, je pense que pour pouvoir utiliser pleinement un ESB basé sur JBI, il est important d'avoir un minimum de connaissance de JBI et cela, même si les JBI Provider préfèrent communiquer plus sur ce que peut apporter leur produit que sur le comment (mais cela est normal au final... ).
 
 #Pour aller plus loin...
-* SOA : le guide de l’architecte de X. Fourner-Morel, P. Grojean, G. Plouin et C. Rognon chez Dunod
-* Enterprise Integration Patterns de G. Hohpe et B. Woolf chez Addisson Wesley 
+* __SOA : le guide de l’architecte__ de X. Fourner-Morel, P. Grojean, G. Plouin et C. Rognon chez Dunod
+* __Enterprise Integration Patterns__ de G. Hohpe et B. Woolf chez Addisson Wesley 
 * Spécification de JBI : http://jcp.org/aboutJava/communityprocess/edr/jsr208/index.html 
 * Site de PEtALS : http://petals.objectweb.org/
 * Site de ServiceMix : http://servicemix.apache.org

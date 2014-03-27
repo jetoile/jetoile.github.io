@@ -16,7 +16,7 @@ categories:
 
 ![left-small](http://4.bp.blogspot.com/-XR47rmCwXK0/Ux8gpmR-TLI/AAAAAAAABR0/T1h_RtvDED0/s1600/resteasy_jolokia_metrics_orig3.png)
 
-Pour faire suite à mes articles [resteasy-netty](/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html) et [resteasy-netty4](/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html, nous allons voir, dans cet article, comment il est possible de créer un service activator avec [Spring Integration](http://projects.spring.io/spring-integration/) qui exposera via resteasy-netty4 un service REST.
+Pour faire suite à mes articles [resteasy-netty](/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html) et [resteasy-netty4](/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html), nous allons voir, dans cet article, comment il est possible de créer un service activator avec [Spring Integration](http://projects.spring.io/spring-integration/) qui exposera via resteasy-netty4 un service REST.
 
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 
@@ -70,7 +70,7 @@ dependencies {
 }
 ```
 
-Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId `org.codehaus`). En effet, Jackson 2 et JodaTime m'ont fait des misères et je n'ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1... ;-)
+Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId __org.codehaus__). En effet, Jackson 2 et JodaTime m'ont fait des misères et je n'ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1... ;-)
 
 ##DTO
 
@@ -215,7 +215,7 @@ Coté Spring, la configuration est la suivante :
     <property name="gateway" ref="nettyGateway"/>
 </bean>
 ```
-Du coté de démarrage de notre serveur Resteasy-Netty4, cela ne sera, bien sûr, plus fait dans le main(), mais dans notre bean Spring à qui sera injectée notre classe implémentant notre service REST :
+Du coté de démarrage de notre serveur Resteasy-Netty4, cela ne sera, bien sûr, plus fait dans le `main()`, mais dans notre bean Spring à qui sera injectée notre classe implémentant notre service REST :
 ```xml
 <bean id="nettyContainer" class="fr.jetoile.sample.gateway.NettyContainer">
     <constructor-arg ref="simpleService"/>

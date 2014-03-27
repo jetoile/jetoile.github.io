@@ -15,7 +15,7 @@ categories:
 
 Parce qu'il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 
-Oui, je sais, les jsp c'est has been me diront certains... Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j'entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).
+Oui, je sais, les jsp c'est _has been_ me diront certains... Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j'entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).
 
 Ayant eu récemment à intégrer une phase de validation des jsp maintenus principalement par des équipes "front" n'ayant que peu de connaissance en Java, ce rapide retour d'expérience tentera d'exposer les quelques points qui ont pu me poser problème et en l'occurrence les quelques-unes des différentes solutions possibles pour traiter ce point.
 
@@ -31,9 +31,10 @@ Coté organisation, les équipes étaient divisées en 2 :
 
 * l'équipe Java dont la charge était de fournir toute la partie controleur/modèle ainsi qu'un premier jet de la couche présentation au travers de jsp réduites à leurs plus simples appareils,
 * l'équipe front dont la charge était de décorer les pages jsp avec toutes les parties CSS et Javascript.
+
 Coté technologie, le site tournait sur un Tomcat 6 avec du Java 7. Pour la partie build/packaging, Maven 3 était de la partie et, pour la partie usine logicielle, un serveur Jenkins.
 
-Le site étant assez vieux, il s'appuyait sur un framework de présentation maison ainsi que sur un framework de décoration : Sitemesh 2.
+Le site étant assez vieux, il s'appuyait sur un framework de présentation maison ainsi que sur un framework de décoration : [Sitemesh 2](http://wiki.sitemesh.org/display/sitemesh/Home).
 
 La partie compilation des jsp ayant pour objectif de prévenir au plus tôt l'équipe de développeurs front de la non conformité (au sens compilation du terme) d'une page jsp, le but était de créer un job Jenkins dont la seule tâche était de compiler les jsp.
 
@@ -45,7 +46,7 @@ Embarquer les jsp pré-compilés dans le livrable final (ie. le war) n'était do
 
 ###Mise en oeuvre
 
-Dans ma première tentative de mise en oeuvre, j'ai utilisé le goal compile du plugin jspc-maven-plugin pour tomcat6 :
+Dans ma première tentative de mise en oeuvre, j'ai utilisé le goal compile du plugin __jspc-maven-plugin__ pour tomcat6 :
 
 * http://mojo.codehaus.org/jspc-maven-plugin/usage.html
 
@@ -120,7 +121,7 @@ Rien de bien compliqué si on regarde la documentation officielle puisqu'il n'y 
 </dependencies>
 ```
 
-On constate que les dépendances à sitemesh ainsi qu'à la jstl ont été déclaré afin de fournir à la compilation des jsp le nécessaire. De même, il est important de noter que le plugin jspc-maven-plugin doit obligatoirement fournir un jspc-compiler qui est spécifique à la version de tomcat utilisé.
+On constate que les dépendances à sitemesh ainsi qu'à la jstl ont été déclaré afin de fournir à la compilation des jsp le nécessaire. De même, il est important de noter que le plugin __jspc-maven-plugin__ doit obligatoirement fournir un __jspc-compiler__ qui est spécifique à la version de tomcat utilisé.
 
 Malheureusement, après un petit coup de :
 ```bash
@@ -137,7 +138,7 @@ Cool, peut-on se dire, il suffit de mettre la configuration de compilation en 1.
 Heureusement, le lien suivant semble annoncé que cela a été corrigé...
 http://jira.codehaus.org/browse/MJSPC-54
 
-Malheureusement, la version actuelle ne semble pas bénéficier de ces modifications (la alpha-3 date de 2008 et le ticket a été mis à jour en 2012...). Ne reste donc plus qu'à récupérer le code source du svn et à le recompiler... (svn checkout https://svn.codehaus.org/mojo/trunk/mojo/jspc).
+Malheureusement, la version actuelle ne semble pas bénéficier de ces modifications (la alpha-3 date de 2008 et le ticket a été mis à jour en 2012...). Ne reste donc plus qu'à récupérer le code source du svn et à le recompiler... (`svn checkout https://svn.codehaus.org/mojo/trunk/mojo/jspc`).
 
 Donc, après avoir modifié dans mon pom les informations adéquates, je lance la précompilation et là... miracle...!!! Ca marche ;-)
 
@@ -215,7 +216,7 @@ Au final, on aura donc le code suivant :
 
 Au final, ce plugin m'aura bien fait suer (et là, je n'ai fait qu'un rapide condenser de mes recherches et de mes galères - modification des pom en cascade, recherche internet, ...), mais bon... la solution est fonctionnelle même si elle demande une petite recompilation du plugin.
 
-Cependant, le plugin jspc-maven-plugin ne propose pas (si j'ai bien regardé le code source) d'exclure certaines pages de la compilation, chose qui m'était nécessaire... :'(
+Cependant, le plugin __jspc-maven-plugin__ ne propose pas (si j'ai bien regardé le code source) d'exclure certaines pages de la compilation, chose qui m'était nécessaire... :'(
 
 Du coup, cette solution n'a pas été retenue...
 
@@ -223,7 +224,7 @@ Du coup, cette solution n'a pas été retenue...
 
 ###Mise en oeuvre
 
-Dans cette deuxième tentative de mise en oeuvre, j'ai utilisé le goal jspc du plugin jsp-compile-maven-plugin. On peut se demander pourquoi choisir le plugin Jetty alors que la cible était Tomcat. La réponse est que, vu que ce qui m'intéressait était la partie compilation pure et non la partie packaging, cela m'était égal.
+Dans cette deuxième tentative de mise en oeuvre, j'ai utilisé le goal `jspc` du plugin __jsp-compile-maven-plugin__. On peut se demander pourquoi choisir le plugin Jetty alors que la cible était Tomcat. La réponse est que, vu que ce qui m'intéressait était la partie compilation pure et non la partie packaging, cela m'était égal.
 
 Pour mettre en place, ce plugin, il suffit de suivre la documentation officielle :
 http://docs.codehaus.org/display/JETTY/Maven+Jetty+Jspc+Plugin
@@ -294,11 +295,11 @@ Malheureusement, même en épluchant la documentation et le code source, on cons
 Aussi, avec mon code de test qui utilise de superbes "switch case" avec des String seulement disponible à partir de Java 7, j'obtiens le résultat suivant :
 ![medium](http://2.bp.blogspot.com/-MM9hVOZq5sg/UIgxyuqIjFI/AAAAAAAAAsA/Y_9ELLHlMM0/s1600/error02.png)
 
-En effet, après analyses (si je ne me suis pas fourvoyé...), le code source (git://git.codehaus.org/jetty-project.git) ne positionne pas le compilerTarget sur JspC et donc, à part hacker le plugin, impossible de surmonter ce manque...
+En effet, après analyses (si je ne me suis pas fourvoyé...), le code source ([git://git.codehaus.org/jetty-project.git](git://git.codehaus.org/jetty-project.git)) ne positionne pas le `compilerTarget` sur __JspC__ et donc, à part hacker le plugin, impossible de surmonter ce manque...
 
 ###Conclusion
 
-On a vu que le plugin jetty-jspc-maven-plugin était très simple à mettre en oeuvre mais qu'il manquait quelques fonctionnalités comme la possibilité de compiler avec une version supérieure au jdk 1.5.
+On a vu que le plugin __jetty-jspc-maven-plugin__ était très simple à mettre en oeuvre mais qu'il manquait quelques fonctionnalités comme la possibilité de compiler avec une version supérieure au jdk 1.5.
 
 Du coup, cette solution n'a pas été retenue...
 
@@ -423,7 +424,7 @@ Dans cette troisième tentative de mise en oeuvre, j'ai gentiment suivi les pré
 </dependencies>        
 ```
 
-avec le fichier build.xml suivant :
+avec le fichier `build.xml` suivant :
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -485,16 +486,16 @@ On peut constater quelques petites adaptations sur le script ant par rapport à 
 * je ne voulais pas que mes ressources générées partent n'importe où : j'ai donc précisé ces éléments dans les taches jasper et compile,
 * je n'ai pas pris la target cleanup car j'ai redirigé toutes mes générations dans le répertoire target géré par Maven.
 
-Par contre, j'ai malheureusement été obligé de garder une dépendance à Tomcat pour le fichier catalina-tasks.xml. J'aurais pu l'embarqué en le customisant un peu et en récupérant, via Maven, les jars déclarés via la variable CATALINA_HOME, mais j'avoue avoir été paresseux sur ce point... par contre, je pense que c'est tout à fait possible de le faire.
+Par contre, j'ai malheureusement été obligé de garder une dépendance à Tomcat pour le fichier `catalina-tasks.xml`. J'aurais pu l'embarqué en le customisant un peu et en récupérant, via Maven, les jars déclarés via la variable `CATALINA_HOME`, mais j'avoue avoir été paresseux sur ce point... par contre, je pense que c'est tout à fait possible de le faire.
 
 On notera que la phase se fait en 2 passes :
 
-* la première qui transforme les jsp en java (target jspc)
-* la deuxième qui compile réellement les java en class (target compile)
+* la première qui transforme les jsp en java (target `jspc`)
+* la deuxième qui compile réellement les java en class (target `compile`)
 
-Cependant, il reste encore un point qui mérite qu'on s'attarde un peu à cette solution... En effet, le maven-ant-plugin utilisé ici pour invoquer la target Ant depuis Maven s'exécute avec la variable d'environnement JAVA_HOME positionnée sur le JRE : http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK.
+Cependant, il reste encore un point qui mérite qu'on s'attarde un peu à cette solution... En effet, le __maven-ant-plugin__ utilisé ici pour invoquer la target Ant depuis Maven s'exécute avec la variable d'environnement `JAVA_HOME` positionnée sur le JRE : http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK.
 
-Afin de palier à ce point, il convient de référencer en dépendance du plugin Ant la librairie tools.jar... (si ça, c'est pas laid...!!!) et, en plus, de l'utiliser avec un scope system... :'(
+Afin de palier à ce point, il convient de référencer en dépendance du plugin Ant la librairie `tools.jar`... (si ça, c'est pas laid...!!!) et, en plus, de l'utiliser avec un scope `system`... :'(
 
 ```xml
 <dependency>
@@ -515,15 +516,16 @@ Même si cela m'embête, c'est la solution qui a été retenue... :'(
 #Conclusion
 
 En conclusion, comme vous avez pu le constater, j'ai bien galéré avec une tache enfantine qui n'était qu'une simple validation des jsp par compilation.
+
 Parmi les 3 solutions testées, seule une a réussi à remplir le cahier des charges qui, pourtant, était simple...
 
 Aussi pas grand chose à conclure si ce n'est que je tenais à faire partager mes petites galères si cela pouvait servir à quelqu'un... ;-)
 
-Le code est disponible ici avec les différents profils :
+Le code est disponible [ici](https://github.com/jetoile/jsp-compile) avec les différents profils :
 
-* jsp-compile-ant,
-* jsp-compile-jspc-maven,
-* jspc-compile-maven-jetty.
+* __jsp-compile-ant__,
+* __jsp-compile-jspc-maven__,
+* __jspc-compile-maven-jetty__.
 
 Autre point (transverse) concernant Sitemesh (mais là, j'y vais avec des pincettes car je connais très peu ce framework...)... :
 

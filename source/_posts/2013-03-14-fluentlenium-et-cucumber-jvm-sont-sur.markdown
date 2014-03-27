@@ -14,12 +14,14 @@ categories:
 
 Dans un [article précédent](/2013/03/demarrer-une-webapp-en-mode-embedded.html), j'avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n'a pas été fait que pour l'exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d'acceptance en mode boite noire sur l'application.
 
-Pour faire les tests d'acceptance, le choix de Cucumber JVM a été fait afin de permettre l'expression de tests d'acceptance avec une sémantique utilisant le pattern Given/When/Then mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.
+Pour faire les tests d'acceptance, le choix de Cucumber JVM a été fait afin de permettre l'expression de tests d'acceptance avec une sémantique utilisant le pattern __Given/When/Then__ mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.
 
 L'application à tester étant une application web, un besoin s'est fait sentir de tester la partie rendue. Dans cet article, lorsque l'on parlera de tester la partie rendue, il sera question de vérifier que l'élément recherché se trouve bien dans le document html remonté dans le navigateur web. Pour rappel (cf. le paragraphe Contexte de ce [post](2013/03/demarrer-une-webapp-en-mode-embedded.html)), l'application testée s'appuie sur un framework web java de type Struts2.
+
 Aussi, il ne sera pas question, ici, de tester le rendu dans différents navigateurs.
 
 Il a été décidé de partir sur une solution s'appuyant sur un runtime à base de Selenium : en effet, un besoin latent étant, à terme, de tester le rendu de l'application web sur les différents navigateurs, cette solution semblait correspondre le mieux aux besoins.
+
 Bref, passons ce besoin pour revenir à notre objectif premier, à savoir, vérifier la présence des éléments dans l'arbre DOM remonté par l'application web.
 
 Pour résumer, il a été décidé de partir sur :
@@ -42,22 +44,25 @@ A noter que je ne m'attarderai pas, dans cet article, à présenter exhaustiveme
 ##Cucumber JVM
 ![center](http://2.bp.blogspot.com/-vb7zd_BqITk/UTmwyd4yWsI/AAAAAAAAA3w/tYVxH4hxlig/s1600/cucumber2.jpg)
 
-Cucumber JVM est un fork Java de Cucumber inialement développé en Ruby.
-Tout comme JBehave, il est orienté BDD (Behaviour Driven Development) et il permet d'écrire ses scénarii de tests en suivant le pattern Given/When/Then qui correspond à déterminer un ensemble de Step.
+[Cucumber JVM](https://github.com/cucumber/cucumber-jvm) est un fork Java de [Cucumber](http://cukes.info/) inialement développé en Ruby.
 
-Ces scénarii s'écrivent dans des fichiers features qui sont lus par Cucumber JVM. Ce dernier se charge alors de faire correspondre les Steps avec les fixtures associés. Ces steps sont des méthodes Java annotées par :
-@Given(value = "")
-@When(value = "")
-@Then(value = "")
+Tout comme [JBehave](http://jbehave.org/), il est orienté BDD (_Behaviour Driven Development_) et il permet d'écrire ses __scénarii__ de tests en suivant le pattern __Given/When/Then__ qui correspond à déterminer un ensemble de [Step](https://github.com/cucumber/cucumber/wiki/Step-Definitions).
+
+Ces scénarii s'écrivent dans des fichiers __features__ qui sont lus par Cucumber JVM. Ce dernier se charge alors de faire correspondre les __Steps__ avec les fixtures associés. Ces __steps__ sont des méthodes Java annotées par :
+
+* @Given(value = "")
+* @When(value = "")
+* @Then(value = "")
+
 A noter que seule la valeur de l'annotation est utilisée par Cucumber JVM.
 
 Alors que les steps à la sémantique Given permettront de poser les conditions nécessaires à l'exécution du scénario, les steps When exécuteront l'action à tester et les steps Then testeront que tout s'est bien passé en utilisant le framework d'assertion de son choix tels que JUnit, Fest-assert et/ou Harmcrest.
 
-A noter également que pour passer un état d'une Step à une autre, Cucumber JVM nous oblige à stocker ces derniers dans des variables de classe ou à passer par son mécanisme d'injection à l'aide de framework IoC tels que Picocontainer.
+A noter également que pour passer un état d'une Step à une autre, Cucumber JVM nous oblige à stocker ces derniers dans des variables de classe ou à passer par son mécanisme d'injection à l'aide de framework IoC tels que [Picocontainer](http://picocontainer.codehaus.org/).
 
-Ainsi, on peut résumer grossièrement en disant qu'un scénario est écrit dans un fichier feature et est composé d'un ensemble de Step qui sont associés à des méthodes qui correspondent aux différentes fixtures.
+Ainsi, on peut résumer grossièrement en disant qu'un scénario est écrit dans un fichier __feature__ et est composé d'un ensemble de Step qui sont associés à des méthodes qui correspondent aux différentes __fixtures__.
 
-Pour plus d'informations sur le BDD, je vous renvoie sur un compte rendu d'une présentation d'Olivier Billard et de Thierry Henrio réalisé au BreizhCamp que j'avais fait à l'époque.
+Pour plus d'informations sur le BDD, je vous renvoie sur un [compte rendu](http://blog.soat.fr/2011/06/breizhcamp-behaviour-driven-development-par-olivier-billard-et-thierry-henrio/) d'une présentation d'Olivier Billard et de Thierry Henrio réalisé au BreizhCamp que j'avais fait à l'époque.
 
 ##Selenium 2
 
@@ -67,7 +72,7 @@ Dans notre cas d'usage, il y a assez peu de chose à dire sur [Selenium](http://
 
 Il propose différentes implémentations de WebDriver tels que __FirefoxDriver__ ou __HtmlUnitDriver__.
 
-Selenium offre également la possibilité d'exécuter les navigateurs qu'il lance sur différentes machines via Selenium Server mais, dans notre cas, cette fonctionnalité ne sera pas utile. De même, il ne sera pas abordé la partie Selenium IDE qui est peu exploitable car difficilement maintenable. En effet, il est courant et même fortement recommandé de séparer, pour des raisons évidentes, les scénarii à tester du rendu de la page (par exemple en utilisant le Page [Object Design Pattern](http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern)).
+Selenium offre également la possibilité d'exécuter les navigateurs qu'il lance sur différentes machines via Selenium Server mais, dans notre cas, cette fonctionnalité ne sera pas utile. De même, il ne sera pas abordé la partie Selenium IDE qui est peu exploitable car difficilement maintenable. En effet, il est courant et même fortement recommandé de séparer, pour des raisons évidentes, les scénarii à tester du rendu de la page (par exemple en utilisant le [Page Object Design Pattern](http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern)).
 
 Les liens suivants détaillent plus précisément ces différents points :
 
@@ -86,6 +91,7 @@ Il a été pensé pour s'intégrer à des tests exécutés avec JUnit ou TestNG 
 Pour ce faire, il utilise, au moment de l'écriture de ces lignes, le mécanisme de __Rule__ JUnit qui fait, grosso modo, comme le @Before de JUnit mais qui peut être partagé entre les différentes classes de test.
 
 En outre, FluentLenium s'appuie sur la notion de __FluentPage__ et de __FluentTest__. En fait, pour faire simple, les classes de tests doivent étendre FluentTest, ce qui permet à toutes les méthodes annotées par @Test d'initialiser le WebDriver Selenium. La classe peut, de plus, bénéficier des méthodes portées par FluentTest.
+
 La notion de FluentPage permet, quant à elle, de représenter une page (au sens HTML). Cette implémentation du [Page Object Design Pattern](http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern) incite ainsi l'utilisateur à découpler le test du contenu de la page qui sera alors la seule à être garante du rendu.
 
 Enfin, via l'annotation __Page__, les classes qui étendent FluentPage peuvent être injectées directement dans l'implémentation du FluentTest. Les liens suivants détaillent plus précisément ces différents points :
@@ -111,6 +117,7 @@ En fait, la solution qui a été mise en place pour faire fonctionner conjointem
 Cette classe pourra porter les différentes pages (au sens FluentLenium) et devra exposer les méthodes adéquates qui initialiseront et arrêteront le webDriver cible (méthodes fournies par FluentTest).
 
 A titre informatif, le fait d'utiliser l'_Autocloseable_ (et plus précisément le _try-with-resources_) de Java 7 s'est traduit par un échec puisque le driver doit rester actif entre les différentes Steps.
+
 De même, essayer d'injecter via Picocontainer les pages ne fonctionne pas car, à ce jour, l'implémentation même de FluentLenium fait que les annotations @Page qui permettent d'initialiser et d'instancier les __FluentPages__ doivent être dans une implémentation de __FluentTest__.
 
 Ainsi, cela pourrait se traduire par le code suivant : 
@@ -410,7 +417,7 @@ public class RunCucumberFeatures {
 
 On a vu dans cet article (qui est la suite logique d'un [article précédent](/2013/03/demarrer-une-webapp-en-mode-embedded.html)) comment il était possible de faire des tests d'acceptance en utilisant conjointement Cucumber JVM et FluentLenium.
 
-A l'utilisation, cela s'avère agréable et rapide à écrire surtout avec quelques petits tweaks supplémentaires qui n'ont pas été exposés ici (profile Maven pour ne démarrer que le serveur embedded et exécution des scénarii Cucumber avec IntelliJ 12 avec possibilité de bénéficier du debugger que ce soit au niveau de l'exécution des tests (debugger ou utilisation d'un webDriver autre que HtmlUnitDriver) ou de l'application cible (via mvnDebug)).
+A l'utilisation, cela s'avère agréable et rapide à écrire surtout avec quelques petits tweaks supplémentaires qui n'ont pas été exposés ici (profile Maven pour ne démarrer que le serveur embedded et exécution des scénarii Cucumber avec IntelliJ 12 avec possibilité de bénéficier du debugger que ce soit au niveau de l'exécution des tests (debugger ou utilisation d'un webDriver autre que HtmlUnitDriver) ou de l'application cible (via `mvnDebug`)).
 
 Bref, en tout cas, même si la mise en oeuvre a été un peu galère, il a été possible de bénéficier du meilleur des deux framework sans avoir à se "taper" la lourdeux de Selenium... ;-).
 

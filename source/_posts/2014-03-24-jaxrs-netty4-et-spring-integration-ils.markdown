@@ -70,7 +70,7 @@ dependencies {
 }
 ```
 
-Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId org.codehaus). En effet, Jackson 2 et JodaTime m'ont fait des misères et je n'ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1... ;-)
+Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId `org.codehaus`). En effet, Jackson 2 et JodaTime m'ont fait des misères et je n'ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1... ;-)
 
 ##DTO
 

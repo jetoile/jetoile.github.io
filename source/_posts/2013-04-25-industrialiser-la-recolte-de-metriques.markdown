@@ -33,7 +33,7 @@ Evidemment, l'objectif n'étant pas d'obtenir ces métriques de manière "one sh
 
 ##Contexte
 
-Parmi les outils courants pour récupérer une évaluation d'une page HTML au sein d'un navigateur, il existe YSlow et Pagespeed. Ces deux outils fournissent un ensemble de notes qui permettent de qualifier les bonnes pratiques tels que la minification des fichiers Javascript. 
+Parmi les outils courants pour récupérer une évaluation d'une page HTML au sein d'un navigateur, il existe YSlow et Pagespeed. Ces deux outils fournissent un ensemble de notes qui permettent de qualifier les _bonnes_ pratiques tels que la minification des fichiers Javascript. 
 
 ![medium](http://1.bp.blogspot.com/-FK0JmFOA6-E/UXhYlIp8YuI/AAAAAAAAA6M/X7S8oxoqMA4/s1600/01-pagespeed_chrome.png)
 
@@ -42,7 +42,7 @@ Parmi les outils courants pour récupérer une évaluation d'une page HTML au se
  Bien sûr, le fait d'utiliser un plugin de navigateur n'est pas ce qu'il y a de plus industrialisable. Le besoin peut être décomposé en deux étapes :
 
 * la récupération des métriques,
-* la présentation de ces métriques dans un dashboard afin qu'elles soient lisibles et qu'il soit possible de voir leur évolution dans le temps.
+* la présentation de ces métriques dans un _dashboard_ afin qu'elles soient lisibles et qu'il soit possible de voir leur évolution dans le temps.
 
 ##Solution et mise en oeuvre
 Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.
@@ -170,6 +170,14 @@ Du coté de [HarStorage](https://code.google.com/p/harstorage/), son [installati
 
 ![medium](http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7M/LzB4r9hRU98/s1600/01-timeline-harstorage5.png)
 
+##Conclusion
+
+On a vu dans ce chapitre comment il était possible de générer et de visualiser des timeline de rendu de pages HTML. La solution HarStorage me semble, dans le cadre d'une phase d'industrialisation, la solution la plus aboutie en permettant de conserver un historique pour évaluer l'évolution de la page tout en fournissant un moyen de visualiser les métriques de PageSpeed (chose qui n'avait, pour rappel, pas été abordé dans le chapitre précédent).
+
+Cependant, on a pu constater qu'il était nécessaire de faire pas mal d'actions : génération d'un fichier HAR puis upload manuel dans HarStorage ou exécution manuel de HarViewer.
+
+En outre, le même constat peut être fait que pour le chapitre précédent : les résultats obtenus l'ont été par page... pas glop...
+
 #Automatisation totale
 
 ##Contexte
@@ -290,9 +298,11 @@ Enfin, un point essentiel à noter est que par cette méthode, le temps d'exécu
 Cet article a montré (enfin je l'espère...) comment il était possible d'automatiser la génération de métrique de rendu des pages HTML  dans une usine logicielle .
 
 C'est vrai que de nombreuses technologies/manipulations sont nécessaires alors qu'il existe de nombreux(?) services qui rendent le même service ([GTMetrix](http://gtmetrix.com/), [WebPageSpeed](http://www.webpagetest.org/compare), ...).
+
 Malheureusement, ces services ne sont généralement branchées qu'en production (pas d'accès aux serveurs de tests/intégrations des entreprises) alors que les avoir au plus tôt dans le cycle de développement permettrait de minimiser les risques de régression et surtout de pousser à avoir une meilleure qualité telle que nous le permet Sonar.
 
 Je tiens tout de même à préciser que j'ai été déçu de ne pas trouver une solution plus simple d'intégration de ces outils dans nos usines de développement.
+
 Cela pourrait s'expliquer par un manque de maturité de l'environnement Java pour faire du Web 2.0 (sic) ou par une mutation du métier de développeur web qui tendrait vers une meilleure qualité logicielle mais qui n'aurait pas encore assimilé/intégré toutes les contraintes induites par une usine logicielle telle que celles que l'on connait dans notre monde Java... enfin, en gros, il reste du boulot...
 
 #Pour aller plus loin...

@@ -54,7 +54,7 @@ En fait, pour être plus précis, ce plugin dispose de 3 goals :
 
 ##Exemple
 
-Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon github) qui ne contient qu'une classe disposant d'un main et qui log un message via logback au travers de slf4j (histoire de vérifier le comportement du plugin sur les dépendances).
+Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon [github](http://github.com/jetoile/sample-assembler-plugin)) qui ne contient qu'une classe disposant d'un main et qui log un message via logback au travers de slf4j (histoire de vérifier le comportement du plugin sur les dépendances).
 
 ![center](http://1.bp.blogspot.com/-Dr-0c8AkLHs/T0tyqJW4UVI/AAAAAAAAAiY/A7dW1I3ve4Q/s1600/appassembler01.png)
 
@@ -75,7 +75,7 @@ public class FooClass {
 }
 ```
 
-Cet exemple a pour objectif de montrer, dans un premier temps, ce que génère le goal assemble puis, dans un second temps, le goal generate-daemons.
+Cet exemple a pour objectif de montrer, dans un premier temps, ce que génère le goal assemble puis, dans un second temps, le goal `generate-daemons`.
 
 Pour ce faire, le pom.xml suivant sera utilisé :
 ```xml
@@ -181,7 +181,7 @@ Pour ce faire, le pom.xml suivant sera utilisé :
 </project>
 ```
 
-Dans le pom, on constate que l'exécution du goal assemble n'est pas associé à une phase en particulier. Cependant, c'est la phase package qui est utilisée par défaut. Dans sa configuration (disponible ici), il y figure le nom de la classe qui dispose du main ainsi que, via l'élément binFileExtensions, l'extension qui doit être utilisée pour le script dans le monde *Nix.
+Dans le pom, on constate que l'exécution du goal `assemble` n'est pas associé à une phase en particulier. Cependant, c'est la phase `package` qui est utilisée par défaut. Dans sa configuration (disponible [ici](http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/assemble-mojo.html)), il y figure le nom de la classe qui dispose du `main` ainsi que, via l'élément `binFileExtensions`, l'extension qui doit être utilisée pour le script dans le monde *Nix.
 
 Ainsi, à la commande suivante :
 ```bash
@@ -191,7 +191,7 @@ mvn package
 on obtient :
 ![medium](http://4.bp.blogspot.com/-6TcmRrHkwm8/T0uMn3oeh5I/AAAAAAAAAio/VyNjedWdxm8/s1600/appassembler03.png)
 
-où le main.sh est le suivant :
+où le `main.sh` est le suivant :
 ```bash
 #!/bin/sh
 # ----------------------------------------------------------------------------
@@ -299,7 +299,7 @@ chmod +x target/appassembler/bin/main.sh
 ```
 Le résultat escompté est obtenu.
 
-Afin de tester la génération de la couche wrapper Java Service Wrapper, le pom.xml contient également la déclaration du plugin appassembler-maven-plugin associé aux paramètres de configuration nécessaire à la génération du service. Pour cette partie, j'ai choisi de ne pas l'associer à une phase mais de l'exécuter manuellement :
+Afin de tester la génération de la couche wrapper __Java Service Wrapper__, le `pom.xml` contient également la déclaration du plugin __appassembler-maven-plugin__ associé aux paramètres de configuration nécessaire à la génération du service. Pour cette partie, j'ai choisi de ne pas l'associer à une phase mais de l'exécuter manuellement :
 
 ```xml
             <plugin>
@@ -340,7 +340,7 @@ mvn appassembler:generate-daemons
 on obtient :
 ![medium](http://2.bp.blogspot.com/-zDcT-L4IP74/T0uawGcSPCI/AAAAAAAAAiw/j8giu9U41wI/s1600/appassembler04.png)
 
-Cependant, après un rapide chmod sur les fichiers mainService et wrapper-linux-x86-64, la première tentative d'exécution échoue...  :(
+Cependant, après un rapide chmod sur les fichiers `mainService` et `wrapper-linux-x86-64`, la première tentative d'exécution échoue...  :(
 
 ```bash
 chmod +x target/generated-resources/appassembler/jsw/mainService/bin/mainService
@@ -382,41 +382,42 @@ Un petit coup de :
 ```bash
 mvn appassembler:appassembler:create-repository
 ```
-devrait permettre de créer le fichier repo dans le répertoire target/appassembler, et un petit cp devrait tout remettre dans l'ordre... en fait, non!
+devrait permettre de créer le fichier repo dans le répertoire `target/appassembler`, et un petit cp devrait tout remettre dans l'ordre... en fait, non!
 
 Il manque l'archetype de notre application dans le répertoire repo... (d'un coté, pour les personnes qui ont suivi, cela était visible dans un des screenshots précédents...)
 
-Bon, je vous passe les quelques commandes à base de mvn et cp que j'ai effectué pour, au final, obtenir :
+Bon, je vous passe les quelques commandes à base de `mvn` et `cp` que j'ai effectué pour, au final, obtenir :
 
 ![medium](http://1.bp.blogspot.com/-5JoIX1E06E8/T0ugnyyJ4YI/AAAAAAAAAjI/b66wqmxMFtM/s1600/appassembler07.png)
 
 
 ##Conclusion
 
-Ce qui m'a intéressé dans ce plugin est qu'il s'occupe de générer automatiquement les scripts nécessaires au lancement de l'application. En effet, il est toujours possible d'utiliser le plugin assembly (tel que je l'avais décrit ici), mais cette solution reste assez verbeuse et rébarbative.
+Ce qui m'a intéressé dans ce plugin est qu'il s'occupe de générer automatiquement les scripts nécessaires au lancement de l'application. En effet, il est toujours possible d'utiliser le plugin assembly (tel que je l'avais décrit [ici](/2010/02/de-l-du-livrable.html)), mais cette solution reste assez verbeuse et rébarbative.
 Aussi, avoir la possibilité, en n'ayant qu'à appeler ou qu'à associer un goal à une phase du cycle de vie du projet pour générer les scripts est assez tentant.
 En outre, le plugin permet également de wrapper l'application dans un service via Java Service Wrapper.
 
 Par contre, il peut sembler dommage que le "livrable" (au sens naïf du terme) ainsi produit ne puisse pas être considéré comme un archetype (et être déployé automatiquement sur un repository manager afin qu'il puisse être directement utilisable par d'éventuels OPS). Cependant, concernant ce point, vu que l'on s'appuie alors sur un plugin maven (dont la version est, bien sûr, maîtrisée), l'utilisateur est garanti d'avoir un script fonctionnel et reproductible.
 
 Concernant la partie __Java Service Wrapper__, il semble, cependant, qu'il faille "retoucher" un peu ce qui est généré puisqu'il manque le répertoire repo (utilisé par le fichier `wrapper.conf` (chargé par Java Service Wrapper)) nécessaire au chargement du classpath à l'exécution du service. 
+
 Autre point un peu dommage est que les droits d'exécution ne soient pas directement positionnés sur les scripts .sh.
 
 #Tomcat 7 Maven Plugin
 
 ##Description
-Le plugin Tomcat7 Maven Plugin permet (pour ceux qui ne le savent pas encore... ;-) ) de déployer une application web dans le conteneur de servlets Tomcat 7 via  le goal deploy. 
+Le plugin Tomcat7 Maven Plugin permet (pour ceux qui ne le savent pas encore... ;-) ) de déployer une application web dans le conteneur de servlets Tomcat 7 via  le goal `deploy`. 
 
-Il permet, en outre, de démarrer directement un Tomcat de manière embedded à Maven (un peu comme le plugin jetty) via le goal run.
+Il permet, en outre, de démarrer directement un Tomcat de manière _embedded_ à Maven (un peu comme le plugin jetty) via le goal `run`.
 
 Cependant, ce n'est pas pour ces fonctionnalités que je tenais à parler de ce plugin.
 
 En effet, le plugin Tomcat7 dispose d'une fonctionnalité "amusante", à savoir la possibilité de générer un jar exécutable embarquant directement un Tomcat 7.
 
-En outre, de manière "un peu" transverse à ce plugin, un archetype existe également. Il permet de settuper un projet exposant un service REST via Apache CXF et qui dispose de tests d'intégration via Selenium.
+En outre, de manière "un peu" transverse à ce plugin, un [archetype](http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html) existe également. Il permet de _settuper_ un projet exposant un service REST via Apache CXF et qui dispose de tests d'intégration via Selenium.
 
 ##Cas d'utilisation
-Tomcat7 Maven Plugin dispose des goals suivants (que je décrirai pas...) :
+Tomcat7 Maven Plugin dispose des [goals](http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html) suivants (que je décrirai pas...) :
 
 * `tomcat7:deploy`
 * `tomcat7:deploy-only`
@@ -436,7 +437,7 @@ http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html
 
 Comme je l'ai dit précédemment, je ne reviendrai pas sur l'utilisation des goals `run` et `deploy` mais me focaliserai plutôt sur le goal `exec-war`.
 
-Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon github) qui ne contient qu'un simple Servlet FooServlet.
+Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon [github](http://github.com/jetoile/sample-tomcat-plugin)) qui ne contient qu'un simple Servlet `FooServlet`.
 
 ![center](http://2.bp.blogspot.com/-ai5ZyP1YbgY/T0u6selcDwI/AAAAAAAAAjQ/Uq8UY04YtRw/s1600/tomcat01.png)
 
@@ -461,7 +462,7 @@ public class FooServlet extends HttpServlet {
     }
 }
 ```
-pour le web.xml :
+pour le `web.xml` :
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -480,7 +481,7 @@ pour le web.xml :
     </servlet-mapping>
 </web-app>
 ```
-Le pom.xml qui est utilisé est le suivant :
+Le `pom.xml` qui est utilisé est le suivant :
 
 
 ```xml

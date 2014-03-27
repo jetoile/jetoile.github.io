@@ -207,7 +207,7 @@ public class Client {
 }
 ```
 
-On y constate que pour ajouter un service, il suffit juste de déclarer la classe implémentant JAX-RS via la méthode setResources() sur l'instance de ResteasyDeployment fournit au serveur NettyJaxrs :
+On y constate que pour ajouter un service, il suffit juste de déclarer la classe implémentant JAX-RS via la méthode `setResources()` sur l'instance de `ResteasyDeployment` fournit au serveur __NettyJaxrs__ :
 
 ```java
 SimpleService service = new SimpleService();
@@ -220,6 +220,7 @@ netty.start();
 ```
 
 Et voilà! On dispose désormais d'un programme exécutable qui démarre un serveur REST basé sur Netty.
+
 Plutôt simple non? ;-)
 
 ##Configuration de Jackson
@@ -240,7 +241,7 @@ Le résultat suivant est obtenu :
 
 Hum... la date n'est pas formatté comme il faut... pas glop... :'(
 
-En fait, il est possible de modifier la configuration de [Jackson](http://jackson.codehaus.org/) et on trouve, dans la littérature, un moyen très simple de le faire en configurant l'ObjectMapper comme suit :
+En fait, il est possible de modifier la configuration de [Jackson](http://jackson.codehaus.org/) et on trouve, dans la littérature, un moyen très simple de le faire en configurant l'_ObjectMapper_ comme suit :
 ```java
 objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 ```
@@ -250,11 +251,11 @@ Bien sûr, le but n'étant pas de faire cette transformation manuellement à cha
 Ainsi, il existe [deux autres](http://stackoverflow.com/questions/19229341/changing-default-json-time-format-with-resteasy-3-x) manières de faire :
 
 * Le faire par annotation
-* Le faire par configuration dans le web.xml
+* Le faire par configuration dans le `web.xml`
 
 Cependant, dans notre cas, nous ne disposons pas d'un conteneur de Servlet classique et il n'est donc pas possible de s'appuyer sur une configuration par web.xml. Pour le faire par annotation, j'avoue ne pas avoir testé mais je suis sceptique...
 
-Du coup, il reste une possibilité qui est de déclarer un JacksonConfig et de demander à Resteasy-Netty de nous l'enregistrer en tant que provider (en gros de demander à Resteasy-Netty de faire manuellement ce qui est fait via le `web.xml`) :
+Du coup, il reste une possibilité qui est de déclarer un `JacksonConfig` et de demander à Resteasy-Netty de nous l'enregistrer en tant que _provider_ (en gros de demander à Resteasy-Netty de faire manuellement ce qui est fait via le `web.xml`) :
 
 ```java
 public class JacksonConfig implements ContextResolver<ObjectMapper> {
@@ -286,7 +287,7 @@ Encore une fois, simple et efficace et le résultat obtenu est bien celui escomp
 }
 ```
 
-A noter que l'ancienne version de Jackson est utilisée ici car c'est celle qui est utilisé par défaut par Resteasy. Il aurait été possible de l'utiliser dans sa version plus récente mais j'avoue ne pas avoir fait l'exercice... (cf. [ici](https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/html/json.html#d4e1046))
+A noter que l'_ancienne_ version de Jackson est utilisée ici car c'est celle qui est utilisé par défaut par Resteasy. Il aurait été possible de l'utiliser dans sa version plus récente mais j'avoue ne pas avoir fait l'exercice... (cf. [ici](https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/html/json.html#d4e1046))
 
 ##Intégration de Metrics
 
@@ -299,7 +300,7 @@ Pour plus d'information dessus, le sujet est très bien traité sur le blog de [
 * [Metrics : Intégration Avec Spring Et Guice](http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-integration-avec-spring-et-guice/)
 * [Metrics : Intégration Avec JDBC, Logback Et Jersey](http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-integration-avec-JDBC-logback-et-jersey/)
 
-Dans notre cas, bien sûr, pas de _Spring_, de _Guice_ ou de _Servlet Listener_. Une simple variable de classe dans la classe portant la méthode main() suffit :
+Dans notre cas, bien sûr, pas de _Spring_, de _Guice_ ou de _Servlet Listener_. Une simple variable de classe dans la classe portant la méthode `main()` suffit :
 ```java
 public static MetricRegistry metricRegistry;
     
@@ -312,7 +313,7 @@ public static void main(String[] args) throws ConfigurationException, BootstrapE
 }
 ```
 
-Concernant l'utilisation à proprement parler, cela se fait de cette manière (dans notre cas, utilisation du Timer qui représente un histogramme des durées et une mesure de la fréquence d’apparition) :
+Concernant l'utilisation à proprement parler, cela se fait de cette manière (dans notre cas, utilisation du __Timer__ qui représente un histogramme des durées et une mesure de la fréquence d’apparition) :
 ```java
 @GET
 @Path("/say/{msg}")
@@ -332,7 +333,7 @@ public Response getPortDataSet(@PathParam("msg") String message) {
 
 Une fois l'application démarrée et après 1 ou 2 appels, l'ObjectName apparait dans la console JMX et il est alors possible de voir les différents résultats.
 
-http://1.bp.blogspot.com/-RMh6acQ8Qkc/UxdsRqymVkI/AAAAAAAABPk/r3rvWdgPNtg/s1600/metrics-hawtio.png
+![medium](http://1.bp.blogspot.com/-RMh6acQ8Qkc/UxdsRqymVkI/AAAAAAAABPk/r3rvWdgPNtg/s1600/metrics-hawtio.png)
 
 On constate encore une fois que la mise en place de Metrics n'a demandé aucun effort particulier.
 
@@ -356,7 +357,7 @@ private static void initJolokiaServer() {
 }
 ```
 
-Concernant sa configuration, pour éviter d'avoir à aller chercher des properties et à repeupler une Map, le fichier par défaut (`default-jolokia-agent.properties`) a été copié (en renseignant certaines informations comme le user/password) dans le répertoire src/main/resources :
+Concernant sa configuration, pour éviter d'avoir à aller chercher des properties et à repeupler une Map, le fichier par défaut (`default-jolokia-agent.properties`) a été copié (en renseignant certaines informations comme le user/password) dans le répertoire `src/main/resources` :
 ```text
 # Configuration properties for the JVM jolokia-agent
 
@@ -403,7 +404,7 @@ maxCollectionSize=1000
 maxObjects=0
 ```
 
-Un petit coup de (le user jolokia et le mot de passe jolokia ont été positionné dans le fichier properties) :
+Un petit coup de (le user jolokia et le mot de passe jolokia ont été positionné dans le fichier _properties_) :
 ```bash
 curl -XGET -u jolokia:jolokia http://localhost:7778/jolokia/version
 ```
@@ -430,7 +431,7 @@ A noter que les user/password ont été positionné car cela permet une connexio
 
 [Swagger](https://helloreverb.com/developers/swagger) offre une manière très simple de documenter une API REST. En effet, en s'appuyant sur des annotations à mettre dans la classe de service, elle permet d'offrir une interface d'écrivant les API.
 
-http://4.bp.blogspot.com/-92lPQm1F_DM/UxdsgUK3bDI/AAAAAAAABPs/yWh6QRHKkFc/s1600/swagger.png
+![medium](http://4.bp.blogspot.com/-92lPQm1F_DM/UxdsgUK3bDI/AAAAAAAABPs/yWh6QRHKkFc/s1600/swagger.png)
 
 Pour le mettre en place, il suffit donc de rajouter les annotations adéquates à notre classe `SimpleService` :
 
@@ -468,11 +469,11 @@ public class SimpleService {
 }
 ```
 
-Reste maintenant à ajouter Swagger à notre main() que l'on doit faire programmatiquement faute d'être dans un conteneur de Servlet standard...
+Reste maintenant à ajouter Swagger à notre `main()` que l'on doit faire programmatiquement faute d'être dans un conteneur de Servlet standard...
 
 Pour ce faire, il est nécessaire d'instancier un objet `BeanConfig` qui contient la configuration de Swagger mais surtout l'adresse et le port du serveur sur lequel tourne le service ainsi que le package où se trouve ce dernier. Ces informations sont renseignées, dans notre cas, dans notre fichier de configuration et positionnées programmatiquement dans notre `BeanConfig`.
 
-Enfin, il faut trouver le moyen de faire le pendant de ce qui est déclaré sur [cette page](https://github.com/wordnik/swagger-core/wiki/Servlet-Quickstart)... bien sûr, le tout sans Servlet... ouch... :'( En fouillant un peu, on tombe rapidement sur le [quickstart swagger/cxf](https://github.com/wordnik/swagger-core/wiki/Java-CXF-Quickstart) où les providers sont positionnés : il suffit de faire pareil avec Resteasy-Netty ;-)
+Enfin, il faut trouver le moyen de faire le pendant de ce qui est déclaré sur [cette page](https://github.com/wordnik/swagger-core/wiki/Servlet-Quickstart)... bien sûr, le tout sans Servlet... ouch... :'( En fouillant un peu, on tombe rapidement sur le [quickstart swagger/cxf](https://github.com/wordnik/swagger-core/wiki/Java-CXF-Quickstart) où les _providers_ sont positionnés : il suffit de faire pareil avec Resteasy-Netty ;-)
 
 ```java
 private static void initSwagger(ResteasyDeployment deployment) {

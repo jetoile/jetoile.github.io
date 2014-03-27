@@ -151,7 +151,7 @@ Cette configuration est fonctionnelle avec l'arborescence suivante :
 
 ![center](http://4.bp.blogspot.com/-yzXs78VTiFw/Uxnor5jGo_I/AAAAAAAABQY/01_s7DCQHT4/s1600/arbo01.png)
 
-Dans cette dernière et avec cette configuration, tous les fichiers du répertoire html avec l'extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire html (par exemple html/sample.html) et de lancer la commande :
+Dans cette dernière et avec cette configuration, tous les fichiers du répertoire `html` avec l'extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire `html` (par exemple html/sample.html) et de lancer la commande :
 
 ```bash
 grunt
@@ -169,6 +169,11 @@ Si l'erreur suivante apparait :
 ```
 
 Il faut installer `nodejs-legacy` (cf. [ici](https://github.com/volojs/volo/issues/154))
+
+```bash
+sudo apt-get install nodejs-legacy
+```
+
 
 #Configuration de Grunt pour l'intégration de Markdown
 

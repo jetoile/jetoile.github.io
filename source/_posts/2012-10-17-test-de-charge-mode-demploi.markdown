@@ -15,9 +15,9 @@ Au cours de la vie d'un projet, il est courant d'avoir recours à des tests de c
 
 Cependant, je me suis rendu compte que, trop souvent, le sujet est mal maîtrisé et donc malheureusement mal traité.
 
-En effet, combien de fois n'ai-je pas vu un test de charge effectué avec la méthodologie "clic clic partout", l'utilisation de Selenium, la commande curl, ou, dans le meilleur des cas, avec quelques scénarii JMeter issus de l'utilisation du recorder de ce dernier.
+En effet, combien de fois n'ai-je pas vu un test de charge effectué avec la méthodologie "clic clic partout", l'utilisation de __Selenium__, la commande __curl__, ou, dans le meilleur des cas, avec quelques scénarii JMeter issus de l'utilisation du recorder de ce dernier.
 
-Cela ayant la facheuse tendance à m'énerver (pour ceux qui me connaisse, cela se traduit par une certaine agitation de ma part consistant à me mettre à tourner sur la chaise en regardant le plafond ;-) ), je vais tenter dans cet article de redéfinir certains des concepts qui me semblent primordiaux pour effectuer un test de charge qui se veut un minimum bien conçu, c'est à dire se voulant représentatif de la charge réelle que peut supporter le SUT (System Under Test) mais surtout qui permettra d'obtenir des métriques exploitables et représentatives du comportement du SUT.
+Cela ayant la facheuse tendance à m'énerver (pour ceux qui me connaisse, cela se traduit par une certaine agitation de ma part consistant à me mettre à tourner sur la chaise en regardant le plafond ;-) ), je vais tenter dans cet article de redéfinir certains des concepts qui me semblent primordiaux pour effectuer un test de charge qui se veut un minimum bien conçu, c'est à dire se voulant représentatif de la charge réelle que peut supporter le SUT (_System Under Test_) mais surtout qui permettra d'obtenir des métriques exploitables et représentatives du comportement du SUT.
 
 <!-- more -->
 
@@ -56,7 +56,7 @@ Le but de ce test n'est donc pas de collecter les métriques pendant le test de 
 
 #Test de robustesse
 
-Ce type de test a pour objectif de valider le comportement du SUT après une longue activité. En effet, un système qui se veut un minimum bien conçu doit être capable d'avoir un uptime se chiffrant en mois et non en heure. Cependant, il est courant de voir des contentions mémoires se produire après une longue activité du système qui peuvent être liés à un phénomène de résonance produite par un évènement particulier.
+Ce type de test a pour objectif de valider le comportement du SUT après une longue activité. En effet, un système qui se veut un minimum bien conçu doit être capable d'avoir un _uptime_ se chiffrant en mois et non en heure. Cependant, il est courant de voir des contentions mémoires se produire après une longue activité du système qui peuvent être liés à un phénomène de résonance produite par un évènement particulier.
 
 Pour ce faire, le test de robustesse doit être exécuté pendant plusieurs heures à une charge admissible maximale (qui aura été déterminé par le test de tenue en charge).
 
@@ -163,7 +163,7 @@ Ainsi, un profil de charge comprend les notions suivantes :
 
 ![medium](http://3.bp.blogspot.com/-KrYwbUoMBdo/UH3JeeVR5RI/AAAAAAAAApk/YE4-lvz7h3k/s1600/profilCharge.png)
 
-La rampe doit être choisie en fonction de la durée du test d'injection mais également en fonction du nombre d'utilisateurs virtuels qui sera utilisé. Elle permet d'éviter que tous les utilisateurs arrivent en même temps sur le SUT (chose qui ne se produit pour ainsi dire jamais) mais permet également d'effectuer un warmup du SUT (JVM, chargement des caches, ...). En effet, il est courant que le SUT soit réinitialisé après chaque test de charge afin d'éviter les effets de bords qu'aurait pu produire un test de charge antérieure.
+La rampe doit être choisie en fonction de la durée du test d'injection mais également en fonction du nombre d'utilisateurs virtuels qui sera utilisé. Elle permet d'éviter que tous les utilisateurs arrivent en même temps sur le SUT (chose qui ne se produit pour ainsi dire jamais) mais permet également d'effectuer un _warmup_ du SUT (JVM, chargement des caches, ...). En effet, il est courant que le SUT soit réinitialisé après chaque test de charge afin d'éviter les effets de bords qu'aurait pu produire un test de charge antérieure.
 
 Le palier est, quant à lui, réellement représentatif de ce qui doit être validé par le SUT et c'est durant cette période que devra se faire l'analyse des métriques obtenues. De plus, l'enchainement des scénarii pour les utilisateurs virtuels doit se faire suivant une loi aléatoire afin que la charge puisse s'exprimer comme une valeur moyenne de débit. De plus, ce coté aléatoire permettra d'être au plus proche des actions des utilisateurs réels.
 
@@ -171,18 +171,17 @@ Le palier est, quant à lui, réellement représentatif de ce qui doit être val
 
 Cet article n'avait pas pour objectif d'expliquer toute la théorie qui se cachait derrière les tests de charge (qui est oh combien compliqué... et qui s'appuie, entre autre, sur la théorie des files d'attente mais aussi sur de nombreuses notions statistiques) mais juste d'effleurer les notions primodiales qui se cachent derrières et qui, à mon humble avis, devraient être prises en considération (quitte à en élaguer sciemment certaines).
 
-A noter enfin que cet article n'a pas abordé de nombreux points comme la variabilisation d'un scénario ou la mise en place d'assets dans les injecteurs afin de tester si le SUT répond de manière cohérente ou pas.
+A noter enfin que cet article n'a pas abordé de nombreux points comme la variabilisation d'un scénario ou la mise en place d'_assets_ dans les injecteurs afin de tester si le SUT répond de manière cohérente ou pas.
 
-Enfin, pour finir, je dirai qu'une campagne de test de charge devrait toujours être faite sérieusement (chose qui malheureusement est assez rare...) et qu'il est primordial de mesurer, observer encore et encore : injecter de la charge sans récolter de métrique est, à mon sens, totalement inutile (ça, c'est dit... ;-) ). Alors par pitié, qu'on ne me parle plus de clic clic partout ni de Selenium pour les tests de charge... 
+Enfin, pour finir, je dirai qu'une campagne de test de charge devrait toujours être faite sérieusement (chose qui malheureusement est assez rare...) et qu'il est primordial de mesurer, observer encore et encore : injecter de la charge sans récolter de métrique est, à mon sens, totalement inutile (ça, c'est dit... ;-) ). Alors par pitié, qu'on ne me parle plus de clic clic partout ni de __Selenium__ pour les tests de charge... 
 
-[update] ah oui, j'oubliais... il coule de sens qu'un test de charge doit pouvoir être reproduit à l'identique afin de pouvoir comparer les dégradations ou amélioration des performances entre deux moments d'où l'importance de maîtriser son scénario d'injection et de faire cela de manière un minimum industriel...
+[__update__] ah oui, j'oubliais... il coule de sens qu'un test de charge doit pouvoir être reproduit à l'identique afin de pouvoir comparer les dégradations ou amélioration des performances entre deux moments d'où l'importance de maîtriser son scénario d'injection et de faire cela de manière un minimum industriel...
 
 #Pour aller plus loin...
 
-Parce que je suis tombé sur cette ressource en écrivant cet article, je le mets ;-)
-http://home.nordnet.fr/~ericleleu/cours/nfe210/Tests_V10.00.pdf
+Parce que je suis tombé sur cette [ressource](http://home.nordnet.fr/~ericleleu/cours/nfe210/Tests_V10.00.pdf) en écrivant cet article, je le mets ;-)
 
 Quelques outils d'injection de charge :
-* Gatling
-* Apache JMeter
-* CLIF
+* [Gatling](http://gatling-tool.org/)
+* [Apache JMeter](http://jmeter.apache.org/)
+* [CLIF](http://clif.ow2.org/)

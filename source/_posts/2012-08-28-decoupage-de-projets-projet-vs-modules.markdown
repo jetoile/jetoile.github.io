@@ -31,12 +31,12 @@ Il s'agit d'une opinion très personnelle qui peut ne pas être partagée par to
 
 Comme mentionné en introduction, cet article traitera de comment architecturer son projet, à savoir, s'il vaut mieux découper son projet en différents projets ou en sous-modules. Bien sûr, ce point doit être pris en compte conjointement avec le découpage technique et/ou fonctionnel.
 
-Dans la suite de l'article, les termes "projet" et "module" sont utilisés au sens maven du terme. Pour avoir les vraies définitions, il est quand même préférable de se référer à la documentation officielle, mais voilà comment je les décrirai succinctement :
+Dans la suite de l'article, les termes "_projet_" et "_module_" sont utilisés au sens maven du terme. Pour avoir les vraies définitions, il est quand même préférable de se référer à la documentation officielle, mais voilà comment je les décrirai succinctement :
 
-* projet : il contient ses propres modules et produit un seul livrable (assembly, war, ear ou autre). Il peut éventuellement hériter d'un super pom.
-* module : il s'agit d'un module maven ie. qu'il suit le même versionning que son père (pour rappel, les bonnes pratiques maven demandent à ce que les sous-modules d'un projet hérite de la version et du groupId du père). Le fait de builder le module parent build également les sous-modules. Concrètement, le père déclare ses modules fils avec l'élément module et le module fils déclare son père avec l'élément parent
+* __projet__ : il contient ses propres modules et produit un seul livrable (_assembly_, _war_, _ear_ ou autre). Il peut éventuellement hériter d'un super pom.
+* __module__ : il s'agit d'un module maven ie. qu'il suit le même versionning que son père (pour rappel, les bonnes pratiques maven demandent à ce que les sous-modules d'un projet hérite de la version et du groupId du père). Le fait de builder le module parent build également les sous-modules. Concrètement, le père déclare ses modules fils avec l'élément _module_ et le _module_ fils déclare son père avec l'élément parent
 
-En fait, pour moi, la seule chose qui va décider de découper un projet (au sens large du terme) en modules ou en différents projets se résume en 3 mots : cycle de vie :
+En fait, pour moi, la seule chose qui va décider de découper un projet (au sens large du terme) en modules ou en différents projets se résume en 3 mots : __cycle de vie__ :
 
 * Si lors de la relivraison d'un sous composant tout le système doit être relivré car dépendant du premier, alors les composants sont dans le même projet, ie. qu'ils sont des modules. Ils héritent alors de la version du père et ne doivent pas être relivré indépendamment.
 * S'il est possible de livrer indépendamment un composant du projet et que cela n'a pas foncièrement d'impact sur les autres, alors il doit être dans un projet indépendant. Les autres composants l'utilisant auront alors dans leur pom un numéro de version figée et le verrons comme une boite noire.
@@ -45,11 +45,11 @@ Bien sûr, le fait de gérer des projets indépendants complexifie le processus 
 
 Pourtant je pense que ce choix est une fausse bonne idée à terme et que la question du cycle de vie des différents composants est primordiale. En effet, découper en briques disposant de leur propre cycle de livraison force à découpler l'architecture du produit et oblige les équipes de développement à réfléchir sur le design.
 
-De même, coté vision globale, cela force à réfléchir sur une cartographie du système (processus aussi appelé urbanisation) en se forçant à raisonner service (au sens large du terme) (ndlr : désolé mais pour ceux qui ne me connaissent pas, je viens du monde SOA... ).
+De même, coté vision globale, cela force à réfléchir sur une cartographie du système (processus aussi appelé __urbanisation__) en se forçant à raisonner service (au sens large du terme) (_ndlr_ : désolé mais pour ceux qui ne me connaissent pas, je viens du monde SOA... ).
 
 Bien sûr, si le projet se limite à une simple application web disposant de son controleur, de sa couche présentation et de sa couche modèle, alors un "simple" projet disposant de ses sous-modules est largement suffisant, mais s'il s'agit de composants nécessaires à la gestion du SI au sens plus large, la question mérite à être posée.
 
-Enfin, juste pour conclure cette partie, concernant le SCM, il doit être découpé en conséquence. Si c'est Git qui est utilisé, pas de souci. Par contre, si c'est SVN (ou autre), alors il est primodiale de respecter les préconisations de ce dernier, ie. de ne pas avoir tous les projets sous trunk mais que chaque projet dispose de ses sous répertoires trunk/branches/tags. En effet, un projet doit avoir sa propre hiérarchie de tags et de branches. De plus, techniquement parlant, il peut arriver que le fait d'utiliser le plugin release de maven produise des informations fausses au niveau de l'élément scm.
+Enfin, juste pour conclure cette partie, concernant le SCM, il doit être découpé en conséquence. Si c'est Git qui est utilisé, pas de souci. Par contre, si c'est SVN (ou autre), alors il est primodiale de respecter les préconisations de ce dernier, ie. de ne pas avoir tous les projets sous trunk mais que chaque projet dispose de ses sous répertoires `trunk/branches/tags`. En effet, un projet doit avoir sa propre hiérarchie de tags et de branches. De plus, techniquement parlant, il peut arriver que le fait d'utiliser le plugin release de maven produise des informations fausses au niveau de l'élément `scm`.
 
 Exemple :
 

@@ -165,7 +165,7 @@ Ainsi, on obtient bien :
 #Support du CORS dans Resteasy-Netty4
 
 Précédemment, avec Resteast-netty 3, nous avions remarqué un problème de CORS avec Swagger-UI.
-Pour en venir à bout, un hack avait été fait mais ce n'était pas très propre...
+Pour en venir à bout, un _hack_ avait été fait mais ce n'était pas très propre...
 
 Malheureusement, Resteasy-netty4 n'offre pas, non plus, de manière simple pour surmonter ce problème. Heureusement, en fouillant un peu sur internet, un [article](http://stackoverflow.com/questions/18857546/implement-cross-origin-resource-sharing-cors-on-resteasy-netty-server) propose de rajouter un `ChannelInboundHandler` au _pipeline_ Netty.
 
@@ -186,7 +186,7 @@ public class CorsHeadersChannelHandler extends SimpleChannelInboundHandler<Netty
 }
 ```
 
-La surcharge de la méthode `start()` pour ajouter le handler au pipeline Netty (désolé pour le nom...) :
+La surcharge de la méthode `start()` pour ajouter le _handler_ au pipeline Netty (désolé pour le nom...) :
 
 ```java
 public class MyNettyJaxrsServer extends NettyJaxrsServer {
@@ -262,7 +262,7 @@ public class MyNettyJaxrsServer extends NettyJaxrsServer {
 }
 ```
 
-On y observe le rajout du handler : 
+On y observe le rajout du _handler_ : 
 ```java
 ch.pipeline().addLast(new CorsHeadersChannelHandler());
 ```

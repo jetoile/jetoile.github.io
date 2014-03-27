@@ -27,7 +27,7 @@ Cet article a donc pour vocation de tenter de retranscrire ce que nous a présen
 Pour la repositionner dans son contexte, la JSR343 fait suite à JMS 1.1 ([JSR 914](http://www.jcp.org/en/jsr/detail?id=914)) et a pour but de :
 
 * Simplifier l'API de JMS :
-	* En utilisant CDI (Context Dependency Injection).
+	* En utilisant CDI (_Context Dependency Injection_).
 	* En clarifiant certaines ambiguïtés présentes dans les spécifications.
 * Améliorer l'intégration de JMS avec les serveurs d'application :
 	* En intégrant plus facilement les problématiques de PaaS (_Platform As A Service_).
@@ -44,7 +44,7 @@ Cependant, autant il n'y a rien à redire quant à la réception d'un message, a
 * créer la `Session` à l'aide de la `Connection`,
 * créer le `MessageProducer` à l'aide de la `Session`.
 
-C'est seulement suite à toutes ces actions que l'émission d'un message était possible via la méthode send().
+C'est seulement suite à toutes ces actions que l'émission d'un message était possible via la méthode `send()`.
 
 En outre, à cela, il fallait, bien sûr, gérer les exceptions _checkées_ (`JMSException` pour ceux à qui cela parle ;-)) mais également la fermeture de la `Session` et de la `Connection`...
 
@@ -53,6 +53,7 @@ Enfin, lors de l'utilisation conjointe de JMS et des EJB, certains paramètres d
 Un des prérequis principals de cette nouvelle version de la spécification est donc la simplification... simplification mais pas à n'importe quel prix puisqu'il était nécessaire de conserver la rétro compatibilité avec les versions ultérieures de la spécification.
 
 Nigel nous a donc présenté certaines des pistes qu'ils avaient (pistes encore ouvertes à discussion).
+
 Ce sont ces dernières que je vais essayer de retranscrire ci-dessous dans l'ordre dans lesquelles il les a énoncé.
 
 #Simplification sur la création de Sessions
@@ -68,6 +69,7 @@ Afin de rendre moins verbeuse l'utilisation des `Connection` et des `Session`, u
 Ainsi, il serait alors possible d'avoir les résultats suivants (pour rappel, il ne s'agit que de propositions car cela est toujours à l'étude) :
 
 * avec Java 7 dans un contexte JEE :
+
 ```java
 @Resource(mappedName="...")
 ContextFactory contextFactory;
@@ -103,7 +105,7 @@ public void sendMessage(String payload) {
 ```
 
 * toujours avec Java 7 dans un contexte JEE :
- é
+ 
 ```java
 @Inject
 @JMSConnection(lookup="...")
@@ -127,14 +129,15 @@ public void sendMessage(String payload) {
 
 Les autres simplifications d'API envisageables pourraient être :
 
-* de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : producer.send(String/Serializable); ). Cependant, ce type d'API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types BytesMessage ou StreamMessage. A ajouter à cela la question de son pendant pour la réception
-* de simplifier la gestion des DurableSubscriber (http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic, java.lang.String)), qui, au jour d'aujourd'hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d'une utilisation conjointe avec les EJB 3.2
+* de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : `producer.send(String/Serializable);` ). Cependant, ce type d'API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types `BytesMessage` ou `StreamMessage`. A ajouter à cela la question de son pendant pour la réception
+* de simplifier la gestion des `DurableSubscriber` (http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic, java.lang.String)), qui, au jour d'aujourd'hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d'une utilisation conjointe avec les EJB 3.2
 
 #Vers le futur...
 
 Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.
 
 Ainsi, JMS 2.0 devra, pour répondre aux besoins des problématiques de type SaaS (_Software As A Service_), permettre de déclarer ses ressources créées dans un serveur d'applications et de les enregistrer dans un annuaire JNDI (comme c'est actuellement le cas pour les DataSource).
+
 Pour ce faire, de nouvelles annotations pourraient voir le jour (par exemple : `@JMSConnectionFactoryDefinition` et `@JMSDestinationDefinition`) mais également un SPI (_Service Provider Interface_) pour le faire de manière programmatique.
 
 Concernant une meilleure intégration avec les serveurs d'applications (ce qui permettrait d'utiliser n'importe quel JMS Provider dans n'importe quel serveur d'application JEE), Nigel propose la solution de JCA (_Java Connector Architecture_), un peu comme ce qui existe avec le drivers de bases de données.
@@ -144,7 +147,7 @@ Concernant une meilleure intégration avec les serveurs d'applications (ce qui p
 Concernant les nouvelles features de l'API, Nigel nous a ensuite présenté ce qui pourrait arriver, à savoir (en vrac) :
 
 * l'émission de messages avec un acquittement asynchrone du serveur,
-* la possibilité pour un client JMS d'utiliser des Future,
+* la possibilité pour un client JMS d'utiliser des `Future`,
 * la possibilité d'émettre un message et de ne pas à avoir à attendre la réception d'un acquittement pour savoir si le message a bien été émis.
 
 Il se pourrait également que la propriété `JMSXDeliveryCount` ne soit plus optionnelle, ce qui permettrait aux serveurs d'applications de mieux gérer le _flood_. 
@@ -163,6 +166,6 @@ En outre, je trouve que, pour la majorité des propositions (même si elles sont
 
 Enfin, intégrer fortement CDI avec JMS m'embête un peu car cela nécessite de disposer d'un conteneur CDI, chose qui n'est pas toujours le cas dans un contexte Java SE et, même si je trouve CDI sexy, je ne pense pas que la majorité des développeurs ou que nos clients soient prêts à franchir le pas en raison de la complexité intrinsèque à CDI (bien sûr, JMS 2.0 se devait de se tourner vers le futur et CDI se devait d'être pris en compte)... enfin, il ne s'agit que d'un avis personnel... l'avenir nous dira ce qu'il en est... ;-)
 
-Dernier point (mais là encore, c'est totalement personnel), j'aurais aimé voir une intégration des notions d'EIP (Enterprise Integration Pattern) même si la notion de filter (au sens EIP du terme) sort un peu du scope de JMS mais bon... ;-)
+Dernier point (mais là encore, c'est totalement personnel), j'aurais aimé voir une intégration des notions d'EIP (_Enterprise Integration Pattern_) même si la notion de __filter__ (au sens EIP du terme) sort un peu du scope de JMS mais bon... ;-)
 
 ~~Pour conclure, Nigel a bien présenté la direction que pourrait prendre JMS dans un futur proche mais, comme il nous l'a fréquemment fait remarquer, il ne s'agit que de pistes et, d'ailleurs, toutes les contributions sont les bienvenues.~~

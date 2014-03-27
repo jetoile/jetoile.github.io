@@ -16,7 +16,7 @@ categories:
 Dans mon article précédent, j'avais tenté d'expliquer comment il était possible d'intégrer les frameworks [Cucumber JVM](https://github.com/cucumber/cucumber-jvm) et [Selenium](http://docs.seleniumhq.org/) au travers de [FluentLenium](https://github.com/FluentLenium/FluentLenium).
 
 
-En effet, pour rappel, FluentLenium permettait d'abstraire Selenium en lui offrant une API plus fluent mais également en lui apportant nativement ce qu'il préconise, à savoir le [Page Object Design Pattern](http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern).
+En effet, pour rappel, FluentLenium permettait d'abstraire Selenium en lui offrant une API plus _fluent_ mais également en lui apportant nativement ce qu'il préconise, à savoir le [Page Object Design Pattern](http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern).
 
 Pour ce faire, j'avais proposé d'utiliser la délégation de l'initialisation de FluentLenium à une classe tierce injectée via le mécanisme d'injection de Cucumber JVM.
 
@@ -42,9 +42,9 @@ A noter également que l'article précédent aurait pu être modifié mais qu'en
 
 Ce premier cas d'usage couvre le cas : "j'ai un site que je veux tester avec Cucumber JVM et l'ensemble des steps peut être réuni dans une seule et même classe."
 
-Bon je vois déjà la levée de bouclier : pourquoi réunir toutes les steps dans une seule et même classe. En fait, la raison du pourquoi sera expliquée un peu plus tard dans le paragraphe Limites de ce chapitre donc patience... ;-)
+Bon je vois déjà la levée de bouclier : pourquoi réunir toutes les steps dans une seule et même classe. En fait, la raison du pourquoi sera expliquée un peu plus tard dans le paragraphe _Limites_ de ce chapitre donc patience... ;-)
 
-Contrairement à la façon que j'avais présentée dans mon article précédent, il n'est pas obligatoire de déléguer la déclaration des pages __FluentPage__ à une autre classe étendant `FluentTest`. En fait, il suffit juste de faire étendre la classe contenant les steps cucumber de `FluentAdapter`, d'y déclarer les pages et d'appeler dans la méthode annotée par @Before (celui de Cucumber JVM bien sûr) les méthode d'initialisation du contexte de FluentLenium.
+Contrairement à la façon que j'avais présentée dans mon article précédent, il n'est pas obligatoire de déléguer la déclaration des pages `FluentPage` à une autre classe étendant `FluentTest`. En fait, il suffit juste de faire étendre la classe contenant les steps cucumber de `FluentAdapter`, d'y déclarer les pages et d'appeler dans la méthode annotée par @Before (celui de Cucumber JVM bien sûr) les méthode d'initialisation du contexte de FluentLenium.
 
 Pour rappel, cette initialisation instancie le WebDriver utilisé par Selenium 2 mais également les pages (annotées par l'annotation `@Page`) présentes dans la classe courante (ou ses parentes) qui doit, au minimum, étendre de `FluentAdapter`. Cela se fait au travers des méthodes `initFluent()` et `initTest()`.
 
@@ -152,7 +152,7 @@ Cependant, la question principale est de trouver comment il est possible de n'in
 
 La proposition présentée dans l'article précédent (modulo qu'il ne faut pas étendre de `FluentTest` mais de `FluentAdapter`) reste viable, mais il y a plus simple.
 
-En effet, dans la proposition faite précédemment, la classe `FluentTestDelegator` avai,t à sa charge, à la fois la déclaration des pages, et l'instanciation et l'initialisation du contexte de FluentLenium. Pour rappel, cette instanciation/initialisation était réalisée par [Pico Container](http://picocontainer.codehaus.org/) lors de l'injection de l'instance de cette classe dans la classe contenant les fixtures.
+En effet, dans la proposition faite précédemment, la classe `FluentTestDelegator` avait à sa charge, à la fois la déclaration des pages, et l'instanciation et l'initialisation du contexte de FluentLenium. Pour rappel, cette instanciation/initialisation était réalisée par [Pico Container](http://picocontainer.codehaus.org/) lors de l'injection de l'instance de cette classe dans la classe contenant les fixtures.
 
 En fait, il est plus propre, d'un point de vue séparation des concepts, de laisser à cette classe le soin de proposer les fixtures d'initialisation du webDriver tout en séparant la déclaration des pages.
 
@@ -306,7 +306,7 @@ public class FluentLeniumStepInitilizer extends FluentPageInjector {
 ```
 
 
-Cette classe étend par transitivité `FluentAdapter` et dispose donc de la visibilité sur les méthodes d'initialisation de `FluentLenium`. En outre, en étendant `FluentPageInjector` (qui étend de `FluentAdapter`), cela lui permet, à l'appel de initTest(), d'initialiser les pages.
+Cette classe étend par transitivité `FluentAdapter` et dispose donc de la visibilité sur les méthodes d'initialisation de `FluentLenium`. En outre, en étendant `FluentPageInjector` (qui étend de `FluentAdapter`), cela lui permet, à l'appel de `initTest()`, d'initialiser les pages.
 Concernant l'initialisation des webDriver, cela est fait au niveau de la classe `BrowserMapper`. 
 
 ```java
@@ -510,7 +510,7 @@ Ainsi, pour jouer les tests via maven, il suffit de le déclarer dans le `pom.xm
 </plugin>
 ```
 
-Coté jouabilité des tests sur un environnement de développement  il est possible d'exécuter le `Runner` Cucumber JVM directement (comme lors de l'exécution d'une classe de test unitaire) ou d'utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas...). 
+Coté jouabilité des tests sur un environnement de développement  il est possible d'exécuter le __Runner__ Cucumber JVM directement (comme lors de l'exécution d'une classe de test unitaire) ou d'utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas...). 
 
 ```java
 import cucumber.api.junit.Cucumber;

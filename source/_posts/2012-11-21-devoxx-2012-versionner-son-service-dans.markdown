@@ -16,7 +16,7 @@ categories:
 Ça y est... [Devoxx](http://devoxx.com/) est fini... :'(
 Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j'ai pu assisté à Devoxx.
 
-Cependant, je tenais à revenir sur la présentation "Service Versioning in SOA and Cloud" par Ignaz Wanders ([@ignazw](https://twitter.com/ignazw)) dont le synopsis était :
+Cependant, je tenais à revenir sur la présentation "_Service Versioning in SOA and Cloud_" par __Ignaz Wanders__ ([@ignazw](https://twitter.com/ignazw)) dont le synopsis était :
 >Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.
 
 <br/>
@@ -33,7 +33,7 @@ Dans cet article, je me contenterai de montrer quelques-uns des slides de la pr�
 
 ![small](http://3.bp.blogspot.com/-jQmsfBODkbk/UKwAQe5_3hI/AAAAAAAAAyI/U2o6JrWPC0A/s1600/_IMG_20121114_183004.jpg)
 
-D'ailleurs, une version pdf dont le contenu est similaire (identique?) est accessible ici.
+D'ailleurs, une version pdf dont le contenu est similaire (identique?) est accessible [ici](http://www.servicetechsymposium.com/dl/presentations/the_service_versioning_balancing_act.pdf).
 
 Enjoy! ;-)
 

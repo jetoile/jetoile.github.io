@@ -9,21 +9,21 @@ categories:
 ---
 ![left-small](https://lh4.googleusercontent.com/-VYpiI5ySjEA/TYKVFQyw27I/AAAAAAAAAU0/XDPtplNTTKQ/s1600/perf03.png)
 
-Cet article fait suite à mon article précédent afin de donner mon rapide retour d'expérience sur quelques écueils qui peuvent être commis lors de l'écriture d'un microBenchmark et dans lesquels je suis, bien sûr, tombé :(. Pour remettre dans le contexte, c'est l'écriture de ce benchmark qui a entrainé l'écriture de mon article précédent suite aux résultats que j'ai pu constater et pour lesquels j'ai eu l'aide de mes camarades.
+Cet article fait suite à mon article précédent afin de donner mon rapide retour d'expérience sur quelques écueils qui peuvent être commis lors de l'écriture d'un microBenchmark et dans lesquels je suis, bien sûr, tombé :(. Pour remettre dans le contexte, c'est l'écriture de ce benchmark qui a entrainé l'écriture de mon article précédent suite aux résultats que j'ai pu constater et pour lesquels j'ai eu l'aide de mes [camarades](/2011/03/microbenchmark-par-la-pratique.html#remerciement).
 
 <!-- more -->
 
 #Contexte
 
-Un collègue me disait que le foreach était moins performant qu'une boucle for en raison du fait que l'invocation d'une opération supplémentaire (la méthode next()) rendait l'opération plus lente en raison de la pile de notre cher compteur ordinal (pour ceux qui ne se rappelleraient pas, je vous renvoie sur vos cours d'assembleur ;-) ), enfin que, du moins, en .Net ça marchait comme ça. Ma réponse : "ben j'en sais rien" puisque je ne savais pas quelles étaient les optimisations faites par le compilateur (ouais, je sais, super les sujets de conversation...).
+Un collègue me disait que le foreach était moins performant qu'une boucle for en raison du fait que l'invocation d'une opération supplémentaire (la méthode `next()`) rendait l'opération plus lente en raison de la pile de notre cher compteur ordinal (pour ceux qui ne se rappelleraient pas, je vous renvoie sur vos cours d'assembleur ;-) ), enfin que, du moins, en .Net ça marchait comme ça. Ma réponse : _"ben j'en sais rien"_ puisque je ne savais pas quelles étaient les optimisations faites par le compilateur (ouais, je sais, super les sujets de conversation...).
 
 Du coup, ni une, ni deux, j'ai ouvert mon IDE préféré et j'y ai jeté quelques lignes de code pour avoir ma réponse, et là... ce fut le drame... : des résultats bizarres sont apparus...
 
-Ce petit article a donc pour objectif de vous fournir le résultat de ce qu'il faut faire et ne pas faire lors de l'écriture d'un microBenchmark mais également de fournir la réponse que tout le monde attend, à savoir : qui est réellement le plus fort entre le for et le foreach (ça peut éviter d'avoir à perdre 5 minutes de test...).
+Ce petit article a donc pour objectif de vous fournir le résultat de ce qu'il faut faire et ne pas faire lors de l'écriture d'un microBenchmark mais également de fournir la réponse que tout le monde attend, à savoir : __qui est réellement le plus fort entre le for et le foreach__ (ça peut éviter d'avoir à perdre 5 minutes de test...).
 
 Bien sûr, n'étant pas expert dans ce domaine, il s'agit juste d'un retour d'expérience dont je vous laisse seul juge de la véracité... ;-)
 
-<u>Premier disclaimer</u> : contrairement à ce que j'ai présenté dans mon post précédent, je n'effectuerai pas, ici, différents tirs sur différentes architectures d'ordinateurs, VM ou avec différentes options. En effet, ce qui m'intéresse dans cet article est d'entrevoir ce qui peut se passer dans la VM et comment cela peut impacter les performances d'un petit bout de code.
+<u>Premier disclaimer</u> : contrairement à ce que j'ai présenté dans mon [post précédent](/2011/03/microbenchmark-mode-d.html), je n'effectuerai pas, ici, différents tirs sur différentes architectures d'ordinateurs, VM ou avec différentes options. En effet, ce qui m'intéresse dans cet article est d'entrevoir ce qui peut se passer dans la VM et comment cela peut impacter les performances d'un petit bout de code.
 
 <u>Deuxième disclaimer</u> : lors de la procédure d'élagage, un coefficient de 0,5 sera utilisé afin de lisser au maximum mes résultats et cela, en raison de pics très importants observés (pics liés, comme nous le verrons par la suite soit, au warm-up de la JVM, soit au GC).
 
@@ -86,7 +86,7 @@ public class IterableBenchmark0 {
 }
 ```
 
-On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’ArrayList utilisé ici sont faites en dehors du test.
+On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’`ArrayList` utilisé ici sont faites en dehors du test.
 
 ###Résultats
 
@@ -99,9 +99,9 @@ Après élagage des résultats abérants (procédé commun à tous tes des charg
 ![medium](https://lh5.googleusercontent.com/-Ld9lihH08bE/TYfWw4vaxFI/AAAAAAAAAVE/zVJXILl4wtg/s1600/naif_res03.png)
 
 ###Analyse
-Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d'itérer notre List.
+Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d'itérer notre `List`.
 
-En outre, après élagage, on constate, malgré tout, qu'une nette différence persiste entre les boucles for et while et notre foreach.
+En outre, après élagage, on constate, malgré tout, qu'une nette différence persiste entre les boucles `for` et `while` et notre `foreach`.
 
 A titre informatif, c'est à ce moment là que j'ai dû appeler mes amis (ça ne vous rappelle pas quelque chose...?)  pour obtenir une analyse plus précise des résultats que je ne comprenais pas... :(
 Du coup (et là, je ne vais pas me fouler ;-) ), je vous cite les réponses des différents intéressés (et oui, il est possible d'avoir plusieurs amis... (si cela vous amuse, je vous laisse deviner qui a dit quoi) que je remercie encore une fois ;-) :
@@ -220,7 +220,7 @@ A noter que ce graphique n'est toujours isssu que d'un seul tir...
 
 Les résultats semblent enfin cohérents! ouf...!
 
-En effet, on constate que, mis à part les GC, et le warm-up de ma VM, mon Compilateur Planning n'a pas réussi à inliner mon code et me fournit, du coup, le résultat attendu.
+En effet, on constate que, mis à part les __GC__, et le __warm-up__ de ma VM, mon _Compilateur Planning_ n'a pas réussi à inliner mon code et me fournit, du coup, le résultat attendu.
 
 Après un coup d'élagage me permettant de me débarrasser de mes pics liés au GC, mes courbes sont lissées et se chevauchent même.
 
@@ -232,7 +232,7 @@ Enfin, j'ai ma réponse (mais je garde ça pour plus tard même si je suppose qu
 
 Bon, il est vrai, j'ai obtenu mon résultat sur ma deuxième tentative.
 
-Cependant, pendant la présentation de Joshua Bloch (cf. post précédent), un point m'a particulièrement intéressé : le framework Caliper.
+Cependant, pendant la présentation de Joshua Bloch (cf. [post précédent](/2011/03/microbenchmark-mode-d.html)), un point m'a particulièrement intéressé : le framework __Caliper__.
 
 En effet, ce framework semble être fait pour répondre aux problématiques des microBenchmark.
 
@@ -241,7 +241,7 @@ Du coup, je vais, ici, montrer comment je l'ai utilisé ainsi que les résultats
 Deux raisons à cela :
 
 * valider mes résultats précédents afin de vérifier que je n'ai rien laissé passer...
-m'amuser un peu... ;-)
+* m'amuser un peu... ;-)
 
 <u>Disclaimer</u> : cette partie n'abordera ni comment installer, ni comment utiliser Caliper. Elle est juste fournie à titre indicatif.
 
@@ -298,7 +298,7 @@ public class IterableBenchmark2 extends SimpleBenchmark {
 }
 ```
 
-On remarque ici, que, plutôt que d'exécuter via un script extérieur mon tir, j'ai préféré le faire en invoquant directement le main().
+On remarque ici, que, plutôt que d'exécuter via un script extérieur mon tir, j'ai préféré le faire en invoquant directement le `main()`.
 
 ###Résultats
 
@@ -322,7 +322,7 @@ trial: 0
 
 Ces résultats sont donnés avec une seul tir.
 
-Pour montrer comme il est aisé d'effectuer plusieurs tirs avec Caliper (tir qui lance à chaque fois une nouvelle JVM dans un process - process au sens UNIX du terme - différent), modifions juste notre méthode main() pour y passer d'autres options :
+Pour montrer comme il est aisé d'effectuer plusieurs tirs avec Caliper (tir qui lance à chaque fois une nouvelle JVM dans un process - process au sens UNIX du terme - différent), modifions juste notre méthode `main()` pour y passer d'autres options :
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -449,7 +449,7 @@ A voir s'il se comporte ainsi avec tous les microBenchmark erronés...
 
 ###Scénario
 
-Cette dernière tentative permet de voir ce qui se passerait si on désactivait JIT via l'option -Xint.
+Cette dernière tentative permet de voir ce qui se passerait si on désactivait JIT via l'option `-Xint`.
 Pour rappel, l'option Xint permet de :
 >Operate in interpreted-only mode. Compilation to native code is disabled, and all bytecodes are executed by the interpreter. The performance benefits offered by the Java HotSpot Client VM's adaptive compiler will not be present in this mode.
 
@@ -481,7 +481,7 @@ Voilà, j'arrive à la fin de mes conclusions que je vous cite en vrac ;-) :
 * il ne faut pas toujours se fier à ce que l'on peut constater : le risque que le cas observé ne soit pas représentatif de la réalité est élevé,
 d* e manière générale, on peut dire qu'il y a match nul entre le for et le foreach (en tout cas, dans notre cas de figure!).
 
-Bon, un dernier mot : cet article n'apportera rien aux personnes déjà sensibilisées à ce type de problématiques et ce qu'on peut retenir est qu'il ne faut pas tenter d'optimiser inutilement son code (cf. article précédent). Je trouvais juste les résultats intéressants à montrer ;-)
+Bon, un dernier mot : cet article n'apportera rien aux personnes déjà sensibilisées à ce type de problématiques et ce qu'on peut retenir est qu'il ne faut pas tenter d'optimiser inutilement son code (cf. [article précédent](/2011/03/microbenchmark-mode-d.html)). Je trouvais juste les résultats intéressants à montrer ;-)
 
 Ah oui, encore une chose, pour information, mon ordinateur possède les caractéristiques suivantes :
 

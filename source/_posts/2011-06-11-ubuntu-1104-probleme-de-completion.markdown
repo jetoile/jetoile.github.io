@@ -45,11 +45,11 @@ Entraînant, bien sûr, une erreur lors de son exécution :
 
 #Correctif
 
-Du coup, après une ou deux recherche sur mon ami google, je suis tombé sur le bug suivant.
+Du coup, après une ou deux recherche sur mon ami google, je suis tombé sur le [bug suivant](https://bugs.launchpad.net/ubuntu/+source/bash-completion/+bug/769866).
 
 En fait, pour résumer, il semble que cela vienne du script de complétion utilisé par bash.
 
-Aussi pour corriger ce problème, il ne vous reste plus qu'à éditer le fichier /etc/bash_completion avec les bons droits et à modifier sa ligne 1587 pour y remplacer "default" par "filenames".
+Aussi pour corriger ce problème, il ne vous reste plus qu'à éditer le fichier `/etc/bash_completion` avec les bons droits et à modifier sa ligne 1587 pour y remplacer `default` par `filenames`.
 
 ```bash
 # makeinfo and texi2dvi are defined elsewhere.
@@ -63,7 +63,7 @@ for i in a2ps awk bash bc bison cat colordiff cp csplit \
 done
 unset i
 ```
-Après un petit coup de rechargement du bashrc (qui charge le bash_completion), vous aurez alors résolu votre problème ;-)
+Après un petit coup de rechargement du `bashrc` (qui charge le `bash_completion`), vous aurez alors résolu votre problème ;-)
 
 Rechargement du ~/.bashrc :
 ![center](http://1.bp.blogspot.com/-_e-p2C3ZNPs/TfOJc6I-LoI/AAAAAAAAAX8/Um_QhF9V_18/s1600/ubuntu09.png)

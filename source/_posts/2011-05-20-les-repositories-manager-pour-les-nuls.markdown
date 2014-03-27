@@ -50,14 +50,14 @@ Nexus offre 3 types de repositories :
 	* codehaus-snapshot (http://snapshots.repository.codehaus.org/),  
 	* et maven-central-repo (http://repo1.maven.org/maven2/)
 * __Hosted Repository__ qui sont des repositories hébergés par Nexus. Par défaut, Nexus vient configuré avec les hosted repositories suivants : 
-	* 3rd Party devant être utilisé pour des librairies non présentes dans les repositories maven publics
-	* Releases devant être utilisé pour les librairies stable de l'organisation 
-	* Snapshots devant être utilisé pour les librairies en cours de développement de l'organisation
+	* _3rd Party_ devant être utilisé pour des librairies non présentes dans les repositories maven publics
+	* _Releases_ devant être utilisé pour les librairies stable de l'organisation 
+	* _Snapshots_ devant être utilisé pour les librairies en cours de développement de l'organisation
 * __Virtual Repository__ qui peut être vu comme un adaptateur de repositories au format différents que ceux attendus. Par défaut, Nexus vient configuré avec 2 virtual repository permettant la conversion de repository au format maven 1 et 2 vers (respectivement) des repositories au format maven 2 et maven 1.
 
 ![meidum](http://3.bp.blogspot.com/-2j9iQR-sn4Q/TdZAGVFRyiI/AAAAAAAAAWg/4D9WVWTH-38/s1600/nexus02.png)
 
-En outre, Nexus propose la notion de __groupe__ qui permet de combiner de multiples repositories sous la même url d'accès. Ainsi, cela permet d'alléger la configuration du fichier settings.xml en offrant, sous la houlette d'un groupe, l'aggrégation de plusieurs repositories pouvant être de différentes natures.
+En outre, Nexus propose la notion de __groupe__ qui permet de combiner de multiples repositories sous la même url d'accès. Ainsi, cela permet d'alléger la configuration du fichier `settings.xml` en offrant, sous la houlette d'un groupe, l'aggrégation de plusieurs repositories pouvant être de différentes natures.
 
 Par exemple, Nexus vient configuré avec les deux groupes suivants :
 
@@ -71,13 +71,14 @@ Par exemple, Nexus vient configuré avec les deux groupes suivants :
 
 Il est à noter que l'ordre de déclaration des repositories dans un groupe a son importance puisque la recherche est ordonnée et que dès que la librairies est trouvée, la recherche s'arrête et l'artéfact rendu (ainsi, il convient de mettre le repository succeptible de posséder les librairies les plus recherchés en premier).
 
-En outre, il est possible d'associer à un groupe des routes qui se comportent comme des filtres permettant ainsi d'inclure ou d'exclure des repositories. Cette fonctionnalité peut, par exemple, être utilisée afin d'être sûr que les artéfacts récupérés dans un groupe donné ne sont que ceux de l'organisation (en s'appuyant sur le groupId maven).
+En outre, il est possible d'associer à un groupe des routes qui se comportent comme des filtres permettant ainsi d'inclure ou d'exclure des repositories. Cette fonctionnalité peut, par exemple, être utilisée afin d'être sûr que les artéfacts récupérés dans un groupe donné ne sont que ceux de l'organisation (en s'appuyant sur le _groupId_ maven).
 
 ![center](http://2.bp.blogspot.com/-AxzBLRMUcQA/TdZAcBJX_oI/AAAAAAAAAWs/btqGC8lg5r8/s1600/nexus06.png)
 
 #Gestion des repositories dans le cas où plusieurs équipes accèdent au même repository Manager
 
 Ces recommandations s'appuient sur le chapitre 17 du guide sur Nexus.
+
 Les façons les plus communes pour supporter différentes équipes est :
 
 * d'associer spécifiquement à chaque équipe/projet deux repositories (un repository release et un repository snapshot) en leurs associant les bons droits.
@@ -101,8 +102,8 @@ Enfin, ce paragraphe liste en vrac un certain nombre de points qu'il peut être 
 Ayant la flemme de commenter les différents points, je ne jetterai que les idées sans ordre de préférence en laissant le soin à chacun de les prendre en compte... ou pas... ;-)
 
 * Utilisation et mise en oeuvre de repository de Staging.
-* Attention au distributionManagement se trouvant dans le pom parent (ce qui est une bonne pratique malgré tout) : il peut être nécessaire de positionner cette information dans le fichier settings.xml via des propriétés afin de permettre une éventuelle migration du repository Manager sur un autre serveur (et s'il n'est pas possible d'avoir un DNS) et cela sans avoir à maintenir à tout jamais une redirection apache (cf. bonnes pratiques maven) (http://maven.40175.n5.nabble.com/Can-t-specify-distributionManagement-in-settings-xml-td3181781.html).
-* Le repository Manager étant un élément clé de l'usine logicielle au même titre qu'un annuaire d'entreprise pour une entreprise, il peut s'apparenter à un Single Point Of Failure (même s'il est possible de le mirrorer). Aussi, il convient de superviser le serveur avec soin (CPU, RAM, IO, espace disque, ...) et si possible de posséder une machine dédiée à cette tache. En outre, il convient de faire attention, si une VM est utilisée, de lui affecter suffisamment de ressources qu'elles soient réseau ou autre. 
+* Attention au `distributionManagement` se trouvant dans le pom parent (ce qui est une bonne pratique malgré tout) : il peut être nécessaire de positionner cette information dans le fichier `settings.xml` via des propriétés afin de permettre une éventuelle migration du repository Manager sur un autre serveur (et s'il n'est pas possible d'avoir un DNS) et cela sans avoir à maintenir à tout jamais une redirection apache (cf. bonnes pratiques maven) (http://maven.40175.n5.nabble.com/Can-t-specify-distributionManagement-in-settings-xml-td3181781.html).
+* Le repository Manager étant un élément clé de l'usine logicielle au même titre qu'un annuaire d'entreprise pour une entreprise, il peut s'apparenter à un _Single Point Of Failure_ (même s'il est possible de le mirrorer). Aussi, il convient de superviser le serveur avec soin (CPU, RAM, IO, espace disque, ...) et si possible de posséder une machine dédiée à cette tache. En outre, il convient de faire attention, si une VM est utilisée, de lui affecter suffisamment de ressources qu'elles soient réseau ou autre. 
 * Mettre en place un Repository Manager, même s'il s'agit d'une tache aisée, peut demander du temps mais également quelques connaissances de base. Aussi, il ne faut pas prendre cette tache à la légère, en particulier concernant les choix d'organisation des différents repositories ainsi que des choix de sécurité. En effet, migrer d'une solution à une autre, même si cela est généralement possible, peut avoir des conséquences sur l'ensemble du parc informatique de développement.
 * Un repository Manager (ou plutôt ses hosted repositories) contenant les binaires et éventuellement les livrables des projets, il est important de le sauvegarder avec soin.
 * Il convient de réfléchir aux besoins de mettre en place une authentification des différents repositories et, dans ce cas, du besoin de la coupler à un annuaire. 
@@ -111,7 +112,7 @@ Ayant la flemme de commenter les différents points, je ne jetterai que les idé
 
 ![medium](http://1.bp.blogspot.com/-q-ibFGeayTU/TdZBL9AfMxI/AAAAAAAAAXA/4AZv5qunm_A/s1600/nexus11.png)
 
-Enfin un point transverse, mais si la sécurité est mise en place sur les repositories et qu'elle utilise une authentification pour chaque utilisateur, il est possible de crypter les mots de passe plutôt que de les avoir en clair dans le fichier settings.xml (http://sonatype.com/books/maven-book/reference/appendix-settings-sect-encrypting-passwords.html et http://maven.apache.org/guides/mini/guide-encryption.html).
+Enfin un point transverse, mais si la sécurité est mise en place sur les repositories et qu'elle utilise une authentification pour chaque utilisateur, il est possible de crypter les mots de passe plutôt que de les avoir en clair dans le fichier `settings.xml` (http://sonatype.com/books/maven-book/reference/appendix-settings-sect-encrypting-passwords.html et http://maven.apache.org/guides/mini/guide-encryption.html).
 
 #Conclusion
 
@@ -122,7 +123,7 @@ Concernant les trucs et astuces, si vous en avez d'autre, je suis preneur et je 
 #Pour aller plus loin...
 
 * Pdf de Sonatype sur Nexus : http://www.sonatype.com/repository-management-with-nexus-book.html
-* Apache Maven de N. De Loof, A. Héritier chez Pearson
+* __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf
 * Maven. Definitive Guide : http://www.sonatype.com/products/maven/documentation/book-defguide
 * Site de maven : http://maven.apache.org/

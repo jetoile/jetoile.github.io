@@ -11,20 +11,23 @@ categories:
 
 ![left-small](http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png)
 
-Cet article fait suite à mes précédents posts (ici et là) et à pour objectif d'intégrer la partie JMX à mon petit POC JGroups afin d'offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d'une application distribuée (ie. d'aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d'une application d'obtenir la valeur d'une donnée offerte par les autres instances.
+Cet article fait suite à mes précédents posts ([ici](/2011/01/pour-les-gouverner-tous-partie-13.html) et [là](/2011/02/pour-les-gouverner-tous-partie-23.html)) et à pour objectif d'intégrer la partie JMX à mon petit POC JGroups afin d'offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d'une application distribuée (ie. d'aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d'une application d'obtenir la valeur d'une donnée offerte par les autres instances.
 
 <!-- more -->
-#Expression du besoin et conception
-Comme je l'ai expliqué ici, le principe est simple : en démarrant son application qui aura à sa charge d'appeler un petit bout de code de notre toolkit, tous les MBeans se trouvant sur les autres serveurs JMX (modulo que l'application qui les ait démarrés ait démarré en instanciant notre toolkit) doivent être remonter dans notre serveur JMX courant. Réciproquement, tous les MBeanServer devront enregistrer les MBeans offerts par notre instance d'application.
 
-Pour ce faire, notre toolkit gérera la partie JMX, c'est-à-dire qu'il créera un connecteur JMX serveur (connecteur s'appuyant sur le protocole RMI) permettant d'accéder au MBeanServer courant (ie. il utilisera le MBeanServer s'il en existe un ou, dans le cas échéant, il en créera un) et qu'il l'exposera aux autres instances en fournissant un stub de la partie connecteur JMX cliente. Ce stub permettra aux autres instances d'instancier la couche de communication nécessaire vers le MBeanServer cible. C'est ce stub qui sera transmis par JGroups (et qui remplacera donc la donnée partagée de notre POC JGroups).
+#Expression du besoin et conception
+
+Comme je l'ai expliqué [ici](/2011/01/pour-les-gouverner-tous-partie-13.html), le principe est simple : en démarrant son application qui aura à sa charge d'appeler un petit bout de code de notre toolkit, tous les MBeans se trouvant sur les autres serveurs JMX (modulo que l'application qui les ait démarrés ait démarré en instanciant notre toolkit) doivent être remonter dans notre serveur JMX courant. Réciproquement, tous les MBeanServer devront enregistrer les MBeans offerts par notre instance d'application.
+
+Pour ce faire, notre toolkit gérera la partie JMX, c'est-à-dire qu'il créera un connecteur JMX serveur (connecteur s'appuyant sur le protocole RMI) permettant d'accéder au MBeanServer courant (ie. il utilisera le MBeanServer s'il en existe un ou, dans le cas échéant, il en créera un) et qu'il l'exposera aux autres instances en fournissant un stub de la partie connecteur JMX cliente. Ce stub permettra aux autres instances d'instancier la couche de communication nécessaire vers le MBeanServer cible. C'est ce stub qui sera transmis par JGroups (et qui remplacera donc la donnée partagée de notre _POC_ JGroups).
 
 Ca va? Tout le monde suit? Bon, on va pouvoir accélérer... ;-)
 
-Ainsi, lorsqu'une nouvelle instance sera démarrée dans le système, les instances déjà présentes seront notifiées de l'arrivé d'un nouveau membre dans la vue (concepts JGroups et cf. post précédent). Suite à cela, elles récupèreront le stub du JMXConnector du nouveau MBeanServer (toujours cf. post précédent) qui leur permettra de créer un proxy dynamique correspondant aux MBeans présents dans le MBeanServer cible. Ce proxy dynamique sera instancié et enregistré comme étant un nouveau MBean dans le MBeanServer de l'instance courante.
-Cependant, ce proxy dynamique ne pourra pas être utilisé directement (sinon ça serait trop simple). En effet, la méthode statique JMX.newMBeanProxy() permet de créer un proxy dynamique du MBean standard d'un MBeanServer distant ou local. Cependant, il n'est pas possible de l'enregistrer comme MBean au sein d'un MBeanServer car il ne répond alors pas à la règle : "un MBean doit implémenter une interface de type MBean ou DynamicMBean". Aussi, la solution retenue a été de wrapper ce proxy dynamique dans un MBean dynamique. Ce wrapper fera donc passe-plat (en utilisant la réflexion) avec le proxy dynamique récupéré par la méthode JMX.newMBeanProxy() lors de l'invocation d'opérations dessus (pour ce faire, il s'appuiera sur les normes spécifiées par JMX pour l'accès en lecture/écriture aux variables d'instance).
+Ainsi, lorsqu'une nouvelle instance sera démarrée dans le système, les instances déjà présentes seront notifiées de l'arrivé d'un nouveau membre dans la vue ([concepts JGroups](/2010/12/jgroups-tour-d.html) et cf. [post précédent](/2011/02/pour-les-gouverner-tous-partie-23.html)). Suite à cela, elles récupèreront le stub du JMXConnector du nouveau MBeanServer (toujours cf. [post précédent](/2011/02/pour-les-gouverner-tous-partie-23.html)) qui leur permettra de créer un proxy dynamique correspondant aux MBeans présents dans le MBeanServer cible. Ce proxy dynamique sera instancié et enregistré comme étant un nouveau MBean dans le MBeanServer de l'instance courante.
 
-En outre, pour le cas spécifique des MXBeans (un certain nombre de MXBean est spécifié par JMX : http://download.oracle.com/javase/6/docs/api/), un traitement particulier sera effectué. En effet, JMX offre la possibilité de créer directement un proxy de l'interface d'un MXBean donné via la méthode statique ManagementFactory.newPlatformMXBeanProxy(). Aussi, pour les MXBeans, notre wrapper ne sera pas utilisé puisqu'il est possible d'enregistrer directement au sein de notre MBeanServer courant le MXBean distant.
+Cependant, ce proxy dynamique ne pourra pas être utilisé directement (sinon ça serait trop simple). En effet, la méthode statique `JMX.newMBeanProxy()` permet de créer un proxy dynamique du MBean standard d'un MBeanServer distant ou local. Cependant, il n'est pas possible de l'enregistrer comme MBean au sein d'un MBeanServer car il ne répond alors pas à la règle : "un MBean doit implémenter une interface de type MBean ou DynamicMBean". Aussi, la solution retenue a été de wrapper ce proxy dynamique dans un MBean dynamique. Ce wrapper fera donc passe-plat (en utilisant la réflexion) avec le proxy dynamique récupéré par la méthode `JMX.newMBeanProxy()` lors de l'invocation d'opérations dessus (pour ce faire, il s'appuiera sur les normes spécifiées par JMX pour l'accès en lecture/écriture aux variables d'instance).
+
+En outre, pour le cas spécifique des MXBeans (un certain nombre de MXBean est spécifié par JMX : http://download.oracle.com/javase/6/docs/api/), un traitement particulier sera effectué. En effet, JMX offre la possibilité de créer directement un proxy de l'interface d'un MXBean donné via la méthode statique `ManagementFactory.newPlatformMXBeanProxy()`. Aussi, pour les MXBeans, notre wrapper ne sera pas utilisé puisqu'il est possible d'enregistrer directement au sein de notre MBeanServer courant le MXBean distant.
 
 Bien sûr, encore une fois, cela aurait été trop simple s'il n'y avait pas un mais... ;-) En effet, la spécification JMX précise qu'il est possible d'avoir plusieurs MXBeans de type `MemoryPoolMXBean`, `MemoryManagerMXBean` et `GarbageCollector` (cf. http://download.oracle.com/javase/6/docs/api/). Dans ces cas précis, ce sont les propriétés de ces MXBeans qui permettent de les différencier : un traitement particulier sera donc effectué dans ces cas précis puisqu'une recherche pour décrouvrir les propritétés du MXBean sera faite.
 
@@ -34,7 +37,7 @@ En outre, un cas particulier lié à la JRE 6 de Sun (Hostpot) a, ici, été tra
 
 ##Intégration de JMX
 
-<u>Note</u> : à noter que le code présenté dans cet article comporte quelques raccourcis et n'a pour objectif que de montrer les points clé. Aussi, certaines portions (comme, entre autre, la gestion des threads, des exceptions ou les méthodes equals(), hashCode() ou toString()) ne sont pas présentes par soucis de clarté. Le code complet peut être trouvé sur GitHub : https://github.com/jetoile/jmanager4all.
+<u>Note</u> : à noter que le code présenté dans cet article comporte quelques raccourcis et n'a pour objectif que de montrer les points clé. Aussi, certaines portions (comme, entre autre, la gestion des threads, des exceptions ou les méthodes `equals()`, `hashCode()` ou `toString()`) ne sont pas présentes par soucis de clarté. Le code complet peut être trouvé sur GitHub : https://github.com/jetoile/jmanager4all.
 
 Ici, la donnée, traduite par la classe `Data` dans mon article précédent, sera remplacée par le stub au `JMXConnector`. Ce stub sera créé par la classe utilisée pour instancier les objets nécessaires à la bonne initalisation du toolkit et il sera encapsulé dans la classe `JManagerConnector` (à noter, bien sûr que la classe `RMIConnector` (implémentation de l'interface `JMXConnector`) utilisée ici est sérialisable) lors de sa transmission entre les différentes instances de l'application.
 
@@ -120,7 +123,7 @@ public class JManager4All {
 }
 ```
 
-On remarquera également que cette classe instancie et démarre une instance d'un `JGroupsBindingComponent` qui s'occupe de la couche communication pour récupérer nos stubs du système (ici, ça sera JGroups). Je ne reviendrai pas sur les détails d'implémentation de cette partie puisque cela a déjà été traité ici.
+On remarquera également que cette classe instancie et démarre une instance d'un `JGroupsBindingComponent` qui s'occupe de la couche communication pour récupérer nos stubs du système (ici, ça sera JGroups). Je ne reviendrai pas sur les détails d'implémentation de cette partie puisque cela a déjà été traité [ici](/2011/02/pour-les-gouverner-tous-partie-23.html).
 
 A noter également que nos stubs seront conservés dans un cache `JMXConnectorStubCache` qui déclenchera, lorsqu'un élément (ie. un stub d'un `JMXConnector`) sera ajouté ou supprimé, la récupération de nos MBean distant et leur enregistrement au sein du MBeanServer courant (resp. leur suppression).
 
@@ -156,7 +159,7 @@ La récupération des MBeans distants est globalement simple et suit le schéma 
 
 * à partir du `JMXConnector` client, récupération du `MBeanServerConnection`,
 * à partir du `MBeanServerConnection`, une recherche est lancée sur le `MBeanServer` distant pour récupérer l'ensemble des `ObjectInstance` présenst sur ce dernier,
-* pour chaque `ObjectInstance` qui n'est pas dans le domaine JMX "remote" (qui sera le domaine utilisé pour stocker les proxy des MBeans distants), création d'un proxy dynamique représentant l'objet exposé par le MBean et encapsulation de ce dernier dans la classe `MBeanWrapper` qui est un `DynamicMBean`,
+* pour chaque `ObjectInstance` qui n'est pas dans le domaine JMX _"remote"_ (qui sera le domaine utilisé pour stocker les proxy des MBeans distants), création d'un proxy dynamique représentant l'objet exposé par le MBean et encapsulation de ce dernier dans la classe `MBeanWrapper` qui est un `DynamicMBean`,
 * enfin enregistrement de chaque `DynamicMBean` créé dans le `MBeanServer` local via un `ObjectName` défini grâce à :
 	* ses propriétés, 
 	* son domaine JMX distant sous forme de propriété _"subdomain"_, 
@@ -363,7 +366,7 @@ On voit donc que le processus n'est pas vraiment compliqué. Pour le cas des MXB
 
 En effet, plusieurs cas se présentent :
 
-* Pour les `MXBeans` de types (type au sens propriété JMX) __Compilation__, __ClassLoading__, __Memory__, __OperationSystem__, __Runtime__ et __Threading__, cela ne pose pas de problèmes puisque la spécification JMX nous dit qu'il n'y a qu'un seul MBean de ce type dans le `MBeanServer` pour domaine java.lang. Dans ce cas, il suffit juste d'instancier un proxy dynamique du MXBean lui-même et de l'enregistrer avec le "bon" `ObjectName`.
+* Pour les `MXBeans` de types (type au sens propriété JMX) __Compilation__, __ClassLoading__, __Memory__, __OperationSystem__, __Runtime__ et __Threading__, cela ne pose pas de problèmes puisque la spécification JMX nous dit qu'il n'y a qu'un seul MBean de ce type dans le `MBeanServer` pour domaine _java.lang_. Dans ce cas, il suffit juste d'instancier un proxy dynamique du MXBean lui-même et de l'enregistrer avec le "bon" `ObjectName`.
 * par contre, pour les `MXBeans` de types __MemoryPool__, __GarbageCollector__ et __MemoryManager__, vu qu'il peut y en avoir plusieurs, une recherche est effectuée (en limitant la recherche aux `MBeans` voulus bien sûr...) sur le `MBeanServer` distant afin d'obtenir (mais également d'instancier) le bon type de proxy dynamique mais également les bonnes propriétés sous lequel il est enregistré.
 
 ```java
@@ -440,7 +443,7 @@ Pour le cas particulier du `MXBean HotspotDiagnostic`, je vous laisse le soin de
 
 Bien entendu, si une instance venait à disparaitre, il est nécessaire de désenregistrer ses `MBeans` pour chaque instance de l'application encore présente.
 
-Là encore, la principe est ultra-simple puisqu'il suffit de récupérer l'ensemble des MBeans qui se trouvent dans le domaine JMX "remote" (qui pour rappel est le domaine utilisé pour enregistrer tous nos proxy) avec la "bonne" propriété (à savoir la propriété "instance" qui doit valoir la valeur de l'adresse de l'instance à supprimer) et de les désenregistrer du `MBeanServer` local.
+Là encore, la principe est ultra-simple puisqu'il suffit de récupérer l'ensemble des MBeans qui se trouvent dans le domaine JMX _"remote"_ (qui pour rappel est le domaine utilisé pour enregistrer tous nos proxy) avec la "bonne" propriété (à savoir la propriété `instance` qui doit valoir la valeur de l'adresse de l'instance à supprimer) et de les désenregistrer du `MBeanServer` local.
 
 ```java
 void handleRemove() throws Exception {
@@ -458,7 +461,7 @@ On a vu tout au long de cette article comment il était possible d'utiliser JMX 
 
 Par contre, je n'ai pas testé le comportement dans le cas où des notifications seraient émises... en outre, si un service de __Relation__ JMX était utilisé, je pense que cela pourrait poser quelques soucis...
 
-A noter que je suis tombé tout récemment sur une autre solution (que je n'ai pas testé) qui permet d'aggréger des informations JMX au sein d'un même serveur `MBeanServer`. La cible n'est pas tout à fait identique mais peut être suffisante pour la plupart des cas... par contre, il faut aimer Spring... ;-)
+A noter que je suis tombé tout récemment sur une [autre solution](http://blog.infin-it.fr/2010/08/05/aggregateur-jmx-2/) (que je n'ai pas testé) qui permet d'aggréger des informations JMX au sein d'un même serveur `MBeanServer`. La cible n'est pas tout à fait identique mais peut être suffisante pour la plupart des cas... par contre, il faut aimer Spring... ;-)
 
 #Pour aller plus loin...
 

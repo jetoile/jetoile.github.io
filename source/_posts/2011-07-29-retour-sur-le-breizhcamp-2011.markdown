@@ -10,7 +10,7 @@ categories:
 
 ![left-small](http://3.bp.blogspot.com/-MLdvtEQ7N4U/TjLfDRfW5uI/AAAAAAAAAZk/ldnfjvp-c2o/s1600/BreizhCamp.png)
 
-Cela fait un petit moment (plus d'un mois déjà...) qu'a eu lieu le [BreizhCamp](http://www.breizhcamp.org/. 
+Cela fait un petit moment (plus d'un mois déjà...) qu'a eu lieu le [BreizhCamp](http://www.breizhcamp.org/). 
 
 Pour les néophytes, BreizhCamp est une journée de conférence sur diverses technologies allant de Python, en passant par .Net pour, finalement finir sur Java.
 

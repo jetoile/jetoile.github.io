@@ -10,7 +10,7 @@ categories:
 
 ![left-small](http://2.bp.blogspot.com/-MCxyo51Js9s/Tp9Ovki7AQI/AAAAAAAAAcc/6wlTc_Wq_mg/s1600/FuseCommunityDay03.png)
 Ce jeudi 13 octobre dernier a eu lieu la troisième édition du FuseSource Community Day à la Défense.
-Pour ceux qui ne connaissent pas la société FuseSource, il s'agit, en fait, du nouveau nom de Iona et c'est une société spécialisée dans l'open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation [Apache](http://apache.org/).
+Pour ceux qui ne connaissent pas la société [FuseSource](http://fusesource.com/), il s'agit, en fait, du nouveau nom de Iona et c'est une société spécialisée dans l'open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation [Apache](http://apache.org/).
 
 Parmi ces produits, on peut y trouver : 
 
@@ -28,7 +28,7 @@ En fait, si elle propose un package gratuit de ces différents produits, elle of
 
 Cet accompagnement est d'autant plus crédible que la société participe activement à ces framework puisqu'elle compte en son sein de nombreux commiteurs/créateurs de ces framework, ce qui permet de bénéficier d'une vrai expertise mais, aussi, d'être assurée que les corrections seront bien reversées à la communauté (ça c'est mon coté geek qui parle... ;-) ).
 
-Pour revenir au FuseSource Community Day, il s'agit d'une journée de conférences allant de la présentation/démonstration des dernières features d'un produit aux annonces de Roadmap en passant par des retours clients.
+Pour revenir au FuseSource Community Day, il s'agit d'une journée de conférences allant de la présentation/démonstration des dernières features d'un produit aux annonces de _Roadmap_ en passant par des retours clients.
 
 Vous l'aurez compris, ayant eu l'opportunité d'y participer, je tenais à remercier grandement FuseSource pour cette excellente journée que j'ai passée en leur compagnie : c'était une journée passionnante où j'ai eu la chance de rencontrer quelques-uns des créateurs/commiteurs de ces produits et où j'ai pu assister à des présentations de qualité.
 
@@ -45,5 +45,6 @@ Coté programme, voilà ce que vous avez manqué :
 
 PS : Je tenais aussi à préciser que je ne touche rien pour ce post mais que cela me faisait plaisir de parler d'une société full open source ;-)
 
-PS2 : Pour ceux qui me connaissent et qui savent que je n'aime pas Apache Camel (cf. ici), cela n'a pas changé mais je veux bien admettre qu'il faut parfois savoir replacer le métier en avant et pas juste faire ses choix en fonction de l'architecture intrinsèque d'un produit ou parce qu'on trouve qu'une API n'est pas assez sexy... ;-)
+PS2 : Pour ceux qui me connaissent et qui savent que je n'aime pas Apache Camel (cf. [ici](/2010/03/spring-integration-vs-apache-camel.html)), cela n'a pas changé mais je veux bien admettre qu'il faut parfois savoir replacer le métier en avant et pas juste faire ses choix en fonction de l'architecture intrinsèque d'un produit ou parce qu'on trouve qu'une API n'est pas assez sexy... ;-)
+
 Par contre, j'ai trouvé bluffante la présentation sur [Fuse Fabric](http://fuse.fusesource.org/fabric/) et je vous invite vraiment à aller y jeter un oeil...

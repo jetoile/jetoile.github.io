@@ -9,7 +9,7 @@ categories:
 - présentation
 - soa
 ---
-Ci-dessous se trouve une présentation que j'ai donné dans le cadre de So@t sur les problématiques liées aux architectures distribuées. Pour information, c'est un retour d'expérience d'une mission qui date un peu puisque c'était en 2007 mais les préconisations restent identiques à ce jour.
+Ci-dessous se trouve une présentation que j'ai donné sur les problématiques liées aux architectures distribuées. Pour information, c'est un retour d'expérience d'une mission qui date un peu puisque c'était en 2007 mais les préconisations restent identiques à ce jour.
 
 Enjoy et n'hésitez pas à commenter ;-) 
 

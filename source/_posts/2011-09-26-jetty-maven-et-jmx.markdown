@@ -52,7 +52,7 @@ Comme annoncé précédemment, notre application web cible se compose de :
 
 * un Servlet,
 * une page JSP,
-* un POJO utilisé par Spring pour la partie MBean (Spring aura, à sa charge, sa proxification en MBean Standard et son enregistrement au sein du MBean Server),
+* un POJO utilisé par Spring pour la partie MBean (Spring aura, à sa charge, sa _proxification_ en MBean Standard et son enregistrement au sein du MBean Server),
 * un fichier de configuration web.xml,
 * et un fichier de contexte Spring.
 
@@ -82,7 +82,7 @@ public class SimpleServlet extends HttpServlet {
 }
 ```
 
-On constate que le Servlet est basique. Il n'y a donc rien à dire dessus si ce n'est la récupération du POJO proxifié par Spring pour incrémenter un compteur qui sera exposé en JMX.
+On constate que le Servlet est basique. Il n'y a donc rien à dire dessus si ce n'est la récupération du POJO _proxifié_ par Spring pour incrémenter un compteur qui sera exposé en JMX.
 
 ##Code du POJO utilisé comme MBean Standard
 
@@ -104,7 +104,7 @@ public class SimpleCounter {
 }
 ```
 
-Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l'attribut nbGet accessible en lecture/écriture par la couche cliente JMX.
+Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l'attribut `nbGet` accessible en lecture/écriture par la couche cliente JMX.
 
 ##Code de la jsp
 ```xml
@@ -154,7 +154,7 @@ Rien de particulier non plus à dire sur la jsp...
 </web-app>
 ```
 
-Le fichier descripteur web.xml est classique donc rien de nouveau sur les tropiques ;-). Comme dit plus haut, c'est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.
+Le fichier descripteur `web.xml` est classique donc rien de nouveau sur les tropiques ;-). Comme dit plus haut, c'est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.
 
 ##Code du contexte Spring
 
@@ -178,7 +178,7 @@ Le fichier descripteur web.xml est classique donc rien de nouveau sur les tropiq
 </beans>
 ```
 
-Concernant le fichier descripteur de Spring, on constate que la classe MBeanServerFactoryBean de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c'est le MBeanExporter qui a la charge de l'enregistrement du MBean injecté.
+Concernant le fichier descripteur de Spring, on constate que la classe `MBeanServerFactoryBean` de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c'est le `MBeanExporter` qui a la charge de l'enregistrement du MBean injecté.
 
 #Application web exécutable via Jetty au sein de Maven
 
@@ -187,7 +187,7 @@ Afin de permettre une exécution de notre application web dans un Jetty embedded
 Elle est la suivante :
 ![center](http://3.bp.blogspot.com/-q2jJEYSygfg/TnErFlaNEDI/AAAAAAAAAag/2vgwO_zYc6A/s1600/jmx-sample-tree.png)
 
-Concernant le fichier descripteur pom.xml, il contiendra, bien sûr, le plugin nécessaire au lancement de jetty.
+Concernant le fichier descripteur `pom.xml`, il contiendra, bien sûr, le plugin nécessaire au lancement de jetty.
 
 Afin d'être plus exhaustif, dans notre POC, deux profils Maven seront utilisés afin de pouvoir spécifier la version de Jetty à utiliser (le choix sera laissé entre Jetty 6 et 7). En outre, le port d'écoute est forcé à 9090 :
 
@@ -361,25 +361,25 @@ Après avoir montré l'application web ainsi que la configuration du plugin Mave
 ![center](http://1.bp.blogspot.com/-MC5ASoy7hYY/TnEsBl97o9I/AAAAAAAAAao/wKFzpPyRaI0/s1600/visualVM.png)
 
 ![center](http://1.bp.blogspot.com/-h1-h-jZ47Ys/TnEr6OFgvnI/AAAAAAAAAak/hkrxFyewmwA/s1600/jconsole.png)
-Cependant, même si nos JConsole ou VisualVM préférées proposent une connexion au MBean Server local (visible au travers notre processus Maven3 org.codehaus.plexus.classworlds.launcher.Launcher), il n'est pas possible d'effectuer une connexion en spécifiant le JMXServiceURL de type : service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi .
+Cependant, même si nos JConsole ou VisualVM préférées proposent une connexion au MBean Server local (visible au travers notre processus Maven3 `org.codehaus.plexus.classworlds.launcher.Launcher`), il n'est pas possible d'effectuer une connexion en spécifiant le JMXServiceURL de type : `service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi` .
 
 En effet, par défaut, Jetty ne créé pas de MBeanServer et, à fortiori, n'enregistre aucun connecteur RMI nécessaire à une application JMX cliente.
 
-A titre informatif, même en démarrant un serveur Jetty en mode standalone, il est nécessaire de préciser, à son démarrage, le fichier de configuration jetty-jmx.xml se trouvant, par défaut, dans son répertoire etc et qu'il faut éditer (pour préciser le port du serveur RMI à démarrer et le JMXServiceURL du connecteur JMX RMI).
+A titre informatif, même en démarrant un serveur Jetty en mode standalone, il est nécessaire de préciser, à son démarrage, le fichier de configuration `jetty-jmx.xml` se trouvant, par défaut, dans son répertoire etc et qu'il faut éditer (pour préciser le port du serveur RMI à démarrer et le JMXServiceURL du connecteur JMX RMI).
 Pour Jetty 7, cela peut être fait, soit en modifiant le fichier start.ini, soit en démarrant Jetty en ligne de commande :
 
 ```bash
 java -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
 ```
-Pour Jetty 6, cela peut être fait, soit en modifiant le fichier bin/jetty-service.conf, soit en démarrant Jetty en ligne de commande :
+Pour Jetty 6, cela peut être fait, soit en modifiant le fichier `bin/jetty-service.conf`, soit en démarrant Jetty en ligne de commande :
 
 ```bash
 java -DOPTIONS=jmx -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
 ```
 
-Aussi, pour activer la création d'un serveur RMI et créer un MBean Server dans le Jetty embarqué par Maven, il est nécessaire de fournir au plugin le fichier jetty-jmx.xml.
+Aussi, pour activer la création d'un serveur RMI et créer un MBean Server dans le Jetty embarqué par Maven, il est nécessaire de fournir au plugin le fichier `jetty-jmx.xml`.
 
-Pour ce faire, il est possible de spécifier une configuration à Jetty via l'élément : &lt;<jettyConfig&gt;
+Pour ce faire, il est possible de spécifier une configuration à Jetty via l'élément : `<jettyConfig>`
 ```xml
 <profiles>
  <profile>

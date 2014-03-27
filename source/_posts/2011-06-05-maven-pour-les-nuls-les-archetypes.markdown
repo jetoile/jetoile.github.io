@@ -376,8 +376,8 @@ Pour ce faire, il n'y a qu'à ajouter une propriété dans le fichier src/main/r
 
 Modifier le nom des fichiers java :
 
-* Test.java en \_\_className\_\_.java
-* TestTest en \_\_className\_\_.java
+* `Test.java` en `__className__.java`
+* `TestTest` en `__className__.java`
 
 Et remplacer dans les fichiers respectifs :
 ```java
@@ -431,7 +431,7 @@ Nous avons vu dans cet article qu'il était extrêmement simple de créer un arc
 * du projet permettant de créer l'archetype : https://github.com/jetoile/project-template-archetype
 
 
-Cependant, je n'ai pas invoqué ici le cas de projets multimodules mais le principe reste identique, même s'il est possible d'utiliser d'autres templates (tel que __rootArtifactId__) si l'on souhaite préfixer le nom des modules avec l'artifactId du projet généré ou si l'on souhaite customiser plus finement un nom de répertoire (ou package) : dans ce cas, il peut être souhaitable d'ajouter d'autres propriétés dans le fichier archetype-metadata.xml :
+Cependant, je n'ai pas invoqué ici le cas de projets multimodules mais le principe reste identique, même s'il est possible d'utiliser d'autres templates (tel que `__rootArtifactId__`) si l'on souhaite préfixer le nom des modules avec l'artifactId du projet généré ou si l'on souhaite customiser plus finement un nom de répertoire (ou package) : dans ce cas, il peut être souhaitable d'ajouter d'autres propriétés dans le fichier archetype-metadata.xml :
 
 ```xml
 <module id="${rootArtifactId}-core" dir="__rootArtifactId__-core" name="${rootArtifactId}-core">

@@ -24,7 +24,7 @@ Donc, en gros, vous l'aurez compris, au vu de mon enthousiasme, merci encore et 
 Bon, et pour les néophytes, je vais tenter de vous présenter succinctement ce que vous avez loupé (pour des CRs, je vous invite à aller voir d'autres sites comme celui de So@t, de [Nicolas Martignole](http://www.touilleur-express.fr/) et de [Claude Falguière](http://cfalguiere.wordpress.com/2011/09/17/le-jug-summer-camp-cest-fini-pour-cette-annee/)).
 
 Le JugSummerCamp est donc une journée entière de conférences se déroulant à La Rochelle plutôt orientées Java.
-Pour donner un ordre d'idée, ci-dessous le planning de la journée (pour les résumés des présentations, c'est ici) :
+Pour donner un ordre d'idée, ci-dessous le planning de la journée ~~(pour les résumés des présentations, c'est ici)~~ :
 ![large](http://1.bp.blogspot.com/-pZxE-O4uYEY/TnYRCzoJoxI/AAAAAAAAAbY/zcPDT6Nq7fA/s1600/planning.png)
 
 Voilà, plus grand chose à ajouter, les présentations parlent d'elles-mêmes... ;-)

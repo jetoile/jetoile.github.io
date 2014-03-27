@@ -11,7 +11,7 @@ categories:
 ![left-small](http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png)
 
 
-Cet article fait suite à mon article précédent et a pour objectif de présenter un petit POC (Proof Of Concept) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d'utiliser JGroups pour permettre à plusieurs instances d'une même application de se partager les valeurs d'une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s'agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d'une donnée auprès des autres instance déjà présentes dans le système. En outre, les autres instances déjà présentes devront recevoir directement la valeur de la donnée de la nouvelle instance.
+Cet article fait suite à mon [article précédent](/2011/01/pour-les-gouverner-tous-partie-13.html) et a pour objectif de présenter un petit POC (_Proof Of Concept_) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d'utiliser JGroups pour permettre à plusieurs instances d'une même application de se partager les valeurs d'une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s'agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d'une donnée auprès des autres instance déjà présentes dans le système. En outre, les autres instances déjà présentes devront recevoir directement la valeur de la donnée de la nouvelle instance.
 
 L'autre raison d'être de cet article permettra d'introduire la couche protocolaire utilisée par mon petit POC qui permet de rendre distribuable un agent JMX dans une architecture distribuée.
 
@@ -21,9 +21,9 @@ L'autre raison d'être de cet article permettra d'introduire la couche protocola
 
 Ce projet s'appuiera sur les pré-requis suivant :
 
-* slf4j/logback pour la partie log
-* maven 3 (ou 2 au choix) pour la partie build
-* et... JGroups dans sa version 2.11.0.GA ;-)
+* [slf4j](http://www.slf4j.org/)/[logback](http://logback.qos.ch/) pour la partie log
+* [maven 3](http://maven.apache.org/index.html) (ou 2 au choix) pour la partie build
+* et... [JGroups](http://www.jgroups.org/) dans sa version 2.11.0.GA ;-)
 
 Coté tests unitaires, je m'excuse préalablement auprès de vous, mais il n'y en aura pas... et cela pour deux raisons que je vous laisse choisir :
 
@@ -42,20 +42,21 @@ Coté configuration de JGroups, cet article s'appuiera sur une configuration par
 
 Comme vous pouvez vous en douter, l'architecture de l'application sera simple puisque JGroups fournit nativement de nombreuses possibilités. Aussi, je ne présenterai pas de super conception.
 
-Par contre, si les termes ReceiverAdapter, MembershipListener ou View ne vous parlent pas, je vous renverrai :
+Par contre, si les termes __ReceiverAdapter__, __MembershipListener__ ou __View__ ne vous parlent pas, je vous renverrai :
 
-* soit, à mon article sur JGroups ;-)
-* soit (mieux), à la documentation officielle de ce dernier.
+* soit, à mon [article](http://jetoile.blogspot.com/2010/12/jgroups-tour-d.html) sur JGroups ;-)
+* soit (mieux), à la [documentation](http://www.jgroups.org/ug.html) officielle de ce dernier.
 
 Notre application sera composée de trois parties :
 
-* La partie donnée : la classe Data représentera la donnée à faire transiter. Il s'agira d'un simple POJO qui sera, bien sûr, sérialisable.
-* La partie notification de changement de l'infrastructure (ie. arrivé ou arrêt d'une instance dans le système) : la classe ChangeInfraListener qui implémentera l'interface MembershipListener et donc la méthode viewAccepted() call-backé par JGroups pour notifier d'un changement au niveau d'une des ses vues.
-* La partie qui aura à sa charge l'exposition de la donnée représentée par la classe Data et qui aura initialisera l'application : la classe JGroupsClient qui étendra la classe ReceiverAdapter afin de permettre aux autres instances d'interargir avec.
+* La partie donnée : la classe `Data` représentera la donnée à faire transiter. Il s'agira d'un simple POJO qui sera, bien sûr, sérialisable.
+* La partie notification de changement de l'infrastructure (ie. arrivé ou arrêt d'une instance dans le système) : la classe `ChangeInfraListener` qui implémentera l'interface `MembershipListener` et donc la méthode `viewAccepted()` _call-backé_ par JGroups pour notifier d'un changement au niveau d'une des ses vues.
+* La partie qui aura à sa charge l'exposition de la donnée représentée par la classe `Data` et qui aura initialisera l'application : la classe `JGroupsClient` qui étendra la classe `ReceiverAdapter` afin de permettre aux autres instances d'interargir avec.
 
-Coté canaux, l'application en utilisera un seul canal : le canal "channel" qui sera utilisé pour être être notifié de changement d'état sur la vue (il sera donc connecté à la classe implémentant l'interface MembershipListener (ie. ChangeInfraListener) et qui sera également utilisé pour la communication point à point entre les différentes instances : pour rappel, à un membre d'une vue est associée une adresse unique et une vue contient l'ensemble des membres de cette dernière.
+Coté canaux, l'application en utilisera un seul canal : le canal _"channel"_ qui sera utilisé pour être être notifié de changement d'état sur la vue (il sera donc connecté à la classe implémentant l'interface `MembershipListener` (ie. `ChangeInfraListener`) et qui sera également utilisé pour la communication point à point entre les différentes instances : pour rappel, à un membre d'une vue est associée une adresse unique et une vue contient l'ensemble des membres de cette dernière.
 
-A noter que pour la récupération de la donnée au démarrage d'une instance, il aurait également été possible d'implémenter les méthodes getState() et setState() (en combinaison de l'utilisation de la méthode `connect(<String> , <Address>, <String>, <long>)` sur l'instance de Channel utilisée). Cependant, il était, quand même nécessaire d'implémenter la méthode viewAccepted() afin d'être notifié du démarrage ou de l'arrêt d'une instances dans le système et cela aurait été redondant avec les notifications reçues (en effet, récupérer l'état des autres instances des membres de la vue ne dispense pas de recevoir l'état de la vue via la méthode viewAccepted()). Aussi, je n'ai pas utilisé cette fonctionnalité de JGroups.
+A noter que pour la récupération de la donnée au démarrage d'une instance, il aurait également été possible d'implémenter les méthodes `getState()` et `setState()` (en combinaison de l'utilisation de la méthode `connect(<String> , <Address>, <String>, <long>)` sur l'instance de `Channel` utilisée). Cependant, il était, quand même nécessaire d'implémenter la méthode `viewAccepted()` afin d'être notifié du démarrage ou de l'arrêt d'une instances dans le système et cela aurait été redondant avec les notifications reçues (en effet, récupérer l'état des autres instances des membres de la vue ne dispense pas de recevoir l'état de la vue via la méthode `viewAccepted()`). Aussi, je n'ai pas utilisé cette fonctionnalité de JGroups.
+
 Diagramme de séquence lors de la connexion d'une nouvelle instance de l'application au système, coté nouvelle instance mais aussi coté instances déjà présentes dans le système :
 
 ![medium](http://4.bp.blogspot.com/-DsKcW_KWIZM/TWFDF_0MbsI/AAAAAAAAAUw/EAXva9PJsm8/s1600/jgroups_seq_diagram.png)
@@ -66,7 +67,7 @@ A noter que le code écrit ici ne contiendra pas les imports par souci de lisibi
 
 ##La classe JGroupsClient
 
-Commençons donc par la mise en oeuvre de la classe JGroupsClient :
+Commençons donc par la mise en oeuvre de la classe `JGroupsClient` :
 
 ```java
 package com.jetoile.jgroups.sample;
@@ -104,12 +105,12 @@ public class JGroupsClient extends ReceiverAdapter {
 
 Dans cette classe, on observe donc que l'on a :
 
- la méthode start() qui a à sa charge la partie connexion à JGroups,
-* la méthode getData() qui correspond à la méthode exposée utilisée pour transmettre la valeur de la donnée aux autres instances.
+* la méthode `start()` qui a à sa charge la partie connexion à JGroups,
+* la méthode `getData()` qui correspond à la méthode exposée utilisée pour transmettre la valeur de la donnée aux autres instances.
 
 ##La classe ChangeInfraListener
 
-Pour la classe ChangeInfraListener, nous aurons :
+Pour la classe `ChangeInfraListener`, nous aurons :
 ```java
 package com.jetoile.jgroups.sample;
  
@@ -203,13 +204,13 @@ public class ChangeInfraListener implements MembershipListener {
 }
 ```
 
-Dans cette classe, on observe que la méthode viewAccepted() (qui est la méthode call-backé par JGroups lors d'une modification de la vue (ie. lors de la connexion ou de la déconnexion d'un autre membre du groupe)), invoque, si un nouveau membre est apparu, l'appel de la méthode distante getData() sur la nouvelle instance en question. 
+Dans cette classe, on observe que la méthode `viewAccepted()` (qui est la méthode _call-backé_ par JGroups lors d'une modification de la vue (ie. lors de la connexion ou de la déconnexion d'un autre membre du groupe)), invoque, si un nouveau membre est apparu, l'appel de la méthode distante `getData()` sur la nouvelle instance en question. 
 
-Il est intéressant de noter l'utilisation qui est faite de la classe RequestOptions mais également le fait que les méthode block() et suspect() n'ont pas été spécifiées dans notre cas d'utilisation. 
+Il est intéressant de noter l'utilisation qui est faite de la classe `RequestOptions` mais également le fait que les méthode `block()` et `suspect()` n'ont pas été spécifiées dans notre cas d'utilisation. 
 
 ##La classe Data
 
-Enfin, la classe Data qui sera utilisée est la suivante (par souci de lisibilité, les méthodes equals() et hashCode() ne sont pas détaillées ici) :
+Enfin, la classe `Data` qui sera utilisée est la suivante (par souci de lisibilité, les méthodes `equals()` et `hashCode()` ne sont pas détaillées ici) :
 
 ```java
 package com.jetoile.jgroups.sample;
@@ -280,7 +281,7 @@ A noter que si les différentes instances venaient à ne pas se voir, cela peut 
 ```
 
 #Conclusion
-On a vu ici que permettre la communication d'instances d'une application de manière distribuée était aisée avec JGroups. Bien sûr (et comme je l'ai fait remarqué précédemment), la notion de tuning de JGroups (ie. la configuration de la couche protocolaire - cf. mon article précédent) n'a pas été abordée, mais cela doit être fait en fonction des besoins de l'infrastructure (trafic réseau, firewall, sécurité, ...) et je laisse donc ce point à la convenance de chacun ;-).
+On a vu ici que permettre la communication d'instances d'une application de manière distribuée était aisée avec JGroups. Bien sûr (et comme je l'ai fait remarqué précédemment), la notion de _tuning_ de JGroups (ie. la configuration de la couche protocolaire - cf. mon [article précédent](/2010/12/jgroups-tour-d.html#protocoles)) n'a pas été abordée, mais cela doit être fait en fonction des besoins de l'infrastructure (trafic réseau, firewall, sécurité, ...) et je laisse donc ce point à la convenance de chacun ;-).
 
 Ici se clôture donc la partie JGroups de notre petit POC jmanager4all qui nous a permis de voir comment JGroups répondait à notre besoin mais également comment il allait être utilisé par la suite.
 

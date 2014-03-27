@@ -21,7 +21,7 @@ Seront donc abordés deux points :
 #Message d'erreur lors de l'arrêt d'Apache Tomcat?
 
 ##Cas d'usage
-Les options permettant d'activer JMX sur la JVM ont été passées via la variable JAVA_OPTS ou autre (via le catalina.sh par exemple).
+Les options permettant d'activer JMX sur la JVM ont été passées via la variable `JAVA_OPTS` ou autre (via le catalina.sh par exemple).
 
 Le démarrage de Tomcat s'effectue sans problème mais lors de son arrêt, une erreur apparaît et tomcat refuse de s'arrêter c'est-à-dire que son processus tourne toujours en tâche de fond.
 
@@ -54,14 +54,14 @@ Erreur: Exception envoyée par l'agent : java.rmi.server.ExportException: Port a
 ```
 
 ##Explication
-En fait, cette erreur se produit lors de l'arrêt de Tomcat car le script shutdown.sh (ou catalina.sh stop) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l'on tente d'arrêter, cela échoue.
+En fait, cette erreur se produit lors de l'arrêt de Tomcat car le script `shutdown.sh` (ou `catalina.sh stop`) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l'on tente d'arrêter, cela échoue.
 
 ##Proposition pour résoudre le problème
 
-* ~~Ne pas positionner les options pour activer JMX sur la variable système JAVA_OPTS au risque de ne pas pouvoir démarrer plusieurs processus Java.~~
-* ~~Si c'est le script catalina.sh qui positionne la variable JAVA_OPTS, ne pas la positionner dans tous les cas mais seulement dans le cas où l'argument start est passé au script.~~
-* ~~Positionner la variable JAVA_OPTS dans le script startup.sh.~~
-* Utiliser la variable CATALINA_OPTS qui n'est utilisée que quand les options run et start sont passées"
+* ~~Ne pas positionner les options pour activer JMX sur la variable système `JAVA_OPTS` au risque de ne pas pouvoir démarrer plusieurs processus Java.~~
+* ~~Si c'est le script catalina.sh qui positionne la variable `JAVA_OPTS`, ne pas la positionner dans tous les cas mais seulement dans le cas où l'argument start est passé au script.~~
+* ~~Positionner la variable `JAVA_OPTS` dans le script `startup.sh`.~~
+* Utiliser la variable `CATALINA_OPTS` qui n'est utilisée que quand les options run et start sont passées"
 >CATALINA_OPTS   (Optional) Java runtime options used when the "start",  or "run" command is executed.
 
 #Problème de connexion?

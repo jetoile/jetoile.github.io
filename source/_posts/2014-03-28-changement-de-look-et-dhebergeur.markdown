@@ -1,14 +1,14 @@
 ---
 layout: post
 title: "Changement de look et d'hébergeur"
-date: 2014-03-28 07:47:03 +0100
+date: 2014-03-28 10:00:03 +0100
 comments: true
 categories: 
 - java
 - divers
 ---
 
-![left-small](/images/octopress/img_octopress_blogger.png)
+![left-small](http://blog.jetoile.fr/images/octopress/img_octopress_blogger.png)
 
 Cet article n'a rien à voir avec Java et il est plus à titre informatif.
 
@@ -21,8 +21,8 @@ Et ben, en fait, pour plusieurs raisons :
 * J'ai toujours aimé la philosophie de [LaTeX](http://www.latex-project.org/) qui permettait d'écrire au kilomètre sans avoir à se soucier de la mise en forme. 
 * Mon blog était long à charger et la partie _tuning_ de trucs _front_ (et je ne le dis de manière non péjorative) n'étant pas mon fort, je n'ai pas réussi à l'alléger.
 * La partie _syntaxhighlight_ était vraiment _chiante_ à gérer et alourdissait vraiment (mais alors _vraiment_!) le chargement des pages.
-* J'avais envie d'une solution plus simple pour me permettre d'écrire mes articles (d'où mon [post sur livereload](/2014/03/livereload-et-linux-ou-comment-rediger.html)) et pas à avoir à faire de copier/coller + retouche dans [Blogger](http://blogger.com/) :
-	* Ca correspond à la philo jrebel (_ndlr_ : que j'aime beaucoup) (cf. [ici](/2010/02/jrebel-ou-comment-accelerer-le_24.html)) pour le code Java mais appliqué, ici, à la partie front.
+* J'avais envie d'une solution plus simple pour me permettre d'écrire mes articles (d'où mon [post sur livereload](http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html)) et pas à avoir à faire de copier/coller + retouche dans [Blogger](http://blogger.com/) :
+	* Ca correspond à la philo jrebel (_ndlr_ : que j'aime beaucoup) (cf. [ici](ihttp://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html)) pour le code Java mais appliqué, ici, à la partie front.
 	* C'est toujours plus marrant de pouvoir écrire un truc et de le voir se recharger automatiquement dans son navigateur - ça c'est pour la partie_geek ;-).
 	* C'est _nouveau_ (enfin pour moi...).
 * Blogger ne me convenait plus car il faisait trop de choses dont je ne me servais pas et, de plus, la façon dont il le faisait ne me convenait plus (son mécanisme de _templating_ est assez lourd).

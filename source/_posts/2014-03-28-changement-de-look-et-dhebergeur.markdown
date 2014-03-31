@@ -41,7 +41,8 @@ Je ne reviendrai pas sur la façon dont j'ai migré puisque de nombreux blogs en
 
 Par contre, la partie _import_ ne m'ayant pas convaincue (pages générée crade), j'ai décigé de porter tous mes anciens articles avec Markdown. Il ne s'agit que de copier/coller + ré-application des styles, des liens et des images mais cela m'a demandé un temps considérable... (je suis sûr que si j'avais été malin, j'aurais faire le gros du boulot avec un bon `sed`... mais bon...). Du coup, j'espère qu'il n'y a pas de pertes...
 
-Pour l'instant, je n'ai pas réussi à importer les commentaires via [Disqus](http://disqus.com/) (enfin l'import est fait mais les commentaires ne s'affichent pas... :'( ).
+~~Pour l'instant, je n'ai pas réussi à importer les commentaires via [Disqus](http://disqus.com/) (enfin l'import est fait mais les commentaires ne s'affichent pas... :'( ).~~
+[_ndlr_ : après un coup de remapping des url des commentaires importés via __Disqus__, les commentaires sont revenus \o/]
 
 La partie rss est un peu _buggé_ car mon flux _atom_ généré par Octopress est trop gros pour être utilisé par [feedburner](http://www.feedburner.com) (du coup, le flux n'est pas global mais seulement sur la catégorie `Java`).
 

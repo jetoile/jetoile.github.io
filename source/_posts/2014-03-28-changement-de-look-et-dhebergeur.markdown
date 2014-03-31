@@ -44,7 +44,8 @@ Par contre, la partie _import_ ne m'ayant pas convaincue (pages générée crade
 ~~Pour l'instant, je n'ai pas réussi à importer les commentaires via [Disqus](http://disqus.com/) (enfin l'import est fait mais les commentaires ne s'affichent pas... :'( ).~~
 [_ndlr_ : après un coup de remapping des url des commentaires importés via __Disqus__, les commentaires sont revenus \o/]
 
-La partie rss est un peu _buggé_ car mon flux _atom_ généré par Octopress est trop gros pour être utilisé par [feedburner](http://www.feedburner.com) (du coup, le flux n'est pas global mais seulement sur la catégorie `Java`).
+~~La partie rss est un peu _buggé_ car mon flux _atom_ généré par Octopress est trop gros pour être utilisé par [feedburner](http://www.feedburner.com) (du coup, le flux n'est pas global mais seulement sur la catégorie `Java`).~~ [_ndlr_ : cf ce [post](/2014/03/changement-flux-rss.html) ]
+
 
 Enfin, il faut encore que je change l'image de bannière ;-)
 

@@ -18,8 +18,8 @@ Cependant, en raison d'une _limitation_ de [feedburner](http://www.feedburner.co
  
 Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :
 
-* soit par celui de __feedburner__ mais dans ce cas, il n'y aura que la catégorie `Java` : http://feeds.feedburner.com/jetoile, 
-* soit en utilisant celui-ci : http://blog.jetoile.fr/atom.xml.
+* soit par celui de __feedburner__ mais dans ce cas, il n'y aura que la catégorie `Java` : http://feeds.feedburner.com/jetoile , 
+* soit en utilisant celui-ci : http://blog.jetoile.fr/atom.xml .
 
 <!-- more -->
 

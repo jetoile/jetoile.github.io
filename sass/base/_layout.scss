@@ -67,6 +67,10 @@
       font-size: 14px;
     }
 
+    em {
+      font-style: italic;
+    }
+
     h2 > a {
       color: black;
       font-weight: 700;
@@ -121,6 +125,10 @@ article {
     text-align : justify;
   }
 
+  em {
+      font-style: italic;
+  }
+
   blockquote {
 	  padding-top: 10px;
 	  margin: 0 0 $line-height-computed;
@@ -158,11 +166,13 @@ img[alt=center] {
 
 img[alt=left] { 
   float: left; 
+  padding: 15px;
 }
 
 img[alt=left-small] { 
   float: left; 
   width: 350px;
+  padding: 15px;
 }
 
 img[alt=small] { 

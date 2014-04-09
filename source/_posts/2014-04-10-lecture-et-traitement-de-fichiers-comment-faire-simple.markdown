@@ -177,6 +177,12 @@ _ndlr_ : j'ai parlé, dans cet article, de Spring Integration pour la partie EIP
 
 #Pour aller plus loin...
 
+
+* __Spring Integration in Action__ de Mark Fisher, Jonas Partner, Marius Bogoevici et Iwein Fuld chez Manning
+* __Camel in Action__ de Claus Ibsen et Jonathan Anstey chez Manning
+* __Spring Batch in Action__ de Arnaud Cogoluegnes, Thierry Templier, Gary Gregory et Olivier Bazoud chez Manning
+* __Enterprise Integration Patterns__ de G. Hohpe et B. Woolf chez Addisson Wesley
+* http://www.eaipatterns.com/ 
 * http://projects.spring.io/spring-integration/
 * http://projects.spring.io/spring-batch
 * http://www.technologies-ebusiness.com/langages/spring-batch-spring-integration-une-usine-de-batchs-a-moindre-cout

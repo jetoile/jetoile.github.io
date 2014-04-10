@@ -19,7 +19,7 @@ Bien souvent, cet import est exécuté par _batch_, mais il peut aussi être int
 
 En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu'il n'y parait. Si, de plus, on veut ajouter des logs parlant (c'est à dire avec, au minimum, le temps de traitement d'un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus...
 
-Enfin, lors d'une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuelle où la quantité d'information vient à exploser.
+Enfin, lors d'une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d'information vient à exploser.
 
 Cet article parlera donc de la problématique d'import de fichiers dans une application en s'appuyant sur des framework comme [Spring Batch](http://projects.spring.io/spring-batch/) ou [Spring Integration](http://projects.spring.io/spring-integration/). Le mot d'ordre sera de le faire le plus simplement possible en s'appuyant au maximum sur ces framework.
 

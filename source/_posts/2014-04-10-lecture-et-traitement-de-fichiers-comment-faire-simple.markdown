@@ -13,7 +13,7 @@ categories:
 
 ![left-small](/images/batch/logo.png)
 
-De nombreuses applications ou systèmes d'information nécessitent le chargement de données issues de fichiers. 
+De nombreuses applications ou systèmes d'informations nécessitent le chargement de données issues de fichiers. 
 
 Bien souvent, cet import est exécuté par _batch_, mais il peut aussi être intéressant de faire cet import au fil de l'eau.
 
@@ -144,10 +144,6 @@ L'ajout de cet élément indique à Spring Integration qui doit ajouter automati
 Coté gestion des erreurs, Spring Integration permet de les gérer très simplement sur le principe du canal d'erreur qui peut récupérer tous les messages en erreur.
 
 Cependant, avec Spring Integration, si le fichier est volumineux, il n'est plus possible de le traiter en _chunk_ et un risque de contention mémoire existe.
-
-#Conclusion
-
-On a vu dans ce très rapide article comment Spring Integration et Spring Batch pouvait chacun de leurs manières répondre 
 
 #Solution à base d'EIP et de batch
 

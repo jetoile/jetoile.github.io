@@ -10,7 +10,7 @@ categories:
 ---
 ![left-small](/images/rdd/spark.png)
 
-[Spark](http://spark.apache.org/) est un framework qui a le plus en plus le vent en poupe et le fait qu'il ait été [promu](https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50) en _top-level project_ par la fondation Apache qu'il a rejoint récemment (en juin 2013) montre bien de l'intérêt qu'il succite (cela est d'aileurs confirmé par son intégration avec des solutions comme celles de [DataStax](http://www.datastax.com/) (cf. [ici](http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html)) ou [mapR](http://www.mapr.com/) (cf. [ici](http://www.mapr.com/products/apache-spark)).
+[Spark](http://spark.apache.org/) est un framework qui a de plus en plus le vent en poupe et le fait qu'il ait été [promu](https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50) en _top-level project_ par la fondation Apache qu'il a rejoint récemment (en juin 2013) montre bien de l'intérêt qu'il succite (cela est d'aileurs confirmé par son intégration avec des solutions comme celles de [DataStax](http://www.datastax.com/) (cf. [ici](http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html)) ou [mapR](http://www.mapr.com/) (cf. [ici](http://www.mapr.com/products/apache-spark)).
 
 Un des points central de Spark est son utilisation des RDDs (_Resilient Distributed Datasets_). 
 

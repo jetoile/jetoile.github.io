@@ -12,7 +12,7 @@ Encore un an de plus pour le [breizhCamp](http://www.breizhcamp.org/) qui vient 
 
 Pour ceux qui ne seraient pas encore au courant de ce qu'est le breizhCamp, il s'agit d'une conférence technique qui se veut être un mix de technologies (même s'il faut bien reconnaitre que Java y est majoritairement représentée...) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l'[ISTIC](http://www.istic.univ-rennes1.fr/). 
 
-Pour cette édition 2014, cela s'est déroulée sur 2 jours et demi et son [programme](http://www.breizhcamp.org/programme/) a été réparti de la manière suivante :
+Pour cette édition 2014, cela s'est déroulé sur 2 jours et demi et son [programme](http://www.breizhcamp.org/programme/) a été réparti de la manière suivante :
 
 * Une demi journée de démonstrations (enfin je ne sais comment définir précisément cette demi journée qui était un peu spéciale puisqu'elle hébergeait le [LabFab](http://www.labfab.fr/), un atelier agile, un hands on NodeJS, une présentation démystifiant les objets connectés, un _atelier_ Devoxx4kids ainsi que diverses démos du NAO ou des [ORA Smart Glasses](http://optinvent.com/))
 * 2 jours de conférences plus _classiques_ avec des conférences, des _hands on_, des _tools in action_ ainsi que des _quickies_
@@ -24,7 +24,7 @@ En ce qui concerne la qualité de la conférence, j'avoue avoir été très dé�
 * la pluie... non mais ALLO QUOI!!?? où était-elle? A peine quelques gouttes... et ils osent utiliser le mot `breizh`?! 
 ![medium](/images/bzhcmp/temps.jpg)
 
-* concernant la présentation "Développer en Java et en Caleçon" par Nicolas : le titre était mensongé! A peine une photo de caleçon et encore... le public a dû insister... et en plus ce n'était pas la meilleur...! A déconseiller au risque d'être déçu!! La vrai aurait dû être la suivante :
+* concernant la présentation "Développer en Java et en Caleçon" par Nicolas : le titre était mensonger! A peine une photo de caleçon et encore... le public a dû insister... et en plus ce n'était pas la meilleure...! A déconseiller au risque d'être déçu!! La vraie aurait dû être la suivante :
 ![medium](/images/bzhcmp/nico_calecon.jpg "Crédit photo : http://developer-blog.cloudbees.com/2013/04/cloudbees-works-from-home.html")
 
 * une photo de van et même pas un seul poney... quelle déception... encore une fois une publicité mensongère...!
@@ -59,7 +59,7 @@ Et de l'orga... même pas capable de s'habiller correctement...
 
 ![medium](/images/bzhcmp/IMG_3480.JPG "Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/")
 
-Heureusement, cette année, tout comme l'année dernière, j'ai eu la chance d'y présenter un talk (j'en remercie d'ailleurs l'équipe) qui, malgré quelques soucis techniques (mon ordi a refusé de "partager" son signal vidéo sur le rétroprojecteur m'empêchant ainsi de faire les démos prévus), s'est, à priori, bien passé (ndlr : j'attends les notes ainsi que la vidéo pour pouvoir juger du carnage... ;-) )... J'en profite d'ailleurs pour mettre à disposition mes slides.
+Heureusement, cette année, tout comme l'année dernière, j'ai eu la chance d'y présenter un talk (j'en remercie d'ailleurs l'équipe) qui, malgré quelques soucis techniques (mon ordi a refusé de "partager" son signal vidéo sur le rétroprojecteur m'empêchant ainsi de faire les démos prévues), s'est, à priori, bien passé (ndlr : j'attends les notes ainsi que la vidéo pour pouvoir juger du carnage... ;-) )... J'en profite d'ailleurs pour mettre à disposition mes slides.
 
 
 <iframe src="http://www.slideshare.net/slideshow/embed_code/35022180" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://fr.slideshare.net/jetoile/de-20-000-4-millions-dutilisateurs-mode-demploi" title="De 20 000 à 4 millions d&#x27;utilisateurs : mode d&#x27;emploi" target="_blank">De 20 000 à 4 millions d&#x27;utilisateurs : mode d&#x27;emploi</a> </strong> from <strong><a href="http://www.slideshare.net/jetoile" target="_blank">Khanh Maudoux</a></strong> </div>

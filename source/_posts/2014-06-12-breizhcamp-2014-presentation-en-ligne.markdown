@@ -6,6 +6,7 @@ comments: true
 categories: 
 - présentation
 - breizhcamp
+- java
 ---
 ![left-small](/images/bzhcmp/Logo.png)
 Pour ceux qui auraient manqué l'information, le [BreizhCamp](http://www.breizhcamp.org/) s'est déroulé en mai dernier et j'y avais la chance d'y présenter un _talk_ sur un retour d'expérience concernant le passage à l'échelle d'un SI afin de lui permettre de supporter 4 millions d'utilisateurs.

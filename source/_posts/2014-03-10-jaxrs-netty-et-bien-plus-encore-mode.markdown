@@ -235,7 +235,7 @@ Le résultat suivant est obtenu :
 ```javascript
 {
     "message": "hello",
-    "time": 1394016168909
+    "time": 1402560438128
 }
 ```
 
@@ -283,7 +283,7 @@ Encore une fois, simple et efficace et le résultat obtenu est bien celui escomp
 ```javascript
 {
     "message": "hello",
-    "time": 1394016168909
+    "time": "2014-06-12T10:06:54.553+02:00"
 }
 ```
 

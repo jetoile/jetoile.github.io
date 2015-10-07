@@ -1,0 +1,707 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Livereload Et Linux Ou Comment Rédiger Du Html Simplement - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Livereload Et Linux Ou Comment Rédiger Du Html Simplement March 20, 2014 Cet article n&#8217;a rien à voir avec le monde Java. Il s&#8217;agit plus &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Livereload Et Linux Ou Comment Rédiger Du Html Simplement</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-20T11:24:11+01:00" pubdate data-updated="true">March 20, 2014</time>  
+        </div>
+        <p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
+
+<p>Cet article n&#8217;a rien à voir avec le monde Java.</p>
+
+<p>Il s&#8217;agit plus d&#8217;un petit tutoriel surtout destiné&hellip; à moi-même&hellip; ;&ndash;)</p>
+
+<p>En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&#8217;avoir une idée de l&#8217;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&#8217;énerver.</p>
+
+<p>Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l&#8217;utiliser.</p>
+
+<p>Cependant, j&#8217;avoue avoir subi un échec cuisant (je suis sous un environnement linux et je tiens à préciser que je ne suis pas des plus à l&#8217;aise avec le monde nodejs ou ruby &ndash; ceci explique aussi cela&hellip; ;&ndash;) ) et cela malgré avoir mes multiples tentatives (à coup de gem install) et recherche sur mon ami Google (enfin, quand on n&#8217;est pas doué, on n&#8217;est pas doué&hellip; :&lsquo;( )</p>
+
+<p>Du coup, j&#8217;ai pris l&#8217;option :</p>
+
+<blockquote><p>&ldquo;J&#8217;appelle un ami&rdquo;</p></blockquote>
+
+<p>Dans mon cas, je remercie <a href="https://twitter.com/hcapitaine">Harold</a> pour son aide.</p>
+
+<p>Il m&#8217;a conseillé de me jeter un oeil sur <a href="http://gruntjs.com/">Grunt</a> qui gérait nativement livereload (bon, pour ma défense, je n&#8217;avais pas prévu de partir sur Grunt&hellip; ;&ndash;) ).</p>
+
+<p>Cet article présentera donc comment j&#8217;ai réussi à faire fonctionner le bouzin avec, en prime, la possibilité d&#8217;utiliser Markdown.</p>
+
+<p>Concernant l&#8217;environnement, il s&#8217;agit d&#8217;Ubuntu 13.10 (sur Mac, je ne doute pas que cela aurait été plus simple mais bon&hellip;)</p>
+
+<p>[NDLR : encore une fois, je précise que je ne suis pas du tout expert dans ce domaine, il est donc inutile de me poser des questions. Par contre, toutes propositions d&#8217;amélioration est la bienvenue ;&ndash;)]</p>
+
+<p>A titre informatifs, les fichiers se trouvent sur <a href="https://github.com/jetoile/livereload-grunt">Github</a>.</p>
+
+<!-- more -->
+
+
+<h1>Installation de nodejs, de npm et de grunt</h1>
+
+<p>Dans un premier temps, il convient d&#8217;installer tout le strict minimum afin de permettre à Grunt de fonctionner.</p>
+
+<p>Installation de NodeJS :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install nodejs
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installation de Npm :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install npm
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installation de Grunt (de manière global au système) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo npm install -g grunt-cli
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Installer le <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">plugin</a> livereload sur Chrome ou Firefox.</p>
+
+<p>Dans le cas de Chrome, pensez à modifier sa configuration pour qu&#8217;il autorise l&#8217;accès aux URLs de fichiers.
+<img src="http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png" alt="medium" /></p>
+
+<h1>Configuration de Grunt</h1>
+
+<p>Par la suite, toutes les opérations seront effectué dans le répertoire <code>$HOME/tmp</code>.</p>
+
+<p>Une fois tous les logiciels installés, il ne reste qu&#8217;à créer les fichiers nécessaires au bon fonctionnement de Grunt :</p>
+
+<ul>
+<li><code>package.json</code> qui permet de télécharger les modules et de les installer localement dans répertoire courant (un peu comme la rubrique dependencies de Maven),</li>
+<li><code>gruntfile.js</code> qui permet de configurer les différents modules précédemment installés par la commande npm install (un peu comme la rubrique build/plugins de Maven).</li>
+</ul>
+
+
+<p><code>$HOME/tmp/package.json</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;yo&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class='line'>  <span class="s2">&quot;devDependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;grunt&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.4.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;matchdep&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.1.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-express&quot;</span><span class="o">:</span> <span class="s2">&quot;~1.0.0-beta2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-contrib-watch&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-open&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.2.1&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=0.8.0&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il convient maintenant de lancer le téléchargement et l&#8217;installation des modules en exécutant la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ne reste plus qu&#8217;à configurer les modules via le fichier Gruntfile.js.</p>
+
+<p><code>$HOME/tmp/Gruntfile.js</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Load Grunt tasks declared in the package.json file</span>
+</span><span class='line'>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;matchdep&#39;</span><span class="p">).</span><span class="nx">filterDev</span><span class="p">(</span><span class="s1">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// grunt-express will serve the files from the folders listed in `bases` on specified `port` and `hostname`</span>
+</span><span class='line'>    <span class="nx">express</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">hostname</span><span class="o">:</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">bases</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;html&#39;</span><span class="p">],</span> <span class="c1">// Replace with the directory you want the files served from</span>
+</span><span class='line'>                              <span class="c1">// Make sure you don&#39;t use `.` or `..` in the path as Express</span>
+</span><span class='line'>                              <span class="c1">// is likely to return 403 Forbidden responses if you do</span>
+</span><span class='line'>                              <span class="c1">// http://stackoverflow.com/questions/14594121/express-res-sendfile-throwing-forbidden-error</span>
+</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// grunt-watch will monitor the projects files</span>
+</span><span class='line'>    <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="s1">&#39;*.html&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// grunt-open will open your browser at the project&#39;s URL</span>
+</span><span class='line'>    <span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Creates the `server` task</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;express&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;open&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;watch&#39;</span>
+</span><span class='line'>  <span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette configuration est fonctionnelle avec l&#8217;arborescence suivante :</p>
+
+<p><img src="http://4.bp.blogspot.com/-yzXs78VTiFw/Uxnor5jGo_I/AAAAAAAABQY/01_s7DCQHT4/s1600/arbo01.png" alt="center" /></p>
+
+<p>Dans cette dernière et avec cette configuration, tous les fichiers du répertoire <code>html</code> avec l&#8217;extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire <code>html</code> (par exemple html/sample.html) et de lancer la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grunt
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le navigateur par défaut s&#8217;ouvrira alors avec l&#8217;url : <a href="http://localhost:9000/.">http://localhost:9000/.</a> Il suffit d&#8217;y ajouter la page voulu (dans notre exemple <a href="http://localhost:9000/sample.html">http://localhost:9000/sample.html</a>) et d&#8217;activer le plugin <code>livereload</code>.</p>
+
+<p><img src="http://1.bp.blogspot.com/-edBGc5pdGLg/UxnpKGFtjsI/AAAAAAAABQw/E6maHZkgGcs/s1600/icon_livereload.png" alt="center" /></p>
+
+<p>Il ne reste plus qu&#8217;à modifier le fichier html et lors de sa sauvegarde, la page sera automatiquement mis à jour dans le navigateur!</p>
+
+<p>Si l&#8217;erreur suivante apparait :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/usr/bin/env: node: Aucun fichier ou dossier de ce <span class="nb">type</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il faut installer <code>nodejs-legacy</code> (cf. <a href="https://github.com/volojs/volo/issues/154">ici</a>)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install nodejs-legacy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Configuration de Grunt pour l&#8217;intégration de Markdown</h1>
+
+<p>L&#8217;intégration de Markdown se fait de la même manière que précédemment.</p>
+
+<p>Les fichiers <code>package.json</code> et <code>Gruntfile.js</code> se voient juste ajouter le module <code>grunt-markdown</code>.</p>
+
+<p><code>package.json</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;yo&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class='line'>  <span class="s2">&quot;devDependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;grunt&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.4.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;matchdep&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.1.2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-express&quot;</span><span class="o">:</span> <span class="s2">&quot;~1.0.0-beta2&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-contrib-watch&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-open&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.2.1&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;grunt-markdown&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.0&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=0.8.0&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Gruntfile.js</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">odule</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;matchdep&#39;</span><span class="p">).</span><span class="nx">filterDev</span><span class="p">(</span><span class="s1">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="nx">markdown</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>            <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;*.md&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;html/&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">ext</span><span class="o">:</span> <span class="s1">&#39;.html&#39;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>        <span class="p">]</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">express</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">hostname</span><span class="o">:</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">bases</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;html&#39;</span><span class="p">],</span>
+</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;*.md&#39;</span><span class="p">,</span><span class="s1">&#39;*.html&#39;</span><span class="p">],</span>
+</span><span class='line'>        <span class="nx">tasks</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;markdown&#39;</span><span class="p">],</span>
+</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;markdown&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;express&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;open&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;watch&#39;</span>
+</span><span class='line'>  <span class="p">]);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Suite à la modification de ces fichiers (attention à penser de faire un <code>npm install</code> après modification du fichier <code>package.json</code>), il est alors possible d&#8217;écrire son document en Markdown.</p>
+
+<p>L&#8217;arborescence à respecter par rapport à la configuration est la suivante :
+<img src="http://2.bp.blogspot.com/-kgC6a8jRwG8/Uxno29Sr9EI/AAAAAAAABQg/lf3W_rnDAvU/s1600/arbo02.png" alt="center" /></p>
+
+<p>Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.</p>
+
+<h1>Conclusion</h1>
+
+<p>Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d&#8217;un fichier HTML ou Markdown n&#8217;est pas si compliquée une fois que l&#8217;on a tous les fichiers et les bons modules configurés.</p>
+
+<p>D&#8217;ailleurs, cet article est le premier écrit en Markdown (quand je disais que ce n&#8217;était pas ma tasse de thé&hellip;).</p>
+
+<p>En espérant qu&#8217;il pourra être utile à d&#8217;autres lecteurs et en m&#8217;excusant par avance si des informations sont approximatives&hellip;</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li><a href="http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/">http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/</a></li>
+<li><a href="http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/">http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/</a></li>
+<li><a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-</a></li>
+<li><a href="http://blog.roddet.com/2013/12/nantesjs-gruntjs/">http://blog.roddet.com/2013/12/nantesjs-gruntjs/</a></li>
+<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2014-03-20T11:24:11+01:00" pubdate data-updated="true">March 20, 2014</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/divers/'>divers</a>, <a class='category' href='/blog/categories/html/'>html</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html';
+        var disqus_url = 'http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html" title="Previous Post: JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...">&laquo; Previous: JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</a>
+        
+
+        
+          <a class="pull-right" href="/2014/03/jaxrs-netty4-et-spring-integration-ils.html" title="Next Post: JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!">Next: JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content! &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

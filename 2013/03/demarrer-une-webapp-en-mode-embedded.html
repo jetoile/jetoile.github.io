@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Démarrer Une Webapp en Mode Embedded Avec Maven - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Démarrer Une Webapp en Mode Embedded Avec Maven March 6, 2013 La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Démarrer Une Webapp en Mode Embedded Avec Maven</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-03-06T15:26:29+01:00" pubdate data-updated="true">March 6, 2013</time>  
+        </div>
+        <p><img src="http://4.bp.blogspot.com/-2c2Ie9Tla54/UTaEjXrNaiI/AAAAAAAAA20/MWhTcyyJvMg/s1600/image.png" alt="left-small" /></p>
+
+<p>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&#8217;il doit disposer de tests, qu&#8217;ils soient unitaire, d&#8217;intégration, fonctionnel ou d&#8217;acceptance.</p>
+
+<p> Pour adresser le problème des tests d&#8217;intégration, il est souvent utile de démarrer l&#8217;application cible de manière embedded.</p>
+
+<p>Cette article montrera comment il est possible de faire pour un contexte donné.</p>
+
+<p>En outre, vu que ce blog me sert également d&#8217;aide mémoire, cela me donnera une excuse pour marquer noir sur blanc des informations que je peine toujours à retrouver&hellip; ;&ndash;)</p>
+
+<p>Pour les habitués de ce blog (oui, je sais, cela fait un moment que je n&#8217;ai rien écrit&hellip; ;&ndash;) , le plan sera toujours le même : dans un premier temps, le contexte sera décrit puis des ébauches de solutions seront proposées jusqu&#8217;à tendre vers celle qui a été retenue.</p>
+
+<!-- more -->
+
+
+<h1>Contexte</h1>
+
+<p>Le contexte du projet est le suivant : l&#8217;application cible est composée de deux applications web qui suivent le même cycle de vie et qui sont dépendantes l&#8217;une de l&#8217;autre (au sens <em>runtime</em> en non compilation).</p>
+
+<p>En effet, elle dispose d&#8217;une application web proposant un site web écrit en Java et utilisant un framework de type struts 2 (et qui sera nommée par la suite &ldquo;<em>application webapp</em>&rdquo;) et une application web servant un ensemble de ressources en proposant une interface REST (nommée par la suite &ldquo;<em>application rest</em>&rdquo;).</p>
+
+<p>L&#8217;application webapp nécessitera, en plus de son rendu de page dynamique, des ressources offertes par l&#8217;application REST (appel ajax, &hellip;).</p>
+
+<p><em>ndlr</em> : je sais que la mouvance actuelle dit que les framework web java sont le &ldquo;mal&rdquo; pour faire du web et qu&#8217;il est préférable de tendre vers une solution type framework javascript coté client. Cependant, dans notre cas, une forte contrainte SEO faisait qu&#8217;il était nécessaire de &ldquo;conserver&rdquo; un rendu dynamique des pages cotés serveur.</p>
+
+<p>D&#8217;un point de vu technique, le projet s&#8217;appuiera sur Maven 3 (encore lui&hellip; ;&ndash;) ), et sur des technologies standards à base de Servlets (2.5+), de JSP, de JAX-RS, &hellip; enfin, de techno standard capable de tourner sur un conteneur de Servlet classique type Tomcat 6 ou 7.</p>
+
+<p>L&#8217;arborescence du projet est la suivante :</p>
+
+<p><img src="http://4.bp.blogspot.com/-1N_8WSbysb8/UTZKH2xIekI/AAAAAAAAA2c/itx2Qxav2CA/s1600/tree01.png" alt="center" /></p>
+
+<p>Avant de commencer à rentrer dans le vif du sujet, il est important de remarquer qu&#8217;il existe de nombreux plugins Maven permettant de démarrer de manière <em>embedded</em> un artifact maven de type war via les goals adéquates (<code>mvn tomcat7:run</code>, <code>mvn jetty:run</code>, &hellip;). Cependant, pour rappel, notre objectif est de démarrer de manière conjointe nos deux applications web.</p>
+
+<p>En outre, le but ultime (pour ceux qui ne l&#8217;auraient pas encore deviné ;&ndash;) ) étant d&#8217;exécuter de manière boite noire des tests d&#8217;integration/d&#8217;acceptance, le démarrage devra se faire dans un module Maven frère de nos deux modules webapp et restful.</p>
+
+<p>L&#8217;arborescence attendue du projet est donc la suivante :</p>
+
+<p><img src="http://2.bp.blogspot.com/-QYIOY3HI__s/UTZKLlWV1bI/AAAAAAAAA2k/HXtJ0QDW6BE/s1600/tree02.png" alt="center" /></p>
+
+<p>Enfin, pour finir le tour de notre petit cahier des charges, le livrable généré ne devra pas dépendre de profils Maven particuliés (le but étant, bien sûr, de ne pas avoir un livrable dépendant d&#8217;une configuration donnée).</p>
+
+<p>Cependant, afin d&#8217;avoir la main, lors des tests d&#8217;intégration/d&#8217;acceptance, sur le jeu de données qui sera injecté dans le système à tester, il devra être possible de modifier &ldquo;à chaud&rdquo; certaines configurations. Pour ce faire, une surcharge des fichiers de configuration des applications devra être faite.</p>
+
+<p><em>ndlr</em> : l&#8217;application ayant un certain existant, elle ne dispose pas de fonctionnalités comme les <strong>Profile</strong> Spring ou l&#8217;utilisation de variables systèmes : toutes les propriétés de configuration se trouvent donc dans des fichiers properties ou dans des fichiers de contexte Spring.</p>
+
+<h1>Le plugin tomcat 7</h1>
+
+<p><img src="http://2.bp.blogspot.com/-vO0vp3GQG_4/UTbgJFKXJ5I/AAAAAAAAA3E/Z8EtqhZbPJU/s1600/tomcat.gif" alt="center" /></p>
+
+<h2>Mise en oeuvre</h2>
+
+<p>Le plugin <a href="http://tomcat.apache.org/maven-plugin-2.0/index.html">Maven Tomcat 7</a> est un plugin que j&#8217;apprécie pour sa simplicité d&#8217;utilisation et ses différentes <em>features</em> (merci <a href="https://twitter.com/olamy">@olamy</a> pour me l&#8217;avoir fait découvrir/redécouvrir ;&ndash;) ) et c&#8217;est donc naturellement que c&#8217;est le premier qui a été testé. De plus, la cible de déploiement étant Tomcat, cela tombait bien ;&ndash;) .</p>
+
+<p>Pour répondre à notre cas d&#8217;usage, le plugin Tomcat 7 propose le goal <code>run-war-only</code> qui permet, via la configuration <code>&lt;warDirectory&gt;</code>, de préciser un répertoire où se trouve l&#8217;application web.</p>
+
+<p>En effet, le war étant généré dans un module maven frère de celui où doit être démarré le Tomcat <em>embedded</em>, il doit, préalablement, être récupéré (en évitant, bien évidemment, les chemins relatifs). En outre, pour rappel, la nécessité de surcharger la configuration de certains fichiers à fait tendre la solution vers les étapes suivantes (opération spécifique à une application web) :</p>
+
+<ul>
+<li>récupération du war dans le repository maven,</li>
+<li>dézippage du war dans le répertoire <code>target/webapp</code>,</li>
+<li>copie des fichiers de configuration permettant la surcharge des fichiers de configuration de l&#8217;application dans le répertoire <code>target/webapp/WEB-INF/classes</code>,</li>
+<li>un appel au goal <code>run-war-only</code> du plugin Tomcat en précisant l&#8217;emplacement du war éclaté à charger.</li>
+</ul>
+
+
+<p>Cela a été fait via la configuration Maven suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-dependency-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>unzip-webapp<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>unpack<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactItems&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;artifactItem&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;groupId&gt;</span>${project.groupId}<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;artifactId&gt;</span>webapp<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;type&gt;</span>war<span class="nt">&lt;/type&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;/artifactItem&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/artifactItems&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>                <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;overWriteSnapshots&gt;</span>true<span class="nt">&lt;/overWriteSnapshots&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="c">&lt;!--use to copy test resources into webapp classpath--&gt;</span>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-resources-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>copy-webapp-resources<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>process-test-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>copy-resources<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp/WEB-INF/classes<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;resource&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/test/resources/webapp<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;filtering&gt;</span>true<span class="nt">&lt;/filtering&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/resource&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/resources&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.apache.tomcat.maven<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>tomcat7-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.0<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>tomcat-war-exec<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>run-war-only<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;warDirectory&gt;</span>${project.build.directory}/webapp/<span class="nt">&lt;/warDirectory&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;fork&gt;</span>true<span class="nt">&lt;/fork&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;ignorePackaging&gt;</span>true<span class="nt">&lt;/ignorePackaging&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;contextFile&gt;</span>src/test/resources/webapp/context.xml<span class="nt">&lt;/contextFile&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start-tomcat<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>run<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-tomcat<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>shutdown<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;path&gt;</span>/<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>        <span class="c">&lt;!-- les artéfacts des jars à mettre dans le classpath du serveur Tomcat tels que les drivers de connexion--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il est intéressant de noter plusieurs points :</p>
+
+<ul>
+<li>la précision du fichier <code>context.xml</code> qui contient, entre autre, le <strong>contextName</strong> de l&#8217;application web mais surtout, dans notre cas, la déclaration de notre base de données dans l&#8217;annuaire JNDI,</li>
+<li>le rajout éventuel de jar dans le classpath serveur,</li>
+<li>le fait de lancer le serveur en phase de <code>pre-integration-test</code> et de l&#8217;éteindre en phase de <code>post-integration-test</code>.</li>
+</ul>
+
+
+<p>Cependant, pour ceux qui auraient suivi, je rappelle que l&#8217;application cible était composée de deux applications web : webapp et restful&hellip;</p>
+
+<p>Malheureusement, sauf erreur de ma part, le plugin Maven Tomcat7 ne propose pas de déployer deux applications web simultanément lorsque ces dernières sont éclatées dans un répertoire.</p>
+
+<h2>Conclusion</h2>
+
+<p>On a vu dans ce paragraphe comment il était possible de déployer simplement, via le plugin Maven Tomcat 7, une application web de manière <em>embedded</em> dans un processus Maven.</p>
+
+<p>Malheureusement, le goal qui nous intéressait ne permettant pas démarrer deux applications web simultanément, il n&#8217;a pas pu répondre à notre besoin.</p>
+
+<h1>Le plugin Jetty</h1>
+
+<p><img src="http://3.bp.blogspot.com/-9CX6HuFGgPA/UTbgPT2O6gI/AAAAAAAAA3M/JQ_lOt2NnsI/s1600/jetty_logo.png" alt="center" /></p>
+
+<h2>Mise en oeuvre</h2>
+
+<p>Dans cette deuxième tentative, c&#8217;est le <a href="http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin">plugin Maven Jetty</a> qui a été utilisé.</p>
+
+<p>Même s&#8217;il n&#8217;est pas la cible de déploiement, nos applications étant assez standards, il a été acté que le conteneur n&#8217;aurait que peu d&#8217;impacts sur les tests d&#8217;intégration/d&#8217;acceptance.</p>
+
+<p>La philosophie mise en oeuvre est similaire à celle choisie avec le plugin Maven Tomcat 7, à savoir :</p>
+
+<ul>
+<li>récupération du war dans le repository maven,</li>
+<li>dézippage du war dans le répertoire <code>target/webapp</code>,</li>
+<li>copie des fichiers de configuration dans le répertoire <code>target/webapp/WEB-INF/classes</code>,</li>
+<li>appel du bon goal du plugin Jetty en précisant l&#8217;emplacement du war éclaté à charger.</li>
+</ul>
+
+
+<p>Bien sûr, ici, le goal est propre au plugin Jetty, à savoir <code>run-exploded</code> :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>7.6.9.v20130131<span class="nt">&lt;/version&gt;</span>    
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>jetty-war-exec<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>run-exploded<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;daemon&gt;</span>true<span class="nt">&lt;/daemon&gt;</span>            
+</span><span class='line'>                <span class="nt">&lt;jvmArgs&gt;</span><span class="c">&lt;!-- eventuellement les options jvm--&gt;</span><span class="nt">&lt;/jvmArgs&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;scanIntervalSeconds&gt;</span>0<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span class="nt">&lt;/jettyConfig&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;contextPath&gt;</span>/webapp<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span class="nt">&lt;/jettyEnvXml&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;war&gt;</span>${project.build.directory}/webapp<span class="nt">&lt;/war&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.server.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                       <span class="nt">&lt;host&gt;</span>127.0.0.1<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>                       <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/connectors&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>                <span class="nt">&lt;contextHandlers&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;contextHandler</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.webapp.WebAppContext&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                       <span class="nt">&lt;war&gt;</span>${project.build.directory}/restful<span class="nt">&lt;/war&gt;</span>
+</span><span class='line'>                       <span class="nt">&lt;contextPath&gt;</span>/restful<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>                   <span class="nt">&lt;/contextHandler&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/contextHandlers&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-jetty<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;stopPort&gt;</span>9999<span class="nt">&lt;/stopPort&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;stopKey&gt;</span>stopKey<span class="nt">&lt;/stopKey&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>        <span class="c">&lt;!-- eventuellement les jar à ajouter au classpath du conteneur de servlet--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On peut remarquer que la configuration du plugin Jetty est beaucoup plus verbeuse que celle du plugin Tomcat avec, notamment, la nécessité de préciser :</p>
+
+<ul>
+<li>un fichier de configuration jetty permettant, dans notre cas, de préciser que Jetty doit démarrer son module pour charger l&#8217;annuaire JNDI (fichier <code>jetty.xml</code>),</li>
+<li>la déclaration d&#8217;un connecteur pour pouvoir préciser le port de lancement du conteneur de Servlet,</li>
+<li>le fichier <code>jetty-webapp-context.xml</code> pendant du <code>context.xml</code> de Tomcat,</li>
+<li>l&#8217;obligation de rajouter l&#8217;élément <code>contextHandlers</code> pour pouvoir déclarer la deuxième application web à démarrer.</li>
+</ul>
+
+
+<p>A noter qu&#8217;il est également possible de déclarer les deux applications web via des <strong>contextHandler</strong>, permettant d&#8217;avoir une configuration plus symétrique :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>7.6.9.v20130131<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>jetty-war-exec<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;daemon&gt;</span>true<span class="nt">&lt;/daemon&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;jvmArgs&gt;&lt;/jvmArgs&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;scanIntervalSeconds&gt;</span>0<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span class="nt">&lt;/jettyConfig&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span class="nt">&lt;/jettyEnvXml&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.server.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;host&gt;</span>127.0.0.1<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/connectors&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>                <span class="nt">&lt;contextHandlers&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;contextHandler</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.webapp.WebAppContext&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;war&gt;</span>${project.build.directory}/webapp<span class="nt">&lt;/war&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;contextPath&gt;</span>/webapp<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;/contextHandler&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>                     <span class="nt">&lt;contextHandler</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.webapp.WebAppContext&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;war&gt;</span>${project.build.directory}/restful<span class="nt">&lt;/war&gt;</span>
+</span><span class='line'>                         <span class="nt">&lt;contextPath&gt;</span>/restful<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>                     <span class="nt">&lt;/contextHandler&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/contextHandlers&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-jetty<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;stopPort&gt;</span>9999<span class="nt">&lt;/stopPort&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;stopKey&gt;</span>stopKey<span class="nt">&lt;/stopKey&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>         
+</span><span class='line'>    <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A titre informatif, le fichier <code>jetty.xml</code> permettant de charger le module JNDI est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE Configure PUBLIC &quot;-//Jetty//Configure//EN&quot; &quot;http://www.eclipse.org/jetty/configure.dtd&quot;&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;Configure</span> <span class="na">id=</span><span class="s">&quot;Server&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.server.Server&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Array</span> <span class="na">id=</span><span class="s">&quot;plusConfig&quot;</span> <span class="na">type=</span><span class="s">&quot;java.lang.String&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebInfConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebXmlConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.MetaInfConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.FragmentConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.EnvConfiguration<span class="nt">&lt;/Item&gt;</span>                  <span class="c">&lt;!-- add for JNDI --&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.PlusConfiguration<span class="nt">&lt;/Item&gt;</span>                 <span class="c">&lt;!-- add for JNDI --&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.annotations.AnnotationConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.JettyWebXmlConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Item&gt;</span>org.eclipse.jetty.webapp.TagLibConfiguration<span class="nt">&lt;/Item&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Array&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;setAttribute&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg&gt;</span>org.eclipse.jetty.webapp.configuration<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;plusConfig&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'><span class="nt">&lt;/Configure&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et le fichier <code>jetty-webapp-context.xml</code> pendant du fichier <code>context.xml</code> de Tomcat est :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE Configure PUBLIC &quot;-//Jetty//Configure//EN&quot; &quot;http://www.eclipse.org/jetty/configure.dtd&quot;&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;Configure</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.webapp.WebAppContext&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;New</span> <span class="na">id=</span><span class="s">&quot;myoracle&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.plus.jndi.Resource&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>jdbc/myoracle<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;New</span> <span class="na">class=</span><span class="s">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">&quot;driverClassName&quot;</span><span class="nt">&gt;</span>driver.jdbc.class<span class="nt">&lt;/Set&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">&quot;url&quot;</span><span class="nt">&gt;</span>jdbc:url_connection<span class="nt">&lt;/Set&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">&quot;username&quot;</span><span class="nt">&gt;</span>login<span class="nt">&lt;/Set&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Set</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>password<span class="nt">&lt;/Set&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'><span class="nt">&lt;/New&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;/Configure&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>On a pu constater que l&#8217;utilisation du plugin Maven Jetty a parfaitement répondu à notre petit cahier des charges. C&#8217;est vrai que cela peut sembler un peu poussif mais cela est surtout dû au fonctionnement même de Jetty.</p>
+
+<p>Enfin, il est à noter que la configuration présentée dans le paragraphe précédent ne fonctionne pas pour la version 6 du plugin (connecteurs et packages différents, &hellip;) et qu&#8217;elle a été testé avec la version 7.6.9.v20130131. Normalement, cela devrait fonctionner avec la version 8 mais n&#8217;ayant pas testé, je ne pourrais pas le certifier&hellip;</p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, cet article avait pour objectif de présenter quelques-unes des façons de démarrer de manière <em>embedded</em> des applications web dans des conteneurs de Servlet légés au sein d&#8217;un processus Maven.</p>
+
+<p>Cela peut, notamment, être utile pour initialiser une ou plusieurs applications au sein du processus de tests pour, par exemple, exécuter de manière automatisée des tests d&#8217;intégration ou d&#8217;acceptance, chose qui est de plus en plus courante au sein de nos usine d&#8217;intégration continue.</p>
+
+<p>Bien sûr, il existe de nombreuses autres solutions (par exemple, <a href="http://arquillian.org/">Arquillian</a>) mais aussi d&#8217;autres approches (le choix retenu ici a été celui de la boite noire) qui ont toutes leurs avantages et leurs inconvénients par rapport à un besoin donné.</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2013-03-06T15:26:29+01:00" pubdate data-updated="true">March 6, 2013</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/integration-continue/'>intégration continue</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jetty/'>jetty</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/tomcat/'>tomcat</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html';
+        var disqus_url = 'http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2012/11/devoxx-2012-versionner-son-service-dans.html" title="Previous Post: Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud">&laquo; Previous: Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud</a>
+        
+
+        
+          <a class="pull-right" href="/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html" title="Next Post: FluentLenium et Cucumber JVM sont sur un bateau...">Next: FluentLenium et Cucumber JVM sont sur un bateau... &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: elasticsearch | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/elasticsearch/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud]]></title>
+    <link href="http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
+    <updated>2012-05-22T11:37:00+02:00</updated>
+    <id>http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
+    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
+Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
+
+<p>L'annonce avait été faite pendant la dernière édition de <a href="http://www.devoxx.com/">Devoxx &ldquo;l'originale&rdquo;</a> à Anvers en Belgique qui fêtait pour l'occasion ses 10 ans.</p>
+
+<p>Ayant eu l'opportunité d'y assister (chose que je conseille vivement à tous les développeurs), j'ai écrit un petit compte rendu d'une des moultes conférences qui m'ont marquées aussi bien par sa qualité scénique que par son contenu.</p>
+
+<p><img src="http://3.bp.blogspot.com/-gL1h9W4sgik/T7q85-4STJI/AAAAAAAAAm0/0LaSMChBQvY/s1600/logo.png" alt="center" /></p>
+
+<p>Cette conférence était une présentation d'<a href="http://www.elasticsearch.org/">ElasticSearch</a> faite par <a href="http://dev.david.pilato.fr/">David Pilato</a> (<a href="http://twitter.com/#!/dadoonet">@dadoonet</a>) qui a, alors, abordé les points suivants :</p>
+
+<ul>
+<li>Définition d’un moteur de recherche</li>
+<li>Concepts d’ElasticSearch</li>
+<li>Utilisation d’ElasticSearch</li>
+<li>Architecture d’ElasticSearch</li>
+</ul>
+
+
+<p>Ce petit compte rendu a été écrit pour le compte du site <a href="http://www.developpez.com/">developpez.com</a> et peut se trouver <a href="http://soat.developpez.com/articles/elasticsearch/">ici</a></p>
+
+<p>Merci à Developpez.com et aux différents relecteurs!</p>
+
+<p>Bonne lecture ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,1115 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Maven Pour Les Nuls... Les Archetypes - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Maven Pour Les Nuls... Les Archetypes June 5, 2011 Dans le cadre d&#8217;une problématique d&#8217;une usine logiciel, il peut s&#8217;avérer utile &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Maven Pour Les Nuls... Les Archetypes</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-06-05T22:48:02+02:00" pubdate data-updated="true">June 5, 2011</time>  
+        </div>
+        <p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
+
+<p>Dans le cadre d&#8217;une problématique d&#8217;une usine logiciel, il peut s&#8217;avérer utile de posséder un patron ou template de projet qui fournit les &ldquo;bonnes&rdquo; pratiques que doivent respecter l&#8217;ensemble des applications du projet.</p>
+
+<p>Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :</p>
+
+<ul>
+<li>la version de jdk,</li>
+<li>les libs utilisées (comme mockito par exemple),</li>
+<li>optionnellement, la configuration de plugins,</li>
+<li>optionnellemet, l&#8217;url du SCM,</li>
+<li>ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</li>
+</ul>
+
+
+<p>Le hic, c&#8217;est que, généralement, cela fini par de jolis copier/coller dont le résultat diffère, bien sûr, en fonction du projet qui a servi de template. Le résultat : le syndrome du téléphone arabe sachant qu&#8217;en plus, on n&#8217;est même plus capable de savoir qu&#8217;elle était la référence du départ&hellip; embêtant tout ça&hellip; surtout pour un projet se voulant industriel&hellip;</p>
+
+<p>En outre, posséder un patron de projet peut également s&#8217;avérer utile si vous êtes amené à POCer des frameworks ou faire des projets perso chez vous&hellip;</p>
+
+<p>Vous l&#8217;aurez compris, cet article se focalisera sur les projets construits sur maven où les notions de dépendances, de plugins, d&#8217;informations projet sont présentes dans le pom.</p>
+
+<p>Cet article a donc pour objectif de montrer comment il est possible de créer un archetype maven qui permet de répondre à ce problème.</p>
+
+<p>Le use case sera simple puisque je m&#8217;appuierai sur la création d&#8217;un archetype simple pour mes besoins personnels afin de me fournir un patron normalisé (selon mes normes) me permettant de démarrer un POC rapidement pour un artifact de type jar et cela dans le seul but de ne pas avoir à faire moultes copier/coller&hellip; ;&ndash;)</p>
+
+<p>A noter qu&#8217;il n&#8217;y a rien de révolutionnaire dans cet article pour toutes les personnes qui ont quelques connaissances de base en maven mais qu&#8217;il peut s&#8217;avérer utile (enfin j&#8217;espère) pour les autres&hellip; ;&ndash;)</p>
+
+<!-- more -->
+
+
+<h1>Méthodologie</h1>
+
+<p>Afin de créer un archetype, il existe plusieurs méthodes :</p>
+
+<ul>
+<li>la première consiste à créer l&#8217;archetype directement, chose pas trop complexe mais qui demande d&#8217;être rodée à la chose,</li>
+<li>la deuxième consiste à créer le projet maven tel que l&#8217;on souhaiterait que l&#8217;archetype nous le créer et de demander à maven de nous générer l&#8217;archetype en lui-même. Suite à cela, il convient de modifier l&#8217;archetype généré afin de le rendre configurable (nom des packages, &hellip;).</li>
+</ul>
+
+
+<p>Suite à cela, il convient d&#8217;installer (ou de déployer) notre archetype au sein de notre repository (global ou distant) afin de le rendre accessible aux autres membres de l&#8217;équipe ou tout simplement à soi-même.</p>
+
+<p>Dans mon cas, j&#8217;utiliserai la deuxième méthode qui consiste donc à générer l&#8217;archetype à partir du projet maven que je souhaite avoir.</p>
+
+<h1>Création du projet de base</h1>
+
+<p>Comme je l&#8217;ai dit précédemment, mes besoins sont purement personnels et mon projet devra répondre aux points suivants :</p>
+
+<ul>
+<li>un seul projet,</li>
+<li>de type jar,</li>
+<li>utilisant un jdk 6,</li>
+<li>déclarant les librairies suivantes : slf4j, logback-classic, commons-lang</li>
+<li>déclarant les librairies suivantes pour mes TUs : JUnit, mockito, powermock</li>
+<li>déclarant et configurant le plugin checkstyle et dont les rules seront dans le projet en lui-même</li>
+<li>déclarant et configurant le plugin assembly afin de me permettre de fournir, au besoin, un livrable</li>
+<li>déclarant le plugin source afin de me permettre de générer un jar de source</li>
+</ul>
+
+
+<p>Bien sûr, il tentera de suivre au mieux les bonnes pratiques maven&hellip;</p>
+
+<p>Cette partie n&#8217;étant pas bien intéressante et étant spécifique aux besoins de chacun, je la détaillerai donc peu&hellip;</p>
+
+<p>Sa structure :</p>
+
+<p><img src="http://4.bp.blogspot.com/-ActIqf-Gkv8/TevBObqDojI/AAAAAAAAAXM/TRHrtsoB8L0/s1600/archetype01.png" alt="center" /></p>
+
+<p>Son pom :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;&lt;build&gt;&lt;plugins&gt;&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> <span class="nt">&lt;groupId&gt;</span>fr.jetoile<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;artifactId&gt;</span>project-template<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;java.version&gt;</span>1.6<span class="nt">&lt;/java.version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;junit.version&gt;</span>4.8.1<span class="nt">&lt;/junit.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;slf4j.version&gt;</span>1.6.1<span class="nt">&lt;/slf4j.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;logback.version&gt;</span>0.9.27<span class="nt">&lt;/logback.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;commons-lang.version&gt;</span>2.5<span class="nt">&lt;/commons-lang.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;powermock.version&gt;</span>1.4.7<span class="nt">&lt;/powermock.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;mockito.version&gt;</span>1.8.5<span class="nt">&lt;/mockito.version&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="c">&lt;!-- distributionManagement&gt;</span>
+</span><span class='line'><span class="c">  &lt;repository&gt;</span>
+</span><span class='line'><span class="c">   &lt;id&gt;nexus&lt;/id&gt;</span>
+</span><span class='line'><span class="c">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/releases&lt;/url&gt;</span>
+</span><span class='line'><span class="c">  &lt;/repository&gt;</span>
+</span><span class='line'><span class="c">  &lt;snapshotRepository&gt;</span>
+</span><span class='line'><span class="c">   &lt;id&gt;nexus&lt;/id&gt;</span>
+</span><span class='line'><span class="c">   &lt;name&gt;Nexus snapshot Repository&lt;/name&gt;</span>
+</span><span class='line'><span class="c">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/snapshots&lt;/url&gt;</span>
+</span><span class='line'><span class="c">  &lt;/snapshotRepository&gt;</span>
+</span><span class='line'><span class="c"> &lt;/distributionManagement&gt;</span>
+</span><span class='line'><span class="c"> &lt;scm&gt;</span>
+</span><span class='line'><span class="c">  &lt;developerConnection&gt;scm:svn:svn://localhost/projet/trunk/TODO&lt;/developerConnection&gt;</span>
+</span><span class='line'><span class="c"> &lt;/scm--&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;developers&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;developer&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;email&gt;</span>kmx.petals@gmail.com<span class="nt">&lt;/email&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;id&gt;</span>khanh<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;roles&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;role&gt;</span>developer<span class="nt">&lt;/role&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/roles&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/developer&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/developers&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${logback.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${slf4j.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>commons-lang<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>commons-lang<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${commons-lang.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.mockito<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>mockito-all<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${mockito.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>powermock-module-junit4<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${powermock.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${junit.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.powermock<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>powermock-api-mockito<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${powermock.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-deploy-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.6<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-release-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.1<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;source&gt;</span>${java.version}<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;target&gt;</span>${java.version}<span class="nt">&lt;/target&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-checkstyle-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.6<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;configLocation&gt;</span>src/config/custom-checkstyle.xml<span class="nt">&lt;/configLocation&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;includeTestSourceDirectory&gt;</span>false<span class="nt">&lt;/includeTestSourceDirectory&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;logViolationsToConsole&gt;</span>true<span class="nt">&lt;/logViolationsToConsole&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;phase&gt;</span>compile<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;goal&gt;</span>check<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.2.1<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;descriptors&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;descriptor&gt;</span>src/assembly/src.xml<span class="nt">&lt;/descriptor&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/descriptors&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;id&gt;</span>make-assembly<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;phase&gt;</span>install<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-source-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.1.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;goal&gt;</span>jar<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>  <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Son fichier assembly :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;assembly&gt;</span>
+</span><span class='line'><span class="nt">&lt;/assembly&gt;&lt;assembly&gt;</span>
+</span><span class='line'> <span class="nt">&lt;id&gt;</span>bin<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'> <span class="nt">&lt;formats&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;format&gt;</span>zip<span class="nt">&lt;/format&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/formats&gt;</span>
+</span><span class='line'> <span class="nt">&lt;includeBaseDirectory&gt;</span>false<span class="nt">&lt;/includeBaseDirectory&gt;</span>
+</span><span class='line'> <span class="nt">&lt;dependencySets&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependencySet&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>compile<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;useProjectArtifact&gt;</span>true<span class="nt">&lt;/useProjectArtifact&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;useTransitiveDependencies&gt;</span>true<span class="nt">&lt;/useTransitiveDependencies&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;outputDirectory&gt;</span>lib<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependencySet&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/dependencySets&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;fileSets&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;fileSet&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;directory&gt;</span>target/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;outputDirectory&gt;</span>sources<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;include&gt;</span>**sources.jar<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;fileSet&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;directory&gt;</span>bin/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;outputDirectory&gt;</span>bin<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/fileSets&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;/assembly&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Création de l&#8217;archetype</h1>
+
+<p>La création de l&#8217;archetype est simple puisqu&#8217;il suffit de lancer la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn archetype:create-from-project
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Suite à cela, notre archetype se trouve dans le répertoire target/generated-sources/archetype et a la structure suivante :</p>
+
+<p><img src="http://4.bp.blogspot.com/-QGyUib6583A/TevDZZVezbI/AAAAAAAAAXQ/lHGC3y6oLew/s1600/archetype02.png" alt="center" /></p>
+
+<p>Son pom :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>fr.jetoile<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>project-template-archetype<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;packaging&gt;</span>maven-archetype<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;name&gt;</span>project-template-archetype<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;extensions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;extension&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.apache.maven.archetype<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>archetype-packaging<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>2.0<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/extension&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/extensions&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;pluginManagement&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;artifactId&gt;</span>maven-archetype-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;version&gt;</span>2.0<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/pluginManagement&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On constate qu&#8217;il y a deux points à noter dans cette structure d&#8217;archetype générée :</p>
+
+<ul>
+<li>le patron de notre template de projet qui sera utilisé par maven lors de l&#8217;appel au goal archetype:generate se trouve dans le répertoire src/main/resources/archetype-resources/src,</li>
+<li>dans le répertoire src/main/resources/META-INF/maven, se trouve le fichier archetype-metadata.xml qui contient le descriptif de ce qui doit être généré :</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;archetype-descriptor</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd&quot;</span> <span class="na">name=</span><span class="s">&quot;project-template&quot;</span>
+</span><span class='line'>    <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0&quot;</span>
+</span><span class='line'>    <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>     
+</span><span class='line'>  <span class="nt">&lt;fileSets&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>src/main/java<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>**/*.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>src/test/java<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>**/*.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>src/config<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>**/*.xml<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>src/assembly<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>**/*.xml<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>README.txt<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/fileSets&gt;</span>
+</span><span class='line'><span class="nt">&lt;/archetype-descriptor&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A cette étape, il est tout de suite possible d&#8217;installer l&#8217;archetype dans le repository maven (cf. Mise à disposition de l&#8217;archetype) et de l&#8217;invoquer (cf. Utilisation et résultat de l&#8217;archetype).
+A noter qu&#8217;ici, il peut être intéressant de supprimer le support des .project, .classpath et .settings si le template a été géré avec eclipse.</p>
+
+<h1>Transformation de l&#8217;archetype</h1>
+
+<p>Dans le cadre de mon petit use case, je n&#8217;ai pas beaucoup besoin de customiser mon archetype. En effet, je souhaite seulement pouvoir demander à l&#8217;utilisateur (en l&#8217;occurence moi ;&ndash;) ), quel sera le nom de ma classe à me générer.</p>
+
+<p>Pour ce faire, il n&#8217;y a qu&#8217;à ajouter une propriété dans le fichier src/main/resources/META-INF/maven/archetype-metadata.xml :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;requiredProperties&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;requiredProperty</span> <span class="na">key=</span><span class="s">&quot;className&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;defaultValue&gt;</span>MyClass<span class="nt">&lt;/defaultValue&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/requiredProperty&gt;</span>
+</span><span class='line'><span class="nt">&lt;/requiredProperties&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Modifier le nom des fichiers java :</p>
+
+<ul>
+<li><code>Test.java</code> en <code>__className__.java</code></li>
+<li><code>TestTest</code> en <code>__className__.java</code></li>
+</ul>
+
+
+<p>Et remplacer dans les fichiers respectifs :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>en</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="err">${</span><span class="nc">className</span><span class="o">}</span> <span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestTest</span> <span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>en</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="err">${</span><span class="nc">className</span><span class="o">}</span><span class="n">Test</span> <span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En outre, il faut également modifier le fichier src/test/resources/projects/basic/archetype.properties pour y ajouter la ligne suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>className=MyClass
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin, il est possible de figer la version de l&#8217;archetype en modifiant le pom du projet ainsi que son artifactId et son groupId. Dans mon cas, il restera identique.</p>
+
+<h1>Mise à disposition de l&#8217;archetype</h1>
+
+<p>Une fois que l&#8217;archetype a été modifié pour répondre aux besoins, il n&#8217;y a plus qu&#8217;à exécuter la commande mvn install pour déployer l&#8217;archetype dans le repository local et la commande mvn deploy pour le déployer dans le repository partagé.</p>
+
+<h1>Utilisation et résultat de l&#8217;archetype</h1>
+
+<p>Une fois l&#8217;archetype déployé dans le repository adéquate, il n&#8217;y a plus qu&#8217;à l&#8217;invoquer via la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn archetype:generate <span class="se">\</span>
+</span><span class='line'> -DarchetypeGroupId<span class="o">=</span>fr.jetoile <span class="se">\</span>
+</span><span class='line'> -DarchetypeArtifactId<span class="o">=</span>project-template-archetype <span class="se">\</span>
+</span><span class='line'> -DarchetypeVersion<span class="o">=</span>0.0.1-SNAPSHOT <span class="se">\</span>
+</span><span class='line'> -DgroupId<span class="o">=</span>fr.jetoile <span class="se">\</span>
+</span><span class='line'> -DartifactId<span class="o">=</span><span class="nb">test</span>-archetype
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ainsi, le résultat obtenu est le suivant :
+<img src="http://3.bp.blogspot.com/-IyLOW6pbUgw/TevFCch0TRI/AAAAAAAAAXU/-8aUatC2M5c/s1600/archetype04.png" alt="center" /></p>
+
+<h1>Conclusion</h1>
+
+<p>Nous avons vu dans cet article qu&#8217;il était extrêmement simple de créer un archetype maven, action qui peut s&#8217;avérer très utile pour gagner du temps que ce soit pour des besoins personnels ou dans un cadre d&#8217;industrialisation du processus d&#8217;initialisation d&#8217;un projet dans une équipe.</p>
+
+<p>[update] Je viens de mettre sur github le code :</p>
+
+<ul>
+<li>du projet utilisé pour créer l&#8217;archetype ainsi que le code de l&#8217;archetype : <a href="https://github.com/jetoile/project-template">https://github.com/jetoile/project-template</a></li>
+<li>du projet permettant de créer l&#8217;archetype : <a href="https://github.com/jetoile/project-template-archetype">https://github.com/jetoile/project-template-archetype</a></li>
+</ul>
+
+
+<p>Cependant, je n&#8217;ai pas invoqué ici le cas de projets multimodules mais le principe reste identique, même s&#8217;il est possible d&#8217;utiliser d&#8217;autres templates (tel que <code>__rootArtifactId__</code>) si l&#8217;on souhaite préfixer le nom des modules avec l&#8217;artifactId du projet généré ou si l&#8217;on souhaite customiser plus finement un nom de répertoire (ou package) : dans ce cas, il peut être souhaitable d&#8217;ajouter d&#8217;autres propriétés dans le fichier archetype-metadata.xml :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;module</span> <span class="na">id=</span><span class="s">&quot;${rootArtifactId}-core&quot;</span> <span class="na">dir=</span><span class="s">&quot;__rootArtifactId__-core&quot;</span> <span class="na">name=</span><span class="s">&quot;${rootArtifactId}-core&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;fileSets&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/main/java<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/test/java<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/fileSets&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/module&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;module</span> <span class="na">id=</span><span class="s">&quot;${rootArtifactId}-client&quot;</span> <span class="na">dir=</span><span class="s">&quot;__rootArtifactId__-client&quot;</span> <span class="na">name=</span><span class="s">&quot;${rootArtifactId}-client&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;fileSets&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/main/java<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/main/resources<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.xml<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.properties<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;fileSet</span> <span class="na">filtered=</span><span class="s">&quot;true&quot;</span> <span class="na">encoding=</span><span class="s">&quot;UTF-8&quot;</span> <span class="na">packaged=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;directory&gt;</span>src/test/resources<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.xml<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/*.properties<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/fileSets&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/module&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://1.bp.blogspot.com/-VL7re_vr97E/TevFPbO9msI/AAAAAAAAAXY/tXBaVB_kG-0/s1600/archetype03.png" alt="center" /></p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li>Apache Maven de N. De Loof, A. Héritier chez Pearson</li>
+<li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>
+<li>Maven. Definitive Guide : <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">http://www.sonatype.com/products/maven/documentation/book-defguide</a></li>
+<li>Site de maven : <a href="http://maven.apache.org/">http://maven.apache.org/</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-06-05T22:48:02+02:00" pubdate data-updated="true">June 5, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/archetype/'>archetype</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/05/les-repositories-manager-pour-les-nuls.html" title="Previous Post: Les repositories Manager pour les nuls... focus sur Nexus">&laquo; Previous: Les repositories Manager pour les nuls... focus sur Nexus</a>
+        
+
+        
+          <a class="pull-right" href="/2011/06/ubuntu-1104-probleme-de-completion.html" title="Next Post: Ubuntu 11.04">Next: Ubuntu 11.04 &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

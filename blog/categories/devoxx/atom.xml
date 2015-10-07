@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: devoxx | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/devoxx/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud]]></title>
+    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
+    <updated>2012-11-21T15:12:51+01:00</updated>
+    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
+    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
+
+<p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(
+Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j'ai pu assisté à Devoxx.</p>
+
+<p>Cependant, je tenais à revenir sur la présentation &ldquo;<em>Service Versioning in SOA and Cloud</em>&rdquo; par <strong>Ignaz Wanders</strong> (<a href="https://twitter.com/ignazw">@ignazw</a>) dont le synopsis était :</p>
+
+<blockquote><p>Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</p></blockquote>
+
+<br/>
+
+
+<blockquote><p>We often see design-type versioning, resulting in Big Bang governance strategies. A runtime versioning strategy may be, in fact, be preferable.</p></blockquote>
+
+<br/>
+
+
+<blockquote><p>Every change must be built, and every change must be governed. A &ldquo;cheap&rdquo; build may lead to a large governance impact. But conversely, a small governance cost may lead to a large build impact. Both build and governance costs need to be taken into account and carefully balanced when choosing and implementing a service versioning strategy.</p></blockquote>
+
+<p>Dans cet article, je me contenterai de montrer quelques-uns des slides de la présentation de Ignaz Wanders qui définissent et synthétisent très bien les différentes stratégies possibles en partant de comment numéroter ses services pour arriver à une proposition qu'il aimerait avoir du coté du consortium OASIS avec un WS-Versioning. Les slides étant suffisant en eux-mêmes et n'ayant pas envie de répéter/déformer leur contenu, je ne mettrai donc que les photos prises pendant la conférence&hellip;</p>
+
+<!-- more -->
+
+
+<p><img src="http://3.bp.blogspot.com/-jQmsfBODkbk/UKwAQe5_3hI/AAAAAAAAAyI/U2o6JrWPC0A/s1600/_IMG_20121114_183004.jpg" alt="small" /></p>
+
+<p>D'ailleurs, une version pdf dont le contenu est similaire (identique?) est accessible <a href="http://www.servicetechsymposium.com/dl/presentations/the_service_versioning_balancing_act.pdf">ici</a>.</p>
+
+<p>Enjoy! ;&ndash;)</p>
+
+<p><img src="http://4.bp.blogspot.com/-V3A7YsME1qc/UKv_rdwByZI/AAAAAAAAAww/dAFqcrxg9No/s1600/_IMG_20121114_180323.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-xbCED_gA8FI/UKv_u5wLLtI/AAAAAAAAAw4/ftroF40s15k/s1600/_IMG_20121114_180329.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-XgRKL4EkTAM/UKv_x_SQ17I/AAAAAAAAAxA/xFxPFfhuMvY/s1600/_IMG_20121114_180536.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-HVdfl4dxTkM/UKv_1JlCcsI/AAAAAAAAAxI/yc4CU7WU_64/s1600/_IMG_20121114_180815.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-EHMmEnybKBo/UKv_4XJenuI/AAAAAAAAAxQ/dIsguCfMjhw/s1600/_IMG_20121114_181020.jpg" alt="medium" /></p>
+
+<p><img src="http://3.bp.blogspot.com/-Y4wEcftNOD8/UKv_8kw0TqI/AAAAAAAAAxY/w92mR9tPBoU/s1600/_IMG_20121114_181306.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-39pTw8YZvf0/UKv__6d0rNI/AAAAAAAAAxg/XFBaryDXQ5U/s1600/_IMG_20121114_181445.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-deIWO4ytlUU/UKwADCvsYGI/AAAAAAAAAxo/tWO4VBEzI6g/s1600/_IMG_20121114_182310.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-q8PAIg75_mU/UKwAFVcDg4I/AAAAAAAAAxw/ylFPvFhCyJM/s1600/_IMG_20121114_182732.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-6SCvJCOB0_A/UKwAI8wOZ1I/AAAAAAAAAx4/ffn8uhngv9A/s1600/_IMG_20121114_182754.jpg" alt="medium" /></p>
+
+<p><img src="http://2.bp.blogspot.com/-LwnYPf2AUek/UKwAMZaiUKI/AAAAAAAAAyA/8VI-LkSn0Mg/s1600/_IMG_20121114_182903.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-nHjSNerL9nc/UKwAS7CkIhI/AAAAAAAAAyQ/8tXgU50Ohv0/s1600/_IMG_20121114_183054.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-aKBOUmyQc3g/UKwBv2ke-BI/AAAAAAAAAy4/-mtm_ERfCUk/s1600/_IMG_20121114_183135.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-7tcZYwkXHCY/UKwAZ-ouTlI/AAAAAAAAAyg/PqGdkqlXY_k/s1600/_IMG_20121114_183326.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-afWGOsx4Es4/UKwAcX7W76I/AAAAAAAAAyo/4g4lXp3N5JA/s1600/_IMG_20121114_183509.jpg" alt="medium" /></p>
+
+<p><img src="http://3.bp.blogspot.com/-4i4O9yO_nSg/UKwAeejTZqI/AAAAAAAAAyw/9oa_EsrStMI/s1600/_IMG_20121114_183710.jpg" alt="medium" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2012 : c'est fini...]]></title>
+    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html"/>
+    <updated>2012-11-19T13:15:30+01:00</updated>
+    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini</id>
+    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
+
+<p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(</p>
+
+<p>Pour ceux qui ne le sauraient pas encore, Devoxx est L’évènement à ne pas manquer.</p>
+
+<p>Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa 11ième édition et qui a lieu à Anvers (Belgique). Elle a également fait récemment de nombreux petits avec <a href="http://devoxx.fr/">Devoxx France</a> qui en est à sa 2ième édition et qui aura lieu cette année du 27 au 29 mars 2013 à Paris mais également avec le petit nouveau : Devoxx UK (du 25 au 26 mars 2013 à Londres).</p>
+
+<p>Elle a regroupé cette année prêt de 3400 participants venant de tous les pays dont environ 200 français.</p>
+
+<!-- more -->
+
+
+<p>Pour avoir un retour exhaustif, je vous renvoi sur d'autres blogs :</p>
+
+<ul>
+<li>Le blog de Nicolas Martignole :
+
+<ul>
+<li><a href="http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/">http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/</a></li>
+<li><a href="http://www.touilleur-express.fr/2012/11/17/devoxx-2012/">http://www.touilleur-express.fr/2012/11/17/devoxx-2012/</a></li>
+</ul>
+</li>
+<li>Le blog de Nicolas DeLoof :
+
+<ul>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-2012-day-1.html">http://blog.loof.fr/2012/11/devoxx-2012-day-1.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-2.html">http://blog.loof.fr/2012/11/devoxx-day-2.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-3.html">http://blog.loof.fr/2012/11/devoxx-day-3.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-4.html">http://blog.loof.fr/2012/11/devoxx-day-4.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-5.html">http://blog.loof.fr/2012/11/devoxx-day-5.html</a></li>
+</ul>
+</li>
+<li>Le blog de Nicolas Frankel :
+
+<ul>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-1">http://blog.frankel.ch/devoxx-2012-day-1</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-2">http://blog.frankel.ch/devoxx-2012-day-2</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-3">http://blog.frankel.ch/devoxx-2012-day-3</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-4">http://blog.frankel.ch/devoxx-2012-day-4</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-final-day">http://blog.frankel.ch/devoxx-2012-final-day</a></li>
+</ul>
+</li>
+<li>Le blog de Romain Maton
+
+<ul>
+<li><a href="http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html">http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Egalement, en bonus et en attendant la deuxième édition de Devoxx France, une petite vidéo de Roy von Rijn :</p>
+
+<iframe allowfullscreen="allowfullscreen" frameborder="0" height="281" mozallowfullscreen="mozallowfullscreen" src="http://player.vimeo.com/video/53695846?badge=0" webkitallowfullscreen="webkitallowfullscreen" width="500"></iframe>
+
+
+<p><a href="http://vimeo.com/53695846">Impressions of Devoxx (2012)</a> from <a href="http://vimeo.com/royvanrijn">Roy van Rijn</a> on <a href="http://vimeo.com/">Vimeo</a></p>
+
+<p>Pour ma part, je ne ferai pas de compte-rendu de conférences mais je me contenterai seulement de revenir dans un article ultérieur sur quelques-uns des points qui m'ont particulièrement marqués.</p>
+
+<p>Au final, pour résumer, un ENORME merci à toute l'équipe de Devoxx World (ainsi qu'aux sponsors) qui, une fois encore, nous a offert une conférence aux petits oignons avec des speakers et du contenu de qualité (cela va de soit) et qui m'a permis de faire la connaissance le plein de nouveaux copains mais également de renouveler ma garde robe&hellip; ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud]]></title>
+    <link href="http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
+    <updated>2012-05-22T11:37:00+02:00</updated>
+    <id>http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
+    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
+Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
+
+<p>L'annonce avait été faite pendant la dernière édition de <a href="http://www.devoxx.com/">Devoxx &ldquo;l'originale&rdquo;</a> à Anvers en Belgique qui fêtait pour l'occasion ses 10 ans.</p>
+
+<p>Ayant eu l'opportunité d'y assister (chose que je conseille vivement à tous les développeurs), j'ai écrit un petit compte rendu d'une des moultes conférences qui m'ont marquées aussi bien par sa qualité scénique que par son contenu.</p>
+
+<p><img src="http://3.bp.blogspot.com/-gL1h9W4sgik/T7q85-4STJI/AAAAAAAAAm0/0LaSMChBQvY/s1600/logo.png" alt="center" /></p>
+
+<p>Cette conférence était une présentation d'<a href="http://www.elasticsearch.org/">ElasticSearch</a> faite par <a href="http://dev.david.pilato.fr/">David Pilato</a> (<a href="http://twitter.com/#!/dadoonet">@dadoonet</a>) qui a, alors, abordé les points suivants :</p>
+
+<ul>
+<li>Définition d’un moteur de recherche</li>
+<li>Concepts d’ElasticSearch</li>
+<li>Utilisation d’ElasticSearch</li>
+<li>Architecture d’ElasticSearch</li>
+</ul>
+
+
+<p>Ce petit compte rendu a été écrit pour le compte du site <a href="http://www.developpez.com/">developpez.com</a> et peut se trouver <a href="http://soat.developpez.com/articles/elasticsearch/">ici</a></p>
+
+<p>Merci à Developpez.com et aux différents relecteurs!</p>
+
+<p>Bonne lecture ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2011 - What's probably coming in Java Message Service 2.0]]></title>
+    <link href="http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
+    <updated>2011-11-20T22:49:24+01:00</updated>
+    <id>http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
+    <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-FB-AoRLfOOs/Tsk-J2XdFUI/AAAAAAAAAgE/CpRpQXHqH5M/s1600/devoxx1.jpg" alt="left-small" />
+La semaine dernière, j'ai eu la chance d'aller à Devoxx en Belgique à Anvers.</p>
+
+<p>Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : <a href="http://www.devoxx.com/">http://www.devoxx.com/</a> et même à vous y inscrire l'année prochaine et/ou même mieux&hellip; d'aller assister à <a href="http://devoxx.fr/">Devoxx France</a>!!</p>
+
+<iframe allowfullscreen="" frameborder="0" height="315" src="http://www.youtube.com/embed/II6XiGGlJX0" width="420"></iframe>
+
+
+<p>Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de <a href="http://www.devoxx.com/display/DV11/Nigel+Deakin">Nigel Deakin</a> présentée à <a href="http://www.devoxx.com/display/DV11/Home">Devoxx 2011</a> et à laquelle j'ai assisté.</p>
+
+<p>Elle avait pour objectif de montrer l'avancée des travaux sur JMS 2.0 (<em>Java Message Service</em>) aussi connu sous le doux nom de <a href="http://jcp.org/en/jsr/detail?id=343">JSR 343</a>. A ce jour, en version early draft, elle devrait être intégrée à JEE7.</p>
+
+<p>Cet article a donc pour vocation de tenter de retranscrire ce que nous a présenté Nigel.</p>
+
+<!-- more -->
+
+
+<p>Pour la repositionner dans son contexte, la JSR343 fait suite à JMS 1.1 (<a href="http://www.jcp.org/en/jsr/detail?id=914">JSR 914</a>) et a pour but de :</p>
+
+<ul>
+<li>Simplifier l'API de JMS :
+
+<ul>
+<li>En utilisant CDI (<em>Context Dependency Injection</em>).</li>
+<li>En clarifiant certaines ambiguïtés présentes dans les spécifications.</li>
+</ul>
+</li>
+<li>Améliorer l'intégration de JMS avec les serveurs d'application :
+
+<ul>
+<li>En intégrant plus facilement les problématiques de PaaS (<em>Platform As A Service</em>).</li>
+<li>En permettant le <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenancy</a>.</li>
+<li>En clarifiant ses relations avec les autres spécifications de JEE7 (ou même ultérieure) : cela est notamment vrai avec la partie MDB (<em>Message-Driven Beans</em>) de la spécifications des EJB.</li>
+</ul>
+</li>
+<li>Ajouter des nouvelles fonctionnalités à l'API.</li>
+</ul>
+
+
+<p>Je ne reviendrai pas sur ce qu'est JMS (Java Message Service) si ce n'est que sa version actuelle est la 1.1 et qu'elle date de 2003, mais le fait que la spécification JMS n'ait pas évoluée depuis 2003, montre bien qu'elle était solide et qu'elle répondait bien à ce pour quoi elle avait été écrite.</p>
+
+<p>Cependant, autant il n'y a rien à redire quant à la réception d'un message, autant la partie émission était souvent verbeuse puisqu'il était nécessaire pour émettre un message, dans le cas des EJB, de :</p>
+
+<ul>
+<li>injecter les factory (<em>ConnectionFactory</em> et <em>Destination</em>) à l'aide de l'annotation <code>@Resource</code>,</li>
+<li>créer la <code>Connection</code> à l'aide de la <code>ConnectionFactory</code>,</li>
+<li>créer la <code>Session</code> à l'aide de la <code>Connection</code>,</li>
+<li>créer le <code>MessageProducer</code> à l'aide de la <code>Session</code>.</li>
+</ul>
+
+
+<p>C'est seulement suite à toutes ces actions que l'émission d'un message était possible via la méthode <code>send()</code>.</p>
+
+<p>En outre, à cela, il fallait, bien sûr, gérer les exceptions <em>checkées</em> (<code>JMSException</code> pour ceux à qui cela parle ;&ndash;)) mais également la fermeture de la <code>Session</code> et de la <code>Connection</code>&hellip;</p>
+
+<p>Enfin, lors de l'utilisation conjointe de JMS et des EJB, certains paramètres de méthodes (notamment lors de la création de la Session) étaient redondants car gérés par le conteneur EJB (<code>createSession(boolean transacted, int acknowledgeMode)</code>).</p>
+
+<p>Un des prérequis principals de cette nouvelle version de la spécification est donc la simplification&hellip; simplification mais pas à n'importe quel prix puisqu'il était nécessaire de conserver la rétro compatibilité avec les versions ultérieures de la spécification.</p>
+
+<p>Nigel nous a donc présenté certaines des pistes qu'ils avaient (pistes encore ouvertes à discussion).</p>
+
+<p>Ce sont ces dernières que je vais essayer de retranscrire ci-dessous dans l'ordre dans lesquelles il les a énoncé.</p>
+
+<h1>Simplification sur la création de Sessions</h1>
+
+<p>Afin de simplifier l'API de JMS pour créer une Session, Nigel nous a présenté deux pistes :</p>
+
+<ul>
+<li>Ajout d'une méthode <code>createSession(SessionMode sessionMode)</code> pour JavaSE où la classe SessionMode pourrait être une classe ayant comme variable d'instance le mode de transaction et le type d'acknowledge.</li>
+<li>Ajout d'une méthode <code>createSession()</code> qui serait utilisée et présente seulement pour JEE.</li>
+</ul>
+
+
+<h1>Supprimer la lourdeur des close()</h1>
+
+<p>Afin de rendre moins verbeuse l'utilisation des <code>Connection</code> et des <code>Session</code>, une proposition plausible pourrait être de leur faire implémenter l'interface <code>java.lang.AutoCloseable</code>.</p>
+
+<p>Ainsi, il serait alors possible d'avoir les résultats suivants (pour rappel, il ne s'agit que de propositions car cela est toujours à l'étude) :</p>
+
+<ul>
+<li>avec Java 7 dans un contexte JEE :</li>
+</ul>
+
+
+<p><code>java
+@Resource(mappedName="...")
+ContextFactory contextFactory;
+ 
+@Resource(mappepdName="...")
+Queue orderQueue;
+ 
+public void sendMessage(String payload) {
+  try (messagingContext mCtx = contextFactory.createContext() ;) {
+    TextMessage textMessage = mCtx.createTextMessage(payload);
+    mCtx.send(orderQueue, textMessage);
+  }
+}
+</code></p>
+
+<ul>
+<li>avec CDI dans un contexte JEE :</li>
+</ul>
+
+
+<p>```java
+@Resource(mappedName=&ldquo;&hellip;&rdquo;)
+Queue orderQueue;</p>
+
+<p>@Inject
+@MessagingContext(lookup=&ldquo;&hellip;&rdquo;)
+MessagingContext mCtx;</p>
+
+<p>@Inject
+TextMessage textMessage;</p>
+
+<p>public void sendMessage(String payload) {
+  textMesage.setText(payload);
+  mCtx.send(orderQueue, textMessage);
+}
+```</p>
+
+<ul>
+<li>toujours avec Java 7 dans un contexte JEE :</li>
+</ul>
+
+
+<p><code>java
+@Inject
+@JMSConnection(lookup="...")
+@JMSDestination(lookup="...")
+MessageProducer producer;
+ 
+@Inject
+TextMessage textMessage;
+ 
+public void sendMessage(String payload) {
+  try {
+    textMessage.setText(payload);
+    producer.send(textMessage);
+  } catch (JMSException e) {
+    //todo
+  }
+}
+</code></p>
+
+<h1>Autres simplifications</h1>
+
+<p>Les autres simplifications d'API envisageables pourraient être :</p>
+
+<ul>
+<li>de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : <code>producer.send(String/Serializable);</code> ). Cependant, ce type d'API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types <code>BytesMessage</code> ou <code>StreamMessage</code>. A ajouter à cela la question de son pendant pour la réception</li>
+<li>de simplifier la gestion des <code>DurableSubscriber</code> (<a href="http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber">http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber</a>(javax.jms.Topic, java.lang.String)), qui, au jour d'aujourd'hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d'une utilisation conjointe avec les EJB 3.2</li>
+</ul>
+
+
+<h1>Vers le futur&hellip;</h1>
+
+<p>Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.</p>
+
+<p>Ainsi, JMS 2.0 devra, pour répondre aux besoins des problématiques de type SaaS (<em>Software As A Service</em>), permettre de déclarer ses ressources créées dans un serveur d'applications et de les enregistrer dans un annuaire JNDI (comme c'est actuellement le cas pour les DataSource).</p>
+
+<p>Pour ce faire, de nouvelles annotations pourraient voir le jour (par exemple : <code>@JMSConnectionFactoryDefinition</code> et <code>@JMSDestinationDefinition</code>) mais également un SPI (<em>Service Provider Interface</em>) pour le faire de manière programmatique.</p>
+
+<p>Concernant une meilleure intégration avec les serveurs d'applications (ce qui permettrait d'utiliser n'importe quel JMS Provider dans n'importe quel serveur d'application JEE), Nigel propose la solution de JCA (<em>Java Connector Architecture</em>), un peu comme ce qui existe avec le drivers de bases de données.</p>
+
+<h1>Nouvelles features</h1>
+
+<p>Concernant les nouvelles features de l'API, Nigel nous a ensuite présenté ce qui pourrait arriver, à savoir (en vrac) :</p>
+
+<ul>
+<li>l'émission de messages avec un acquittement asynchrone du serveur,</li>
+<li>la possibilité pour un client JMS d'utiliser des <code>Future</code>,</li>
+<li>la possibilité d'émettre un message et de ne pas à avoir à attendre la réception d'un acquittement pour savoir si le message a bien été émis.</li>
+</ul>
+
+
+<p>Il se pourrait également que la propriété <code>JMSXDeliveryCount</code> ne soit plus optionnelle, ce qui permettrait aux serveurs d'applications de mieux gérer le <em>flood</em>.</p>
+
+<p>De même, la gestion des Topics hiérarchiques pourraient être rendue obligatoire.</p>
+
+<p>Enfin, une meilleure gestion des batch pourrait être possible via de nouvelles API comme par exemple l'introduction de la méthode <code>receive(Message[])</code>.</p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, je suis assez mitigé par cette session.</p>
+
+<p>En effet, autant, je trouve que certaines propositions permettraient de rendre moins verbeuses l'utilisation de JMS, autant, je ne suis pas convaincu que pouvoir faire la même chose de différentes manières soit une bonne chose (et, cela, même si ça simplifie le travail du développeur&hellip;).</p>
+
+<p>En outre, je trouve que, pour la majorité des propositions (même si elles sont totalement viables), l'axe de JEE est trop important.</p>
+
+<p>Enfin, intégrer fortement CDI avec JMS m'embête un peu car cela nécessite de disposer d'un conteneur CDI, chose qui n'est pas toujours le cas dans un contexte Java SE et, même si je trouve CDI sexy, je ne pense pas que la majorité des développeurs ou que nos clients soient prêts à franchir le pas en raison de la complexité intrinsèque à CDI (bien sûr, JMS 2.0 se devait de se tourner vers le futur et CDI se devait d'être pris en compte)&hellip; enfin, il ne s'agit que d'un avis personnel&hellip; l'avenir nous dira ce qu'il en est&hellip; ;&ndash;)</p>
+
+<p>Dernier point (mais là encore, c'est totalement personnel), j'aurais aimé voir une intégration des notions d'EIP (<em>Enterprise Integration Pattern</em>) même si la notion de <strong>filter</strong> (au sens EIP du terme) sort un peu du scope de JMS mais bon&hellip; ;&ndash;)</p>
+
+<p><del>Pour conclure, Nigel a bien présenté la direction que pourrait prendre JMS dans un futur proche mais, comme il nous l'a fréquemment fait remarquer, il ne s'agit que de pistes et, d'ailleurs, toutes les contributions sont les bienvenues.</del></p>
+]]></content>
+  </entry>
+  
+</feed>

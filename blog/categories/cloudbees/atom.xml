@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cloudbees | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/cloudbees/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Petite découverte de CloudBees]]></title>
+    <link href="http://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html"/>
+    <updated>2011-11-14T22:40:16+01:00</updated>
+    <id>http://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees</id>
+    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-F_mNTL2_BE4/TsACHNBk0fI/AAAAAAAAAdE/Ngcp8YNiDL0/s1600/cloudbees03.png" alt="left-small" /></p>
+
+<p>La semaine dernière, j'ai eu la chance d'assister à un atelier sur <a href="http://www.cloudbees.com/">CloudBees</a> chez nos amis de <a href="http://blog.xebia.fr/">Xebia</a>.</p>
+
+<p>Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique pour éviter tout favoritisme ;&ndash;) ) :</p>
+
+<ul>
+<li>Eric Briand</li>
+<li>Simon Caplette</li>
+<li><a href="https://twitter.com/#%21/ndeloof">Nicolas De Loof</a></li>
+<li><a href="https://twitter.com/#%21/cyrilleleclerc">Cyrille Leclerc</a></li>
+<li><a href="https://twitter.com/#%21/olim7t">Olivier Michallat</a></li>
+<li><a href="https://twitter.com/#%21/jlrigau">Jean-Louis Rigau</a></li>
+<li><a href="https://twitter.com/#%21/eservent">Emmanuel Servent</a></li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>Comme d'habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n'est pas le but de mon article&hellip;</p>
+
+<p>L'objectif de cet article est, pour ceux qui n'étaient pas présents, de faire un rapide tour d'horizon de ce qui m'a marqué dans la solution qu'apporte Cloudbees avec ses offres DEV@Cloud et RUN@Cloud. Cet article sera surtout focalisé sur la partie usine logicielle offerte par Cloudbees car c'est celle qui a été mise en avant pendant l'atelier et c'est aussi celle qui me semble la plus intéressante du point de vue de mes besoins actuels.</p>
+
+<p>Je vais donc essayer de vous résumer ce que j'ai apprécié&hellip; Pour ce faire, je ne reviendrai pas sur le usecase qui a été utilisé car je pense qu'il vaut mieux assister à l'atelier et qu'il faut bien laisser un peu de suspens&hellip; ;&ndash;). De même, je ne parlerai ni de l'intérêt du cloud ni de comment mettre en place DEV@Cloud ou RUN@Cloud.</p>
+
+<p>Cet article s'articulera donc en deux parties :</p>
+
+<ul>
+<li>la première consistant en un très rapide retour sur ce que propose CloudBees,</li>
+<li>et la deuxième sur ce qui me plait dans une approche telle que celle proposée par CloudBees.</li>
+</ul>
+
+
+<p>PS : au passage, encore un grand merci aux organisateurs de l'atelier!</p>
+
+<h1>{DEV,RUN}@Cloud?&hellip; Kesako?</h1>
+
+<p>CloudBees propose deux services DEV@Cloud et RUN@Cloud.</p>
+
+<p>DEV@Cloud offre, pour sa part, un service de type <del>PaaS (<em>Platform As A Service</em>)</del> SaaS (<em>Software As A Service</em>) qui offre un environnement de développement, de construction et de test en s'appuyant sur le cloud.</p>
+
+<p>DEV@Cloud permet :</p>
+
+<ul>
+<li>de collaborer avec d'autres personnes en s'appuyant sur des SCM/DVCS comme SVN ou Git,</li>
+<li>de construire, tester et déployer de manière continue avec <a href="http://jenkins-ci.org/">Jenkins</a>,</li>
+<li>de tester l'application web cible en s'appuyant sur le service à la demande <a href="http://saucelabs.com/">SauceLab</a>,</li>
+<li>de controler la qualité du code en s'appuyant sur <a href="http://www.sonarsource.org/">Sonar</a>,</li>
+<li>de gérer les artéfacts en utilisant <a href="http://www.jfrog.com/products.php">Artifactory</a>.</li>
+</ul>
+
+
+<p>RUN@Cloud fournit, quant à lui, un ensemble d'outils permettant de simplifier le processus de déploiement d'une application Java dans le <em>cloud</em>. Il correspond, pour sa part, un service de type PaaS (<em>Platform As A Service</em>).</p>
+
+<p><img src="http://1.bp.blogspot.com/-aGeioKNPLJc/TsACXTWxgJI/AAAAAAAAAdM/yG4C8B3PmOA/s1600/cloudbees04.png" alt="medium" /></p>
+
+<p><u>PS</u> : vous aurez remarqué que, pour cette partie, je ne me suis pas trop foulé puisque je n'ai fait que reprendre les informations présentes sur le site&hellip; ;&ndash;)</p>
+
+<h1>C'est bien gentil tout ça et moi, ça m'apporte quoi?</h1>
+
+<p>Comme vous avez pu le constater, DEV@Cloud et RUN@Cloud fournissent tout pleins de services.</p>
+
+<p>Cependant, la première question qui me vient à l'esprit quand je vois tout ça, c'est :</p>
+
+<blockquote><p>&ldquo;ben, je fais pareil dans mon usine logicielle&hellip; : pourquoi je m'embêterai à payer une solution et surtout, pourquoi serais-je prêt à perdre la main sur mon infra mais aussi qu'on m'enlève l'occasion de m'amuser avec de nouveaux jouets&hellip;&rdquo;</p></blockquote>
+
+<p>(pour le dernier argument, cela ne regarde que moi&hellip; ;&ndash;))</p>
+
+<p><img src="http://2.bp.blogspot.com/-dDnr_qH0vM0/TsACyBmfmsI/AAAAAAAAAdU/TI3TYA-Ujmc/s1600/Cloudbees01.png" alt="medium" /></p>
+
+<p>En fait, les réponses sont simples (et je ne parlerai pas des réponses évidentes de coûts -infra, supervision, maintenance, etc.&ndash;).</p>
+
+<p>Déjà revenons sur les possibilités offertes par DEV@Cloud (je n'aborderai pas le fait que CloudBees propose également l'hébergement du SCM, du Repository Manager et de Sonar) :</p>
+
+<p>En offrant la partie orchestrateur (via Jenkins), on délègue au <em>cloud</em> le soin de gérer les agents de build. Ainsi, il n'y a plus à administrer la ferme de serveurs succeptibles d'héberger les agents (tâche assez réberbative et ingrate).</p>
+
+<p>De plus, en combinant la partie <em>build/package</em> à la partie RUN@Cloud permettant de déployer de manière continue l'application sur une instance dédiée, cela permet de tester fonctionnellement et de manière intégrer la solution. Encore une fois, en passant par un service de CloudBees, il n'y a plus à se soucier de devoir réserver un serveur ou de devoir déployer un conteneur de servlets puisque cela est fait pour nous.</p>
+
+<p>Concernant les tests à proprement parler, CloudBees offre une intégration avec <a href="http://saucelabs.com/">SauceLab</a> qui se charge de l'exécution des tests Selenium (ie. qui prends à sa charge l'installation des agents Selenium ainsi que leurs configurations en mettant à disposition les browsers (butineurs ;&ndash;)) nécessaires à l'exécution des tests Selenium). En outre, SauceLab propose même la vidéo du test exécuté permettant, ainsi, <em>a postériori</em> d'analyser ce qui a échoué pendant le test. Bien sûr, DEV@Cloud n'offre pas encore la décorrélation entre le test fonctionnel exécuté et la partie vue mais, coté infrastructure, il n'y a plus à se soucier des agents et coté analyse, il n'est plus nécessaire d'analyser les rapports <em>surefire</em> pour connaitre le test en échec.</p>
+
+<p>Il est également possible d'effectuer un test de charge en s'appuyant sur le plugin maven <a href="http://jmeter.apache.org/">JMeter</a> en ciblant l'instance déployée dans RUN@Cloud. L'intégration avec le service <a href="http://newrelic.com/">New Relic</a> offre la possibilité de superviser l'activité de l'instance afin d'évaluer son comportement. En outre, en configurant RUN@Cloud de manière <em>scalable</em>, il est aisé de tester la charge supportée par de multiples instances (pour ce faire, CloudBees passe par un <em>load balancer</em> qui, si je ne me trompe pas, fonctionne, à ce jour, en <em>round-robin</em>). L'intégration du service New Relic permet de s'abstraire de la mise en place d'une solution comme Hyperic sur un environnement de recette, chose qui manque régulièrement et qui peut être consommateur en temps. En outre, New Relic permet même de déterminer les points de contension en offrant la possibilité d'activer un profiling à chaud dans l'application cible.</p>
+
+<p>Concernant le comportement applicatif, l'intégration du service <a href="https://papertrailapp.com/">Papertrail</a> offre la possibilité d'accéder aux logs de l'application mais permet également d'agréger les logs pour l'ensemble des instances et de les analyser. Ce dernier point est généralement manquant lors de la mise en place d'un environnement de test/validation/recette pour des questions d'infrastructure mais également de moyen. Aussi, disposer d'un tel service intégré avec l'offre RUN@Cloud dans un contexte de test (mais, bien sûr, pas uniquement) apporte un réel plus dans l'analyse des anomalies et du comportement de l'application.</p>
+
+<h1>Conclusion</h1>
+
+<p>Vous l'aurez compris (enfin, je l'espère), les offres DEV@Cloud et RUN@Cloud de CloudBees m'ont vraiment fait bonne impression. Je n'ai fait qu'effleurer les possibilités offertes et je suis sûrement passé à coté de beaucoup de features mais je tenais tout de même à partager mon ressenti sur ces offres.</p>
+
+<p>C'est vrai que mon article est très orienté usine logicielle (peut être parce que c'est justement le point de départ de l'atelier) mais, au moins pour ce seul point, il mérite qu'on s'intéresse aux services offerts par CloudBees (et services, il y en a&hellip;).</p>
+
+<p><img src="http://4.bp.blogspot.com/-Nws_YjWNluM/TsAC_MmnpzI/AAAAAAAAAdc/W78rV1GiHns/s1600/cloudbees02.png" alt="small" /></p>
+
+<p>Cependant, il reste un point qui me chagrine&hellip; en effet, CloudBees offre une excellente forge logicielle clé en main et qui semble parfaitement fonctionnelle mais, à mon sens, ce qui manque le plus est la bonne utilisation de ces outils et surtout, en amont, la bonne compréhension de ce qu'est une bonne usine logicielle et de son importance.</p>
+
+<p>Bien sûr, si le client est réticent, il est toujours possible de faire une approche <em>bottom/up</em> en attaquant par la forge et en lui montrant le gain mais, je trouve cela dommage que l'on soit obligé d'en arriver là alors qu'il devrait en voir tout le bénéfice (un peu comme maitriser son livrable et son build ou le cycle de vie de son application&hellip;) surtout dans un contexte où l'<em>agilité</em> est un terme de plus en plus courant et qui prone des livraisons fréquentes, chose possible que si l'on dispose d'une bonne méthodologie, d'une bonne forge et que l'on a compris de l'intérêt des TUs, du refactoring et de la revue de code&hellip;</p>
+
+<p>Enfin, je m'égare&hellip; ;&ndash;)
+Pour revenir à nos moutons, ce que j'ai apprécié avec DEV@Cloud et RUN@Cloud est la grande intéraction et la modularisation des services avec Jenkins. Cependant, même si la solution offerte par CloudBees est de qualité et est simple à mettre en oeuvre en étant clé en main, il reste du ressort de l'équipe de mettre en place les bonnes pratiques pour construire l'usine logicielle sans lesquelles aussi bon que soient les outils et services à sa disposition, cela s'achèvera par un échec (enfin, là, il s'agit de mon humble avis&hellip; ;&ndash;)).</p>
+
+<p>Pour finir, je tiens à préciser que je n'ai pas testé de manière plus approfondie les différents services offerts par CloudBees autre que ce qui nous a été présenté lors de l'atelier et j'espère ne pas avoir dénaturé le produit. Si des points étaient à ajouter, n'hésitez pas à m'en faire part afin de pouvoir compléter l'approche naïve que je pourrais en avoir ;&ndash;)</p>
+
+<p>A noter aussi que concernant l'injection de charge, à ce jour, il n'existe pas de possibilité de scaler les injecteurs dans différents agents, ce qui limite l'intérêt de l'injection (je ne reviendrai pas sur le fait que si l'injecteur est saturé, cela fausse les résultats obtenus pour le SUT (<em>System Under Test</em>)) mais que cela devrait être résolu dans un futur proche.</p>
+
+<p><u>PS</u> : Je tenais aussi à préciser que je ne touche rien pour ce post mais que cela me faisait plaisir de parler d'un truc que j'ai apprécié (et puis je fais ce qui me chante avec mon blog&hellip; !! ;&ndash;) ) et puis aussi à remercier Stéphanie pour avoir consacré du temps à relire cet article et m'avoir apporté son esprit critique ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: avis | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/avis/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Lecture et traitement de fichiers : comment faire simple?]]></title>
+    <link href="http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html"/>
+    <updated>2014-04-10T14:15:44+02:00</updated>
+    <id>http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple</id>
+    <content type="html"><![CDATA[<p><img src="/images/batch/logo.png" alt="left-small" /></p>
+
+<p>De nombreuses applications ou systèmes d'informations nécessitent le chargement de données issues de fichiers.</p>
+
+<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l'eau.</p>
+
+<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu'il n'y parait. Si, de plus, on veut ajouter des logs parlant (c'est à dire avec, au minimum, le temps de traitement d'un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
+
+<p>Enfin, lors d'une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d'information vient à exploser.</p>
+
+<p>Cet article parlera donc de la problématique d'import de fichiers dans une application en s'appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d'ordre sera de le faire le plus simplement possible en s'appuyant au maximum sur ces framework.</p>
+
+<!-- more -->
+
+
+<h1>Solution à base de <em>batch</em></h1>
+
+<p>Ecrire un batch permettant de traiter des fichiers peut sembler simple mais lorsque le nombre de ces derniers vient à augmenter ou lorsque la taille des fichiers est volumineux, il arrive souvent que des bugs apparaissent. En outre, il convient alors de gérer manuellement les logs ainsi que la partie supervision.</p>
+
+<p>Pour répondre à ce besoin, il est peut être avantageux d'utiliser <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> (ou une autre implémentation de la <a href="https://jcp.org/en/jsr/detail?id=352">JSR 352</a>).</p>
+
+<p><em>ndlr</em> : je ne présenterai pas le fonctionnement de Spring Batch à base de <strong>Job</strong> et <strong>Step</strong> puisque cela se trouve très facilement dans les documents officiels, livres ou articles de blog et je mettrai plutôt l'accent sur la faisabilité de tel ou tel chose.</p>
+
+<p><img src="/images/batch/spring-batch-reference-model.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></p>
+
+<p>Spring Batch offre nativement la possibilité de traiter les fichiers par <em>chunk</em> via :</p>
+
+<ul>
+<li><code>FlatFileItemReader</code> qui permet de lire un fichier plat ligne par ligne et où chaque ligne dispose de la même information (il est également possible de traiter des types de lignes différentes issues du même fichier avec <code>PatternMatchingCompositeLineMapper</code>).</li>
+<li><code>StaxEventItemReader</code> pour lire fichiers xml composés de format de <em>fragments</em> identiques :
+<img src="/images/batch/xmlinput.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></li>
+</ul>
+
+
+<p>avec :</p>
+
+<p>```xml
+<bean id="itemReader" class="org.springframework.batch.item.xml.StaxEventItemReader"></p>
+
+<pre><code>&lt;property name="fragmentRootElementName" value="trade" /&gt;
+&lt;property name="resource" value="data/iosample/input/input.xml" /&gt;
+&lt;property name="unmarshaller" ref="tradeMarshaller" /&gt;
+</code></pre>
+
+<p></bean></p>
+
+<p>&lt;bean id=&ldquo;tradeMarshaller&rdquo;</p>
+
+<pre><code>  class="org.springframework.oxm.xstream.XStreamMarshaller"&gt;
+&lt;property name="aliases"&gt;
+    &lt;util:map id="aliases"&gt;
+        &lt;entry key="trade"
+               value="org.springframework.batch.sample.domain.Trade" /&gt;
+        &lt;entry key="price" value="java.math.BigDecimal" /&gt;
+        &lt;entry key="name" value="java.lang.String" /&gt;
+    &lt;/util:map&gt;
+&lt;/property&gt;
+</code></pre>
+
+<p></bean>
+```</p>
+
+<p>Généralement, il est nécessaire de préciser le nom du fichier à traiter mais il est également possible d'en traiter plusieurs de même type dans la même <em>Step</em> via la classe <code>MultiResourceItemReader</code>.</p>
+
+<p>```xml
+<bean id="multiResourceReader" class="org.springframework.batch.item.file.MultiResourceItemReader"></p>
+
+<pre><code>&lt;property name="resources" value="classpath:data/input/file-*.txt" /&gt;
+&lt;property name="delegate" ref="flatFileItemReader" /&gt;
+</code></pre>
+
+<p></bean>
+```</p>
+
+<p>Spring Batch supporte également la scalabilité horizontale en permettant de préciser un <code>taskExecutor</code> au niveau de la <em>Step</em>.</p>
+
+<p>```xml
+<step id="loading"></p>
+
+<pre><code>&lt;tasklet task-executor="taskExecutor"&gt;...&lt;/tasklet&gt;
+</code></pre>
+
+<p></step>
+```</p>
+
+<p>Ainsi, on constate que Spring Batch offre nativement la possibilité de traiter des fichiers volumineux en les découpant par <em>chunk</em>.</p>
+
+<p>De même, il offre nativement la possibilité de passer sur du traitement parallèle.</p>
+
+<p>Concernant la partie supervision, vu que l'on est dans un environnement Spring, on bénéficie, bien sûr, de toute la partie JMX.</p>
+
+<p>Pour la partie gestion des erreurs, Spring Batch permet de les gérer de manière très simple.</p>
+
+<p>Cependant, on perd un grand intérêt si, par fichier, il n'y a qu'une seule donnée. En effet, le mécanisme de <em>chunk</em> devient alors inutile. Il reste cependant possible d'utiliser la scalabilité horizontale.</p>
+
+<p>Concernant la partie log, j'avoue ne pas avoir creuser, je ne dirai donc rien sur ce point&hellip;</p>
+
+<h1>Solution à base d'EIP</h1>
+
+<p>Dans le cas où la volonté serait de traiter les fichiers au fil de l'eau, Spring Batch n'est pas la solution la plus adaptée&hellip;</p>
+
+<p>Cependant, Spring Integration répond à ce besoin de manière très simple.</p>
+
+<p>En effet, en utilisant un simple <strong>Service Activator</strong> (au sens EIP) de type <code>inbound-channel-adapter</code>, il devient alors possible de <em>poller</em> un répertoire et d'envoyer le contenu du fichier vers un <em>filter</em> (au sens EIP).</p>
+
+<p>```xml
+&lt;file:inbound-channel-adapter id=&ldquo;fileAdapter&rdquo; auto-startup=&ldquo;true&rdquo; auto-create-directory=&ldquo;true&rdquo;</p>
+
+<pre><code>                          filename-pattern="*.xml"
+                          directory="file:/tmp"
+                          scanner="recursiveScanner"
+                          prevent-duplicates="true"
+                          channel="inputChannel"&gt;
+&lt;int:poller fixed-delay="30000" max-messages-per-poll="500"/&gt;
+</code></pre>
+
+<p>&lt;/file:inbound-channel-adapter></p>
+
+<p>&lt;file:file-to-string-transformer charset=&ldquo;UTF-8&rdquo; delete-files=&ldquo;true&rdquo; input-channel=&ldquo;inputChannel&rdquo;</p>
+
+<pre><code>                                 output-channel="toLogger"/&gt;
+</code></pre>
+
+<p>&lt;int:logging-channel-adapter auto-startup=&ldquo;true&rdquo; channel=&ldquo;toLogger&rdquo; level=&ldquo;DEBUG&rdquo; log-full-message=&ldquo;true&rdquo;/></p>
+
+<p>&lt;int:channel id=&ldquo;inputChannel&rdquo;/>
+&lt;int:channel id=&ldquo;toLogger&rdquo;/>
+```</p>
+
+<p>D'un point de vue scalabilité horizontale, il suffit de renseigner (tout comme pour Spring Batch) un <code>taskExecutor</code> au niveau du <em>Channel</em> et&hellip; c'est tout!</p>
+
+<p>```xml
+&lt;task:executor id=&ldquo;someExecutor&rdquo;</p>
+
+<pre><code>               pool-size="20"
+               keep-alive="2400"/&gt;
+</code></pre>
+
+<p>&lt;int:channel id=&ldquo;toLogger&rdquo;></p>
+
+<pre><code>&lt;int:dispatcher task-executor="someExecutor"/&gt;
+</code></pre>
+
+<p>&lt;/int:channel>
+```</p>
+
+<p>Enfin, disposer d'une supervision est des plus aisé puisqu'il suffit de rajouter l'élément <code>message-history</code> :</p>
+
+<p><code>xml
+&lt;int:message-history/&gt;
+</code></p>
+
+<p>L'ajout de cet élément indique à Spring Integration qui doit ajouter automatiquement dans le <em>header</em> du message le temps d'exécution de chaque <em>Filter</em>. Concernant le nom du fichier et son chemin, il se trouve renseigner automatiquement dans le header par l'<em>adapter</em> <code>file:inbound-channel-adapter</code>.</p>
+
+<p>Coté gestion des erreurs, Spring Integration permet de les gérer très simplement sur le principe du canal d'erreur qui peut récupérer tous les messages en erreur.</p>
+
+<p>Cependant, avec Spring Integration, si le fichier est volumineux, il n'est plus possible de le traiter en <em>chunk</em> et un risque de contention mémoire existe.</p>
+
+<h1>Solution à base d'EIP et de batch</h1>
+
+<p>On a vu dans les deux paragraphe précédent que Spring Integration était une très bonne solution pour traiter des fichiers au fil de l'eau alors que Spring Batch était plutôt orienté traitement par batch.</p>
+
+<p>Cependant, il est très facile de composer les 2 modes. Cela permet, par exemple, de déclencher un traitement d'un fichier volumineux dès sa réception (via Spring Integration) et de bénéficier du mode <em>chunk</em> de Spring Batch pour le traitement.</p>
+
+<p>Dans ce cas, bien sûr, il n'est pas question de faire de traitement sur le contenu du fichier dans la partie Spring Integration (seul l'objet <code>File</code> est transmis dans le corps du message) et c'est le jobs Spring Batch qui s'occupera du traitement à proprement parler.</p>
+
+<p>Cela engendre peut être un <em>overhead</em> conséquent mais on est, au moins sûr, d'éviter le <em>Out Of Memory</em> dans le cas de fichiers volumineux. En outre, cela permet de bénéficier de la puissance des EIP (routage ou filtrage sur le nom du fichier par exemple) tant que le fichier n'a pas à être chargé.</p>
+
+<p><img src="/images/batch/archi_combo.png" alt="large" /></p>
+
+<h1>Conclusion</h1>
+
+<p>On a vu dans cet article comment il pouvait être trivial de traiter l'import de fichiers sans avoir à gérer manuellement des pools de thread ou des logs d'audit.</p>
+
+<p>Je ne suis pas rentré dans les détails mais mon objectif était surtout de montrer qu'en utilisant les bons outils/framework, il était possible de produire du code minimaliste et donc moins propice aux erreurs.</p>
+
+<p>Pour avoir mis en oeuvre ces solutions, je peux vous assurer que le code écrit (ainsi que le temps passé) était minimaliste sinon nul (si on considère qu'écrire du xml n'est pas du code&hellip;). Bien sûr, je ne parle pas du code de traitement qui doit être écrit quoiqu'il arrive mais, encore une fois, le fait d'expédier la partie plomberie a permis de se concentrer sur le réel besoin métier.</p>
+
+<p>Enfin, il est important de préciser que dans certains cas, une telle approche ne fonctionnera pas (si un fichier contient, par exemple, des dépendances à des données issues d'autres fichiers) et qu'il peut même être dangereux de vouloir absoluement utiliser ce type de framework au risque de leur faire faire des choses pour lesquelles ils ne sont pas prévus&hellip; Par exemple, il ne faut pas oublier que dans <strong>EIP</strong>, le <strong>I</strong> signifie Intégration!! Si le besoin est autre, il est fortement recommandé d'utiliser autre chose ou de le faire manuellement mais, par pitié, ne tordez pas le coup aux outils&hellip;! (si si, je l'ai vu&hellip; d'où mon désarroi&hellip;).</p>
+
+<p><em>ndlr</em> : bon, j'admets que la partie qui a dû être la plus longue a sûrement été le <em>tuning</em> du pool de thread afin de tirer le meilleur partie de la machine mais, même si cela avait été fait de manière programmatique, cela aurait été nécessaire&hellip;</p>
+
+<p><em>ndlr</em> : j'ai parlé, dans cet article, de Spring Integration pour la partie EIP mais il est tout aussi simple d'utiliser Apache Camel.</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li><strong>Spring Integration in Action</strong> de Mark Fisher, Jonas Partner, Marius Bogoevici et Iwein Fuld chez Manning</li>
+<li><strong>Camel in Action</strong> de Claus Ibsen et Jonathan Anstey chez Manning</li>
+<li><strong>Spring Batch in Action</strong> de Arnaud Cogoluegnes, Thierry Templier, Gary Gregory et Olivier Bazoud chez Manning</li>
+<li><strong>Enterprise Integration Patterns</strong> de G. Hohpe et B. Woolf chez Addisson Wesley</li>
+<li><a href="http://www.eaipatterns.com/">http://www.eaipatterns.com/</a></li>
+<li><a href="http://projects.spring.io/spring-integration/">http://projects.spring.io/spring-integration/</a></li>
+<li><a href="http://projects.spring.io/spring-batch">http://projects.spring.io/spring-batch</a></li>
+<li><a href="http://www.technologies-ebusiness.com/langages/spring-batch-spring-integration-une-usine-de-batchs-a-moindre-cout">http://www.technologies-ebusiness.com/langages/spring-batch-spring-integration-une-usine-de-batchs-a-moindre-cout</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2012 : c'est fini...]]></title>
+    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html"/>
+    <updated>2012-11-19T13:15:30+01:00</updated>
+    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini</id>
+    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
+
+<p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(</p>
+
+<p>Pour ceux qui ne le sauraient pas encore, Devoxx est L’évènement à ne pas manquer.</p>
+
+<p>Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa 11ième édition et qui a lieu à Anvers (Belgique). Elle a également fait récemment de nombreux petits avec <a href="http://devoxx.fr/">Devoxx France</a> qui en est à sa 2ième édition et qui aura lieu cette année du 27 au 29 mars 2013 à Paris mais également avec le petit nouveau : Devoxx UK (du 25 au 26 mars 2013 à Londres).</p>
+
+<p>Elle a regroupé cette année prêt de 3400 participants venant de tous les pays dont environ 200 français.</p>
+
+<!-- more -->
+
+
+<p>Pour avoir un retour exhaustif, je vous renvoi sur d'autres blogs :</p>
+
+<ul>
+<li>Le blog de Nicolas Martignole :
+
+<ul>
+<li><a href="http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/">http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/</a></li>
+<li><a href="http://www.touilleur-express.fr/2012/11/17/devoxx-2012/">http://www.touilleur-express.fr/2012/11/17/devoxx-2012/</a></li>
+</ul>
+</li>
+<li>Le blog de Nicolas DeLoof :
+
+<ul>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-2012-day-1.html">http://blog.loof.fr/2012/11/devoxx-2012-day-1.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-2.html">http://blog.loof.fr/2012/11/devoxx-day-2.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-3.html">http://blog.loof.fr/2012/11/devoxx-day-3.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-4.html">http://blog.loof.fr/2012/11/devoxx-day-4.html</a></li>
+<li><a href="http://blog.loof.fr/2012/11/devoxx-day-5.html">http://blog.loof.fr/2012/11/devoxx-day-5.html</a></li>
+</ul>
+</li>
+<li>Le blog de Nicolas Frankel :
+
+<ul>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-1">http://blog.frankel.ch/devoxx-2012-day-1</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-2">http://blog.frankel.ch/devoxx-2012-day-2</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-3">http://blog.frankel.ch/devoxx-2012-day-3</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-day-4">http://blog.frankel.ch/devoxx-2012-day-4</a></li>
+<li><a href="http://blog.frankel.ch/devoxx-2012-final-day">http://blog.frankel.ch/devoxx-2012-final-day</a></li>
+</ul>
+</li>
+<li>Le blog de Romain Maton
+
+<ul>
+<li><a href="http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html">http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Egalement, en bonus et en attendant la deuxième édition de Devoxx France, une petite vidéo de Roy von Rijn :</p>
+
+<iframe allowfullscreen="allowfullscreen" frameborder="0" height="281" mozallowfullscreen="mozallowfullscreen" src="http://player.vimeo.com/video/53695846?badge=0" webkitallowfullscreen="webkitallowfullscreen" width="500"></iframe>
+
+
+<p><a href="http://vimeo.com/53695846">Impressions of Devoxx (2012)</a> from <a href="http://vimeo.com/royvanrijn">Roy van Rijn</a> on <a href="http://vimeo.com/">Vimeo</a></p>
+
+<p>Pour ma part, je ne ferai pas de compte-rendu de conférences mais je me contenterai seulement de revenir dans un article ultérieur sur quelques-uns des points qui m'ont particulièrement marqués.</p>
+
+<p>Au final, pour résumer, un ENORME merci à toute l'équipe de Devoxx World (ainsi qu'aux sponsors) qui, une fois encore, nous a offert une conférence aux petits oignons avec des speakers et du contenu de qualité (cela va de soit) et qui m'a permis de faire la connaissance le plein de nouveaux copains mais également de renouveler ma garde robe&hellip; ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Découpage de projets : projet vs. modules]]></title>
+    <link href="http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html"/>
+    <updated>2012-08-28T11:47:11+02:00</updated>
+    <id>http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules</id>
+    <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-wz814rCkbHY/UC1JmXEpcyI/AAAAAAAAAoA/6YjiYTg7fzw/s1600/couteaux.png" alt="left-small" /></p>
+
+<p>Lorsqu'un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d'approches :</p>
+
+<ul>
+<li>le découper fonctionnellement,</li>
+<li>le découper techniquement.</li>
+</ul>
+
+
+<p>En outre, en plus de ce type de découpage, il est également important de s'interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c'est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</p>
+
+<p>C'est de ce dernier point dont il sera question dans ce court article qui présentera l'avis que j'ai pu me faire concernant le découpage technique du projet ie. s'il vaut mieux le découper en projets séparés ou en module (au sens maven du terme).</p>
+
+<p>Il s'agit d'une opinion très personnelle qui peut ne pas être partagée par tous mais je trouvais intéressant de fournir mon humble avis et de le marquer noir sur blanc. Si je venais à dire des bêtises, au moins, cet article servira d'amorce à la discussion ;&ndash;)</p>
+
+<!-- more -->
+
+
+<h1>Module ou projet?</h1>
+
+<p>Comme mentionné en introduction, cet article traitera de comment architecturer son projet, à savoir, s'il vaut mieux découper son projet en différents projets ou en sous-modules. Bien sûr, ce point doit être pris en compte conjointement avec le découpage technique et/ou fonctionnel.</p>
+
+<p>Dans la suite de l'article, les termes &ldquo;<em>projet</em>&rdquo; et &ldquo;<em>module</em>&rdquo; sont utilisés au sens maven du terme. Pour avoir les vraies définitions, il est quand même préférable de se référer à la documentation officielle, mais voilà comment je les décrirai succinctement :</p>
+
+<ul>
+<li><strong>projet</strong> : il contient ses propres modules et produit un seul livrable (<em>assembly</em>, <em>war</em>, <em>ear</em> ou autre). Il peut éventuellement hériter d'un super pom.</li>
+<li><strong>module</strong> : il s'agit d'un module maven ie. qu'il suit le même versionning que son père (pour rappel, les bonnes pratiques maven demandent à ce que les sous-modules d'un projet hérite de la version et du groupId du père). Le fait de builder le module parent build également les sous-modules. Concrètement, le père déclare ses modules fils avec l'élément <em>module</em> et le <em>module</em> fils déclare son père avec l'élément parent</li>
+</ul>
+
+
+<p>En fait, pour moi, la seule chose qui va décider de découper un projet (au sens large du terme) en modules ou en différents projets se résume en 3 mots : <strong>cycle de vie</strong> :</p>
+
+<ul>
+<li>Si lors de la relivraison d'un sous composant tout le système doit être relivré car dépendant du premier, alors les composants sont dans le même projet, ie. qu'ils sont des modules. Ils héritent alors de la version du père et ne doivent pas être relivré indépendamment.</li>
+<li>S'il est possible de livrer indépendamment un composant du projet et que cela n'a pas foncièrement d'impact sur les autres, alors il doit être dans un projet indépendant. Les autres composants l'utilisant auront alors dans leur pom un numéro de version figée et le verrons comme une boite noire.</li>
+</ul>
+
+
+<p>Bien sûr, le fait de gérer des projets indépendants complexifie le processus de livraison ainsi que l'usine logicielle (au nombre de jobs jenkins, sonar &amp; co.) et c'est aussi pourquoi, souvent, les composants se retrouvent déclarer en modules d'un seul et unique projet.</p>
+
+<p>Pourtant je pense que ce choix est une fausse bonne idée à terme et que la question du cycle de vie des différents composants est primordiale. En effet, découper en briques disposant de leur propre cycle de livraison force à découpler l'architecture du produit et oblige les équipes de développement à réfléchir sur le design.</p>
+
+<p>De même, coté vision globale, cela force à réfléchir sur une cartographie du système (processus aussi appelé <strong>urbanisation</strong>) en se forçant à raisonner service (au sens large du terme) (<em>ndlr</em> : désolé mais pour ceux qui ne me connaissent pas, je viens du monde SOA&hellip; ).</p>
+
+<p>Bien sûr, si le projet se limite à une simple application web disposant de son controleur, de sa couche présentation et de sa couche modèle, alors un &ldquo;simple&rdquo; projet disposant de ses sous-modules est largement suffisant, mais s'il s'agit de composants nécessaires à la gestion du SI au sens plus large, la question mérite à être posée.</p>
+
+<p>Enfin, juste pour conclure cette partie, concernant le SCM, il doit être découpé en conséquence. Si c'est Git qui est utilisé, pas de souci. Par contre, si c'est SVN (ou autre), alors il est primodiale de respecter les préconisations de ce dernier, ie. de ne pas avoir tous les projets sous trunk mais que chaque projet dispose de ses sous répertoires <code>trunk/branches/tags</code>. En effet, un projet doit avoir sa propre hiérarchie de tags et de branches. De plus, techniquement parlant, il peut arriver que le fait d'utiliser le plugin release de maven produise des informations fausses au niveau de l'élément <code>scm</code>.</p>
+
+<p>Exemple :</p>
+
+<p>Le projet des décomposé comme suit :</p>
+
+<p><img src="http://2.bp.blogspot.com/-tB997UpDKpA/UCvnxlx4G5I/AAAAAAAAAnc/9bD09UesmJ4/s1600/scm-projets2.png" alt="center" /></p>
+
+<p>Alors les valeurs des éléments scm pour trunk seront les suivantes :</p>
+
+<p>```text
+projet1                          scm : trunk/projet1</p>
+
+<pre><code>  projet11                   scm : trunk/projet1/projet11
+</code></pre>
+
+<p>projet2                          scm : trunk/projet2
+```</p>
+
+<p>Par contre, si le plugin release est utilisée (par exemple le goal branches), on aura  la valeur de l'élément scm pour branches projet11 qui sera la suivante :</p>
+
+<p><img src="http://1.bp.blogspot.com/-0Ha4zM3jOGU/UCvo1B6DknI/AAAAAAAAAnk/6CJBHQurR3c/s1600/scm-projets.png" alt="center" /></p>
+
+<p><code>text
+projet11                  scm : branches/projet1/projet11
+</code></p>
+
+<p>On constate que la transformation de la valeur de l'élément scm pour le projet11 est erronée. Cela n'influe en rien le livrable, cependant, il devient alors impossible de créer une branche ou de faire une release du projet11 avec le plugin maven release&hellip;</p>
+
+<h1>Conclusion</h1>
+
+<p>Pour conclure cet article, on peut voir que le choix entre module et projet n'est pas si complexe que cela mais qu'il est préférable (et même, à mon sens, indispensable) de se poser les bonnes questions. Pour ma part, j'aurai tendance à dire que plus cela est tôt dans le projet, mieux c'est. Cependant, il faut se méfier de l'overdesign et trop de découpage peut tuer le découpage&hellip; Certaines personnes préfèrent, d'ailleurs, n'avoir qu'un seul projet décomposé en différent sous module puis, en fonction de l'avancée du projet, effectuer un découpage : c'est également une possibilité qui se veut aussi plus pragmatique.</p>
+
+<p>Après chacun fait comme il l'entend et c'est une question de goût. Cependant, si on pousse ce raisonnement à l'extrème, pourquoi, dans ce cas, ne pas faire un découpage par package? : cela est plus simple, on ne s'embête pas à gérer différents poms et c'est encore plus pragmatique non? ;&ndash;)</p>
+
+<p>Une fois encore, lecteur, je te laisse seul juge. A toi de te faire ta propre expérience et de juger le pour et le contre. Moi j'ai le mien ;&ndash;)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Resign Patterns : les nouveaux patterns]]></title>
+    <link href="http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
+    <updated>2011-12-02T23:04:54+01:00</updated>
+    <id>http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
+    <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-mP_z1e0Qo6M/TtiCRYS_PVI/AAAAAAAAAgQ/Dntolyd6oUg/s1600/Fail.png" title="Crédit photo : http://www.flickr.com/photos/esthervargasc/6010520395/" alt="left-small" /></p>
+
+<p>Cet article est une traduction &ldquo;libre&rdquo; de l'excellent papier de <a href="mitework@yercompany.com">Michael Duell</a> qui se nomme <a href="http://www.lsd.ic.unicamp.br/~oliva/fun/prog/resign-patterns">&ldquo;Resign Patterns&rdquo; Ailments of Unsuitable Project-Disoriented Software</a>.</p>
+
+<p>En fait, <em>Resign Patterns</em> reprend le principe des <em>Design Patterns</em> tels que décrit par <em>the Gang Of Four</em> mais en proposant un tout autres types de <em>Patterns</em>&hellip; Je vous laisse juger de leur véracité&hellip; Je pense qu'ils ont suffisamment fait leurs preuves pour ne pas avoir droit, eux aussi, à leur gloire&hellip; ;&ndash;)</p>
+
+<p>Aussi, au même titre que les patterns du GoF, je vous invite à utiliser les dénominations décrites par les Resign Patterns pour vous faire comprendre de vos collègues quand vous parlez du design d'un programme. Ainsi, vous pourrez briller en société mais surtout vous faire comprendre par vos pairs ;&ndash;)</p>
+
+<!-- more -->
+
+
+<p>Dans le même style, je vous conseille les excellents articles suivants :</p>
+
+<ul>
+<li><a href="http://blog.xebia.fr/2011/11/29/revue-de-presse-xebia-239#Humourdedveloppeur">http://blog.xebia.fr/2011/11/29/revue-de-presse-xebia-239#Humourdedveloppeur</a></li>
+<li><a href="http://www.dodgycoder.net/2011/11/yoda-conditions-pokemon-exception.html">http://www.dodgycoder.net/2011/11/yoda-conditions-pokemon-exception.html</a></li>
+</ul>
+
+
+<h1>Cremational Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 5 :</p>
+
+<h2>Abject Poverty</h2>
+
+<p>Le <strong>Abject Poverty Pattern</strong> est visible dans les logiciels qui sont si difficiles à tester et à maintenir que cela abouti généralement à un dépassement de budget pharaonique.</p>
+
+<h2>Blinder</h2>
+
+<p>Le <strong>Blinder Pattern</strong> est la solution opportune à un problème sans qu'aucune anticipation n'ait été faite sur de futurs modifications dans les exigences. Il est difficile de savoir s'il est nommé de la sorte en raison de la pauvre vision des personnes qui ont faites le design du logiciel pendant la phase de développement, ou du désir de faire souffrir ses yeux pendant la phase de maintenance.</p>
+
+<h2>Fallacy Method</h2>
+
+<p>Le <strong>Fallacy Method Pattern</strong> est visible dans le traitement de cas particuliers. La logique semble correct mais si quiconque tente de tester ces cas aux limites ou s'ils venaient à se produit, alors les erreurs de logiques apparaitraient au grand jour.</p>
+
+<h2>ProtoTry</h2>
+
+<p>Le <strong>ProtoTry Pattern</strong> offre une façon rapide et sale de développer un logiciel. Généralement, l'intention première est de vouloir réécrire le code utilisant le <strong>ProtoTry</strong> mais en l'améliorant en mettant en pratique les leçons apprises pendant la phase de conception. Malheureusement, souvent, un planning inadapté ne le permet pas. Le <strong>ProtoTry</strong> est aussi connu sous le nom de <strong>code Legacy</strong>.</p>
+
+<h2>Simpleton</h2>
+
+<p>Le <strong>Simpleton Pattern</strong> est un pattern extrèmement complexe utilisé pour faire une tache triviale. Le <strong>Simpleton</strong> offre un indicateur fiable sur le niveau de compétence des concepteurs du code.</p>
+
+<h1>Les Destructural Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 7 :</p>
+
+<h2>Adopter</h2>
+
+<p>L'<strong>Adopter Pattern</strong> fournit un foyer à toutes les fonctions orphelines. Il en résulte une large famille de fonctions qui ne se ressemblent pas et qui n'ont de commun que le fait d'avoir été adopté.</p>
+
+<h2>Brig</h2>
+
+<p>Le <strong>Brig Pattern</strong> est un conteneur de classes pour le mauvais logiciel, aussi connu sous le nom de <strong>Module</strong>.</p>
+
+<h2>Compromise</h2>
+
+<p>Le <strong>Compromise Pattern</strong> est utilisé pour trouver un compromis entre la qualité et le planning. Il en résulte généralement un logiciel d'une piètre qualité qui, de plus, est en retard.</p>
+
+<h2>Detonator</h2>
+
+<p>Le <strong>Detonator Pattern</strong> est extrèmement commun mais souvent indétectable. Par exemple, une implémentation fréquente du <strong>Detonator Pattern</strong> est l'utilisation des deux derniers chiffres d'une année lors de la manipulation et le calcul appliqué à des dates. La bombe est présente et n'attend qu'à faire son travail&hellip;</p>
+
+<h2>Fromage</h2>
+
+<p>Le <strong>Fromage Pattern</strong> est souvent remplis de trous. Il consiste en une multitude de petites astuces qui rendent impossible toute portabilité du code. Généralement, plus il est vieux et plus il sent fort!</p>
+
+<h2>Flypaper</h2>
+
+<p>Le <strong>FlyPaper Pattern</strong> est écrit par une personne et maintenu par une autre. Cette dernière se retrouve alors coincé et préfèrerait périr avant de se perdre.</p>
+
+<h2>ePoxy</h2>
+
+<p>L'<strong>ePoxy Pattern</strong> est visible dans les modules logiciels fortement couplés. Lorsque le couplage entre modules augmente, c'est qu'il y a souvent le pattern ePoxy qui lie ces modules.</p>
+
+<h1>Misbehavioral Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 11 :</p>
+
+<h2>Chain of Possibilities</h2>
+
+<p>Le <strong>Chain of Possibilities Pattern</strong> est visible dans les gros modules peu documenté. Personne n'est sûr de l'étendu de ses fonctionnalités, mais ses possibilités semblent infinis. Il est aussi connu sous le nom de <strong>Non-Deterministic Pattern</strong>.</p>
+
+<h2>Commando</h2>
+
+<p>Le <strong>Commando Pattern</strong> est utilisé pour intervenir rapidement et faire que le travail soit fait. Ce pattern est capable de briser toutes les encapsultation afin d'accomplir sa mission. Il ne fait pas de prisonniers.</p>
+
+<h2>Intersperser</h2>
+
+<p>L'<strong>Intersperser Pattern</strong> éparpille ses fonctionnalités dans tout le système, rendant impossible le test, la modification ou même la compréhension d'une fonction.</p>
+
+<h2>Instigator</h2>
+
+<p>L'<strong>Instigator Pattern</strong> semble bénin mais permet de faire des ravages dans d'autres parties du système.</p>
+
+<h2>Momentum</h2>
+
+<p>Le <strong>Momentum Pattern</strong> grossit de manière exponentielle, en taille, en besoin mémoire, en complexité et en temps d'exécution.</p>
+
+<h2>Medicator</h2>
+
+<p>Le <strong>Medicator Pattern</strong> est un tel goulot d'étranglement en terme de performance pour le système que toute autre partie du système semble dopé aux stéroïdes.</p>
+
+<h2>Absolver</h2>
+
+<p>L'<strong>Absolver Pattern</strong> est visible dans des problème résolus par des anciens employés. Tant de problèmes historiques ont été résolus par le logiciel que les personnes présentes peuvent absoudre le logiciel de blâme en déclarant que l'<strong>Absolver</strong> est responsable de tous les problèmes présents. Aussi connu sous le nom de <strong>&ldquo;It&rsquo;s not in my code&rdquo;</strong>.</p>
+
+<h2>Stake</h2>
+
+<p>Le <strong>Stake Pattern</strong> est visible dans les problèmes dirigés par un logiciel écrit par une personne qui a, depuis lors, choisi la voie du management. Ainsi, même si de nombreux problèmes se produisent, l'auteur du pattern <strong>Stake</strong> (qui est donc devenu manageur) empêchera quiconque de réécrire le logiciel sous prétexte qu'il est l'image de la réussite technique du manageur.</p>
+
+<h3>Eulogy</h3>
+
+<p>L'<strong>Eulogy Pattern</strong> est présent dans tous les projets qui emploie les 22 autres Resign Patterns. Il est aussi connu sous le nom de <strong>Post Mortem</strong>.</p>
+
+<h2>Tempest Method</h2>
+
+<p>Le <strong>Tempest Method Pattern</strong> et utilisé dans les derniers jours qui précède la livraison du logiciel. Il est caractérisé par un manque de commentaires tout en introduisant un grand nombre de <strong>Detonator Pattern</strong>.</p>
+
+<h2>Visitor From Hell</h2>
+
+<p>Le <strong>Visitor From Hell Pattern</strong> coïncide avec l'absence de contrôle sur le temps écoulé entre deux vérification d'un tableau. Ainsi, au moins une boucle de contrôle du système aura le pattern <strong>Visitor From Hell</strong> qui surchagera les données critiques.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Devoxx 2011 - What's probably coming in Java Message Service 2.0]]></title>
+    <link href="http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
+    <updated>2011-11-20T22:49:24+01:00</updated>
+    <id>http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
+    <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-FB-AoRLfOOs/Tsk-J2XdFUI/AAAAAAAAAgE/CpRpQXHqH5M/s1600/devoxx1.jpg" alt="left-small" />
+La semaine dernière, j'ai eu la chance d'aller à Devoxx en Belgique à Anvers.</p>
+
+<p>Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : <a href="http://www.devoxx.com/">http://www.devoxx.com/</a> et même à vous y inscrire l'année prochaine et/ou même mieux&hellip; d'aller assister à <a href="http://devoxx.fr/">Devoxx France</a>!!</p>
+
+<iframe allowfullscreen="" frameborder="0" height="315" src="http://www.youtube.com/embed/II6XiGGlJX0" width="420"></iframe>
+
+
+<p>Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de <a href="http://www.devoxx.com/display/DV11/Nigel+Deakin">Nigel Deakin</a> présentée à <a href="http://www.devoxx.com/display/DV11/Home">Devoxx 2011</a> et à laquelle j'ai assisté.</p>
+
+<p>Elle avait pour objectif de montrer l'avancée des travaux sur JMS 2.0 (<em>Java Message Service</em>) aussi connu sous le doux nom de <a href="http://jcp.org/en/jsr/detail?id=343">JSR 343</a>. A ce jour, en version early draft, elle devrait être intégrée à JEE7.</p>
+
+<p>Cet article a donc pour vocation de tenter de retranscrire ce que nous a présenté Nigel.</p>
+
+<!-- more -->
+
+
+<p>Pour la repositionner dans son contexte, la JSR343 fait suite à JMS 1.1 (<a href="http://www.jcp.org/en/jsr/detail?id=914">JSR 914</a>) et a pour but de :</p>
+
+<ul>
+<li>Simplifier l'API de JMS :
+
+<ul>
+<li>En utilisant CDI (<em>Context Dependency Injection</em>).</li>
+<li>En clarifiant certaines ambiguïtés présentes dans les spécifications.</li>
+</ul>
+</li>
+<li>Améliorer l'intégration de JMS avec les serveurs d'application :
+
+<ul>
+<li>En intégrant plus facilement les problématiques de PaaS (<em>Platform As A Service</em>).</li>
+<li>En permettant le <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenancy</a>.</li>
+<li>En clarifiant ses relations avec les autres spécifications de JEE7 (ou même ultérieure) : cela est notamment vrai avec la partie MDB (<em>Message-Driven Beans</em>) de la spécifications des EJB.</li>
+</ul>
+</li>
+<li>Ajouter des nouvelles fonctionnalités à l'API.</li>
+</ul>
+
+
+<p>Je ne reviendrai pas sur ce qu'est JMS (Java Message Service) si ce n'est que sa version actuelle est la 1.1 et qu'elle date de 2003, mais le fait que la spécification JMS n'ait pas évoluée depuis 2003, montre bien qu'elle était solide et qu'elle répondait bien à ce pour quoi elle avait été écrite.</p>
+
+<p>Cependant, autant il n'y a rien à redire quant à la réception d'un message, autant la partie émission était souvent verbeuse puisqu'il était nécessaire pour émettre un message, dans le cas des EJB, de :</p>
+
+<ul>
+<li>injecter les factory (<em>ConnectionFactory</em> et <em>Destination</em>) à l'aide de l'annotation <code>@Resource</code>,</li>
+<li>créer la <code>Connection</code> à l'aide de la <code>ConnectionFactory</code>,</li>
+<li>créer la <code>Session</code> à l'aide de la <code>Connection</code>,</li>
+<li>créer le <code>MessageProducer</code> à l'aide de la <code>Session</code>.</li>
+</ul>
+
+
+<p>C'est seulement suite à toutes ces actions que l'émission d'un message était possible via la méthode <code>send()</code>.</p>
+
+<p>En outre, à cela, il fallait, bien sûr, gérer les exceptions <em>checkées</em> (<code>JMSException</code> pour ceux à qui cela parle ;&ndash;)) mais également la fermeture de la <code>Session</code> et de la <code>Connection</code>&hellip;</p>
+
+<p>Enfin, lors de l'utilisation conjointe de JMS et des EJB, certains paramètres de méthodes (notamment lors de la création de la Session) étaient redondants car gérés par le conteneur EJB (<code>createSession(boolean transacted, int acknowledgeMode)</code>).</p>
+
+<p>Un des prérequis principals de cette nouvelle version de la spécification est donc la simplification&hellip; simplification mais pas à n'importe quel prix puisqu'il était nécessaire de conserver la rétro compatibilité avec les versions ultérieures de la spécification.</p>
+
+<p>Nigel nous a donc présenté certaines des pistes qu'ils avaient (pistes encore ouvertes à discussion).</p>
+
+<p>Ce sont ces dernières que je vais essayer de retranscrire ci-dessous dans l'ordre dans lesquelles il les a énoncé.</p>
+
+<h1>Simplification sur la création de Sessions</h1>
+
+<p>Afin de simplifier l'API de JMS pour créer une Session, Nigel nous a présenté deux pistes :</p>
+
+<ul>
+<li>Ajout d'une méthode <code>createSession(SessionMode sessionMode)</code> pour JavaSE où la classe SessionMode pourrait être une classe ayant comme variable d'instance le mode de transaction et le type d'acknowledge.</li>
+<li>Ajout d'une méthode <code>createSession()</code> qui serait utilisée et présente seulement pour JEE.</li>
+</ul>
+
+
+<h1>Supprimer la lourdeur des close()</h1>
+
+<p>Afin de rendre moins verbeuse l'utilisation des <code>Connection</code> et des <code>Session</code>, une proposition plausible pourrait être de leur faire implémenter l'interface <code>java.lang.AutoCloseable</code>.</p>
+
+<p>Ainsi, il serait alors possible d'avoir les résultats suivants (pour rappel, il ne s'agit que de propositions car cela est toujours à l'étude) :</p>
+
+<ul>
+<li>avec Java 7 dans un contexte JEE :</li>
+</ul>
+
+
+<p><code>java
+@Resource(mappedName="...")
+ContextFactory contextFactory;
+ 
+@Resource(mappepdName="...")
+Queue orderQueue;
+ 
+public void sendMessage(String payload) {
+  try (messagingContext mCtx = contextFactory.createContext() ;) {
+    TextMessage textMessage = mCtx.createTextMessage(payload);
+    mCtx.send(orderQueue, textMessage);
+  }
+}
+</code></p>
+
+<ul>
+<li>avec CDI dans un contexte JEE :</li>
+</ul>
+
+
+<p>```java
+@Resource(mappedName=&ldquo;&hellip;&rdquo;)
+Queue orderQueue;</p>
+
+<p>@Inject
+@MessagingContext(lookup=&ldquo;&hellip;&rdquo;)
+MessagingContext mCtx;</p>
+
+<p>@Inject
+TextMessage textMessage;</p>
+
+<p>public void sendMessage(String payload) {
+  textMesage.setText(payload);
+  mCtx.send(orderQueue, textMessage);
+}
+```</p>
+
+<ul>
+<li>toujours avec Java 7 dans un contexte JEE :</li>
+</ul>
+
+
+<p><code>java
+@Inject
+@JMSConnection(lookup="...")
+@JMSDestination(lookup="...")
+MessageProducer producer;
+ 
+@Inject
+TextMessage textMessage;
+ 
+public void sendMessage(String payload) {
+  try {
+    textMessage.setText(payload);
+    producer.send(textMessage);
+  } catch (JMSException e) {
+    //todo
+  }
+}
+</code></p>
+
+<h1>Autres simplifications</h1>
+
+<p>Les autres simplifications d'API envisageables pourraient être :</p>
+
+<ul>
+<li>de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : <code>producer.send(String/Serializable);</code> ). Cependant, ce type d'API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types <code>BytesMessage</code> ou <code>StreamMessage</code>. A ajouter à cela la question de son pendant pour la réception</li>
+<li>de simplifier la gestion des <code>DurableSubscriber</code> (<a href="http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber">http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber</a>(javax.jms.Topic, java.lang.String)), qui, au jour d'aujourd'hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d'une utilisation conjointe avec les EJB 3.2</li>
+</ul>
+
+
+<h1>Vers le futur&hellip;</h1>
+
+<p>Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.</p>
+
+<p>Ainsi, JMS 2.0 devra, pour répondre aux besoins des problématiques de type SaaS (<em>Software As A Service</em>), permettre de déclarer ses ressources créées dans un serveur d'applications et de les enregistrer dans un annuaire JNDI (comme c'est actuellement le cas pour les DataSource).</p>
+
+<p>Pour ce faire, de nouvelles annotations pourraient voir le jour (par exemple : <code>@JMSConnectionFactoryDefinition</code> et <code>@JMSDestinationDefinition</code>) mais également un SPI (<em>Service Provider Interface</em>) pour le faire de manière programmatique.</p>
+
+<p>Concernant une meilleure intégration avec les serveurs d'applications (ce qui permettrait d'utiliser n'importe quel JMS Provider dans n'importe quel serveur d'application JEE), Nigel propose la solution de JCA (<em>Java Connector Architecture</em>), un peu comme ce qui existe avec le drivers de bases de données.</p>
+
+<h1>Nouvelles features</h1>
+
+<p>Concernant les nouvelles features de l'API, Nigel nous a ensuite présenté ce qui pourrait arriver, à savoir (en vrac) :</p>
+
+<ul>
+<li>l'émission de messages avec un acquittement asynchrone du serveur,</li>
+<li>la possibilité pour un client JMS d'utiliser des <code>Future</code>,</li>
+<li>la possibilité d'émettre un message et de ne pas à avoir à attendre la réception d'un acquittement pour savoir si le message a bien été émis.</li>
+</ul>
+
+
+<p>Il se pourrait également que la propriété <code>JMSXDeliveryCount</code> ne soit plus optionnelle, ce qui permettrait aux serveurs d'applications de mieux gérer le <em>flood</em>.</p>
+
+<p>De même, la gestion des Topics hiérarchiques pourraient être rendue obligatoire.</p>
+
+<p>Enfin, une meilleure gestion des batch pourrait être possible via de nouvelles API comme par exemple l'introduction de la méthode <code>receive(Message[])</code>.</p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, je suis assez mitigé par cette session.</p>
+
+<p>En effet, autant, je trouve que certaines propositions permettraient de rendre moins verbeuses l'utilisation de JMS, autant, je ne suis pas convaincu que pouvoir faire la même chose de différentes manières soit une bonne chose (et, cela, même si ça simplifie le travail du développeur&hellip;).</p>
+
+<p>En outre, je trouve que, pour la majorité des propositions (même si elles sont totalement viables), l'axe de JEE est trop important.</p>
+
+<p>Enfin, intégrer fortement CDI avec JMS m'embête un peu car cela nécessite de disposer d'un conteneur CDI, chose qui n'est pas toujours le cas dans un contexte Java SE et, même si je trouve CDI sexy, je ne pense pas que la majorité des développeurs ou que nos clients soient prêts à franchir le pas en raison de la complexité intrinsèque à CDI (bien sûr, JMS 2.0 se devait de se tourner vers le futur et CDI se devait d'être pris en compte)&hellip; enfin, il ne s'agit que d'un avis personnel&hellip; l'avenir nous dira ce qu'il en est&hellip; ;&ndash;)</p>
+
+<p>Dernier point (mais là encore, c'est totalement personnel), j'aurais aimé voir une intégration des notions d'EIP (<em>Enterprise Integration Pattern</em>) même si la notion de <strong>filter</strong> (au sens EIP du terme) sort un peu du scope de JMS mais bon&hellip; ;&ndash;)</p>
+
+<p><del>Pour conclure, Nigel a bien présenté la direction que pourrait prendre JMS dans un futur proche mais, comme il nous l'a fréquemment fait remarquer, il ne s'agit que de pistes et, d'ailleurs, toutes les contributions sont les bienvenues.</del></p>
+]]></content>
+  </entry>
+  
+</feed>

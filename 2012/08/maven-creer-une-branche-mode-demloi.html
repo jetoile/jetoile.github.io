@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Maven : Créer Une Branche - Mode D'emploi - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Maven : Créer Une Branche - Mode D'emploi August 13, 2012 Il y a un moment déjà, j&#8217;avais fait un article sur le plugin release oh combien &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Maven : Créer Une Branche - Mode D'emploi</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-08-13T11:40:31+02:00" pubdate data-updated="true">August 13, 2012</time>  
+        </div>
+        <p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
+
+<p>Il y a un moment déjà, j&#8217;avais fait un <a href="/2010/04/le-plugin-release-un-peu-demystifie.html">article sur le plugin release</a> oh combien pratique dans notre utilisation de maven. J&#8217;y avais mentionné les 2 goals <code>prepare</code> et <code>perform</code> qui sont les plus connus et qui, pour rappel, permettent de :</p>
+
+<ul>
+<li>vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM,</li>
+<li>tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité,</li>
+<li>incrémenter le numéro de version des poms,</li>
+<li>générer le livrable,</li>
+<li>et le déployer sur le <em>remote proxy repository</em>.</li>
+</ul>
+
+
+<p>Dans cet article, je me concentrerai sur un goal du plugin release malheureusement assez méconnu mais qui est tout aussi pratique et important (à mon sens) que ses 2 comparses <code>prepare</code> et <code>perform</code>. Il s&#8217;agit du plugin <strong>branch</strong>.</p>
+
+<!-- more -->
+
+
+<p>Ce plugin permet de créer une branche en utilisant un sous-ensemble de ce que fait le goal prepare mais appliqué à une branche plutôt qu&#8217;à un tag :</p>
+
+<ul>
+<li>vérifie que lors du lancement du processus de création de branche, le code est bien conforme à ce qui se trouve sur le SCM (ie. qu&#8217;il n&#8217;y a pas de modification en local),</li>
+<li>modifie optionnellement la version du pom qui sera utilisé sur la branche créée (ie. cible),</li>
+<li>transforme les informations du SCM dans le pom (ie. le contenu des éléments fils de l&#8217;élément scm afin qu&#8217;ils correspondent à la branche),</li>
+<li>commite le pom modifié,</li>
+<li>tag le code dans le SCM comme une nouvelle branche,</li>
+<li>modifie optionnellement la version du pom si une nouvelle version doit être utilisée sur la branche/trunk/master source (enfin sur la code ayant servi à créer la branche),</li>
+<li>commite le pom modifié.</li>
+</ul>
+
+
+<p>Pour les habitués de ce blog (ndlr : oui&hellip; j&#8217;avoue&hellip; un peu mort en ce moment&hellip; ), ils sauront que j&#8217;ai tendance à m&#8217;appuyer fortement sur la documentation officielle, chose que je ne changerai pas dans cet article.</p>
+
+<p>Il est à noter que cet article n&#8217;est, en fait, qu&#8217;un prétexte afin de me servir d&#8217;aide mémoire sur la ligne de commande à utiliser pour effectuer cette opération&hellip; mais vu que je suis hyper sympa (&hellip; ou pas&hellip;), je développerai un peu plus que la simple commande à taper&hellip; ;&ndash;)</p>
+
+<p>Enfin, je ne reviendrai pas sur le fait que créer une branche doit, bien évidemment, se faire dans les règles de l&#8217;art (ie. au moins pouvoir permettre une itération du numéro de version du pom dans le cas de branches correctives et le changement de la valeur des balises contenu dans l&#8217;élément scm).</p>
+
+<h1>Les options</h1>
+
+<p>Les options les plus utiles (à mon sens) disponibles sont les suivantes :</p>
+
+<ul>
+<li><code>branchName</code> : permet de définir le nom de la branche à créer.</li>
+<li><code>autoVersionSubmodules</code> : permet d&#8217;utiliser automatiquement la même version que celle du parent. Si elle est mise à false (valeur par défaut), alors une version sera demandé pour chaque sous module.</li>
+<li><code>branchBase</code> : permet de redéfinir le répertoire de base des branches dans SVN si les préconisations SVN n&#8217;ont pas été respectées.</li>
+<li><code>developmentVersion</code> : permet de préciser la version à mettre pour la nouvelle copie local de travail.</li>
+<li><code>dryRyun</code> : permet de faire un checkout local plutôt que de le faire sur le repository. Ainsi, par exemple, cette option peut être utile pour savoir si les modifications qui seront apportées aux pom qui seront poussés sur le SCM sont bien celles attendues.</li>
+<li><code>localCheckout</code> : permet de faire un checkout local plutôt qu&#8217;un distant (utile seulement pour les SCM de type DVCS qui supportent le protocole file &ndash; git, jgit, hg &ndash; ).</li>
+<li><code>pushChanges</code> : permet, seulement avec git, de pousser ou non ses changements sur le repository distant (par défaut, true).</li>
+<li><code>updateBranchVersions</code> : permet de définir la version à mettre sur la branche (par défaut, false).</li>
+<li><code>updateDependencies</code> : permet de mettre à jour la version du pom pour la prochaine phase de développement (par défaut, true).</li>
+<li><code>updateWorkingCopyVersion</code> : permet de mettre à jour la version sur la copie de travail locale (par défault, true).</li>
+</ul>
+
+
+<p>Enfin, il est possible de préciser la version à utiliser dans le ligne de commande. Cela peut être utile, par exemple, si la commande est exécutée en commande non interactive. Le goal branch peut utiliser les mêmes propriétés utilisées par le goal prepare pour définir les versions à utiliser.</p>
+
+<p>Exemple :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn --batch-mode release:branch -DbranchName<span class="o">=</span>my-branch-1.2 <span class="se">\</span>
+</span><span class='line'>-Dproject.rel.org.myCompany:projectA<span class="o">=</span>1.2 <span class="se">\</span>
+</span><span class='line'>-Dproject.dev.org.myCompany:projectA<span class="o">=</span>2.0-SNAPSHOT
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans cet exemple, le pom dans la nouvelle branche sera en version 1.2-SNAPSHOT alors que le pom local sera en version 2.0-SNAPSHOT.</p>
+
+<h1>La commande! La commande!&hellip; enfin</h1>
+
+<p>Bon, voilà la commande tant attendue que j&#8217;utilise le plus souvent :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn --batch-mode release:branch <span class="se">\</span>
+</span><span class='line'>-DbranchName<span class="o">=</span>&lt;nomBrancheACreer&gt; <span class="se">\</span>
+</span><span class='line'>-DupdateBranchVersions<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+</span><span class='line'>-DupdateWorkingCopyVersions<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+</span><span class='line'>-DautoVersionSubmodules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+</span><span class='line'>-Dproject.rel.&lt;groupId&gt;:&lt;artifactId&gt;<span class="o">=</span>&lt;version&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec la déclaration suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'> <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;artifactId&gt;</span>maven-release-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Conclusion</h1>
+
+<p>En conclusion de ce court article, pas grand chose à ajouter sauf que le goal <code>branch</code> du plugin <strong>release</strong> est vraiment très utile puisqu&#8217;il permet en une seule commande de faire plusieurs opérations qui se trouvent être assez rébarbatives.</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<p><a href="http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html">http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html</a>`</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-08-13T11:40:31+02:00" pubdate data-updated="true">August 13, 2012</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html';
+        var disqus_url = 'http://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2012/05/devoxx-2012-elasticsearch-moteur-de.html" title="Previous Post: Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud">&laquo; Previous: Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</a>
+        
+
+        
+          <a class="pull-right" href="/2012/08/decoupage-de-projets-projet-vs-modules.html" title="Next Post: Découpage de projets : projet vs. modules">Next: Découpage de projets : projet vs. modules &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

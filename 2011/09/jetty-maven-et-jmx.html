@@ -1,0 +1,1246 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jetty, Maven Et JMX - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Jetty, Maven Et JMX September 26, 2011 Vous avez peut être remarqué que ces derniers temps, j&#8217;étais très Maven et JMX. Cet article ne déroge &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Jetty, Maven Et JMX</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-09-26T23:19:12+02:00" pubdate data-updated="true">September 26, 2011</time>  
+        </div>
+        <p><img src="http://2.bp.blogspot.com/-bGP4Fnvfp1s/TnEtqz-UNkI/AAAAAAAAAa4/KBXNM8QXHKc/s1600/logoArticle.png" alt="left-small" /></p>
+
+<p>Vous avez peut être remarqué que ces derniers temps, j&#8217;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&hellip; Maven et de JMX.</p>
+
+<p>Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</p>
+
+<p>Pour ce faire, je présenterai dans un premier temps le contexte, puis comment cela peut être mise en œuvre.
+Bien sûr, cet article montre comment j&#8217;ai fait mais il ne représente pas la seule manière de faire&hellip; ;&ndash;). En outre, il ne présente rien de novateur mais je me suis dit que cela pouvait toujours être utile afin d&#8217;éviter de faire perdre du temps à d&#8217;autres personnes.</p>
+
+<!-- more -->
+
+
+<h1>Contexte</h1>
+
+<p>Ce paragraphe présente mes motivations pour avoir eu un besoin d&#8217;une utilisation d&#8217;un Jetty embedded à Maven en activant la couche JMX car, c&#8217;est vrai, ce n&#8217;est pas un besoin très courant et qu&#8217;il peut même sembler, au premier abord, paraitre un peu stupide (en effet, utiliser un Jetty embedded répond plutôt à un besoin de poste de développement ou au pire (et je dis bien au pire!!) à un pseudo TU qui n&#8217;est, du coup, pas un TU&hellip; (ndlr : enfin, encore une fois, je diverge&hellip; ;&ndash;) )).</p>
+
+<p>En fait, pour les besoins d&#8217;une démonstration, je voulais juste présenter une petite application web qui remontait des métriques via JMX. N&#8217;ayant pas foncièrement envie d&#8217;avoir à décompresser un Jetty sur mon poste, je me suis dit qu&#8217;un Jetty embedded dans Maven suffisait largement à ma petite démo.</p>
+
+<p>En outre, cela offrait également la possibilité à n&#8217;importe qui de rejouer la démo sans avoir à installer localement un conteneur de Servlets et sans à avoir à modifier le paramétrage de ce dernier pour activer la couche JMX de la JVM.</p>
+
+<p>L&#8217;application web utilisée pour ce petit POC est assez basique puisqu&#8217;il ne s&#8217;agit que d&#8217;un simple Servlet redirigeant vers une simple jsp.</p>
+
+<p>Ce Servlet incrémentera un compteur exposé en JMX afin de fournir cette métrique basique à la couche de supervision.</p>
+
+<p>Spring 3 sera également utilisé pour lier le tout&hellip;</p>
+
+<p>En fait, si vous me demandez pourquoi j&#8217;ai branché Spring pour une application ausi simple, c&#8217;est, en fait, que JMX n&#8217;était pas le seul composant que je voulais montrer pendant la petite démonstration&hellip;</p>
+
+<p>Si vous avez l&#8217;esprit chagrin et que vous me re-demandez pourquoi je n&#8217;ai pas utilisé un aspect, c&#8217;est que l&#8217;aspect était justement l&#8217;autre aspect de ma démo ;&ndash;).</p>
+
+<h1>Mise en oeuvre</h1>
+
+<p>Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
+
+<ul>
+<li>Le code de l&#8217;application web utilisé.</li>
+<li>La configuration Maven utilisée permettant de démarrer l&#8217;application web dans un Jetty embedded.</li>
+<li>Les subtilités de la configuration à effectuer pour ajouter la couche JMX.</li>
+</ul>
+
+
+<h1>Application web cible</h1>
+
+<p>Comme annoncé précédemment, notre application web cible se compose de :</p>
+
+<ul>
+<li>un Servlet,</li>
+<li>une page JSP,</li>
+<li>un POJO utilisé par Spring pour la partie MBean (Spring aura, à sa charge, sa <em>proxification</em> en MBean Standard et son enregistrement au sein du MBean Server),</li>
+<li>un fichier de configuration web.xml,</li>
+<li>et un fichier de contexte Spring.</li>
+</ul>
+
+
+<p>Il est à noter qu&#8217;elle utilisera la spécification 2.5 des Servlets afin de permettre, dans les parties suivantes, de montrer la différence de configuration qu&#8217;il existe entre Jetty 6 et 7.</p>
+
+<h2>Code du Servlet</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleServlet</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">static</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">SimpleServlet</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="nd">@Override</span>
+</span><span class='line'><span class="err">    </span><span class="kd">protected</span> <span class="kt">void</span> <span class="n">service</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">ApplicationContext</span> <span class="n">beanFactory</span> <span class="o">=</span> <span class="n">WebApplicationContextUtils</span><span class="o">.</span><span class="na">getRequiredWebApplicationContext</span><span class="o">(</span><span class="n">getServletContext</span><span class="o">());</span>
+</span><span class='line'><span class="err">        </span><span class="n">SimpleCounter</span> <span class="n">jmxTestBean</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&quot;simpleCounter&quot;</span><span class="o">,</span> <span class="n">SimpleCounter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="n">jmxTestBean</span><span class="o">.</span><span class="na">inc</span><span class="o">();</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">        </span><span class="n">req</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;nbInvocation&quot;</span><span class="o">,</span> <span class="n">jmxTestBean</span><span class="o">.</span><span class="na">getNbGet</span><span class="o">());</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">        </span><span class="n">RequestDispatcher</span> <span class="n">dispatcher</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="na">getRequestDispatcher</span><span class="o">(</span><span class="s">&quot;WEB-INF/jsp/simpleDisplay.jsp&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="k">if</span> <span class="o">(</span><span class="n">dispatcher</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">dispatcher</span><span class="o">.</span><span class="na">forward</span><span class="o">(</span><span class="n">req</span><span class="o">,</span> <span class="n">resp</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">LOGGER</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&quot;unable to get the request dispatcher&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On constate que le Servlet est basique. Il n&#8217;y a donc rien à dire dessus si ce n&#8217;est la récupération du POJO <em>proxifié</em> par Spring pour incrémenter un compteur qui sera exposé en JMX.</p>
+
+<h2>Code du POJO utilisé comme MBean Standard</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleCounter</span> <span class="o">{</span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kt">int</span> <span class="n">nbGet</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">void</span> <span class="n">inc</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">this</span><span class="o">.</span><span class="na">nbGet</span><span class="o">++;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">void</span> <span class="n">setNbGet</span><span class="o">(</span><span class="kt">int</span> <span class="n">nbGet</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">this</span><span class="o">.</span><span class="na">nbGet</span> <span class="o">=</span> <span class="n">nbGet</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">int</span> <span class="n">getNbGet</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">return</span> <span class="n">nbGet</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l&#8217;attribut <code>nbGet</code> accessible en lecture/écriture par la couche cliente JMX.</p>
+
+<h2>Code de la jsp</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="err">&lt;</span>%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+</span><span class='line'><span class="cp">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html; charset=UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;title&gt;</span>simple display<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;h1&gt;</span>This is a simple display<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>        Has been invoked: ${nbInvocation} times
+</span><span class='line'>    <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rien de particulier non plus à dire sur la jsp&hellip;</p>
+
+<h2>Code du web.xml</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;web-app</span> <span class="na">version=</span><span class="s">&quot;2.5&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee </span>
+</span><span class='line'><span class="s"> http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;context-param&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;param-name&gt;</span>contextConfigLocation<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;param-value&gt;</span>classpath:applicationContext*.xml<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/context-param&gt;</span>
+</span><span class='line'> <span class="nt">&lt;listener&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;listener-class&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="nt">&lt;/listener-class&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/listener&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;servlet&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;servlet-name&gt;</span>SimpleServlet<span class="nt">&lt;/servlet-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;servlet-class&gt;</span>fr.jetoile.demo.servlet.SimpleServlet<span class="nt">&lt;/servlet-class&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;init-param&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;param-name&gt;</span>sleep-time-in-seconds<span class="nt">&lt;/param-name&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;param-value&gt;</span>10<span class="nt">&lt;/param-value&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/init-param&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;load-on-startup&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/servlet&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;servlet-mapping&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;servlet-name&gt;</span>SimpleServlet<span class="nt">&lt;/servlet-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;url-pattern&gt;</span>/sample<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/servlet-mapping&gt;</span>
+</span><span class='line'><span class="nt">&lt;/web-app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le fichier descripteur <code>web.xml</code> est classique donc rien de nouveau sur les tropiques ;&ndash;). Comme dit plus haut, c&#8217;est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.</p>
+
+<h2>Code du contexte Spring</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;beans</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://www.springframework.org/schema/beans</span>
+</span><span class='line'><span class="s"> http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.jmx.support.MBeanServerFactoryBean&quot;</span> <span class="na">id=</span><span class="s">&quot;mbeanServer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;locateExistingServerIfPossible&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;&lt;/property&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.jmx.export.MBeanExporter&quot;</span> <span class="na">id=</span><span class="s">&quot;exporter&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;beans&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;map&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;entry</span> <span class="na">key=</span><span class="s">&quot;bean:application=jmx-sample,name=simpleCounter&quot;</span> <span class="na">value-ref=</span><span class="s">&quot;simpleCounter&quot;</span><span class="nt">&gt;&lt;/entry&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/map&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/property&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;server&quot;</span> <span class="na">ref=</span><span class="s">&quot;mbeanServer&quot;</span><span class="nt">&gt;&lt;/property&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;fr.jetoile.demo.jmx.SimpleCounter&quot;</span> <span class="na">id=</span><span class="s">&quot;simpleCounter&quot;</span><span class="nt">&gt;&lt;/bean&gt;</span>
+</span><span class='line'><span class="nt">&lt;/beans&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Concernant le fichier descripteur de Spring, on constate que la classe <code>MBeanServerFactoryBean</code> de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c&#8217;est le <code>MBeanExporter</code> qui a la charge de l&#8217;enregistrement du MBean injecté.</p>
+
+<h1>Application web exécutable via Jetty au sein de Maven</h1>
+
+<p>Afin de permettre une exécution de notre application web dans un Jetty embedded dans Maven, il faut, bien sûr, une structure Maven.</p>
+
+<p>Elle est la suivante :
+<img src="http://3.bp.blogspot.com/-q2jJEYSygfg/TnErFlaNEDI/AAAAAAAAAag/2vgwO_zYc6A/s1600/jmx-sample-tree.png" alt="center" /></p>
+
+<p>Concernant le fichier descripteur <code>pom.xml</code>, il contiendra, bien sûr, le plugin nécessaire au lancement de jetty.</p>
+
+<p>Afin d&#8217;être plus exhaustif, dans notre POC, deux profils Maven seront utilisés afin de pouvoir spécifier la version de Jetty à utiliser (le choix sera laissé entre Jetty 6 et 7). En outre, le port d&#8217;écoute est forcé à 9090 :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> <span class="nt">&lt;groupId&gt;</span>fr.jetoile.demo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;artifactId&gt;</span>jmx-sample<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;packaging&gt;</span>war<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'> <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;java.version&gt;</span>1.5<span class="nt">&lt;/java.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;slf4j.version&gt;</span>1.6.1<span class="nt">&lt;/slf4j.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;logback.version&gt;</span>0.9.27<span class="nt">&lt;/logback.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;commons-lang.version&gt;</span>2.5<span class="nt">&lt;/commons-lang.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;spring.version&gt;</span>3.0.6.RELEASE<span class="nt">&lt;/spring.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;servlet.version&gt;</span>2.5<span class="nt">&lt;/servlet.version&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${logback.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${slf4j.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>commons-lang<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>commons-lang<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${commons-lang.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>spring-context<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${spring.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>spring-web<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${spring.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>javax.servlet<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>servlet-api<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;version&gt;</span>${servlet.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'> 
+</span><span class='line'> <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-deploy-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.6<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-release-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.1<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;source&gt;</span>${java.version}<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;target&gt;</span>${java.version}<span class="nt">&lt;/target&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;encoding&gt;</span>UTF-8<span class="nt">&lt;/encoding&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>   <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-resources-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>2.4.3<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;encoding&gt;</span>UTF-8<span class="nt">&lt;/encoding&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'> <span class="nt">&lt;profiles&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;id&gt;</span>jetty6<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;jetty.version&gt;</span>6.1.26<span class="nt">&lt;/jetty.version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>maven-jetty-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>${jetty.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;scanIntervalSeconds&gt;</span>10<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;contextPath&gt;</span>/jmx-sample<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.mortbay.jetty.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;host&gt;</span>0.0.0.0<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;maxIdleTime&gt;</span>60000<span class="nt">&lt;/maxIdleTime&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/connectors&gt;</span> 
+</span><span class='line'>      <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;id&gt;</span>jetty7<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;jetty.version&gt;</span>7.4.5.v20110725<span class="nt">&lt;/jetty.version&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>${jetty.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;scanIntervalSeconds&gt;</span>10<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;contextPath&gt;</span>/jmx-sample<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>           <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.server.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;host&gt;</span>0.0.0.0<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>         <span class="nt">&lt;maxIdleTime&gt;</span>60000<span class="nt">&lt;/maxIdleTime&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/connectors&gt;</span> 
+</span><span class='line'>      <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/profiles&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il n&#8217;y a rien de particulier à remarquer si ce n&#8217;est une version de plugin maven pour Jetty qui diffère, ainsi qu&#8217;un changement de package pour le SelectChannelConnector utilisé pour spécifier le port d&#8217;écoute.</p>
+
+<p>Pour démarrer notre Jetty, il ne reste plus qu&#8217;à exécuter, au choix, la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn -Pjetty6 jetty:run
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn -Pjetty7 jetty:run
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Activation de JMX</h2>
+
+<p>Après avoir montré l&#8217;application web ainsi que la configuration du plugin Maven de Jetty nécessaire à son exécution dans le conteneur embarqué, il est possible de démarrer l&#8217;application web dans le Jetty embedded.</p>
+
+<p><img src="http://1.bp.blogspot.com/-MC5ASoy7hYY/TnEsBl97o9I/AAAAAAAAAao/wKFzpPyRaI0/s1600/visualVM.png" alt="center" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-h1-h-jZ47Ys/TnEr6OFgvnI/AAAAAAAAAak/hkrxFyewmwA/s1600/jconsole.png" alt="center" />
+Cependant, même si nos JConsole ou VisualVM préférées proposent une connexion au MBean Server local (visible au travers notre processus Maven3 <code>org.codehaus.plexus.classworlds.launcher.Launcher</code>), il n&#8217;est pas possible d&#8217;effectuer une connexion en spécifiant le JMXServiceURL de type : <code>service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi</code> .</p>
+
+<p>En effet, par défaut, Jetty ne créé pas de MBeanServer et, à fortiori, n&#8217;enregistre aucun connecteur RMI nécessaire à une application JMX cliente.</p>
+
+<p>A titre informatif, même en démarrant un serveur Jetty en mode standalone, il est nécessaire de préciser, à son démarrage, le fichier de configuration <code>jetty-jmx.xml</code> se trouvant, par défaut, dans son répertoire etc et qu&#8217;il faut éditer (pour préciser le port du serveur RMI à démarrer et le JMXServiceURL du connecteur JMX RMI).
+Pour Jetty 7, cela peut être fait, soit en modifiant le fichier start.ini, soit en démarrant Jetty en ligne de commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour Jetty 6, cela peut être fait, soit en modifiant le fichier <code>bin/jetty-service.conf</code>, soit en démarrant Jetty en ligne de commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -DOPTIONS<span class="o">=</span>jmx -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Aussi, pour activer la création d&#8217;un serveur RMI et créer un MBean Server dans le Jetty embarqué par Maven, il est nécessaire de fournir au plugin le fichier <code>jetty-jmx.xml</code>.</p>
+
+<p>Pour ce faire, il est possible de spécifier une configuration à Jetty via l&#8217;élément : <code>&lt;jettyConfig&gt;</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;profiles&gt;</span>
+</span><span class='line'> <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;id&gt;</span>jetty6<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;jetty.version&gt;</span>6.1.26<span class="nt">&lt;/jetty.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;artifactId&gt;</span>maven-jetty-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;version&gt;</span>${jetty.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;scanIntervalSeconds&gt;</span>10<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;jettyConfig&gt;</span>${basedir}/src/config/jetty-jmx-6.xml<span class="nt">&lt;/jettyConfig&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;contextPath&gt;</span>/jmx-sample<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.mortbay.jetty.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;host&gt;</span>0.0.0.0<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;maxIdleTime&gt;</span>60000<span class="nt">&lt;/maxIdleTime&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/connectors&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'> <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;id&gt;</span>jetty7<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;jetty.version&gt;</span>7.4.5.v20110725<span class="nt">&lt;/jetty.version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;groupId&gt;</span>org.mortbay.jetty<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;version&gt;</span>${jetty.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;scanIntervalSeconds&gt;</span>10<span class="nt">&lt;/scanIntervalSeconds&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;jettyConfig&gt;</span>${basedir}/src/config/jetty-jmx.xml<span class="nt">&lt;/jettyConfig&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;webAppConfig&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;contextPath&gt;</span>/jmx-sample<span class="nt">&lt;/contextPath&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/webAppConfig&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;connectors&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;connector</span> <span class="na">implementation=</span><span class="s">&quot;org.eclipse.jetty.server.nio.SelectChannelConnector&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;port&gt;</span>9090<span class="nt">&lt;/port&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;host&gt;</span>0.0.0.0<span class="nt">&lt;/host&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;maxIdleTime&gt;</span>60000<span class="nt">&lt;/maxIdleTime&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/connector&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/connectors&gt;</span> 
+</span><span class='line'>     <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'><span class="nt">&lt;/profiles&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La nouvelle arborescence de notre projet devient donc :</p>
+
+<p><img src="http://1.bp.blogspot.com/-isxZpdoIozo/TnHVHTqIwRI/AAAAAAAAAbA/urXO-bvkGsM/s1600/jmx-sample-tree2.png" alt="center" /></p>
+
+<p>En outre, il est nécessaire de démarrer la JVM avec l&#8217;option -Dcom.sun.management.jmxremote :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn -Dcom.sun.management.jmxremote -Pjetty6 package jetty:run
+</span></code></pre></td></tr></table></div></figure>
+
+
+<br/>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn -Dcom.sun.management.jmxremote -Pjetty7 package jetty:run
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Suite au lancement du serveur Jetty via Maven, il est alors possible d&#8217;y accéder au travers d&#8217;un client JMX en mode distant :
+<img src="http://4.bp.blogspot.com/-neKAz6J3YXk/TnEsy6vJiZI/AAAAAAAAAa0/S8go6tW4weA/s1600/connection.png" alt="center" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-FlX8ZwRcjTU/TnEsVSwh0yI/AAAAAAAAAas/VxjMj6QeEHU/s1600/visualVM2.png" alt="medium" /></p>
+
+<p><img src="http://3.bp.blogspot.com/-WYs5-5s-Aik/TnEsZ24uHdI/AAAAAAAAAaw/3bTMjhjYLdg/s1600/visualVM3.png" alt="medium" /></p>
+
+<p>A titre informatif, ci-joint les fichiers de configuration de Jetty permettant la création d&#8217;un serveur RMI, du MBean Server et du connecteur RMI ainsi que de sa configuration.</p>
+
+<p>Pour Jetty 6 :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE Configure PUBLIC &quot;-//Mort Bay Consulting//DTD Configure//EN&quot; &quot;http://jetty.mortbay.org/configure.dtd&quot;&gt;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nt">&lt;Configure</span> <span class="na">id=</span><span class="s">&quot;Server&quot;</span> <span class="na">class=</span><span class="s">&quot;org.mortbay.jetty.Server&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">id=</span><span class="s">&quot;MBeanServer&quot;</span> <span class="na">class=</span><span class="s">&quot;java.lang.management.ManagementFactory&quot;</span> <span class="na">name=</span><span class="s">&quot;getPlatformMBeanServer&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;Get</span> <span class="na">id=</span><span class="s">&quot;Container&quot;</span> <span class="na">name=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;addEventListener&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;New</span> <span class="na">class=</span><span class="s">&quot;org.mortbay.management.MBeanContainer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Arg&gt;&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanServer&quot;</span><span class="nt">/&gt;&lt;/Arg&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;start&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Get&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">id=</span><span class="s">&quot;rmiRegistry&quot;</span> <span class="na">class=</span><span class="s">&quot;java.rmi.registry.LocateRegistry&quot;</span> <span class="na">name=</span><span class="s">&quot;createRegistry&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;int&quot;</span><span class="nt">&gt;</span>1099<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>     
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">id=</span><span class="s">&quot;jmxConnectorServer&quot;</span> <span class="na">class=</span><span class="s">&quot;javax.management.remote.JMXConnectorServerFactory&quot;</span> <span class="na">name=</span><span class="s">&quot;newJMXConnectorServer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;New</span>  <span class="na">class=</span><span class="s">&quot;javax.management.remote.JMXServiceURL&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;Arg&gt;</span>service:jmx:rmi://localhost:1099/jndi/rmi://localhost:1099/jmxrmi<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg&gt;&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanServer&quot;</span><span class="nt">/&gt;&lt;/Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;start&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'><span class="nt">&lt;/Configure&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour Jetty 7 :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE Configure PUBLIC &quot;-//Jetty//Configure//EN&quot; &quot;http://www.eclipse.org/jetty/configure.dtd&quot;&gt;</span>
+</span><span class='line'><span class="nt">&lt;Configure</span> <span class="na">id=</span><span class="s">&quot;Server&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.server.Server&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;Call</span> <span class="na">id=</span><span class="s">&quot;MBeanServer&quot;</span> <span class="na">class=</span><span class="s">&quot;java.lang.management.ManagementFactory&quot;</span>
+</span><span class='line'>    <span class="na">name=</span><span class="s">&quot;getPlatformMBeanServer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;New</span> <span class="na">id=</span><span class="s">&quot;MBeanContainer&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.jmx.MBeanContainer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanServer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;Get</span> <span class="na">id=</span><span class="s">&quot;Container&quot;</span> <span class="na">name=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;addEventListener&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanContainer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/Get&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;addBean&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanContainer&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>  <span class="nt">&lt;Get</span> <span class="na">id=</span><span class="s">&quot;Logger&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.util.log.Log&quot;</span> <span class="na">name=</span><span class="s">&quot;log&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;MBeanContainer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;addBean&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Ref</span> <span class="na">id=</span><span class="s">&quot;Logger&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/Ref&gt;</span>
+</span><span class='line'>   
+</span><span class='line'>  <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;createRegistry&quot;</span> <span class="na">class=</span><span class="s">&quot;java.rmi.registry.LocateRegistry&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.Integer&quot;</span><span class="nt">&gt;</span>1099<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;sleep&quot;</span> <span class="na">class=</span><span class="s">&quot;java.lang.Thread&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.Integer&quot;</span><span class="nt">&gt;</span>1000<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/Call&gt;</span>
+</span><span class='line'>  
+</span><span class='line'> <span class="nt">&lt;New</span> <span class="na">id=</span><span class="s">&quot;ConnectorServer&quot;</span> <span class="na">class=</span><span class="s">&quot;org.eclipse.jetty.jmx.ConnectorServer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;New</span> <span class="na">class=</span><span class="s">&quot;javax.management.remote.JMXServiceURL&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.String&quot;</span><span class="nt">&gt;</span>rmi<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.String&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.Integer&quot;</span><span class="nt">&gt;</span>0<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;Arg</span> <span class="na">type=</span><span class="s">&quot;java.lang.String&quot;</span><span class="nt">&gt;</span>/jndi/rmi://localhost:1099/jmxrmi<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Arg&gt;</span>org.eclipse.jetty:name=rmiconnectorserver<span class="nt">&lt;/Arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;Call</span> <span class="na">name=</span><span class="s">&quot;start&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/New&gt;</span>
+</span><span class='line'><span class="nt">&lt;/Configure&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Conclusion</h1>
+
+<p>Cet article avait pour objectif de montrer comment il pouvait être facile d&#8217;activer la couche JMX pour un serveur Jetty embedded dans Maven.</p>
+
+<p>C&#8217;est vrai que démarrer un Jetty embarqué n&#8217;a pas pour objectif de faire des tests d&#8217;intégration mais cela peut toujours être utile dans le cas d&#8217;un POC ou d&#8217;une démonstration (qui était d&#8217;ailleurs l&#8217;objectif de ce petit cas d&#8217;usage. ;&ndash;) ).</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-09-26T23:19:12+02:00" pubdate data-updated="true">September 26, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jetty/'>jetty</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/09/presentation-aux-problematiques-dune.html" title="Previous Post: Présentation sur les problématiques liées à une architecture distribuée">&laquo; Previous: Présentation sur les problématiques liées à une architecture distribuée</a>
+        
+
+        
+          <a class="pull-right" href="/2011/10/fusesource-community-day-2011.html" title="Next Post: FuseSource Community Day 2011">Next: FuseSource Community Day 2011 &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

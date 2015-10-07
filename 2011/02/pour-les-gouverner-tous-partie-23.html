@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pour Les Gouverner Tous - Partie 2/3 - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Pour Les Gouverner Tous - Partie 2/3 February 20, 2011 Cet article fait suite à mon article précédent et a pour objectif de présenter un petit POC ( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Pour Les Gouverner Tous - Partie 2/3</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-02-20T18:41:34+01:00" pubdate data-updated="true">February 20, 2011</time>  
+        </div>
+        <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small" /></p>
+
+<p>Cet article fait suite à mon <a href="/2011/01/pour-les-gouverner-tous-partie-13.html">article précédent</a> et a pour objectif de présenter un petit POC (<em>Proof Of Concept</em>) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d&#8217;utiliser JGroups pour permettre à plusieurs instances d&#8217;une même application de se partager les valeurs d&#8217;une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s&#8217;agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d&#8217;une donnée auprès des autres instance déjà présentes dans le système. En outre, les autres instances déjà présentes devront recevoir directement la valeur de la donnée de la nouvelle instance.</p>
+
+<p>L&#8217;autre raison d&#8217;être de cet article permettra d&#8217;introduire la couche protocolaire utilisée par mon petit POC qui permet de rendre distribuable un agent JMX dans une architecture distribuée.</p>
+
+<!-- more -->
+
+
+<h1>Spécification des besoins/pré-requis</h1>
+
+<p>Ce projet s&#8217;appuiera sur les pré-requis suivant :</p>
+
+<ul>
+<li><a href="http://www.slf4j.org/">slf4j</a>/<a href="http://logback.qos.ch/">logback</a> pour la partie log</li>
+<li><a href="http://maven.apache.org/index.html">maven 3</a> (ou 2 au choix) pour la partie build</li>
+<li>et&hellip; <a href="http://www.jgroups.org/">JGroups</a> dans sa version 2.11.0.GA ;&ndash;)</li>
+</ul>
+
+
+<p>Coté tests unitaires, je m&#8217;excuse préalablement auprès de vous, mais il n&#8217;y en aura pas&hellip; et cela pour deux raisons que je vous laisse choisir :</p>
+
+<ul>
+<li>je suis flemmard ;&ndash;) mais surtout, je n&#8217;ai pas envie de mocker la terre entière.</li>
+<li>ce petit programme est plus une utilisation basique de JGroups et, le produit fonctionnant bien, je ne vois pas l&#8217;intérêt de le retester. En outre, ici, il est plus intéressant de tester de manière intégrée que de manière unitaire en raison de l&#8217;aspect distribué de l&#8217;application.</li>
+</ul>
+
+
+<p>Comme je l&#8217;ai mentionné précédemment dans l&#8217;introduction, le but de cet article est simple : une application dispose de plusieurs instances qui se trouvent sur des JVM distinctes (il peut donc s&#8217;agir d&#8217;instances exécutées sur une ou plusieurs machines).</p>
+
+<ul>
+<li>Si une nouvelle instance est démarrée, elle doit pouvoir demander à toutes les autres instances de l&#8217;application la valeur d&#8217;une donnée X afin, par exemple, de connaître leur état.</li>
+<li>De plus, toutes les instances déjà existantes dans le système doivent pouvoir être notifiées de l&#8217;arrivée d&#8217;une nouvelle instance et, par la même occasion, recevoir sa valeur courante de la donnée X.</li>
+<li>Enfin, si une instance disparait du sytème (arrêt, &hellip;), toutes les instances doivent automatiquement supprimer en leur sein la valeur de la donnée de l&#8217;instance incriminée.</li>
+</ul>
+
+
+<p>Coté configuration de JGroups, cet article s&#8217;appuiera sur une configuration par défaut, c&#8217;est à dire une configuration en UDP.</p>
+
+<h1>Architecture de l&#8217;application</h1>
+
+<p>Comme vous pouvez vous en douter, l&#8217;architecture de l&#8217;application sera simple puisque JGroups fournit nativement de nombreuses possibilités. Aussi, je ne présenterai pas de super conception.</p>
+
+<p>Par contre, si les termes <strong>ReceiverAdapter</strong>, <strong>MembershipListener</strong> ou <strong>View</strong> ne vous parlent pas, je vous renverrai :</p>
+
+<ul>
+<li>soit, à mon <a href="http://jetoile.blogspot.com/2010/12/jgroups-tour-d.html">article</a> sur JGroups ;&ndash;)</li>
+<li>soit (mieux), à la <a href="http://www.jgroups.org/ug.html">documentation</a> officielle de ce dernier.</li>
+</ul>
+
+
+<p>Notre application sera composée de trois parties :</p>
+
+<ul>
+<li>La partie donnée : la classe <code>Data</code> représentera la donnée à faire transiter. Il s&#8217;agira d&#8217;un simple POJO qui sera, bien sûr, sérialisable.</li>
+<li>La partie notification de changement de l&#8217;infrastructure (ie. arrivé ou arrêt d&#8217;une instance dans le système) : la classe <code>ChangeInfraListener</code> qui implémentera l&#8217;interface <code>MembershipListener</code> et donc la méthode <code>viewAccepted()</code> <em>call-backé</em> par JGroups pour notifier d&#8217;un changement au niveau d&#8217;une des ses vues.</li>
+<li>La partie qui aura à sa charge l&#8217;exposition de la donnée représentée par la classe <code>Data</code> et qui aura initialisera l&#8217;application : la classe <code>JGroupsClient</code> qui étendra la classe <code>ReceiverAdapter</code> afin de permettre aux autres instances d&#8217;interargir avec.</li>
+</ul>
+
+
+<p>Coté canaux, l&#8217;application en utilisera un seul canal : le canal <em>&ldquo;channel&rdquo;</em> qui sera utilisé pour être être notifié de changement d&#8217;état sur la vue (il sera donc connecté à la classe implémentant l&#8217;interface <code>MembershipListener</code> (ie. <code>ChangeInfraListener</code>) et qui sera également utilisé pour la communication point à point entre les différentes instances : pour rappel, à un membre d&#8217;une vue est associée une adresse unique et une vue contient l&#8217;ensemble des membres de cette dernière.</p>
+
+<p>A noter que pour la récupération de la donnée au démarrage d&#8217;une instance, il aurait également été possible d&#8217;implémenter les méthodes <code>getState()</code> et <code>setState()</code> (en combinaison de l&#8217;utilisation de la méthode <code>connect(&lt;String&gt; , &lt;Address&gt;, &lt;String&gt;, &lt;long&gt;)</code> sur l&#8217;instance de <code>Channel</code> utilisée). Cependant, il était, quand même nécessaire d&#8217;implémenter la méthode <code>viewAccepted()</code> afin d&#8217;être notifié du démarrage ou de l&#8217;arrêt d&#8217;une instances dans le système et cela aurait été redondant avec les notifications reçues (en effet, récupérer l&#8217;état des autres instances des membres de la vue ne dispense pas de recevoir l&#8217;état de la vue via la méthode <code>viewAccepted()</code>). Aussi, je n&#8217;ai pas utilisé cette fonctionnalité de JGroups.</p>
+
+<p>Diagramme de séquence lors de la connexion d&#8217;une nouvelle instance de l&#8217;application au système, coté nouvelle instance mais aussi coté instances déjà présentes dans le système :</p>
+
+<p><img src="http://4.bp.blogspot.com/-DsKcW_KWIZM/TWFDF_0MbsI/AAAAAAAAAUw/EAXva9PJsm8/s1600/jgroups_seq_diagram.png" alt="medium" /></p>
+
+<h1>Mise en oeuvre</h1>
+
+<p>A noter que le code écrit ici ne contiendra pas les imports par souci de lisibilité.</p>
+
+<h2>La classe JGroupsClient</h2>
+
+<p>Commençons donc par la mise en oeuvre de la classe <code>JGroupsClient</code> :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">jgroups</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JGroupsClient</span> <span class="kd">extends</span> <span class="n">ReceiverAdapter</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">JGroupsClient</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">private</span> <span class="n">Data</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Data</span><span class="o">();</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">RpcDispatcher</span> <span class="n">rpcDispatcher</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Channel</span> <span class="n">channel</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">JGroupsClient</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">data</span><span class="o">.</span><span class="na">setData</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">channel</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">ChannelException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JChannel</span><span class="o">(</span><span class="s">&quot;default-udp.xml&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">final</span> <span class="n">ChangeInfraListener</span> <span class="n">changeSetListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ChangeInfraListener</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">rpcDispatcher</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RpcDispatcher</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">channel</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">changeSetListener</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">changeSetListener</span><span class="o">.</span><span class="na">setRpcDispatcher</span><span class="o">(</span><span class="n">rpcDispatcher</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">channel</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="s">&quot;privateChannel&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">data</span><span class="o">.</span><span class="na">setAddress</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">channel</span><span class="o">.</span><span class="na">getAddress</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Data</span> <span class="nf">getData</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">data</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans cette classe, on observe donc que l&#8217;on a :</p>
+
+<ul>
+<li>la méthode <code>start()</code> qui a à sa charge la partie connexion à JGroups,</li>
+<li>la méthode <code>getData()</code> qui correspond à la méthode exposée utilisée pour transmettre la valeur de la donnée aux autres instances.</li>
+</ul>
+
+
+<h2>La classe ChangeInfraListener</h2>
+
+<p>Pour la classe <code>ChangeInfraListener</code>, nous aurons :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">jgroups</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ChangeInfraListener</span> <span class="kd">implements</span> <span class="n">MembershipListener</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">static</span> <span class="kd">private</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">ChangeInfraListener</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">dataCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="kd">private</span> <span class="n">Channel</span> <span class="n">privateChannel</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">RpcDispatcher</span> <span class="n">rpcDispatcher</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">ChangeInfraListener</span><span class="o">(</span><span class="kd">final</span> <span class="n">Channel</span> <span class="n">privateChannel</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">privateChannel</span> <span class="o">=</span> <span class="n">privateChannel</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setRpcDispatcher</span><span class="o">(</span><span class="n">RpcDispatcher</span> <span class="n">rpcDispatcher</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">rpcDispatcher</span> <span class="o">=</span> <span class="n">rpcDispatcher</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">viewAccepted</span><span class="o">(</span><span class="n">View</span> <span class="n">new_view</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// when a new member is up</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">newAddresses</span> <span class="o">=</span> <span class="n">getNewAddresses</span><span class="o">(</span><span class="n">new_view</span><span class="o">.</span><span class="na">getMembers</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">newAddresses</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">privateChannel</span><span class="o">.</span><span class="na">getAddress</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">ads</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Address</span> <span class="n">ad</span> <span class="o">:</span> <span class="n">newAddresses</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(!</span><span class="n">dataCache</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">ad</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">ads</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ad</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(!</span><span class="n">ads</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">MethodCall</span> <span class="n">methodCall</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MethodCall</span><span class="o">(</span><span class="s">&quot;getData&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="o">{},</span> <span class="k">new</span> <span class="n">Class</span><span class="o">[]</span> <span class="o">{});</span>
+</span><span class='line'>            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;invoke remote getData on: {}&quot;</span><span class="o">,</span> <span class="n">ads</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">RspList</span> <span class="n">resps</span> <span class="o">=</span> <span class="n">rpcDispatcher</span><span class="o">.</span><span class="na">callRemoteMethods</span><span class="o">(</span><span class="n">ads</span><span class="o">,</span> <span class="n">methodCall</span><span class="o">,</span> <span class="n">RequestOptions</span><span class="o">.</span><span class="na">SYNC</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;after invoke getData - nb result {}&quot;</span><span class="o">,</span> <span class="n">resps</span><span class="o">.</span><span class="na">numReceived</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">resps</span><span class="o">.</span><span class="na">numReceived</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;retry...&quot;</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">resps</span> <span class="o">=</span> <span class="n">rpcDispatcher</span><span class="o">.</span><span class="na">callRemoteMethods</span><span class="o">(</span><span class="n">ads</span><span class="o">,</span> <span class="n">methodCall</span><span class="o">,</span> <span class="n">RequestOptions</span><span class="o">.</span><span class="na">SYNC</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">resp</span> <span class="o">:</span> <span class="n">resps</span><span class="o">.</span><span class="na">getResults</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">Data</span> <span class="n">data</span> <span class="o">=</span> <span class="o">(</span><span class="n">Data</span><span class="o">)</span> <span class="n">resp</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;new data: {}&quot;</span><span class="o">,</span> <span class="n">data</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">dataCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">getAddress</span><span class="o">(),</span> <span class="n">data</span><span class="o">.</span><span class="na">getData</span><span class="o">());</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">olds</span> <span class="o">=</span> <span class="n">getObsoleteAddresses</span><span class="o">(</span><span class="n">new_view</span><span class="o">.</span><span class="na">getMembers</span><span class="o">());</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Address</span> <span class="n">old</span> <span class="o">:</span> <span class="n">olds</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">LOGGER</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;remove data: {}&quot;</span><span class="o">,</span> <span class="n">old</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">dataCache</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">old</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">suspect</span><span class="o">(</span><span class="n">Address</span> <span class="n">suspected_mbr</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// NOTHING TO DO</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">block</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// NOTHING TO DO</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="nf">getNewAddresses</span><span class="o">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">newMembers</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Address</span> <span class="n">address</span> <span class="o">:</span> <span class="n">newMembers</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(!</span><span class="k">this</span><span class="o">.</span><span class="na">dataCache</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">address</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">address</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="nf">getObsoleteAddresses</span><span class="o">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">newMembers</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Address</span><span class="o">&gt;();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Address</span> <span class="n">address</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">dataCache</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(!</span><span class="n">newMembers</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">address</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">address</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans cette classe, on observe que la méthode <code>viewAccepted()</code> (qui est la méthode <em>call-backé</em> par JGroups lors d&#8217;une modification de la vue (ie. lors de la connexion ou de la déconnexion d&#8217;un autre membre du groupe)), invoque, si un nouveau membre est apparu, l&#8217;appel de la méthode distante <code>getData()</code> sur la nouvelle instance en question.</p>
+
+<p>Il est intéressant de noter l&#8217;utilisation qui est faite de la classe <code>RequestOptions</code> mais également le fait que les méthode <code>block()</code> et <code>suspect()</code> n&#8217;ont pas été spécifiées dans notre cas d&#8217;utilisation.</p>
+
+<h2>La classe Data</h2>
+
+<p>Enfin, la classe <code>Data</code> qui sera utilisée est la suivante (par souci de lisibilité, les méthodes <code>equals()</code> et <code>hashCode()</code> ne sont pas détaillées ici) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">jgroups</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Data</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'> <span class="kd">private</span> <span class="n">Address</span> <span class="n">address</span><span class="o">;</span>
+</span><span class='line'> <span class="kd">private</span> <span class="n">String</span> <span class="n">data</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="nf">Data</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="n">Address</span> <span class="nf">getAddress</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">address</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAddress</span><span class="o">(</span><span class="kd">final</span> <span class="n">Address</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">this</span><span class="o">.</span><span class="na">address</span> <span class="o">=</span> <span class="n">address</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="n">String</span> <span class="nf">getData</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">data</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="n">String</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">this</span><span class="o">.</span><span class="na">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nd">@Override</span>
+</span><span class='line'> <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// cf. gitHub</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nd">@Override</span>
+</span><span class='line'> <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="c1">// cf. gitHub</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'> <span class="nd">@Override</span>
+</span><span class='line'> <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s">&quot;Data [address=&quot;</span> <span class="o">+</span> <span class="n">address</span> <span class="o">+</span> <span class="s">&quot;, data=&quot;</span> <span class="o">+</span> <span class="n">data</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette classe, comme on peut le remarquer, n&#8217;a rien de particulier, si ce n&#8217;est qu&#8217;elle est sérialisable.</p>
+
+<p>Ainsi, on peut voir que l&#8217;implémentation est très simple (je ne commenterai donc pas ce qui est fait ici&hellip;).</p>
+
+<h1>Exécution et utilisation</h1>
+
+<p>L&#8217;exécution, quant à elle, pourra se faire avec une classe de type :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">jgroups</span><span class="o">.</span><span class="na">sample</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JGroupsClientTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ChannelException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">JGroupsClient</span> <span class="n">jgroupsClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JGroupsClient</span><span class="o">(</span><span class="s">&quot;toto&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">jgroupsClient</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter que si les différentes instances venaient à ne pas se voir, cela peut provenir d&#8217;un souci avec la configuration réseau et qu&#8217;il est possible de palier à ce problème en forçant l&#8217;utilisation d&#8217;adresse IPV4 avec l&#8217;option JVM suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>-Djava.net.preferIPv4Stack<span class="o">=</span><span class="nb">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Conclusion</h1>
+
+<p>On a vu ici que permettre la communication d&#8217;instances d&#8217;une application de manière distribuée était aisée avec JGroups. Bien sûr (et comme je l&#8217;ai fait remarqué précédemment), la notion de <em>tuning</em> de JGroups (ie. la configuration de la couche protocolaire &ndash; cf. mon <a href="/2010/12/jgroups-tour-d.html#protocoles">article précédent</a>) n&#8217;a pas été abordée, mais cela doit être fait en fonction des besoins de l&#8217;infrastructure (trafic réseau, firewall, sécurité, &hellip;) et je laisse donc ce point à la convenance de chacun ;&ndash;).</p>
+
+<p>Ici se clôture donc la partie JGroups de notre petit POC jmanager4all qui nous a permis de voir comment JGroups répondait à notre besoin mais également comment il allait être utilisé par la suite.</p>
+
+<p>Le prochain article s&#8217;attaquera donc à la partie interopérabilité avec JMX.</p>
+
+<p>A oui&hellip; j&#8217;oubliais&hellip; le code de se petit POC se trouve sur GitHub : <a href="https://github.com/jetoile/jgroups-sample">https://github.com/jetoile/jgroups-sample</a></p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-02-20T18:41:34+01:00" pubdate data-updated="true">February 20, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jgroups/'>jgroups</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/01/pour-les-gouverner-tous-partie-13.html" title="Previous Post: Pour les gouverner tous - partie 1/3">&laquo; Previous: Pour les gouverner tous - partie 1/3</a>
+        
+
+        
+          <a class="pull-right" href="/2011/02/pour-les-gouverner-tous-partie-33.html" title="Next Post: Pour les gouverner tous - partie 3/3">Next: Pour les gouverner tous - partie 3/3 &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

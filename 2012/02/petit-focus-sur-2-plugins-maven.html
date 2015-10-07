@@ -1,0 +1,1311 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Petit Focus Sur 2 Plugins Maven - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Petit Focus Sur 2 Plugins Maven February 28, 2012 Bon, ça fait un moment que je n&#8217;ai rien écrit&hellip; je n&#8217;ai pas foncièrement d&#8217 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Petit Focus Sur 2 Plugins Maven</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-02-28T23:09:51+01:00" pubdate data-updated="true">February 28, 2012</time>  
+        </div>
+        <p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
+
+<p>Bon, ça fait un moment que je n&#8217;ai rien écrit&hellip; je n&#8217;ai pas foncièrement d&#8217;excuses si ce n&#8217;est que j&#8217;ai été pas mal occupé sur un projet sur lequel j&#8217;essaierai de faire un petit retour dans un futur proche&hellip;</p>
+
+<p>En fait, dans ce rapide post, je tenais à faire partager 2 &ldquo;petits&rdquo; plugins maven que j&#8217;ai eu l&#8217;opportunité de découvrir récemment par le biais de 2 Olivier :</p>
+
+<ul>
+<li><a href="http://twitter.com/olamy">Olivier Lamy</a> (<a href="http://olamy.blogspot.com/">http://olamy.blogspot.com/</a>), qui est architecte open source et commiteur actif de moultes projets (je ne les citerai pas, il y en a trop&hellip; ;&ndash;) ) <del>et qui travaille chez Talend</del>,</li>
+<li>et <a href="http://twitter.com/obazoud">Olivier Bazoud</a> (<a href="http://blog.bazoud.com/">http://blog.bazoud.com/</a>) <del>qui est architecte chez Ekino et également</del> co-auteur du livre <a href="http://www.manning.com/templier/">Spring Batch In Action</a> aux éditions Manning.</li>
+</ul>
+
+
+<p>Les deux plugins sont les suivants :</p>
+
+<ul>
+<li><a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html">Tomcat 7 Maven Plugin</a></li>
+<li><a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">Application Assembler Maven Plugin</a></li>
+</ul>
+
+
+<p>En fait, je ne rentrerai pas en détail dans les 2 plugins Maven qui, pour un, est assez connu mais je me contenterai juste de décrire les fonctionnalités que j&#8217;ai appréciées.</p>
+
+<p>N&#8217;étant pas expert sur ces derniers et n&#8217;ayant pas creusé dans tous les paramétrages, j&#8217;espère que la présentation qui suit ne dira pas trop de bêtises&hellip; ;&ndash;)</p>
+
+<!-- more -->
+
+
+<h1>Application Assembler Maven Plugin</h1>
+
+<h2>Description</h2>
+
+<p>[Cette description est une traduction libre de la page officielle du plugin]</p>
+
+<p>Le plugin Application Assembler est un plugin maven qui permet de générer les scripts utilisés au démarrage d&#8217;une application Java. Pour ce faire, le plugin copie toutes les dépendances et les artifacts du projet dans un répertoire utilisé par le script pour la gestion du classpath de l&#8217;application à démarrer.</p>
+
+<p>Les plateformes actuellement supportées sont :</p>
+
+<ul>
+<li>*Nix,</li>
+<li>Windows NT</li>
+<li>Java Service Wrapper</li>
+</ul>
+
+
+<h2>Cas d&#8217;utilisation</h2>
+
+<p>Ce plugin trouve parfaitement sa place pour générer les scripts d&#8217;exécution d&#8217;une application java standalone (ie. non exécuté au sein d&#8217;un conteneur de servlet ou d&#8217;un serveur d&#8217;application) ou utilisée dans un batch.
+En fait, pour être plus précis, ce plugin dispose de 3 goals :</p>
+
+<ul>
+<li><code>appassembler:assemble</code> qui permet de créer une arborescence de fichiers disposant des scripts de lancement de l&#8217;application ainsi que de toutes les dépendances nécessaires à son exécution.</li>
+<li><code>appassembler:create-repository</code> qui permet de créer le répertoire disposant de toutes les librairies nécessaires au bon fonctionnement de l&#8217;application.</li>
+<li><code>appassembler:generate-daemons</code> qui permet de créer une arborescence de fichiers disposant des scripts et des librairies à utiliser pour wrapper l&#8217;application dans un service via Java Service Wrapper.</li>
+</ul>
+
+
+<h2>Exemple</h2>
+
+<p>Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon <a href="http://github.com/jetoile/sample-assembler-plugin">github</a>) qui ne contient qu&#8217;une classe disposant d&#8217;un main et qui log un message via logback au travers de slf4j (histoire de vérifier le comportement du plugin sur les dépendances).</p>
+
+<p><img src="http://1.bp.blogspot.com/-Dr-0c8AkLHs/T0tyqJW4UVI/AAAAAAAAAiY/A7dW1I3ve4Q/s1600/appassembler01.png" alt="center" /></p>
+
+<p>où on a :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">maven</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FooClass</span> <span class="o">{</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">FooClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;this is FooClass sample&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cet exemple a pour objectif de montrer, dans un premier temps, ce que génère le goal assemble puis, dans un second temps, le goal <code>generate-daemons</code>.</p>
+
+<p>Pour ce faire, le pom.xml suivant sera utilisé :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+</span><span class='line'>         <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>         <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.jetoile.maven.sample<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>sample-assembler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;projectBaseUri&gt;</span>${project.baseUri}<span class="nt">&lt;/projectBaseUri&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;java.version&gt;</span>1.6<span class="nt">&lt;/java.version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>        <span class="nt">&lt;slf4j.version&gt;</span>1.6.4<span class="nt">&lt;/slf4j.version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;logback.version&gt;</span>1.0.0<span class="nt">&lt;/logback.version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${slf4j.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${logback.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;source&gt;</span>${java.version}<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;target&gt;</span>${java.version}<span class="nt">&lt;/target&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>appassembler-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>1.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;daemons&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;daemon&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;id&gt;</span>mainService<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;mainClass&gt;</span>com.jetoile.maven.sample.FooClass<span class="nt">&lt;/mainClass&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;commandLineArguments&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;commandLineArgument&gt;</span>start<span class="nt">&lt;/commandLineArgument&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/commandLineArguments&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;platforms&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;platform&gt;</span>jsw<span class="nt">&lt;/platform&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/platforms&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;generatorConfigurations&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;generatorConfiguration&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;generator&gt;</span>jsw<span class="nt">&lt;/generator&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;include&gt;</span>linux-x86-32<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;include&gt;</span>linux-x86-64<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;/generatorConfiguration&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/generatorConfigurations&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/daemon&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/daemons&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>appassembler-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>1.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;goal&gt;</span>assemble<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;programs&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;program&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;mainClass&gt;</span>com.jetoile.maven.sample.FooClass<span class="nt">&lt;/mainClass&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;name&gt;</span>main<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/program&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/programs&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;binFileExtensions&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;unix&gt;</span>.sh<span class="nt">&lt;/unix&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/binFileExtensions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dans le pom, on constate que l&#8217;exécution du goal <code>assemble</code> n&#8217;est pas associé à une phase en particulier. Cependant, c&#8217;est la phase <code>package</code> qui est utilisée par défaut. Dans sa configuration (disponible <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/assemble-mojo.html">ici</a>), il y figure le nom de la classe qui dispose du <code>main</code> ainsi que, via l&#8217;élément <code>binFileExtensions</code>, l&#8217;extension qui doit être utilisée pour le script dans le monde *Nix.</p>
+
+<p>Ainsi, à la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn package
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on obtient :
+<img src="http://4.bp.blogspot.com/-6TcmRrHkwm8/T0uMn3oeh5I/AAAAAAAAAio/VyNjedWdxm8/s1600/appassembler03.png" alt="medium" /></p>
+
+<p>où le <code>main.sh</code> est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="c"># ----------------------------------------------------------------------------</span>
+</span><span class='line'><span class="c">#  Copyright 2001-2006 The Apache Software Foundation.</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+</span><span class='line'><span class="c">#  you may not use this file except in compliance with the License.</span>
+</span><span class='line'><span class="c">#  You may obtain a copy of the License at</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c">#       http://www.apache.org/licenses/LICENSE-2.0</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c">#  Unless required by applicable law or agreed to in writing, software</span>
+</span><span class='line'><span class="c">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+</span><span class='line'><span class="c">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+</span><span class='line'><span class="c">#  See the License for the specific language governing permissions and</span>
+</span><span class='line'><span class="c">#  limitations under the License.</span>
+</span><span class='line'><span class="c"># ----------------------------------------------------------------------------</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c">#   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights</span>
+</span><span class='line'><span class="c">#   reserved.</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nv">BASEDIR</span><span class="o">=</span><span class="sb">`</span>dirname <span class="nv">$0</span><span class="sb">`</span>/..
+</span><span class='line'><span class="nv">BASEDIR</span><span class="o">=</span><span class="sb">`</span><span class="o">(</span><span class="nb">cd</span> <span class="s2">&quot;$BASEDIR&quot;</span>; <span class="nb">pwd</span><span class="o">)</span><span class="sb">`</span>
+</span><span class='line'> 
+</span><span class='line'><span class="c"># OS specific support.  $var _must_ be set to either true or false.</span>
+</span><span class='line'><span class="nv">cygwin</span><span class="o">=</span><span class="nb">false</span>;
+</span><span class='line'><span class="nv">darwin</span><span class="o">=</span><span class="nb">false</span>;
+</span><span class='line'><span class="k">case</span> <span class="s2">&quot;`uname`&quot;</span> in
+</span><span class='line'>  CYGWIN*<span class="o">)</span> <span class="nv">cygwin</span><span class="o">=</span><span class="nb">true</span> ;;
+</span><span class='line'>  Darwin*<span class="o">)</span> <span class="nv">darwin</span><span class="o">=</span><span class="nb">true</span>
+</span><span class='line'>           if <span class="o">[</span> -z <span class="s2">&quot;$JAVA_VERSION&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>             JAVA_VERSION<span class="o">=</span><span class="s2">&quot;CurrentJDK&quot;</span>
+</span><span class='line'>           else
+</span><span class='line'>             echo <span class="s2">&quot;Using Java version: $JAVA_VERSION&quot;</span>
+</span><span class='line'>           fi
+</span><span class='line'>           if <span class="o">[</span> -z <span class="s2">&quot;$JAVA_HOME&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>             JAVA_HOME<span class="o">=</span>/System/Library/Frameworks/JavaVM.framework/Versions/<span class="k">${</span><span class="nv">JAVA_VERSION</span><span class="k">}</span>/Home
+</span><span class='line'>           fi
+</span><span class='line'>           ;;
+</span><span class='line'><span class="k">esac</span>
+</span><span class='line'> 
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$JAVA_HOME&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>  if <span class="o">[</span> -r /etc/gentoo-release <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>    <span class="nv">JAVA_HOME</span><span class="o">=</span><span class="sb">`</span>java-config --jre-home<span class="sb">`</span>
+</span><span class='line'>  fi
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="c"># For Cygwin, ensure paths are in UNIX format before anything is touched</span>
+</span><span class='line'><span class="k">if</span> <span class="nv">$cygwin</span> ; <span class="k">then</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$JAVA_HOME&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">JAVA_HOME</span><span class="o">=</span><span class="sb">`</span>cygpath --unix <span class="s2">&quot;$JAVA_HOME&quot;</span><span class="sb">`</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$CLASSPATH&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CLASSPATH</span><span class="o">=</span><span class="sb">`</span>cygpath --path --unix <span class="s2">&quot;$CLASSPATH&quot;</span><span class="sb">`</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="c"># If a specific java binary isn&#39;t specified search for the standard &#39;java&#39; binary</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$JAVACMD&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>  if <span class="o">[</span> -n <span class="s2">&quot;$JAVA_HOME&quot;</span>  <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[</span> -x <span class="s2">&quot;$JAVA_HOME/jre/sh/java&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>      <span class="c"># IBM&#39;s JDK on AIX uses strange locations for the executables</span>
+</span><span class='line'>      <span class="nv">JAVACMD</span><span class="o">=</span><span class="s2">&quot;$JAVA_HOME/jre/sh/java&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nv">JAVACMD</span><span class="o">=</span><span class="s2">&quot;$JAVA_HOME/bin/java&quot;</span>
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'>  else
+</span><span class='line'>    <span class="nv">JAVACMD</span><span class="o">=</span><span class="sb">`</span>which java<span class="sb">`</span>
+</span><span class='line'>  fi
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> ! -x <span class="s2">&quot;$JAVACMD&quot;</span> <span class="o">]</span> ; <span class="k">then</span>
+</span><span class='line'>  echo <span class="s2">&quot;Error: JAVA_HOME is not defined correctly.&quot;</span>
+</span><span class='line'>  echo <span class="s2">&quot;  We cannot execute $JAVACMD&quot;</span>
+</span><span class='line'>  exit 1
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$REPO&quot;</span> <span class="o">]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'>  REPO<span class="o">=</span><span class="s2">&quot;$BASEDIR&quot;</span>/repo
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$CLASSPATH_PREFIX</span>:<span class="s2">&quot;$BASEDIR&quot;</span>/etc:<span class="s2">&quot;$REPO&quot;</span>/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar:<span class="s2">&quot;$REPO&quot;</span>/ch/qos/logback/logback-classic/1.0.0/logback-classic-1.0.0.jar:<span class="s2">&quot;$REPO&quot;</span>/ch/qos/logback/logback-core/1.0.0/logback-core-1.0.0.jar:<span class="s2">&quot;$REPO&quot;</span>/com/jetoile/maven/sample/sample-assembler-plugin/1.0-SNAPSHOT/sample-assembler-plugin-1.0-SNAPSHOT.jar
+</span><span class='line'> 
+</span><span class='line'><span class="nv">EXTRA_JVM_ARGUMENTS</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+</span><span class='line'> 
+</span><span class='line'><span class="c"># For Cygwin, switch paths to Windows format before running java</span>
+</span><span class='line'><span class="k">if</span> <span class="nv">$cygwin</span>; <span class="k">then</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$CLASSPATH&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CLASSPATH</span><span class="o">=</span><span class="sb">`</span>cygpath --path --windows <span class="s2">&quot;$CLASSPATH&quot;</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$JAVA_HOME&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">JAVA_HOME</span><span class="o">=</span><span class="sb">`</span>cygpath --path --windows <span class="s2">&quot;$JAVA_HOME&quot;</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$HOME&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">HOME</span><span class="o">=</span><span class="sb">`</span>cygpath --path --windows <span class="s2">&quot;$HOME&quot;</span><span class="sb">`</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$BASEDIR&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">BASEDIR</span><span class="o">=</span><span class="sb">`</span>cygpath --path --windows <span class="s2">&quot;$BASEDIR&quot;</span><span class="sb">`</span>
+</span><span class='line'>  <span class="o">[</span> -n <span class="s2">&quot;$REPO&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">REPO</span><span class="o">=</span><span class="sb">`</span>cygpath --path --windows <span class="s2">&quot;$REPO&quot;</span><span class="sb">`</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'> 
+</span><span class='line'><span class="nb">exec</span> <span class="s2">&quot;$JAVACMD&quot;</span> <span class="nv">$JAVA_OPTS</span> <span class="se">\</span>
+</span><span class='line'>  <span class="nv">$EXTRA_JVM_ARGUMENTS</span> <span class="se">\</span>
+</span><span class='line'>  -classpath <span class="s2">&quot;$CLASSPATH&quot;</span> <span class="se">\</span>
+</span><span class='line'>  -Dapp.name<span class="o">=</span><span class="s2">&quot;main&quot;</span> <span class="se">\</span>
+</span><span class='line'>  -Dapp.pid<span class="o">=</span><span class="s2">&quot;$$&quot;</span> <span class="se">\</span>
+</span><span class='line'>  -Dapp.repo<span class="o">=</span><span class="s2">&quot;$REPO&quot;</span> <span class="se">\</span>
+</span><span class='line'>  -Dbasedir<span class="o">=</span><span class="s2">&quot;$BASEDIR&quot;</span> <span class="se">\</span>
+</span><span class='line'>  com.jetoile.maven.sample.FooClass <span class="se">\</span>
+</span><span class='line'>  <span class="s2">&quot;$@&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Après un rapide :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x target/appassembler/bin/main.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le résultat escompté est obtenu.</p>
+
+<p>Afin de tester la génération de la couche wrapper <strong>Java Service Wrapper</strong>, le <code>pom.xml</code> contient également la déclaration du plugin <strong>appassembler-maven-plugin</strong> associé aux paramètres de configuration nécessaire à la génération du service. Pour cette partie, j&#8217;ai choisi de ne pas l&#8217;associer à une phase mais de l&#8217;exécuter manuellement :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>appassembler-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>1.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;daemons&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;daemon&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;id&gt;</span>mainService<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;mainClass&gt;</span>com.jetoile.maven.sample.FooClass<span class="nt">&lt;/mainClass&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;commandLineArguments&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;commandLineArgument&gt;</span>start<span class="nt">&lt;/commandLineArgument&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/commandLineArguments&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;platforms&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;platform&gt;</span>jsw<span class="nt">&lt;/platform&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/platforms&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;generatorConfigurations&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;generatorConfiguration&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;generator&gt;</span>jsw<span class="nt">&lt;/generator&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;include&gt;</span>linux-x86-32<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;include&gt;</span>linux-x86-64<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;/generatorConfiguration&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/generatorConfigurations&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/daemon&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/daemons&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ainsi, après l&#8217;exécution de la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn appassembler:generate-daemons
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on obtient :
+<img src="http://2.bp.blogspot.com/-zDcT-L4IP74/T0uawGcSPCI/AAAAAAAAAiw/j8giu9U41wI/s1600/appassembler04.png" alt="medium" /></p>
+
+<p>Cependant, après un rapide chmod sur les fichiers <code>mainService</code> et <code>wrapper-linux-x86-64</code>, la première tentative d&#8217;exécution échoue&hellip;  :(</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x target/generated-resources/appassembler/jsw/mainService/bin/mainService
+</span><span class='line'>chmod +x target/generated-resources/appassembler/jsw/mainService/bin/wrapper-linux-x86-64
+</span><span class='line'>./target/generated-resources/appassembler/jsw/mainService/bin/mainService start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://2.bp.blogspot.com/-RJ0R6CrTvU8/T0uczKHGWqI/AAAAAAAAAi4/gd7ftUBeKh8/s1600/appassembler05.png" alt="medium" /></p>
+
+<p>Un rapide coup d&#8217;oeil au fichier <code>wrapper.log</code>&hellip; :&lsquo;(</p>
+
+<p>Qu&#8217;à cela ne tienne, s&#8217;il n&#8217;y manque le répertoire logs, il suffit de le créer&hellip;</p>
+
+<p><img src="http://3.bp.blogspot.com/-VQFurPRDpUI/T0udmE8zNvI/AAAAAAAAAjA/LBpih32n8XI/s1600/appassembler06.png" alt="large" /></p>
+
+<p>Arf&hellip; encore loupé&hellip;</p>
+
+<p>A priori, il semble que le classpath soit on ne peut plus&hellip; foireux&hellip;</p>
+
+<p>Après un rapide coup d&#8217;oeil au fichier <code>wrapper.conf</code>,  on peut remarquer les lignes suivantes :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>wrapper.java.mainclass=org.tanukisoftware.wrapper.WrapperSimpleApp
+</span><span class='line'>set.default.REPO_DIR=repo
+</span><span class='line'>set.default.APP_BASE=.
+</span><span class='line'> 
+</span><span class='line'># Java Classpath (include wrapper.jar)  Add class path elements as
+</span><span class='line'>#  needed starting from 1
+</span><span class='line'>wrapper.java.classpath.1=lib/wrapper.jar
+</span><span class='line'>wrapper.java.classpath.2=%REPO_DIR%/com/jetoile/maven/sample/sample-assembler-plugin/1.0-SNAPSHOT/sample-assembler-plugin-1.0-SNAPSHOT.jar
+</span><span class='line'>wrapper.java.classpath.3=%REPO_DIR%/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar
+</span><span class='line'>wrapper.java.classpath.4=%REPO_DIR%/ch/qos/logback/logback-classic/1.0.0/logback-classic-1.0.0.jar
+</span><span class='line'>wrapper.java.classpath.5=%REPO_DIR%/ch/qos/logback/logback-core/1.0.0/logback-core-1.0.0.jar
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>hum&hellip; l&#8217;explication est là&hellip; il semble qu&#8217;il manque le répertoire repo où les librairies sont recherchées&hellip;</p>
+
+<p>Un petit coup de :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn appassembler:appassembler:create-repository
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>devrait permettre de créer le fichier repo dans le répertoire <code>target/appassembler</code>, et un petit cp devrait tout remettre dans l&#8217;ordre&hellip; en fait, non!</p>
+
+<p>Il manque l&#8217;archetype de notre application dans le répertoire repo&hellip; (d&#8217;un coté, pour les personnes qui ont suivi, cela était visible dans un des screenshots précédents&hellip;)</p>
+
+<p>Bon, je vous passe les quelques commandes à base de <code>mvn</code> et <code>cp</code> que j&#8217;ai effectué pour, au final, obtenir :</p>
+
+<p><img src="http://1.bp.blogspot.com/-5JoIX1E06E8/T0ugnyyJ4YI/AAAAAAAAAjI/b66wqmxMFtM/s1600/appassembler07.png" alt="medium" /></p>
+
+<h2>Conclusion</h2>
+
+<p>Ce qui m&#8217;a intéressé dans ce plugin est qu&#8217;il s&#8217;occupe de générer automatiquement les scripts nécessaires au lancement de l&#8217;application. En effet, il est toujours possible d&#8217;utiliser le plugin assembly (tel que je l&#8217;avais décrit <a href="/2010/02/de-l-du-livrable.html">ici</a>), mais cette solution reste assez verbeuse et rébarbative.
+Aussi, avoir la possibilité, en n&#8217;ayant qu&#8217;à appeler ou qu&#8217;à associer un goal à une phase du cycle de vie du projet pour générer les scripts est assez tentant.
+En outre, le plugin permet également de wrapper l&#8217;application dans un service via Java Service Wrapper.</p>
+
+<p>Par contre, il peut sembler dommage que le &ldquo;livrable&rdquo; (au sens naïf du terme) ainsi produit ne puisse pas être considéré comme un archetype (et être déployé automatiquement sur un repository manager afin qu&#8217;il puisse être directement utilisable par d&#8217;éventuels OPS). Cependant, concernant ce point, vu que l&#8217;on s&#8217;appuie alors sur un plugin maven (dont la version est, bien sûr, maîtrisée), l&#8217;utilisateur est garanti d&#8217;avoir un script fonctionnel et reproductible.</p>
+
+<p>Concernant la partie <strong>Java Service Wrapper</strong>, il semble, cependant, qu&#8217;il faille &ldquo;retoucher&rdquo; un peu ce qui est généré puisqu&#8217;il manque le répertoire repo (utilisé par le fichier <code>wrapper.conf</code> (chargé par Java Service Wrapper)) nécessaire au chargement du classpath à l&#8217;exécution du service.</p>
+
+<p>Autre point un peu dommage est que les droits d&#8217;exécution ne soient pas directement positionnés sur les scripts .sh.</p>
+
+<h1>Tomcat 7 Maven Plugin</h1>
+
+<h2>Description</h2>
+
+<p>Le plugin Tomcat7 Maven Plugin permet (pour ceux qui ne le savent pas encore&hellip; ;&ndash;) ) de déployer une application web dans le conteneur de servlets Tomcat 7 via  le goal <code>deploy</code>.</p>
+
+<p>Il permet, en outre, de démarrer directement un Tomcat de manière <em>embedded</em> à Maven (un peu comme le plugin jetty) via le goal <code>run</code>.</p>
+
+<p>Cependant, ce n&#8217;est pas pour ces fonctionnalités que je tenais à parler de ce plugin.</p>
+
+<p>En effet, le plugin Tomcat7 dispose d&#8217;une fonctionnalité &ldquo;amusante&rdquo;, à savoir la possibilité de générer un jar exécutable embarquant directement un Tomcat 7.</p>
+
+<p>En outre, de manière &ldquo;un peu&rdquo; transverse à ce plugin, un <a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">archetype</a> existe également. Il permet de <em>settuper</em> un projet exposant un service REST via Apache CXF et qui dispose de tests d&#8217;intégration via Selenium.</p>
+
+<h2>Cas d&#8217;utilisation</h2>
+
+<p>Tomcat7 Maven Plugin dispose des <a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html">goals</a> suivants (que je décrirai pas&hellip;) :</p>
+
+<ul>
+<li><code>tomcat7:deploy</code></li>
+<li><code>tomcat7:deploy-only</code></li>
+<li><code>tomcat7:exec-war</code></li>
+<li><code>tomcat7:exec-war-only</code></li>
+<li><code>tomcat7:run</code></li>
+<li><code>tomcat7:run-war</code></li>
+<li><code>tomcat7:run-war-only</code></li>
+<li><code>tomcat7:shutdown</code></li>
+</ul>
+
+
+<p>Concernant l&#8217;archetype, il est très bien décrit à la page suivante :
+<a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html</a></p>
+
+<h2>Exemple</h2>
+
+<h3>Maven Tomcat 7 Plugin</h3>
+
+<p>Comme je l&#8217;ai dit précédemment, je ne reviendrai pas sur l&#8217;utilisation des goals <code>run</code> et <code>deploy</code> mais me focaliserai plutôt sur le goal <code>exec-war</code>.</p>
+
+<p>Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon <a href="http://github.com/jetoile/sample-tomcat-plugin">github</a>) qui ne contient qu&#8217;un simple Servlet <code>FooServlet</code>.</p>
+
+<p><img src="http://2.bp.blogspot.com/-ai5ZyP1YbgY/T0u6selcDwI/AAAAAAAAAjQ/Uq8UY04YtRw/s1600/tomcat01.png" alt="center" /></p>
+
+<p>où on a :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jetoile</span><span class="o">.</span><span class="na">maven</span><span class="o">.</span><span class="na">tomcat</span><span class="o">.</span><span class="na">sample</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.servlet.ServletException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServlet</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.Writer</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FooServlet</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+</span><span class='line'><span class="err">    </span><span class="nd">@Override</span>
+</span><span class='line'><span class="err">    </span><span class="kd">protected</span> <span class="kt">void</span> <span class="n">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">resp</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">Writer</span> <span class="n">out</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="na">getWriter</span><span class="o">();</span>
+</span><span class='line'><span class="err">        </span><span class="n">out</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;GET FooServlet successfully called...&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="n">out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span><span class='line'><span class="err">        </span><span class="n">out</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>pour le <code>web.xml</code> :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;web-app</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>         <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</span>
+</span><span class='line'>         <span class="na">version=</span><span class="s">&quot;3.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;servlet&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;servlet-name&gt;</span>FooServlet<span class="nt">&lt;/servlet-name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;servlet-class&gt;</span>com.jetoile.maven.tomcat.sample.FooServlet<span class="nt">&lt;/servlet-class&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/servlet&gt;</span>
+</span><span class='line'>    
+</span><span class='line'>    <span class="nt">&lt;servlet-mapping&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;servlet-name&gt;</span>FooServlet<span class="nt">&lt;/servlet-name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/servlet-mapping&gt;</span>
+</span><span class='line'><span class="nt">&lt;/web-app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le <code>pom.xml</code> qui est utilisé est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+</span><span class='line'>         <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>         <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.jetoile.maven.tomcat.sample<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>sample-tomcat-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;packaging&gt;</span>war<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;projectBaseUri&gt;</span>${project.baseUri}<span class="nt">&lt;/projectBaseUri&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;java.version&gt;</span>1.6<span class="nt">&lt;/java.version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>        <span class="nt">&lt;servlet-api.version&gt;</span>3.0-alpha-1<span class="nt">&lt;/servlet-api.version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>javax.servlet<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>servlet-api<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${servlet-api.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>    <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>2.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;source&gt;</span>${java.version}<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;target&gt;</span>${java.version}<span class="nt">&lt;/target&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>            <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.apache.tomcat.maven<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>tomcat7-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;version&gt;</span>2.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> 
+</span><span class='line'>                <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;id&gt;</span>tomcat-war-exec<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;goal&gt;</span>exec-war<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;warRunDependencies&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;warRunDependency&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;groupId&gt;</span>com.jetoile.maven.tomcat.sample<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;artifactId&gt;</span>sample-tomcat-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>                                        <span class="nt">&lt;type&gt;</span>war<span class="nt">&lt;/type&gt;</span>
+</span><span class='line'>                                    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>                                <span class="nt">&lt;/warRunDependency&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;/warRunDependencies&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On constate que le goal <code>exec-war</code> est associé à la phase <code>package</code>.</p>
+
+<p>Ainsi, en exécutant la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn package
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on obtient :
+<img src="http://1.bp.blogspot.com/-2AcPO28rAXU/T0u7_kOTMYI/AAAAAAAAAjY/TTEYG1XHSUg/s1600/tomcat02.png" alt="center" /></p>
+
+<p>Ainsi, avec la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>target
+</span><span class='line'>java -jar sample-tomcat-plugin-1.0-SNAPSHOT-war-exec.jar
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>il devient alors possible via notre navigateur préféré (à l&#8217;url suivante : <a href="http://localhost:8080/sample-tomcat-plugin/">http://localhost:8080/sample-tomcat-plugin/</a>) d&#8217;obtenir la page suivante :
+<img src="http://2.bp.blogspot.com/-iHTkHAqCDRQ/T0u82VVpcHI/AAAAAAAAAjg/B1DIln_qwbk/s1600/tomcat03.png" alt="center" /></p>
+
+<h3>Maven Tomcat 7 Archetype</h3>
+
+<p>Ce petit paragraphe a juste pour objectif de montrer ce que génère l&#8217;archetype Tomcat7.
+Aussi, à la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn archetype:generate <span class="se">\</span>
+</span><span class='line'>   -DarchetypeGroupId<span class="o">=</span>org.apache.tomcat.maven <span class="se">\</span>
+</span><span class='line'>   -DarchetypeArtifactId<span class="o">=</span>tomcat-maven-archetype <span class="se">\</span>
+</span><span class='line'>   -DarchetypeVersion<span class="o">=</span>2.0-SNAPSHOT <span class="se">\</span>
+</span><span class='line'>   -DarchetypeRepository<span class="o">=</span>https://repository.apache.org/content/repositories/snapshots/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>on obtient le résultat suivant :
+<img src="http://3.bp.blogspot.com/-fOfKG8OeGRk/T0yaZtjtEGI/AAAAAAAAAjo/CAVLKEsD7lw/s1600/tomcat06.png" alt="center" /></p>
+
+<p>Un rapide coup d&#8217;oeil permet de se rendre compte que :</p>
+
+<ul>
+<li>le <code>module basic-api</code> contient les interfaces pour le webservice REST</li>
+<li>le <code>module basic-api-impl</code> contient l&#8217;implémentation des webservices REST</li>
+<li>le <code>module basic-webapp</code> contient l&#8217;application web</li>
+<li>le <code>module basic-webapp-exec</code> permet de générer un jar exécutable embarquant l&#8217;application web ainsi que le nécessaire de tomcat pour le démarrer en standalone</li>
+<li>le <code>module basic-webapp-it</code> permet de démarrer des tests Selenium sur l&#8217;application web démarrer au sein d&#8217;un Tomcat7</li>
+</ul>
+
+
+<p>Pour tester, rien de plus simple, il suffit de lancer la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn install -Pchrome
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<div>
+<iframe allowfullscreen="" frameborder="0" height="315" src="http://www.youtube.com/embed/M3b6OPj6mGo" width="560"></iframe></div>
+
+
+<h2>Conclusion</h2>
+
+<p>Ce qui m&#8217;a plu sur le plugin Apache Tomcat 7 (en plus, bien sûr de la possibilité de lancer l&#8217;application web de manière embedded à Maven et de pouvoir déployer la webapp sur un Tomcat existant) est la possibilité de créer un jar exécutable.</p>
+
+<p>C&#8217;est vrai que je n&#8217;ai toujours pas trouvé d&#8217;utilité pour cela mais la performance méritait d&#8217;être applaudit.</p>
+
+<p>Concernant l&#8217;archetype Apache Tomcat 7, cela fournit en 1 ligne de commande un excellent template de projet qui dispose de tout.</p>
+
+<h1>Conclusion</h1>
+
+<p>Comme vous avez pu vous en rendre compte, il n&#8217;y a rien de révolutionnaire dans cet article mais je tenais à mettre en avant ces 2 plugins qui, soit on des fonctionnalités utiles dans le cadre d&#8217;un projet, soit ont quelques features intéressantes.</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li>Site officiel de l&#8217;archetype Maven Tomcat7 : <a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html</a></li>
+<li>Site officiel du plugin Maven Tomcat7 : <a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/">http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/</a></li>
+<li>Site officiel du plugin Maven AppAssembler : <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/</a></li>
+<li>Blog d&#8217;Olivier Lamy : <a href="http://olamy.blogspot.com/">http://olamy.blogspot.com/</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-02-28T23:09:51+01:00" pubdate data-updated="true">February 28, 2012</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/integration-continue/'>intégration continue</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html';
+        var disqus_url = 'http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/12/resign-patterns-les-nouveaux-patterns.html" title="Previous Post: Resign Patterns : les nouveaux patterns">&laquo; Previous: Resign Patterns : les nouveaux patterns</a>
+        
+
+        
+          <a class="pull-right" href="/2012/03/petits-retours-sur-cassandra.html" title="Next Post: Petits retours sur Cassandra">Next: Petits retours sur Cassandra &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

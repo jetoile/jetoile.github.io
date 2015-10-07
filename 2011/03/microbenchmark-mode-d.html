@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MicroBenchmark : Mode D'emploi - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="MicroBenchmark : Mode D'emploi March 18, 2011 Cet article fait suite à une petite discussion que j&#8217;ai eue récemment avec un collègue sur qui &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>MicroBenchmark : Mode D'emploi</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-03-18T19:04:33+01:00" pubdate data-updated="true">March 18, 2011</time>  
+        </div>
+        <p><img src="https://lh4.googleusercontent.com/-VYpiI5ySjEA/TYKVFQyw27I/AAAAAAAAAU0/XDPtplNTTKQ/s1600/perf03.png" alt="left-small" /></p>
+
+<p>Cet article fait suite à une petite discussion que j&#8217;ai eue récemment avec un collègue sur qui était le plus fort entre le for et le foreach. Question qui peut paraitre, au premier abord, stupide mais qui m&#8217;a fait pas mal me creuser les neurones sur des points qui n&#8217;ont pas grand chose à voir avec le problème initial&hellip; (mais là, je m&#8217;avance un peu sur mon article&hellip; ;&ndash;) ).</p>
+
+<p>Enfin, pour revenir au sujet initial (qui était, je le répète : &ldquo;qui était le plus fort entre le for et foreach&rdquo;), j&#8217;ai donc décidé de me faire un petit benchmark pour tester la performance des deux. Et là, ce fut le début des galères&hellip;</p>
+
+<!-- more -->
+
+
+<p>Je m&#8217;explique : suite à l&#8217;écriture rapide d&#8217;un petit benchmark pour tester mes deux méthodes d&#8217;itérations, j&#8217;ai obtenu des résultats qui pouvaient paraître bizarres (enfin bizarres pour moi). S&#8217;en est alors suivi de multiples discussions avec (par ordre alphabétique) Zouheir Cadi (@ZouheirCadi), <a href="http://thecodersbreakfast.net/">Olivier Croisier</a> (@OlivierCroisier), <a href="http://www.opensides.fr/">Arnault Jeanson</a> (@ArnaultJeanson), Séven Lemesle (@slemesle) et <a href="http://blog.ostyn.fr/">François Ostyn</a> (@ostynf) que je tiens d&#8217;ailleurs à remercier pour leurs lumières et leur disponibilité.</p>
+
+<p>Je vous passe les résultats (cela fera l&#8217;effet d&#8217;un article ultérieur) pour en revenir juste à la notion de Benchmark qui s&#8217;avère être beaucoup plus complexe que cela peut paraitre.</p>
+
+<p>Aussi, suite à cette longue introduction (qui, mis à part raconter ma vie, n&#8217;apporte pas grand chose mais qui permet de positionner le contexte ;&ndash;) ), je vais donc tenter de montrer en quoi le fait de benchmarker un simple petit bout de code peut amener à des résultats erronés et peut être quelque chose de non trivial.
+Pour ce faire, je ne vais pas me casser trop la tête mais juste vous faire un petit compte rendu de la présentation de Monsieur Joshua Bloch (himself) qu&#8217;il a donné en 2010 à Devoxx sur l&#8217;importance du micro-benchmark ou plus précisément sur les optimisations des performances (encore merci à François pour le lien! ;&ndash;) ).</p>
+
+<h1>Un peu de vocabulaire&hellip;</h1>
+
+<p>Avant de commencer, nous allons d&#8217;abord définir ce qu&#8217;est un microBenchmark : un microBenchmark a pour objectif de mesurer les performances d&#8217;une petite portion de code. Ces tests s&#8217;exécutent généralement en un laps très court de temps (de l&#8217;ordre de la milliseconde) et ne font généralement pas d&#8217;opérations d&#8217;entrée/sortie (sauf, si bien sûr, c&#8217;est le but du microBenchmark). Le microBenchmark est très différent du profiling qui a pour cible l&#8217;application complète et qui fournit des résultats se voulant représentatifs de la réalité alors que le microBenchmark a vraiment pour objectif de se focaliser sur une portion de code très restreinte afin d&#8217;observer ses performances &ldquo;brutes&rdquo; sans se soucier d&#8217;un éventuel contexte d&#8217;exécution.</p>
+
+<h1>Le premier point que l&#8217;on peut se demander est : faut-il optimiser son code?</h1>
+
+<p>La réponse ne diffère pas de celle fourni par le livre <strong>&ldquo;Effective Java&rdquo;</strong> de Joshua Bloch : il ne faut pas tenter d&#8217;optimiser son code sauf dans certains cas comme lorsque l&#8217;on développe un API, un framework ou un langage (comme Groovy par exemple). En effet, écrire du code qui se veut optimisé peut conduire à complexifier le code le rendant ainsi illisible mais peut surtout avoir l&#8217;effet contraire en le rendant plus lent.</p>
+
+<p>En effet, à l&#8217;époque, il était possible d&#8217;évaluer les performances d&#8217;un programme en comptant le nombre d&#8217;instructions qui était exécutées, c&#8217;est-à-dire en comptant le nombre de cycles des opérations. Cependant, cela n&#8217;est actuellement plus possible en raison de la trop grande différence qu&#8217;il existe entre le code écrit et le code qui est réellement exécuté par le processeur. Les coupables : le nombre de couches qui augmente avec notamment un langage de plus en plus compliqué qui s&#8217;appuie sur de plus en plus de librairies mais également sur une JVM de plus en plus complexe. A ces différentes couches logicielles vient également s&#8217;ajouter une couche matérielle qui se complexifie également et que peu de personnes peuvent prétendre maîtriser : les nouvelles architectures de processeurs, les unités de calculs fournies par les GPU, la gestion de la RAM. Et bien sûr, tout cela en y ajoutant le système d&#8217;exploitation.</p>
+
+<p>Du coup, prédire les performances d&#8217;un bout de code devient quelque chose de non déterministe qu&#8217;il devient très difficile d&#8217;estimer.</p>
+
+<p>Prenons un exemple simple : A votre avis, quel est le plus performant entre l&#8217;opérande <code>&amp;&amp;</code> (<em>et conditionnel</em>) et l&#8217;opérande <code>&amp;</code> (<em>et logique</em>)?</p>
+
+<p>A première vue, on pourrait se dire que le <em>et conditionnel</em> est plus performant puisque la deuxième condition n&#8217;est pas obligatoirement évaluée. Cependant, cela n&#8217;est pas si simple. En effet, avec un bonne architecture (processeur, compilateur, &hellip;), les deux conditions du <em>et logique</em> peuvent être évaluées en parallèle, ce qui est généralement plus rapide que de laisser au processeur le soin de deviner si la deuxième condition doit être évaluée (dans le cas du <em>et conditionnel</em>). Bien sûr, cela dépend du compilateur et de la capacité de la machine d&#8217;exécution (capacité du Just-In-Time Compiler ou de la famille de processeur utilisée) à traiter l&#8217;opération (modulo bien sûr que les conditions ne soient pas trop complexes).</p>
+
+<p>Du coup, prédire de manière absolue laquelle de ces deux opérandes est la plus performante est quasi-impossible et le seul moyen de le savoir est de le mesurer.</p>
+
+<h1>Mesurer, oui!&hellip; mais comment?</h1>
+
+<p><img src="https://lh4.googleusercontent.com/-Ay1I5wIy1g4/TYKYAd7UcQI/AAAAAAAAAU4/ZIDUoDTyD6Y/s1600/question.jpg" title="copyright photo : http://www.flickr.com/photos/susyna/3643831785/sizes/m/in/photostream/&quot;" alt="medium" /></p>
+
+<p>Mesurer&hellip; cela semble simple, cependant, il est facile de se douter que les mesures relevées dépendent de l&#8217;environnement d&#8217;exécution. Plus grave encore, sur une même machine, l&#8217;exécution successive d&#8217;un même test (que l&#8217;on appellera tir par la suite) peut remonter des résultats très différents (différences qui peuvent atteindre 20%).</p>
+
+<p>En outre, il est aisé de constater que si, lors d&#8217;un tir, le même test est effectué un grand nombre de fois, les métriques remontées ne sont pas linéaires. En effet, on constate trois phases (si on se concentre sur le temps de réponse d&#8217;une ou d&#8217;un ensemble d&#8217;opérations) :</p>
+
+<ul>
+<li>la première phase où les temps observés sont élevés. Cette phase correspond au warm-up de la JVM,</li>
+<li>la seconde phase où les temps observés diminuent et stagnent. Cette phase correspond à la phase de stabilisation de la JVM,</li>
+<li>et la troisième phase où les temps diminuent. Cette dernière phase correspond à la phase de speed up de la JVM.</li>
+</ul>
+
+
+<p>Ainsi, pour résumer, un benchmark doit effectuer un grand nombre de tirs qui doivent contenir plusieurs itérations du code à tester afin de permettre à la JVM de se stabiliser.</p>
+
+<h1>Les raisons de tous ces soucis?</h1>
+
+<p>En fait, si prédire les performances d&#8217;une opération par rapport à une autre est difficile, cela est paradoxalement dû à l&#8217;augmentation de la complexité de nos systèmes, complexité croissante entrainée par la recherche de la performance. En effet, ces optimisations d&#8217;exécution ont entraînées l&#8217;inline de code, le cache ainsi que beaucoup d&#8217;heuristiques (Paradoxal tout ça&hellip; n&#8217;est-il pas?).</p>
+
+<p>Je m&#8217;explique (enfin pour être plus précis, Joshua Bloch explique ;&ndash;) ) : en fait, le thread <em>compilateur planning</em> utilise de nombreuses heuristiques pour décider ce qu&#8217;il faut <em>inliner</em>. Ces décisions sont prises en fonction d&#8217;informations locales et peuvent avoir un impact global. En outre le <em>compilateur planning</em> est exécuté par un thread tournant en tache de fond et dont le comportement peut varier pendant son exécution. Il est donc non déterministe.</p>
+
+<p>Du coup, il est quasiment impossible de prédire quelles seront les performances d&#8217;une application et plus embêtant de savoir si une opération sera plus performante qu&#8217;une autre dans un contexte donné.</p>
+
+<h1>Et moi? Du coup, je fais quoi? Comment puis-je connaitre le gain de performances de mon code?</h1>
+
+<p>Et bien, la solution est statistique! Il faut mesurer les performances (en effectuant de nombreux tirs tels que cela a été décrit précédemment) du bout de code critique à surveiller régulièrement et en sortir des statistiques. Ce sont ces statistiques qui sont les seules métriques garantes des performance du code. Cependant, il est important de conserver les métriques de tous les tirs (qui pour rappel effectue l&#8217;opération de multiples fois) même si elles peuvent sembler aberrantes (bien sûr, si on suspecte que les résultats obtenus sont biaisés en raison d&#8217;un événement extérieur &ndash; comme une réindexation du disque dur ou le passage de l&#8217;anti-virus &ndash;, il ne faut pas les garder). Il convient alors de sortir de cet ensemble de tirs les métriques adéquates (moyenne, médiane, écart-type, &hellip;).</p>
+
+<p>Ainsi, ce sont ces résultats obtenus qui doivent être comparés dans le temps afin de déterminer l&#8217;impact d&#8217;une modification sur le bout de code à surveiller (en terme de performance).</p>
+
+<h1>Conclusion</h1>
+
+<p>Ainsi, vous l&#8217;aurez compris (enfin j&#8217;espère ;&ndash;) ), Le microbenchmark est un exercice bien plus complexe qu&#8217;il en a l&#8217;air et il ne suffit pas d&#8217;ouvrir son eclipse et de jeter trois lignes de code dans un <code>main()</code>. Bien sûr, cela permet de se donner un ordre de grandeur mais qui est souvent non représentatif de la réalité et dont le comportement sera, presque à coup sûr, différent dans son contexte d&#8217;exécution de ce qui est observé dans son <code>main()</code>.</p>
+
+<p>Cependant, il faut garder à l&#8217;esprit qu&#8217;il reste fortement déconseillé de tenter d&#8217;optimiser son code au risque de faire pire que mieux et surtout de rendre son code illisible et donc immaintenable.</p>
+
+<p>Du coup (et toujours d&#8217;après Joshua Bloch) :</p>
+
+<ul>
+<li>Si vous êtes développeur, utiliser les librairies high-level et déléguer les problématiques de performances aux couches inférieures (inférieures au sens géographique du terme bien sûr! ;&ndash;) ). Même si cela peut être dur à admettre, accepter de ne pas savoir et de ne pas pouvoir prédire les performances de votre code.</li>
+<li>Si vous êtes développeur de librairies, langages, frameworks ou de JVM, alors il faut apprendre à éviter les sources d&#8217;étonnement en s&#8217;appuyant sur des bonnes pratiques de développement (comme privilégier l&#8217;accès aux variables d&#8217;instances en jouant sur le niveau de visibilité plutôt que d&#8217;utiliser des getter/setter, &hellip;) mais surtout mesurer constamment (tel que cela a été décrit) et faire des statistiques pour déterminer le comportement global au niveau performance.</li>
+<li>Si vous êtes un ayatolla (comme Doug Lea ou Cliff Dick), alors il faut prêcher la bonne parole autour de vous pour éviter les écueils dans lesquels il ne faut pas tomber.</li>
+</ul>
+
+
+<p>Bien sûr (et cela conclura cet article), il faut garder à l&#8217;esprit qu&#8217;une optimisation ne s&#8217;applique potentiellement qu&#8217;à une famille de processeurs, VM ou architecture matérielle, et qu&#8217;au vu de la difficulté de prédire de quoi seront constitués nos ordinateurs de demain ou de prédire des optimisations qu&#8217;apporteront nos prochaines JVM, tout le travail effectué à l&#8217;instant t risque d&#8217;être totalement obsolète et erroné demain!</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li>Présentation de Joshua Bloch sur Parleys : <a href="http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103">http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103</a></li>
+<li>Site du framework Caliper : <a href="http://code.google.com/p/caliper/">http://code.google.com/p/caliper/</a></li>
+<li>Présentation de Cliff Click : <a href="http://www.azulsystems.com/events/javaone_2009/session/2009_J1_Benchmark.pdf">http://www.azulsystems.com/events/javaone_2009/session/2009_J1_Benchmark.pdf</a></li>
+<li>Page Wiki de Sun sur le microBenchmark : <a href="http://wikis.sun.com/display/HotSpotInternals/MicroBenchmarks">http://wikis.sun.com/display/HotSpotInternals/MicroBenchmarks</a></li>
+<li>Page de google Android sur la gestion des perfomances  d&#8217;Android : <a href="http://developer.android.com/guide/practices/design/performance.html">http://developer.android.com/guide/practices/design/performance.html</a></li>
+<li>Blog de Peter Ahé sur les compilateurs Java : <a href="http://blogs.sun.com/ahe/entry/hotspot_and_other_compilers">http://blogs.sun.com/ahe/entry/hotspot_and_other_compilers</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-03-18T19:04:33+01:00" pubdate data-updated="true">March 18, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/performance/'>performance</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/02/pour-les-gouverner-tous-partie-33.html" title="Previous Post: Pour les gouverner tous - partie 3/3">&laquo; Previous: Pour les gouverner tous - partie 3/3</a>
+        
+
+        
+          <a class="pull-right" href="/2011/03/microbenchmark-par-la-pratique.html" title="Next Post: MicroBenchmark : par la pratique">Next: MicroBenchmark : par la pratique &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

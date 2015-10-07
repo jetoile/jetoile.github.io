@@ -1,0 +1,662 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JRebel Ou Comment Accélérer Le Développement - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="JRebel Ou Comment Accélérer Le Développement February 24, 2010 Dans des posts précédents (ici et là), j&#8217;avais parlé d&#8217;une façon d&#8217; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>JRebel Ou Comment Accélérer Le Développement</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-02-24T23:19:33+01:00" pubdate data-updated="true">February 24, 2010</time>  
+        </div>
+        <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/S4VHVRtCwTI/AAAAAAAAAI4/TexL6XUuprc/s200/jrebel.png" alt="left-small" /></p>
+
+<p>Dans des posts précédents (<a href="/2010/01/retour-sur-la-mise-en-uvre-d_04.html">ici</a> et <a href="http://jetoile.blogspot.com/2010/02/de-l-du-livrable.html">là</a>), j&#8217;avais parlé d&#8217;une façon d&#8217;utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d&#8217;applications web avec Cargo. Cependant, afin d&#8217;optimiser le temps de développement, il est préférable, plutôt que d&#8217;avoir à redéployer l&#8217;application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n&#8217;avoir pas à le faire mais d&#8217;avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.</p>
+
+<p>Il existe différentes approches telles que :</p>
+
+<ul>
+<li>l&#8217;utilisation du plugin WTP d&#8217;Eclipse en lançant le conteneur de Servlet ou le serveur d&#8217;application directement au sein d&#8217;Eclipse,</li>
+<li>l&#8217;utilisation du <a href="http://www.eclipsetotale.com/tomcatPlugin.html">plugin Sysdeo</a> sous Eclipse pour le conteneur de Servlet Tomcat,</li>
+<li>&hellip;</li>
+</ul>
+
+
+<p>Cependant, aucune de ces solutions ne m&#8217;avait convaincu et je continuais à utiliser la bonne vieille ligne de commande.</p>
+
+<p>Jusqu&#8217;au jour où j&#8217;ai entendu parlé de JRebel&hellip; Cette solution, bien que payante, remporte l&#8217;unanimité des suffrages dans la communauté open-source en raison de sa simplicité et de sa puissance.</p>
+
+<p>Suite à l&#8217;obtention d&#8217;une licence gracieusement offerte par <a href="http://www.zeroturnaround.com/">ZeroTurnaround</a> lors du 2ième anniversaire du <a href="http://www.parisjug.org/">Paris JUG</a> (merci à eux et longue vie aux JUGs!!), je ne pouvais que tester à mon tour&hellip;</p>
+
+<p>Cet article va donc donner mon retour d&#8217;expérience.</p>
+
+<!-- more -->
+
+
+<h1>JRebel, quesako?</h1>
+
+<p>JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement permettant de prendre en compte des modifications de code sans avoir à redéployer l&#8217;application ou à redémarrer le serveur. Pour ce faire, il utilise un agent java qui lui permet d&#8217;instrumenter le classloader de la JVM (opération rendu possible depuis java 5).</p>
+
+<p>Ainsi, lorsque qu&#8217;une classe est chargée, JRebel essaie d&#8217;y associer un fichier .class qui est recherché dans le classpath ainsi que dans les répertoires cibles précisés par le fichier de configuration <code>rebel.xml</code>. Si un fichier .class est trouvé, JRebel instrumente la classe chargée et y associe le fichier trouvé. Le timestamp du fichier .class est alors monitoré afin de détecter les changements et les modifications sont propagées au travers du class loader à l&#8217;application.</p>
+
+<p>En outre, JRebel permet de monitorer les fichiers .class présents dans les JARs s&#8217;ils possèdent un fichier rebel.xml.</p>
+
+<p>Enfin, JRebel permet également la prise en compte d&#8217;autres types de ressources telles que les CSS, javascript, HTML, XML, JSP et properties.</p>
+
+<p>Ce fichier <code>rebel.xml</code> contient, en fait, l&#8217;emplacement des ressources à surveiller, c&#8217;est à dire quelque chose de la forme :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;application</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.zeroturnaround.com&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'> <span class="nt">&lt;classpath&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;dir</span> <span class="na">name=</span><span class="s">&quot;/home/khanh/eclipse-workspace3/module-parent/module-webapp/target/classes&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dir&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/classpath&gt;</span>
+</span><span class='line'> <span class="nt">&lt;web&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;link</span> <span class="na">target=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;dir</span> <span class="na">name=</span><span class="s">&quot;/home/khanh/eclipse-workspace3/module-parent/module-webapp/src/main/webapp&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/dir&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/link&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/web&gt;</span>
+</span><span class='line'><span class="nt">&lt;/application&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cependant, il est important de préciser que lorsque des changements ont lieu dans une classe, JRebel préserve toutes les instances existantes de la classe. Cela permet à l&#8217;application de continuer à fonctionner mais cela signifie également que l&#8217;ajout d&#8217;une nouvelle variable d&#8217;instance ne sera pas initialisé puisque le constructeur ne sera pas réexécuté. Il est toutefois possible de forcer le rechargement d&#8217;une classe à l&#8217;aide de frameworks comme Tapestry 5.</p>
+
+<p>En fait, JRebel peut être vu comme un HotSwap++ puisqu&#8217;il permet, en plus, de prendre en compte le changement de la structure d&#8217;une classe, l&#8217;ajout de méthodes, de variables, de constructeurs, d&#8217;annotations et même l&#8217;ajout de classes ou le changement de configuration (pour rappel, HotSwap ne permet que de prendre en compte le changement du corps d&#8217;une méthode). Enfin, JRebel n&#8217;est pas dépendant d&#8217;un IDE.</p>
+
+<p>Il est cependant important de noter que :</p>
+
+<ul>
+<li>JRebel peut ralentir l&#8217;application au démarrage,</li>
+<li>que des warnings (pouvant être ignorés) peuvent apparaitre avec certains IDEs puisque JRebel remplace le HotSwapping,</li>
+<li>qu&#8217;en mode debug, &ldquo;this&rdquo; doit être remplacé par &ldquo;that&rdquo; en raison de limitations de certains debugger (comme Eclipse).</li>
+</ul>
+
+
+<p>En conclusion, pour utiliser JRebel, il est nécessaire :</p>
+
+<ul>
+<li>de démarrer l&#8217;application ou le conteneur de Servlet ou Serveur d&#8217;application en précisant à la JVM d&#8217;utiliser l&#8217;agent JRebel,</li>
+<li>d&#8217;ajouter dans le répertoire WEB-INF/classes (pour un war) ou racine (pour un jar) le fichier rebel.xml contenant l&#8217;emplacement des fichiers susceptibles de changer (classes, ressources, &hellip;) qui se trouve être généralement le répertoires build ou target/classes (pour maven).</li>
+</ul>
+
+
+<h1>JRebel, mise en oeuvre</h1>
+
+<p>Pour expliquer une mise en œuvre de JRebel, je prendrai un exemple simple (qui, je pense, couvrira le besoin de la majorité des développeurs) : une application web embarquant un certain nombre de librairies métiers &ldquo;maison&rdquo; déployée dans un conteneur de Servlet. Cette application web pouvant être indifféremment un service web ou une application ayant pour objectif de fournir un rendu graphique dans un navigateur web (ie. pouvant contenir des jsp, css, javascript, &hellip;). L&#8217;objectif étant, ici, de montrer comment l&#8217;application web est capable de se recharger à chaud afin de prendre en compte les modifications du développeur.</p>
+
+<p>Cette application web, développé avec maven 2, se composera de deux modules :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>module-parent
+</span><span class='line'>   |-- module-metier
+</span><span class='line'>            |-- src
+</span><span class='line'>                  |-- main
+</span><span class='line'>                          |-- java
+</span><span class='line'>            |-- pom.xml
+</span><span class='line'>   |-- module-webapp
+</span><span class='line'>            |-- src
+</span><span class='line'>                 |-- main
+</span><span class='line'>                         |-- java
+</span><span class='line'>                         |-- resources
+</span><span class='line'>                         |-- webapp
+</span><span class='line'>                                  |-- WEB-INF
+</span><span class='line'>                                            |-- jsp
+</span><span class='line'>                                            |-- css
+</span><span class='line'>                                            |-- js
+</span><span class='line'>            |-- pom.xml
+</span><span class='line'>   |-- pom.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Je ne rentrerai pas dans la procédure d&#8217;installation de JRebel puisque cela est très bien expliqué et qu&#8217;un wizard guide l&#8217;utilisateur en fonction de ses besoins (configuration de son IDE, mode de fonctionnement du serveur d&#8217;application ou du conteneur de Servlet &ndash; ie. embarqué par l&#8217;IDE ou en standalone &ndash; , plugin nécessaire à maven 2 pour générer les fichiers rebel.xml, syntaxe de ces fichiers rebel.xml, &hellip;).</p>
+
+<p>Dans notre cas, il sera donc nécessaire d&#8217;instrumenter le jar métier issu du module métier et embarqué par l&#8217;application web avec le fichier rebel.xml. Ce fichier devra se trouver à la racine du jar produit. De la même manière, l&#8217;application web devra embarqué son fichier rebel.xml dans son répertoire WEB-INF/classes. Ce sont ces fichiers rebel.xml qui sont la clé de tous&hellip;</p>
+
+<p>Plutôt que de générer ces fichiers manuellement, le plugin maven <del>javarebel-maven-plugin</del> jrebel-maven-plugin sera utilisé :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.zeroturnaround<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>jrebel-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'><span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cependant, le fichier rebel.xml, comme vu dans le paragraphe précédent, contient l&#8217;emplacement où se trouvent les ressources (au sens large du terme). Afin d&#8217;éviter d&#8217;être dépendant d&#8217;un chemin en dur, il est possible d&#8217;utiliser une variable qui devra soit être déclarée comme variable système, soit déclarée dans le fichier de configuration de JRebel (fichier <code>jrebel.properties</code> se trouvant dans le répertoire conf où a été installé JRebel).</p>
+
+<p>extrait du pom du module parent :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;project&gt;</span>
+</span><span class='line'> <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'> <span class="nt">&lt;artifactId&gt;</span>module-parent<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;groupId&gt;</span>com.xxx<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> <span class="nt">&lt;packaging&gt;</span>pom<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'> <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>  ...
+</span><span class='line'> <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'> <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;pluginManagement&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;groupId&gt;</span>org.zeroturnaround<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;artifactId&gt;</span>jrebel-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;version&gt;</span>1.0.8<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;id&gt;</span>generate-rebel-xml<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;phase&gt;</span>process-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;goal&gt;</span>generate<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>       <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>     <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/pluginManagement&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;modules&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;module&gt;</span>module-metier<span class="nt">&lt;/module&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;module&gt;</span>module-webapp<span class="nt">&lt;/module&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/modules&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On remarquera que la génération du fichier rebel.xml a été positionnée sur la phase <code>generate-resources</code> de maven afin de le regénérer à chaque fois qu&#8217;un packaging est effectué.</p>
+
+<p>extrait du pom du module métier :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;/parent&gt;</span>
+</span><span class='line'><span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'><span class="nt">&lt;artifactId&gt;</span>module-metier<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'> ...
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.zeroturnaround<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>jrebel-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;relativePath&gt;</span>../<span class="nt">&lt;/relativePath&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;rootPath&gt;</span>${eclipse-workspace.root}<span class="nt">&lt;/rootPath&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'><span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>extrait du pom du module webapp :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;parent&gt;</span>
+</span><span class='line'> <span class="nt">&lt;groupId&gt;</span>com.xxx<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;artifactId&gt;</span>module-parent<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'> <span class="nt">&lt;relativePath&gt;</span>../pom.xml<span class="nt">&lt;/relativePath&gt;</span>
+</span><span class='line'> <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'><span class="nt">&lt;/parent&gt;</span>
+</span><span class='line'><span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'><span class="nt">&lt;artifactId&gt;</span>module-webapp<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'><span class="nt">&lt;packaging&gt;</span>war<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'> <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>module-metier<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.xxx<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'> ...
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;build&gt;</span>
+</span><span class='line'> <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;groupId&gt;</span>org.zeroturnaround<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;artifactId&gt;</span>jrebel-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;relativePath&gt;</span>../<span class="nt">&lt;/relativePath&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;rootPath&gt;</span>${eclipse-workspace.root}<span class="nt">&lt;/rootPath&gt;</span>
+</span><span class='line'>   <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'> <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'><span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il ne reste alors plus qu&#8217;à packager notre application web instrumenté à l&#8217;aide du fichier <code>rebel.xml</code>, à la déployer et à lancer notre conteneur de servlet ou server d&#8217;application en positionnant l&#8217;agent JRebel sur la JVM.</p>
+
+<p>exemple de fichier <code>startup-jrebel.sh</code> pour tomcat :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>#!/bin/bash
+</span><span class='line'>export JAVA_OPTS=&quot;-noverify -javaagent:/opt/jrebel/jrebel.jar $JAVA_OPTS&quot;
+</span><span class='line'>`dirname $0`/startup.sh $@
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les modifications sont alors pris à chaud par notre conteneur de Servlet ou serveur d&#8217;application!</p>
+
+<p>Attention cependant à ne pas oublier de préciser la valeur de la variable que nous avons utilisé sous via un -D, soit via le fichier de configuration de JRebel.</p>
+
+<h1>Conclusion</h1>
+
+<p>Suite à l&#8217;utilisation de JRebel, j&#8217;ai vraiment été agréablement surpris par sa facilité d&#8217;utilisation que j&#8217;ai essayé de retranscrire ici.</p>
+
+<p>Cependant, JRebel ne doit pas être vu non plus comme un outil miracle mais plutôt juste comme un accélérateur de développement. De part son fonctionnement, il possède un certain nombre de limitations mais reste tout de même plus naturel, plus puissant et plus simple d&#8217;utilisation que le mode debugger qui permet via le mécanisme de HotSwap de prendre à chaud certaines modifications du code (pour ma part, je ne branche le débuggeur qu&#8217;au besoin).</p>
+
+<p>Cependant, il est tout de même conseiller de se référer à la documentation officielle dans le cas d&#8217;usage plus complexe (avec la possibilité de tuner plus finement le fichier rebel.xml entre autre).
+En outre, il est important de garder en mémoire certaines de ses limitations (il faut, par exemple, forcer le rechargement des fichiers de contexte spring pour que certaines modifications soient pris en compte).</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li>Site de ZeroTurnaround : <a href="http://www.zeroturnaround.com/">http://www.zeroturnaround.com/</a></li>
+<li>Page de FAQ de JRebel : <a href="http://www.zeroturnaround.com/jrebel/faq/">http://www.zeroturnaround.com/jrebel/faq/</a></li>
+<li>Article du blog de ZeroTurnaround : <a href="http://www.zeroturnaround.com/blog/reloading_java_classes_401_hotswap_jrebel/">http://www.zeroturnaround.com/blog/reloading_java_classes_401_hotswap_jrebel/</a></li>
+<li>Page des plugins supportés par JRebel : <a href="http://www.zeroturnaround.com/jrebel/plugins/">http://www.zeroturnaround.com/jrebel/plugins/</a></li>
+<li>Blog parlant de JRebel : <a href="http://codemunchies.com/2010/02/reduce-development-time-with-jrebel/">http://codemunchies.com/2010/02/reduce-development-time-with-jrebel/</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-02-24T23:19:33+01:00" pubdate data-updated="true">February 24, 2010</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jrebel/'>jrebel</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html';
+        var disqus_url = 'http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2010/02/de-l-du-livrable.html" title="Previous Post: De l'art du livrable">&laquo; Previous: De l'art du livrable</a>
+        
+
+        
+          <a class="pull-right" href="/2010/03/spring-integration-vs-apache-camel.html" title="Next Post: Spring Integration vs. Apache Camel">Next: Spring Integration vs. Apache Camel &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

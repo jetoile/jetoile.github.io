@@ -35,7 +35,7 @@ A &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.jetoile.fr/index.html">
+  <link rel="canonical" href="http://blog.jetoile.fr/blog/page/8/index.html">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
@@ -196,179 +196,29 @@ A &hellip;">
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow Pour Booster Vos Services REST</a></h2>
+  <h2><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html">JMX Pour Les Nuls&#8230; - Les Services JMX - Partie 7</a></h2>
   
   <p>
-    <p><img src="/images/undertow.png" alt="left-small" />
-Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" /></p>
 
 
 
 
-<p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+<p>Ce septième et avant dernier article sur JMX (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités, <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification, <a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX, <a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">partie 4</a> sur les classes de base, <a href="/2010/11/jmx-pour-les-nuls-le-mbean-server.html">partie 5</a> sur le MBeanServer et <a href="/2010/12/jmx-pour-les-nuls-chargement-dynamique.html">partie 6</a> sur le chargement dynamique des MBeans) abordera les différents types de services JMX.</p>
 
 
 
 
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/jolokia/'>jolokia</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/metrics/'>metrics</a>, <a class='category' href='/blog/categories/microservice/'>microservice</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2015/06/undertow-pour-booster-vos-services-rest.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/06/breizhcamp-2014-presentation-en-ligne.html">Breizhcamp 2014 - Présentations en Ligne</a></h2>
-  
-  <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breizhcamp.org/">BreizhCamp</a> s&#8217;est déroulé en mai dernier et j&#8217;y avais la chance d&#8217;y présenter un <em>talk</em> sur un retour d&#8217;expérience concernant le passage à l&#8217;échelle d&#8217;un SI afin de lui permettre de supporter 4 millions d&#8217;utilisateurs.</p>
-
-
-
-
-<p>Le synopsis était le suivant :</p>
-
-
-
-
-<blockquote><p><strong>De 20 000 à 4 millions d&#8217;utilisateurs</strong></p>
-
-<p>Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de pouvoir stocker en masse les données des utilisateurs mais également afin d&#8217;être capable de les traiter.</p>
-
-<p>Ce retour d&#8217;expérience montrera comment, avec une approche et des technologies simples, il a été possible de revoir la façon de faire et comment il a été proposé de traiter le sujet.</p>
-
-<p>Il montrera également les pistes qui ont été étudiées et les solutions qui ont été retenues.</p>
-
-<p>Les différents points qui seront abordés seront : Cassandra, REST, Netty, Spring Integration, Jolokia, Metrics saupoudré d&#8217;un peu de &ldquo;Big Data&rdquo;.</p></blockquote>
-
-
-
-
-<p>Encore une fois, je remercie la <em>team</em> pour :</p>
+<p>Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se présente sous forme de services JMX (ie. de MBeans), à savoir :</p>
 
 
 
 
 <ul>
-<li>l&#8217;organisation au top,</li>
-<li>pour l&#8217;ambiance qu&#8217;ils ont su apporter à cette conférence,</li>
-<li>mais également pour leur réactivité quant à mettre en ligne les vidéo des différents <em>talk</em> (sur <a href="https://www.youtube.com/playlist?list=PLHWl6dPnEb4l9S-nl4od10OkTOyZEn5Ef">YouTube</a> mais également sur <a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">Parleys</a>)</li>
-</ul>
-
-
-
-
-<p>Du coup, vu que la vidéo de mon <em>talk</em> a été <em>processée</em>, j&#8217;en profite pour mettre le lien (désolé si je n&#8217;arrête pas de danser et désolé pour l&#8217;absence de démo dûe à mon ordinateur capricieux&hellip;) :</p>
-
-
-
-
-<iframe type="text/html" width="420" height="290" mozallowfullscreen="true" webkitallowfullscreen="true" src="http://parleys.com/share.html#play/5391de0ee4b0359b3190f8f4" frameborder="0">&lt;br /&gt;</iframe>
-
-
-
-
-<p>Et je vous invite à aller voir égalemnent les autres talk :
-<a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public</a></p>
-
-
-
-
-<p>A noter également que les conf de Devoxx France ont aussi été publiée depuis un petit moment pour ceux qui seraient à la traine ;&ndash;) :
-<a href="http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public">http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public</a></p>
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-06-12T08:28:38+02:00" pubdate data-updated="true">June 12, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
-  
-</span>
-
-
-  </span>
-
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/05/breizhcamp-2014.html">Breizhcamp 2014</a></h2>
-  
-  <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a> qui vient de fêter sa quatrième année.</p>
-
-
-
-
-<p>Pour ceux qui ne seraient pas encore au courant de ce qu&#8217;est le breizhCamp, il s&#8217;agit d&#8217;une conférence technique qui se veut être un mix de technologies (même s&#8217;il faut bien reconnaitre que Java y est majoritairement représentée&hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#8217;<a href="http://www.istic.univ-rennes1.fr/">ISTIC</a>.</p>
-
-
-
-
-<p>Pour cette édition 2014, cela s&#8217;est déroulé sur 2 jours et demi et son <a href="http://www.breizhcamp.org/programme/">programme</a> a été réparti de la manière suivante :</p>
-
-
-
-
-<ul>
-<li>Une demi journée de démonstrations (enfin je ne sais comment définir précisément cette demi journée qui était un peu spéciale puisqu&#8217;elle hébergeait le <a href="http://www.labfab.fr/">LabFab</a>, un atelier agile, un hands on NodeJS, une présentation démystifiant les objets connectés, un <em>atelier</em> Devoxx4kids ainsi que diverses démos du NAO ou des <a href="http://optinvent.com/">ORA Smart Glasses</a>)</li>
-<li>2 jours de conférences plus <em>classiques</em> avec des conférences, des <em>hands on</em>, des <em>tools in action</em> ainsi que des <em>quickies</em></li>
+<li><strong>Service Monitoring</strong></li>
+<li><strong>Service Timer</strong></li>
+<li><strong>Service de relation</strong></li>
+<li><strong>Service de sécurité</strong></li>
 </ul>
 
 
@@ -389,12 +239,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-24T20:00:24+02:00" pubdate data-updated="true">May 24, 2014</time> in 
+<time datetime="2010-12-13T17:01:18+01:00" pubdate data-updated="true">December 13, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
   
 </span>
 
@@ -402,7 +252,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/breizhcamp-2014.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html">Read on &rarr;</a>
   
 </article>
 
@@ -413,25 +263,15 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/05/rdd-quest-ce-que-cest.html">RDD : Qu&#8217;est Ce Que C&#8217;est</a></h2>
+  <h2><a href="/2010/12/jmx-pour-les-nuls-chargement-dynamique.html">JMX Pour Les Nuls&#8230; - Chargement Dynamique De MBeans - Partie 6</a></h2>
   
   <p>
-    <p><img src="/images/rdd/spark.png" alt="left-small" /></p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" /></p>
 
 
 
 
-<p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu&#8217;il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu&#8217;il a rejoint récemment (en juin 2013) montre bien de l&#8217;intérêt qu&#8217;il succite (cela est d&#8217;aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>
-
-
-
-
-<p>Un des points central de Spark est son utilisation des RDDs (<em>Resilient Distributed Datasets</em>).</p>
-
-
-
-
-<p>Cet article tentera d&#8217;expliquer un peu plus précisément ce que sont ces fameux RDDs (enfin, pour être plus précis, il ne s&#8217;agit (comme à mon habitude) que d&#8217;une pseudo-traduction du <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">papier</a> de recherche expliquant ses tenants et aboutissants).</p>
+<p>Cet article toujours dans la lignée de ma petite série d&#8217;articles sur JMX (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités, <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification, <a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX, <a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">partie 4</a> sur les classes de base et <a href="/2010/11/jmx-pour-les-nuls-le-mbean-server.html">partie 5</a> sur le MBeanServer) sera plus accès sur les capacités de chargement dynamique des MBeans. Cependant, il n&#8217;abordera que succinctement cette partie car il est nécessaire  d&#8217;avoir une très bonne connaissance du fonctionnement du classloader et qu&#8217;un simple article ne saurait l&#8217;aborder comme il se doit.</p>
 
 
 
@@ -451,12 +291,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-12T09:21:35+02:00" pubdate data-updated="true">May 12, 2014</time> in 
+<time datetime="2010-12-06T16:40:48+01:00" pubdate data-updated="true">December 6, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/big-data/'>big data</a>, <a class='category' href='/blog/categories/rdd/'>rdd</a>, <a class='category' href='/blog/categories/spark/'>spark</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
   
 </span>
 
@@ -464,7 +304,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/rdd-quest-ce-que-cest.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/12/jmx-pour-les-nuls-chargement-dynamique.html">Read on &rarr;</a>
   
 </article>
 
@@ -475,35 +315,11 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Lecture Et Traitement De Fichiers : Comment Faire Simple?</a></h2>
+  <h2><a href="/2010/11/jmx-pour-les-nuls-le-mbean-server.html">JMX Pour Les Nuls&#8230; - Le MBean Server - Partie 5</a></h2>
   
   <p>
-    <p><img src="/images/batch/logo.png" alt="left-small" /></p>
-
-
-
-
-<p>De nombreuses applications ou systèmes d&#8217;informations nécessitent le chargement de données issues de fichiers.</p>
-
-
-
-
-<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l&#8217;eau.</p>
-
-
-
-
-<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&#8217;il n&#8217;y parait. Si, de plus, on veut ajouter des logs parlant (c&#8217;est à dire avec, au minimum, le temps de traitement d&#8217;un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
-
-
-
-
-<p>Enfin, lors d&#8217;une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d&#8217;information vient à exploser.</p>
-
-
-
-
-<p>Cet article parlera donc de la problématique d&#8217;import de fichiers dans une application en s&#8217;appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d&#8217;ordre sera de le faire le plus simplement possible en s&#8217;appuyant au maximum sur ces framework.</p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Cet article reste dans la lignée de ma petite série d&#8217;articles sur JMX (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités, <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification, <a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX et <a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">partie 4</a> sur les classes de base) et portera sur le MBean Server.</p>
 
 
 
@@ -523,12 +339,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-04-10T14:15:44+02:00" pubdate data-updated="true">April 10, 2014</time> in 
+<time datetime="2010-11-29T16:27:13+01:00" pubdate data-updated="true">November 29, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/batch/'>batch</a>, <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring-integration/'>spring integration</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
   
 </span>
 
@@ -536,7 +352,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/11/jmx-pour-les-nuls-le-mbean-server.html">Read on &rarr;</a>
   
 </article>
 
@@ -547,100 +363,20 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/04/logstash-petit-tour-dhorizon.html">Logstash : Tour D&#8217;horizon Sur Les Stratégies De Déploiement</a></h2>
+  <h2><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">JMX Pour Les Nuls&#8230; - Les Classes De Base - Partie 4</a></h2>
   
   <p>
-    <p><img src="/images/logstash/logstash.png" alt="left-small" />
-Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies qui peuvent être utilisées pour <a href="http://logstash.net/">Logstash</a>.</p>
-
-
-
-
-<p>Pour ce faire, je m&#8217;appuierai sur le très bon <a href="http://www.logstashbook.com/">livre officiel</a> que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.</p>
-
-
-
-
-<p>Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</p>
-
-
-
-
-<p>[<em>ndlr</em> : par contre, je ne ferai, comme à mon habitude, que retranscrire ce qui est présent dans le livre&hellip;]</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-04-07T11:20:26+02:00" pubdate data-updated="true">April 7, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/logstash/'>logstash</a>, <a class='category' href='/blog/categories/supervision/'>supervision</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/logstash-petit-tour-dhorizon.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/03/changement-flux-rss.html">Changement Du Flux RSS</a></h2>
-  
-  <p>
-    <p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
-
-
-
-
-<p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j&#8217;espère qu&#8217;il vous plait.</p>
-
-
-
-
-<p>Normalement, en plus d&#8217;un meilleur confort pour moi lorsque j&#8217;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&#8217;un allègement de ces dernières.</p>
-
-
-
-
-<p>Cependant, en raison d&#8217;une <em>limitation</em> de <a href="http://www.feedburner.com">feedburner</a> sur la taille du fichier <strong>atom.xml</strong>, j&#8217;ai été obligé de ne faire pointer que la catégorie <code>Java</code> (je n&#8217;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&#8217;article ou juste le titre&hellip;).</p>
-
-
-
-
-<p>Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :</p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Cette quatrième partie sur JMX (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html,%20[partie%201](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">introduction</a> portant sur les généralités, <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification et <a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX) permettra de présenter les classes de bases de JMX c&#8217;est-à-dire les classes qui sont manipulées en interne par les API de JMX à savoir :</p>
 
 
 
 
 <ul>
-<li>soit par celui de <strong>feedburner</strong> mais dans ce cas, il n&#8217;y aura que la catégorie <code>Java</code> : <a href="http://feeds.feedburner.com/jetoile">http://feeds.feedburner.com/jetoile</a> ,</li>
-<li>soit en utilisant celui-ci : <a href="http://blog.jetoile.fr/atom.xml">http://blog.jetoile.fr/atom.xml</a> .</li>
+<li><code>ObjectName</code></li>
+<li><code>ObjectInstance</code></li>
+<li><code>Attribute</code></li>
+<li><code>AttributeList</code></li>
 </ul>
 
 
@@ -661,12 +397,12 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 
 
-<time datetime="2014-03-31T18:54:22+02:00" pubdate data-updated="true">March 31, 2014</time> in 
+<time datetime="2010-11-21T16:03:56+01:00" pubdate data-updated="true">November 21, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/divers/'>divers</a>, <a class='category' href='/blog/categories/java/'>java</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
   
 </span>
 
@@ -674,7 +410,161 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/03/changement-flux-rss.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">JMX Pour Les Nuls&#8230; - Les Agents JMX - Partie 3</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Cette troisième partie sur JMX reste dans la continuité de la série d&#8217;article sur ce sujet (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités et <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&#8217;est un agent JMX et à quoi il sert.</p>
+
+
+
+
+<p>Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-11-08T15:50:22+01:00" pubdate data-updated="true">November 8, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">JMX Pour Les Nuls&#8230; - Les Différents MBeans Et La Notion De Notification - Partie 2</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Mon <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">précédent article</a> portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.</p>
+
+
+
+
+<p>Ainsi, cette partie traitera des différents MBeans et du concept notification.</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-11-03T14:09:21+01:00" pubdate data-updated="true">November 3, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">JMX Pour Les Nuls&#8230; - Les Concepts - Partie 1</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Comme promis lors de mon <a href="/2010/10/jmx-pour-les-nuls-introduction.html">article précédent</a> (et pour éviter de vous faire languir ;&ndash;) ) la première partie de cette série d&#8217;article sur JMX!</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-10-27T13:01:35+02:00" pubdate data-updated="true">October 27, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">Read on &rarr;</a>
   
 </article>
 

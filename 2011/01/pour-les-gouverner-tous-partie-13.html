@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pour Les Gouverner Tous - Partie 1/3 - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Pour Les Gouverner Tous - Partie 1/3 January 31, 2011 Pour ceux qui l&#8217;auraient manqués (comment ça? Personne ne me suit&hellip; :( ), j&#8217; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Pour Les Gouverner Tous - Partie 1/3</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-01-31T18:37:27+01:00" pubdate data-updated="true">January 31, 2011</time>  
+        </div>
+        <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small" /></p>
+
+<p>Pour ceux qui l&#8217;auraient manqués (comment ça? Personne ne me suit&hellip; :( ), j&#8217;ai annoncé dans un post précédent que j&#8217;avais ouvert un compte sur GitHub pour hoster du code. Bien sûr, il y avait une petite idée derrière&hellip; ;&ndash;)</p>
+
+<p>En fait, l&#8217;idée est partie d&#8217;un constat assez simple : sur différent projet, à chaque fois que j&#8217;ai voulu mettre en place JMX, ce qui m&#8217;a toujours <em>profondément</em> attristé était de ne pas pouvoir regrouper l&#8217;ensemble des informations des MBeans à un même endroit, c&#8217;est-à-dire, qu&#8217;il me fallait me demander où se trouvait tel ou tel MBean dans mon système alors que j&#8217;aurais aimé pouvoir me connecter sur n&#8217;importe quelle instance de mon système et y trouver tous les MBeans présents dans mon système. Enfin, pour être plus précis, j&#8217;aurais aimé pouvoir me connecter à n&#8217;importe quelle JVM qui hébergeait mon application et avoir accès à tous les serveurs JMX.</p>
+
+<!-- more -->
+
+
+<p>Bien sûr, me direz-vous, il existe des solutions comme Hyperic qui permettent d&#8217;agréger toutes les informations et d&#8217;offrir une solution à mon problème. Cependant, cela ne répondait pas à une des problématiques que j&#8217;ai pu avoir il y a quelques temps : dans le cas où il ne doit pas y avoir de serveurs dans mon système (même passif), une telle solution n&#8217;est pas envisageable. En effet, dans l&#8217;architecture de cette application, tous les noeuds de mon système étaient au même niveau hiérarchique afin d&#8217;éviter d&#8217;avoir un single point of failure. Aussi, introduire un manageur pour administrer mon système n&#8217;était pas envisageable. En outre, un autre des pré-requis de ce projet était qu&#8217;il n&#8217;y avait pas de connaissance préalable de où tournait mon application (au sens scalabilité du terme) : tout poste était susceptible de démarrer l&#8217;application sans qu&#8217;un serveur centralisé n&#8217;en ait connaissance.</p>
+
+<p>Aussi, vous l&#8217;aurez compris, l&#8217;idée est, ici, de proposer une ébauche de solution pour répondre à la problématique précédemment citée : pour n&#8217;importe quelle application susceptible d&#8217;être exécutée de manière distributée, être capable d&#8217;avoir sur chacune la connaissance (connaissance au sens supervision et administration et non au sens applicatif du terme&hellip;) de l&#8217;état de mes autres instances.</p>
+
+<p>En outre, cette petite mise en oeuvre était également un bon prétexte pour utiliser JGroups et JMX et montrer comment il était possible de les utiliser.</p>
+
+<p>La problématique étant posée, je vous propose donc une petite boite à outils permettant de faire cela de manière simple : en démarrant son application et en positionnant un agent sur la JVM, elle permet de remonter dans le serveur JMX courant tous les MBeans se trouvant sur les autres serveurs JMX (modulo qu&#8217;ils aient été démarrés par une JVM où l&#8217;agent aurait été mis).</p>
+
+<p>Pour ce faire, un premier choix a été de m&#8217;appuyer sur JGroups pour connaitre et être informé de l&#8217;état de mon système : je n&#8217;avais pas envie de gérer toutes les problématiques de Heartbeat &amp; co. et j&#8217;ai donc décidé de déléguer à JGroups cette problématique. En outre, cela permettait une plus grande configuration de la couche de découverte et de surveillance de mon système puisque JGroups possédait déjà une grande facilité de configuration.</p>
+
+<p>La série d&#8217;articles qui suivra expliquera donc comment cela fonctionne et sur quoi je me suis appuyé pour le faire.</p>
+
+<p>Elle sera découpée en deux parties :</p>
+
+<ul>
+<li><a href="/2011/02/pour-les-gouverner-tous-partie-23.html">La première partie</a> fournira une sorte de pseudo exemple d&#8217;utilisation de JGroups en proposant une solution permettant lors de l&#8217;utilisation d&#8217;une application distribuée de récupérer et de conserver localement l&#8217;état d&#8217;un objet distant dans une sorte de cache tout en supprimant cet objet si l&#8217;application distante est arrêtée.</li>
+<li><a href="/2011/02/pour-les-gouverner-tous-partie-33.html">La deuxième partie</a> (ajoutera l&#8217;utilisation de JMX pour permettre la récupération des MBeans distants ainsi que leurs enregistrement dans le MBeanServer courant.</li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-01-31T18:37:27+01:00" pubdate data-updated="true">January 31, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jgroups/'>jgroups</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/01/ouverture-dun-compte-github.html" title="Previous Post: Ouverture d'un compte GitHub">&laquo; Previous: Ouverture d'un compte GitHub</a>
+        
+
+        
+          <a class="pull-right" href="/2011/02/pour-les-gouverner-tous-partie-23.html" title="Next Post: Pour les gouverner tous - partie 2/3">Next: Pour les gouverner tous - partie 2/3 &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

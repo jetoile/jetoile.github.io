@@ -35,7 +35,7 @@ A &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.jetoile.fr/index.html">
+  <link rel="canonical" href="http://blog.jetoile.fr/blog/page/4/index.html">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
@@ -196,16 +196,30 @@ A &hellip;">
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow Pour Booster Vos Services REST</a></h2>
+  <h2><a href="/2012/11/precompiler-ses-jsp.html">Précompiler Ses Jsp</a></h2>
   
   <p>
-    <p><img src="/images/undertow.png" alt="left-small" />
-Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
+    <p><img src="http://1.bp.blogspot.com/-9Hhc_8qdf1Y/UIhESh6Ls9I/AAAAAAAAAso/2fJIJUvqvIo/s1600/title.png" alt="left-small" /></p>
 
 
 
 
-<p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+<p>Parce qu&#8217;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.</p>
+
+
+
+
+<p>Oui, je sais, les jsp c&#8217;est <em>has been</em> me diront certains&hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&#8217;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</p>
+
+
+
+
+<p>Ayant eu récemment à intégrer une phase de validation des jsp maintenus principalement par des équipes &ldquo;front&rdquo; n&#8217;ayant que peu de connaissance en Java, ce rapide retour d&#8217;expérience tentera d&#8217;exposer les quelques points qui ont pu me poser problème et en l&#8217;occurrence les quelques-unes des différentes solutions possibles pour traiter ce point.</p>
+
+
+
+
+<p>Aussi, dans une première partie, je présenterai le contexte, pour ensuite aborder trois des solutions possibles (et relativement récentes car il en existe plusieurs dans différentes versions&hellip;) pour valider les jsp.</p>
 
 
 
@@ -225,12 +239,12 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
 
 
 
-<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time> in 
+<time datetime="2012-11-05T12:57:40+01:00" pubdate data-updated="true">November 5, 2012</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/jolokia/'>jolokia</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/metrics/'>metrics</a>, <a class='category' href='/blog/categories/microservice/'>microservice</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
+    <a class='category' href='/blog/categories/ant/'>ant</a>, <a class='category' href='/blog/categories/integration-continue/'>intégration continue</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jsp/'>jsp</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/tomcat/'>tomcat</a>
   
 </span>
 
@@ -238,7 +252,7 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2015/06/undertow-pour-booster-vos-services-rest.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/11/precompiler-ses-jsp.html">Read on &rarr;</a>
   
 </article>
 
@@ -249,65 +263,107 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/06/breizhcamp-2014-presentation-en-ligne.html">Breizhcamp 2014 - Présentations en Ligne</a></h2>
+  <h2><a href="/2012/10/test-de-charge-mode-demploi.html">Test De Charge : Mode D&#8217;emploi</a></h2>
   
   <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breizhcamp.org/">BreizhCamp</a> s&#8217;est déroulé en mai dernier et j&#8217;y avais la chance d&#8217;y présenter un <em>talk</em> sur un retour d&#8217;expérience concernant le passage à l&#8217;échelle d&#8217;un SI afin de lui permettre de supporter 4 millions d&#8217;utilisateurs.</p>
+    <p><img src="http://2.bp.blogspot.com/-8b4S0NQnPtk/UH2hoKTgkcI/AAAAAAAAAoc/iY1PXGjWPcA/s1600/_charge01.png" alt="left-small" /></p>
 
 
 
 
-<p>Le synopsis était le suivant :</p>
+<p>Au cours de la vie d&#8217;un projet, il est courant d&#8217;avoir recours à des tests de charge.</p>
 
 
 
 
-<blockquote><p><strong>De 20 000 à 4 millions d&#8217;utilisateurs</strong></p>
-
-<p>Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de pouvoir stocker en masse les données des utilisateurs mais également afin d&#8217;être capable de les traiter.</p>
-
-<p>Ce retour d&#8217;expérience montrera comment, avec une approche et des technologies simples, il a été possible de revoir la façon de faire et comment il a été proposé de traiter le sujet.</p>
-
-<p>Il montrera également les pistes qui ont été étudiées et les solutions qui ont été retenues.</p>
-
-<p>Les différents points qui seront abordés seront : Cassandra, REST, Netty, Spring Integration, Jolokia, Metrics saupoudré d&#8217;un peu de &ldquo;Big Data&rdquo;.</p></blockquote>
+<p>Cependant, je me suis rendu compte que, trop souvent, le sujet est mal maîtrisé et donc malheureusement mal traité.</p>
 
 
 
 
-<p>Encore une fois, je remercie la <em>team</em> pour :</p>
+<p>En effet, combien de fois n&#8217;ai-je pas vu un test de charge effectué avec la méthodologie &ldquo;clic clic partout&rdquo;, l&#8217;utilisation de <strong>Selenium</strong>, la commande <strong>curl</strong>, ou, dans le meilleur des cas, avec quelques scénarii JMeter issus de l&#8217;utilisation du recorder de ce dernier.</p>
+
+
+
+
+<p>Cela ayant la facheuse tendance à m&#8217;énerver (pour ceux qui me connaisse, cela se traduit par une certaine agitation de ma part consistant à me mettre à tourner sur la chaise en regardant le plafond ;&ndash;) ), je vais tenter dans cet article de redéfinir certains des concepts qui me semblent primordiaux pour effectuer un test de charge qui se veut un minimum bien conçu, c&#8217;est à dire se voulant représentatif de la charge réelle que peut supporter le SUT (<em>System Under Test</em>) mais surtout qui permettra d&#8217;obtenir des métriques exploitables et représentatives du comportement du SUT.</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-10-17T13:29:39+02:00" pubdate data-updated="true">October 17, 2012</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clif/'>clif</a>, <a class='category' href='/blog/categories/gatling/'>gatling</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmeter/'>jmeter</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/10/test-de-charge-mode-demploi.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2012/08/decoupage-de-projets-projet-vs-modules.html">Découpage De Projets : Projet vs. Modules</a></h2>
+  
+  <p>
+    <p><img src="http://2.bp.blogspot.com/-wz814rCkbHY/UC1JmXEpcyI/AAAAAAAAAoA/6YjiYTg7fzw/s1600/couteaux.png" alt="left-small" /></p>
+
+
+
+
+<p>Lorsqu&#8217;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&#8217;approches :</p>
 
 
 
 
 <ul>
-<li>l&#8217;organisation au top,</li>
-<li>pour l&#8217;ambiance qu&#8217;ils ont su apporter à cette conférence,</li>
-<li>mais également pour leur réactivité quant à mettre en ligne les vidéo des différents <em>talk</em> (sur <a href="https://www.youtube.com/playlist?list=PLHWl6dPnEb4l9S-nl4od10OkTOyZEn5Ef">YouTube</a> mais également sur <a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">Parleys</a>)</li>
+<li>le découper fonctionnellement,</li>
+<li>le découper techniquement.</li>
 </ul>
 
 
 
 
-<p>Du coup, vu que la vidéo de mon <em>talk</em> a été <em>processée</em>, j&#8217;en profite pour mettre le lien (désolé si je n&#8217;arrête pas de danser et désolé pour l&#8217;absence de démo dûe à mon ordinateur capricieux&hellip;) :</p>
+<p>En outre, en plus de ce type de découpage, il est également important de s&#8217;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&#8217;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</p>
 
 
 
 
-<iframe type="text/html" width="420" height="290" mozallowfullscreen="true" webkitallowfullscreen="true" src="http://parleys.com/share.html#play/5391de0ee4b0359b3190f8f4" frameborder="0">&lt;br /&gt;</iframe>
+<p>C&#8217;est de ce dernier point dont il sera question dans ce court article qui présentera l&#8217;avis que j&#8217;ai pu me faire concernant le découpage technique du projet ie. s&#8217;il vaut mieux le découper en projets séparés ou en module (au sens maven du terme).</p>
 
 
 
 
-<p>Et je vous invite à aller voir égalemnent les autres talk :
-<a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public</a></p>
+<p>Il s&#8217;agit d&#8217;une opinion très personnelle qui peut ne pas être partagée par tous mais je trouvais intéressant de fournir mon humble avis et de le marquer noir sur blanc. Si je venais à dire des bêtises, au moins, cet article servira d&#8217;amorce à la discussion ;&ndash;)</p>
 
 
-
-
-<p>A noter également que les conf de Devoxx France ont aussi été publiée depuis un petit moment pour ceux qui seraient à la traine ;&ndash;) :
-<a href="http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public">http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public</a></p>
 
 
   </p>
@@ -325,18 +381,20 @@ Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breiz
 
 
 
-<time datetime="2014-06-12T08:28:38+02:00" pubdate data-updated="true">June 12, 2014</time> in 
+<time datetime="2012-08-28T11:47:11+02:00" pubdate data-updated="true">August 28, 2012</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
+    <a class='category' href='/blog/categories/architecture/'>architecture</a>, <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/reflexion/'>réflexion</a>, <a class='category' href='/blog/categories/soa/'>soa</a>
   
 </span>
 
 
   </span>
 
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/08/decoupage-de-projets-projet-vs-modules.html">Read on &rarr;</a>
   
 </article>
 
@@ -347,91 +405,31 @@ Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breiz
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/05/breizhcamp-2014.html">Breizhcamp 2014</a></h2>
+  <h2><a href="/2012/08/maven-creer-une-branche-mode-demloi.html">Maven : Créer Une Branche - Mode D&#8217;emploi</a></h2>
   
   <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a> qui vient de fêter sa quatrième année.</p>
+    <p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
 
 
 
 
-<p>Pour ceux qui ne seraient pas encore au courant de ce qu&#8217;est le breizhCamp, il s&#8217;agit d&#8217;une conférence technique qui se veut être un mix de technologies (même s&#8217;il faut bien reconnaitre que Java y est majoritairement représentée&hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#8217;<a href="http://www.istic.univ-rennes1.fr/">ISTIC</a>.</p>
-
-
-
-
-<p>Pour cette édition 2014, cela s&#8217;est déroulé sur 2 jours et demi et son <a href="http://www.breizhcamp.org/programme/">programme</a> a été réparti de la manière suivante :</p>
+<p>Il y a un moment déjà, j&#8217;avais fait un <a href="/2010/04/le-plugin-release-un-peu-demystifie.html">article sur le plugin release</a> oh combien pratique dans notre utilisation de maven. J&#8217;y avais mentionné les 2 goals <code>prepare</code> et <code>perform</code> qui sont les plus connus et qui, pour rappel, permettent de :</p>
 
 
 
 
 <ul>
-<li>Une demi journée de démonstrations (enfin je ne sais comment définir précisément cette demi journée qui était un peu spéciale puisqu&#8217;elle hébergeait le <a href="http://www.labfab.fr/">LabFab</a>, un atelier agile, un hands on NodeJS, une présentation démystifiant les objets connectés, un <em>atelier</em> Devoxx4kids ainsi que diverses démos du NAO ou des <a href="http://optinvent.com/">ORA Smart Glasses</a>)</li>
-<li>2 jours de conférences plus <em>classiques</em> avec des conférences, des <em>hands on</em>, des <em>tools in action</em> ainsi que des <em>quickies</em></li>
+<li>vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM,</li>
+<li>tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité,</li>
+<li>incrémenter le numéro de version des poms,</li>
+<li>générer le livrable,</li>
+<li>et le déployer sur le <em>remote proxy repository</em>.</li>
 </ul>
 
 
 
 
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-05-24T20:00:24+02:00" pubdate data-updated="true">May 24, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/breizhcamp-2014.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/05/rdd-quest-ce-que-cest.html">RDD : Qu&#8217;est Ce Que C&#8217;est</a></h2>
-  
-  <p>
-    <p><img src="/images/rdd/spark.png" alt="left-small" /></p>
-
-
-
-
-<p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu&#8217;il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu&#8217;il a rejoint récemment (en juin 2013) montre bien de l&#8217;intérêt qu&#8217;il succite (cela est d&#8217;aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>
-
-
-
-
-<p>Un des points central de Spark est son utilisation des RDDs (<em>Resilient Distributed Datasets</em>).</p>
-
-
-
-
-<p>Cet article tentera d&#8217;expliquer un peu plus précisément ce que sont ces fameux RDDs (enfin, pour être plus précis, il ne s&#8217;agit (comme à mon habitude) que d&#8217;une pseudo-traduction du <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">papier</a> de recherche expliquant ses tenants et aboutissants).</p>
+<p>Dans cet article, je me concentrerai sur un goal du plugin release malheureusement assez méconnu mais qui est tout aussi pratique et important (à mon sens) que ses 2 comparses <code>prepare</code> et <code>perform</code>. Il s&#8217;agit du plugin <strong>branch</strong>.</p>
 
 
 
@@ -451,12 +449,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-12T09:21:35+02:00" pubdate data-updated="true">May 12, 2014</time> in 
+<time datetime="2012-08-13T11:40:31+02:00" pubdate data-updated="true">August 13, 2012</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/big-data/'>big data</a>, <a class='category' href='/blog/categories/rdd/'>rdd</a>, <a class='category' href='/blog/categories/spark/'>spark</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
   
 </span>
 
@@ -464,7 +462,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/rdd-quest-ce-que-cest.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/08/maven-creer-une-branche-mode-demloi.html">Read on &rarr;</a>
   
 </article>
 
@@ -475,173 +473,119 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Lecture Et Traitement De Fichiers : Comment Faire Simple?</a></h2>
+  <h2><a href="/2012/05/devoxx-2012-elasticsearch-moteur-de.html">Devoxx 2012 - ElasticSearch : Moteur De Recherche NoSQL/REST/JSON Taillé Pour Le Cloud</a></h2>
   
   <p>
-    <p><img src="/images/batch/logo.png" alt="left-small" /></p>
+    <p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
+Pour ceux qui l&#8217;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
 
 
 
 
-<p>De nombreuses applications ou systèmes d&#8217;informations nécessitent le chargement de données issues de fichiers.</p>
+<p>L&#8217;annonce avait été faite pendant la dernière édition de <a href="http://www.devoxx.com/">Devoxx &ldquo;l&#8217;originale&rdquo;</a> à Anvers en Belgique qui fêtait pour l&#8217;occasion ses 10 ans.</p>
 
 
 
 
-<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l&#8217;eau.</p>
+<p>Ayant eu l&#8217;opportunité d&#8217;y assister (chose que je conseille vivement à tous les développeurs), j&#8217;ai écrit un petit compte rendu d&#8217;une des moultes conférences qui m&#8217;ont marquées aussi bien par sa qualité scénique que par son contenu.</p>
 
 
 
 
-<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&#8217;il n&#8217;y parait. Si, de plus, on veut ajouter des logs parlant (c&#8217;est à dire avec, au minimum, le temps de traitement d&#8217;un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
+<p><img src="http://3.bp.blogspot.com/-gL1h9W4sgik/T7q85-4STJI/AAAAAAAAAm0/0LaSMChBQvY/s1600/logo.png" alt="center" /></p>
 
 
 
 
-<p>Enfin, lors d&#8217;une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d&#8217;information vient à exploser.</p>
-
-
-
-
-<p>Cet article parlera donc de la problématique d&#8217;import de fichiers dans une application en s&#8217;appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d&#8217;ordre sera de le faire le plus simplement possible en s&#8217;appuyant au maximum sur ces framework.</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-04-10T14:15:44+02:00" pubdate data-updated="true">April 10, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/batch/'>batch</a>, <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring-integration/'>spring integration</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/04/logstash-petit-tour-dhorizon.html">Logstash : Tour D&#8217;horizon Sur Les Stratégies De Déploiement</a></h2>
-  
-  <p>
-    <p><img src="/images/logstash/logstash.png" alt="left-small" />
-Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies qui peuvent être utilisées pour <a href="http://logstash.net/">Logstash</a>.</p>
-
-
-
-
-<p>Pour ce faire, je m&#8217;appuierai sur le très bon <a href="http://www.logstashbook.com/">livre officiel</a> que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.</p>
-
-
-
-
-<p>Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</p>
-
-
-
-
-<p>[<em>ndlr</em> : par contre, je ne ferai, comme à mon habitude, que retranscrire ce qui est présent dans le livre&hellip;]</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-04-07T11:20:26+02:00" pubdate data-updated="true">April 7, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/logstash/'>logstash</a>, <a class='category' href='/blog/categories/supervision/'>supervision</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/logstash-petit-tour-dhorizon.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/03/changement-flux-rss.html">Changement Du Flux RSS</a></h2>
-  
-  <p>
-    <p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
-
-
-
-
-<p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j&#8217;espère qu&#8217;il vous plait.</p>
-
-
-
-
-<p>Normalement, en plus d&#8217;un meilleur confort pour moi lorsque j&#8217;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&#8217;un allègement de ces dernières.</p>
-
-
-
-
-<p>Cependant, en raison d&#8217;une <em>limitation</em> de <a href="http://www.feedburner.com">feedburner</a> sur la taille du fichier <strong>atom.xml</strong>, j&#8217;ai été obligé de ne faire pointer que la catégorie <code>Java</code> (je n&#8217;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&#8217;article ou juste le titre&hellip;).</p>
-
-
-
-
-<p>Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :</p>
+<p>Cette conférence était une présentation d&#8217;<a href="http://www.elasticsearch.org/">ElasticSearch</a> faite par <a href="http://dev.david.pilato.fr/">David Pilato</a> (<a href="http://twitter.com/#!/dadoonet">@dadoonet</a>) qui a, alors, abordé les points suivants :</p>
 
 
 
 
 <ul>
-<li>soit par celui de <strong>feedburner</strong> mais dans ce cas, il n&#8217;y aura que la catégorie <code>Java</code> : <a href="http://feeds.feedburner.com/jetoile">http://feeds.feedburner.com/jetoile</a> ,</li>
-<li>soit en utilisant celui-ci : <a href="http://blog.jetoile.fr/atom.xml">http://blog.jetoile.fr/atom.xml</a> .</li>
+<li>Définition d’un moteur de recherche</li>
+<li>Concepts d’ElasticSearch</li>
+<li>Utilisation d’ElasticSearch</li>
+<li>Architecture d’ElasticSearch</li>
 </ul>
+
+
+
+
+<p>Ce petit compte rendu a été écrit pour le compte du site <a href="http://www.developpez.com/">developpez.com</a> et peut se trouver <a href="http://soat.developpez.com/articles/elasticsearch/">ici</a></p>
+
+
+
+
+<p>Merci à Developpez.com et aux différents relecteurs!</p>
+
+
+
+
+<p>Bonne lecture ;&ndash;)</p>
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-05-22T11:37:00+02:00" pubdate data-updated="true">May 22, 2012</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devoxx/'>devoxx</a>, <a class='category' href='/blog/categories/elasticsearch/'>elasticsearch</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/nosql/'>nosql</a>
+  
+</span>
+
+
+  </span>
+
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2012/03/petits-retours-sur-cassandra.html">Petits Retours Sur Cassandra</a></h2>
+  
+  <p>
+    <p><img src="http://2.bp.blogspot.com/-IvTZebKJhAc/T1hsV7nG8nI/AAAAAAAAAjw/qFiNLqvXgnY/s1600/cassandra01.png" alt="left-small" /></p>
+
+
+
+
+<p>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par <a href="http://twitter.com/mfiguiere">Michaël Figuière</a>) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&#8217;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&#8217;ai aimé et ce que je n&#8217;ai pas aimé sur <a href="http://cassandra.apache.org/">Apache Cassandra</a>.</p>
+
+
+
+
+<p>Je tiens toutefois à préciser que je n&#8217;ai aucune expérience réelle sur le produit et que je ne m&#8217;appuierai donc que sur sa <a href="http://www.datastax.com/doc-source/pdf/cassandra10.pdf">documentation officielle</a> en version 1.0 qui date du 2 mars 2012.</p>
+
+
+
+
+<p>En outre, je ne m&#8217;attarderai que sur les points qui m&#8217;ont semblé intéressants et marquants.</p>
+
+
+
+
+<p>Pour ceux qui sont coutumiés de ce blog, je ne changerai pas mes habitudes et je me contenterai seulement de traduire de manière libre les passages qui m&#8217;ont intéressés ;&ndash;). A noter que de nombreux points sont rappelés à différents endroits dans ce document mais c&#8217;est également le cas dans la documentation officielle.</p>
 
 
 
@@ -661,12 +605,12 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 
 
-<time datetime="2014-03-31T18:54:22+02:00" pubdate data-updated="true">March 31, 2014</time> in 
+<time datetime="2012-03-13T10:19:01+01:00" pubdate data-updated="true">March 13, 2012</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/divers/'>divers</a>, <a class='category' href='/blog/categories/java/'>java</a>
+    <a class='category' href='/blog/categories/architecture/'>architecture</a>, <a class='category' href='/blog/categories/cassandra/'>cassandra</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/nosql/'>nosql</a>, <a class='category' href='/blog/categories/reflexion/'>réflexion</a>
   
 </span>
 
@@ -674,7 +618,95 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/03/changement-flux-rss.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/03/petits-retours-sur-cassandra.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2012/02/petit-focus-sur-2-plugins-maven.html">Petit Focus Sur 2 Plugins Maven</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
+
+
+
+
+<p>Bon, ça fait un moment que je n&#8217;ai rien écrit&hellip; je n&#8217;ai pas foncièrement d&#8217;excuses si ce n&#8217;est que j&#8217;ai été pas mal occupé sur un projet sur lequel j&#8217;essaierai de faire un petit retour dans un futur proche&hellip;</p>
+
+
+
+
+<p>En fait, dans ce rapide post, je tenais à faire partager 2 &ldquo;petits&rdquo; plugins maven que j&#8217;ai eu l&#8217;opportunité de découvrir récemment par le biais de 2 Olivier :</p>
+
+
+
+
+<ul>
+<li><a href="http://twitter.com/olamy">Olivier Lamy</a> (<a href="http://olamy.blogspot.com/">http://olamy.blogspot.com/</a>), qui est architecte open source et commiteur actif de moultes projets (je ne les citerai pas, il y en a trop&hellip; ;&ndash;) ) <del>et qui travaille chez Talend</del>,</li>
+<li>et <a href="http://twitter.com/obazoud">Olivier Bazoud</a> (<a href="http://blog.bazoud.com/">http://blog.bazoud.com/</a>) <del>qui est architecte chez Ekino et également</del> co-auteur du livre <a href="http://www.manning.com/templier/">Spring Batch In Action</a> aux éditions Manning.</li>
+</ul>
+
+
+
+
+<p>Les deux plugins sont les suivants :</p>
+
+
+
+
+<ul>
+<li><a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html">Tomcat 7 Maven Plugin</a></li>
+<li><a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">Application Assembler Maven Plugin</a></li>
+</ul>
+
+
+
+
+<p>En fait, je ne rentrerai pas en détail dans les 2 plugins Maven qui, pour un, est assez connu mais je me contenterai juste de décrire les fonctionnalités que j&#8217;ai appréciées.</p>
+
+
+
+
+<p>N&#8217;étant pas expert sur ces derniers et n&#8217;ayant pas creusé dans tous les paramétrages, j&#8217;espère que la présentation qui suit ne dira pas trop de bêtises&hellip; ;&ndash;)</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-02-28T23:09:51+01:00" pubdate data-updated="true">February 28, 2012</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/integration-continue/'>intégration continue</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2012/02/petit-focus-sur-2-plugins-maven.html">Read on &rarr;</a>
   
 </article>
 

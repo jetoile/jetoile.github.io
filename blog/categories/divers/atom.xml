@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: divers | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/divers/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Changement du flux RSS]]></title>
+    <link href="http://blog.jetoile.fr/2014/03/changement-flux-rss.html"/>
+    <updated>2014-03-31T18:54:22+02:00</updated>
+    <id>http://blog.jetoile.fr/2014/03/changement-flux-rss</id>
+    <content type="html"><![CDATA[<p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
+
+<p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j'espère qu'il vous plait.</p>
+
+<p>Normalement, en plus d'un meilleur confort pour moi lorsque j'écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d'un allègement de ces dernières.</p>
+
+<p>Cependant, en raison d'une <em>limitation</em> de <a href="http://www.feedburner.com">feedburner</a> sur la taille du fichier <strong>atom.xml</strong>, j'ai été obligé de ne faire pointer que la catégorie <code>Java</code> (je n'ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l'article ou juste le titre&hellip;).</p>
+
+<p>Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :</p>
+
+<ul>
+<li>soit par celui de <strong>feedburner</strong> mais dans ce cas, il n'y aura que la catégorie <code>Java</code> : <a href="http://feeds.feedburner.com/jetoile">http://feeds.feedburner.com/jetoile</a> ,</li>
+<li>soit en utilisant celui-ci : <a href="http://blog.jetoile.fr/atom.xml">http://blog.jetoile.fr/atom.xml</a> .</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>Je m'excuse par avance pour ce changement et j'espère que vous continuerez à me lire ;&ndash;)</p>
+
+<p>A oui, cela prend effet dès maintenant (si ça ce n'est pas agile, alors je ne sais pas ce que c'est&hellip; ;&ndash;) )</p>
+
+<p>crédit photo : <a href="http://www.netpublic.fr/2013/04/7-solutions-pour-remplacer-google-reader/">http://www.netpublic.fr/2013/04/7-solutions-pour-remplacer-google-reader/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Changement de look et d'hébergeur]]></title>
+    <link href="http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html"/>
+    <updated>2014-03-28T10:00:03+01:00</updated>
+    <id>http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/octopress/img_octopress_blogger.png" alt="left-small" /></p>
+
+<p>Cet article n'a rien à voir avec Java et il est plus à titre informatif.</p>
+
+<p>En effet, j'ai décidé de passer de <strong>Blogger</strong> pour l'hébergement de mon blog à une solution basée sur <a href="http://octopress.org/">Octopress</a> et un hébergement sur <a href="http://pages.github.com/">github.io</a>.</p>
+
+<p>Pourquoi ce choix?</p>
+
+<p>Et ben, en fait, pour plusieurs raisons :</p>
+
+<ul>
+<li>J'ai toujours aimé la philosophie de <a href="http://www.latex-project.org/">LaTeX</a> qui permettait d'écrire au kilomètre sans avoir à se soucier de la mise en forme.</li>
+<li>Mon blog était long à charger et la partie <em>tuning</em> de trucs <em>front</em> (et je ne le dis de manière non péjorative) n'étant pas mon fort, je n'ai pas réussi à l'alléger.</li>
+<li>La partie <em>syntaxhighlight</em> était vraiment <em>chiante</em> à gérer et alourdissait vraiment (mais alors <em>vraiment</em>!) le chargement des pages.</li>
+<li>J'avais envie d'une solution plus simple pour me permettre d'écrire mes articles (d'où mon <a href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html">post sur livereload</a>) et pas à avoir à faire de copier/coller + retouche dans <a href="http://blogger.com/">Blogger</a> :
+
+<ul>
+<li>Ca correspond à la philo jrebel (<em>ndlr</em> : que j'aime beaucoup) (cf. <a href="ihttp://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html">ici</a>) pour le code Java mais appliqué, ici, à la partie front.</li>
+<li>C'est toujours plus marrant de pouvoir écrire un truc et de le voir se recharger automatiquement dans son navigateur &ndash; ça c'est pour la partie_geek ;&ndash;).</li>
+<li>C'est <em>nouveau</em> (enfin pour moi&hellip;).</li>
+</ul>
+</li>
+<li>Blogger ne me convenait plus car il faisait trop de choses dont je ne me servais pas et, de plus, la façon dont il le faisait ne me convenait plus (son mécanisme de <em>templating</em> est assez lourd).</li>
+<li>De nombreux blogs ont migrés et je trouve leur <em>look &amp; feel</em> plus proche de ce qu'on attend d'un blog actuellement sans le coté <em>bling bling</em> de ce qui se faisait il y a quelques années.</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>Ce sont ces différentes raisons qui m'ont fait préférer :</p>
+
+<ul>
+<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a> pour la partie écriture pure (sachant que je m'étais déjà fait chier à faire marcher livereload avec&hellip;)</li>
+<li><a href="http://octopress.org/">Octopress</a> pour la génération : plus simple et sûrement (je n'ai pas fait de recherche précise) plus utilisé (donc documenté) que d'autres solutions comme <a href="http://jekyllrb.com/">Jekyll</a> ou <a href="http://blog.getpelican.com/">Pelican</a>. En outre, Octopress permettait de manière très simple de générer le site en local pour voir le rendu.</li>
+</ul>
+
+
+<p>Je ne l'avais pas fait à l'époque car je n'avais pas envie de m'embêter avec l'intégration de services pour, au final, avoir des fonctionnalités offertes en natif par Blogger. Cependant, le nombre de blogs migrant et l'adoption de solutions comme Jekyll et Octopress m'ont montré que, au final, c'était simple.</p>
+
+<p>Je ne reviendrai pas sur la façon dont j'ai migré puisque de nombreux blogs en parle et que je n'ai fait que suivre leurs instructions.</p>
+
+<p>Par contre, la partie <em>import</em> ne m'ayant pas convaincue (pages générée crade), j'ai décigé de porter tous mes anciens articles avec Markdown. Il ne s'agit que de copier/coller + ré-application des styles, des liens et des images mais cela m'a demandé un temps considérable&hellip; (je suis sûr que si j'avais été malin, j'aurais faire le gros du boulot avec un bon <code>sed</code>&hellip; mais bon&hellip;). Du coup, j'espère qu'il n'y a pas de pertes&hellip;</p>
+
+<p><del>Pour l'instant, je n'ai pas réussi à importer les commentaires via <a href="http://disqus.com/">Disqus</a> (enfin l'import est fait mais les commentaires ne s'affichent pas&hellip; :&lsquo;( ).</del>
+[<em>ndlr</em> : après un coup de remapping des url des commentaires importés via <strong>Disqus</strong>, les commentaires sont revenus \o/]</p>
+
+<p><del>La partie rss est un peu <em>buggé</em> car mon flux <em>atom</em> généré par Octopress est trop gros pour être utilisé par <a href="http://www.feedburner.com">feedburner</a> (du coup, le flux n'est pas global mais seulement sur la catégorie <code>Java</code>).</del> [<em>ndlr</em> : cf ce <a href="/2014/03/changement-flux-rss.html">post</a> ]</p>
+
+<p>Enfin, il faut encore que je change l'image de bannière ;&ndash;)</p>
+
+<p>Pour info, l'ancien blog est toujours accessible à l'adresse <a href="http://jetoile.blogspot.com">http://jetoile.blogspot.com</a> mais a été retiré de l'indexation google. Je ne porterai pas non plus les nouveaux articles sur ce dernier&hellip;</p>
+
+<p>Voili voilou&hellip; j'espère que cette nouvelle disposition vous plait ;&ndash;)</p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Livereload et Linux ou comment rédiger du html simplement]]></title>
+    <link href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
+    <updated>2014-03-20T11:24:11+01:00</updated>
+    <id>http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
+    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
+
+<p>Cet article n'a rien à voir avec le monde Java.</p>
+
+<p>Il s'agit plus d'un petit tutoriel surtout destiné&hellip; à moi-même&hellip; ;&ndash;)</p>
+
+<p>En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d'avoir une idée de l'aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m'énerver.</p>
+
+<p>Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l'utiliser.</p>
+
+<p>Cependant, j'avoue avoir subi un échec cuisant (je suis sous un environnement linux et je tiens à préciser que je ne suis pas des plus à l'aise avec le monde nodejs ou ruby &ndash; ceci explique aussi cela&hellip; ;&ndash;) ) et cela malgré avoir mes multiples tentatives (à coup de gem install) et recherche sur mon ami Google (enfin, quand on n'est pas doué, on n'est pas doué&hellip; :&lsquo;( )</p>
+
+<p>Du coup, j'ai pris l'option :</p>
+
+<blockquote><p>&ldquo;J'appelle un ami&rdquo;</p></blockquote>
+
+<p>Dans mon cas, je remercie <a href="https://twitter.com/hcapitaine">Harold</a> pour son aide.</p>
+
+<p>Il m'a conseillé de me jeter un oeil sur <a href="http://gruntjs.com/">Grunt</a> qui gérait nativement livereload (bon, pour ma défense, je n'avais pas prévu de partir sur Grunt&hellip; ;&ndash;) ).</p>
+
+<p>Cet article présentera donc comment j'ai réussi à faire fonctionner le bouzin avec, en prime, la possibilité d'utiliser Markdown.</p>
+
+<p>Concernant l'environnement, il s'agit d'Ubuntu 13.10 (sur Mac, je ne doute pas que cela aurait été plus simple mais bon&hellip;)</p>
+
+<p>[NDLR : encore une fois, je précise que je ne suis pas du tout expert dans ce domaine, il est donc inutile de me poser des questions. Par contre, toutes propositions d'amélioration est la bienvenue ;&ndash;)]</p>
+
+<p>A titre informatifs, les fichiers se trouvent sur <a href="https://github.com/jetoile/livereload-grunt">Github</a>.</p>
+
+<!-- more -->
+
+
+<h1>Installation de nodejs, de npm et de grunt</h1>
+
+<p>Dans un premier temps, il convient d'installer tout le strict minimum afin de permettre à Grunt de fonctionner.</p>
+
+<p>Installation de NodeJS :
+<code>bash
+sudo apt-get install nodejs
+</code></p>
+
+<p>Installation de Npm :
+<code>bash
+sudo apt-get install npm
+</code></p>
+
+<p>Installation de Grunt (de manière global au système) :
+<code>bash
+sudo npm install -g grunt-cli
+</code></p>
+
+<p>Installer le <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">plugin</a> livereload sur Chrome ou Firefox.</p>
+
+<p>Dans le cas de Chrome, pensez à modifier sa configuration pour qu'il autorise l'accès aux URLs de fichiers.
+<img src="http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png" alt="medium" /></p>
+
+<h1>Configuration de Grunt</h1>
+
+<p>Par la suite, toutes les opérations seront effectué dans le répertoire <code>$HOME/tmp</code>.</p>
+
+<p>Une fois tous les logiciels installés, il ne reste qu'à créer les fichiers nécessaires au bon fonctionnement de Grunt :</p>
+
+<ul>
+<li><code>package.json</code> qui permet de télécharger les modules et de les installer localement dans répertoire courant (un peu comme la rubrique dependencies de Maven),</li>
+<li><code>gruntfile.js</code> qui permet de configurer les différents modules précédemment installés par la commande npm install (un peu comme la rubrique build/plugins de Maven).</li>
+</ul>
+
+
+<p><code>$HOME/tmp/package.json</code></p>
+
+<p>```javascript
+{
+  &ldquo;name&rdquo;: &ldquo;yo&rdquo;,
+  &ldquo;version&rdquo;: &ldquo;0.0.0&rdquo;,
+  &ldquo;dependencies&rdquo;: {},
+  &ldquo;devDependencies&rdquo;: {</p>
+
+<pre><code>"grunt": "~0.4.1",
+"matchdep": "~0.1.2",
+"grunt-express": "~1.0.0-beta2",
+"grunt-contrib-watch": "~0.5.1",
+"grunt-open": "~0.2.1"
+</code></pre>
+
+<p>  },
+  &ldquo;engines&rdquo;: {</p>
+
+<pre><code>"node": "&gt;=0.8.0"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Il convient maintenant de lancer le téléchargement et l'installation des modules en exécutant la commande suivante :
+<code>bash
+npm install
+</code></p>
+
+<p>Ne reste plus qu'à configurer les modules via le fichier Gruntfile.js.</p>
+
+<p><code>$HOME/tmp/Gruntfile.js</code></p>
+
+<p>```javascript
+module.exports = function(grunt) {</p>
+
+<p>  // Load Grunt tasks declared in the package.json file
+  require(&lsquo;matchdep&rsquo;).filterDev(&lsquo;grunt-*&rsquo;).forEach(grunt.loadNpmTasks);</p>
+
+<p>  grunt.initConfig({</p>
+
+<pre><code>// grunt-express will serve the files from the folders listed in `bases` on specified `port` and `hostname`
+express: {
+  all: {
+    options: {
+      port: 9000,
+      hostname: "0.0.0.0",
+      bases: ['html'], // Replace with the directory you want the files served from
+                          // Make sure you don't use `.` or `..` in the path as Express
+                          // is likely to return 403 Forbidden responses if you do
+                          // http://stackoverflow.com/questions/14594121/express-res-sendfile-throwing-forbidden-error
+      livereload: true
+    }
+  }
+},
+
+// grunt-watch will monitor the projects files
+watch: {
+  all: {
+    files: '*.html',
+    options: {
+      livereload: true
+    }
+  }
+},
+
+// grunt-open will open your browser at the project's URL
+open: {
+  all: {
+    path: 'http://localhost:&lt;%= express.all.options.port%&gt;'
+  }
+}
+</code></pre>
+
+<p>  });</p>
+
+<p>  // Creates the <code>server</code> task
+  grunt.registerTask(&lsquo;default&rsquo;, [</p>
+
+<pre><code>'express',
+'open',
+'watch'
+</code></pre>
+
+<p>  ]);
+```</p>
+
+<p>Cette configuration est fonctionnelle avec l'arborescence suivante :</p>
+
+<p><img src="http://4.bp.blogspot.com/-yzXs78VTiFw/Uxnor5jGo_I/AAAAAAAABQY/01_s7DCQHT4/s1600/arbo01.png" alt="center" /></p>
+
+<p>Dans cette dernière et avec cette configuration, tous les fichiers du répertoire <code>html</code> avec l'extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire <code>html</code> (par exemple html/sample.html) et de lancer la commande :</p>
+
+<p><code>bash
+grunt
+</code>
+Le navigateur par défaut s'ouvrira alors avec l'url : <a href="http://localhost:9000/.">http://localhost:9000/.</a> Il suffit d'y ajouter la page voulu (dans notre exemple <a href="http://localhost:9000/sample.html">http://localhost:9000/sample.html</a>) et d'activer le plugin <code>livereload</code>.</p>
+
+<p><img src="http://1.bp.blogspot.com/-edBGc5pdGLg/UxnpKGFtjsI/AAAAAAAABQw/E6maHZkgGcs/s1600/icon_livereload.png" alt="center" /></p>
+
+<p>Il ne reste plus qu'à modifier le fichier html et lors de sa sauvegarde, la page sera automatiquement mis à jour dans le navigateur!</p>
+
+<p>Si l'erreur suivante apparait :</p>
+
+<p><code>bash
+/usr/bin/env: node: Aucun fichier ou dossier de ce type
+</code></p>
+
+<p>Il faut installer <code>nodejs-legacy</code> (cf. <a href="https://github.com/volojs/volo/issues/154">ici</a>)</p>
+
+<p><code>bash
+sudo apt-get install nodejs-legacy
+</code></p>
+
+<h1>Configuration de Grunt pour l'intégration de Markdown</h1>
+
+<p>L'intégration de Markdown se fait de la même manière que précédemment.</p>
+
+<p>Les fichiers <code>package.json</code> et <code>Gruntfile.js</code> se voient juste ajouter le module <code>grunt-markdown</code>.</p>
+
+<p><code>package.json</code>
+```javascript
+{
+  &ldquo;name&rdquo;: &ldquo;yo&rdquo;,
+  &ldquo;version&rdquo;: &ldquo;0.0.0&rdquo;,
+  &ldquo;dependencies&rdquo;: {},
+  &ldquo;devDependencies&rdquo;: {</p>
+
+<pre><code>"grunt": "~0.4.1",
+"matchdep": "~0.1.2",
+"grunt-express": "~1.0.0-beta2",
+"grunt-contrib-watch": "~0.5.1",
+"grunt-open": "~0.2.1",
+"grunt-markdown": "~0.5.0"
+</code></pre>
+
+<p>  },
+  &ldquo;engines&rdquo;: {</p>
+
+<pre><code>"node": "&gt;=0.8.0"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p><code>Gruntfile.js</code></p>
+
+<p>```javascript
+odule.exports = function(grunt) {
+  require(&lsquo;matchdep&rsquo;).filterDev(&lsquo;grunt-*&rsquo;).forEach(grunt.loadNpmTasks);</p>
+
+<p>  grunt.initConfig({</p>
+
+<pre><code> markdown: {
+  all: {
+    files: [
+      {
+        expand: true,
+        src: '*.md',
+        dest: 'html/',
+        ext: '.html'
+      }
+    ]
+  }
+},
+
+express: {
+  all: {
+    options: {
+      port: 9000,
+      hostname: "0.0.0.0",
+      bases: ['html'], 
+      livereload: true
+    }
+  }
+},
+
+watch: {
+  all: {
+    files: ['*.md','*.html'],
+    tasks : ['markdown'],
+    options: {
+      livereload: true
+    }
+  }
+},
+
+open: {
+  all: {
+    path: 'http://localhost:&lt;%= express.all.options.port%&gt;'
+  }
+}
+</code></pre>
+
+<p>  });</p>
+
+<p>  grunt.registerTask(&lsquo;default&rsquo;, [</p>
+
+<pre><code>'markdown',
+'express',
+'open',
+'watch'
+</code></pre>
+
+<p>  ]);
+};
+```</p>
+
+<p>Suite à la modification de ces fichiers (attention à penser de faire un <code>npm install</code> après modification du fichier <code>package.json</code>), il est alors possible d'écrire son document en Markdown.</p>
+
+<p>L'arborescence à respecter par rapport à la configuration est la suivante :
+<img src="http://2.bp.blogspot.com/-kgC6a8jRwG8/Uxno29Sr9EI/AAAAAAAABQg/lf3W_rnDAvU/s1600/arbo02.png" alt="center" /></p>
+
+<p>Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.</p>
+
+<h1>Conclusion</h1>
+
+<p>Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d'un fichier HTML ou Markdown n'est pas si compliquée une fois que l'on a tous les fichiers et les bons modules configurés.</p>
+
+<p>D'ailleurs, cet article est le premier écrit en Markdown (quand je disais que ce n'était pas ma tasse de thé&hellip;).</p>
+
+<p>En espérant qu'il pourra être utile à d'autres lecteurs et en m'excusant par avance si des informations sont approximatives&hellip;</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li><a href="http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/">http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/</a></li>
+<li><a href="http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/">http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/</a></li>
+<li><a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-</a></li>
+<li><a href="http://blog.roddet.com/2013/12/nantesjs-gruntjs/">http://blog.roddet.com/2013/12/nantesjs-gruntjs/</a></li>
+<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Indépendance, me voici ;-)]]></title>
+    <link href="http://blog.jetoile.fr/2012/11/independance-me-voici.html"/>
+    <updated>2012-11-06T13:13:17+01:00</updated>
+    <id>http://blog.jetoile.fr/2012/11/independance-me-voici</id>
+    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-Hdf2BxkGaxI/UIhxMEkSw-I/AAAAAAAAAtQ/9u2dsAYvbL4/s1600/independance.png" alt="left-small" /></p>
+
+<p>Une fois n'est pas coutume (quoique&hellip;)&hellip; cet article ne sert à rien&hellip; mais a juste pour objectif d'annoncer que je quitte la société de service que j'ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l'indépendance&hellip;</p>
+
+<p>Je quitte donc une société de service où j'ai eu la chance de rencontrer et côtoyer des personnes géniales (aussi bien humainement que professionnellement) et qui m'a donné ma chance pour essayer de suivre et de transmettre mon enthousiasme à mes joyeux camarades ;&ndash;)</p>
+
+<p>Cependant, vu que tout a une fin, j'ai décidé de prendre mon envol afin de me faire un autre point de vue sur notre métier d'informaticien mais également pour pouvoir avoir le choix : le choix de consacrer du temps à des sujets qui m'intéressent, le choix d'écrire un article, le choix de participer à un projet qui me challenge&hellip; bref, le choix quoi! ;&ndash;)</p>
+
+<p>Si j'ai le courage, peut être que je ferai le point dans un an afin de voir si cela valait le coup, si j'ai bien supporté le grand saut mais, également, si j'ai réussi à m'épanouir dans mes nouvelles fonctions de gérant qui ne pourra plus râler sur autrui (sauf si je deviens atteint de schizophrénie aiguë&hellip; ;&ndash;) ).</p>
+
+<p><img src="http://1.bp.blogspot.com/-s-npHEVOrEM/UJP0RQdkd_I/AAAAAAAAAvE/3pF9eLh9bZw/s1600/tumblr_mbxgc1dDYe1rvydco.gif" alt="center" /></p>
+
+<p>A ceux que j'ai pu côtoyer, je leur souhaite donc bonne continuation et à ceux que je (re)croiserai, ben&hellip; à bientôt!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Resign Patterns : les nouveaux patterns]]></title>
+    <link href="http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
+    <updated>2011-12-02T23:04:54+01:00</updated>
+    <id>http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
+    <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-mP_z1e0Qo6M/TtiCRYS_PVI/AAAAAAAAAgQ/Dntolyd6oUg/s1600/Fail.png" title="Crédit photo : http://www.flickr.com/photos/esthervargasc/6010520395/" alt="left-small" /></p>
+
+<p>Cet article est une traduction &ldquo;libre&rdquo; de l'excellent papier de <a href="mitework@yercompany.com">Michael Duell</a> qui se nomme <a href="http://www.lsd.ic.unicamp.br/~oliva/fun/prog/resign-patterns">&ldquo;Resign Patterns&rdquo; Ailments of Unsuitable Project-Disoriented Software</a>.</p>
+
+<p>En fait, <em>Resign Patterns</em> reprend le principe des <em>Design Patterns</em> tels que décrit par <em>the Gang Of Four</em> mais en proposant un tout autres types de <em>Patterns</em>&hellip; Je vous laisse juger de leur véracité&hellip; Je pense qu'ils ont suffisamment fait leurs preuves pour ne pas avoir droit, eux aussi, à leur gloire&hellip; ;&ndash;)</p>
+
+<p>Aussi, au même titre que les patterns du GoF, je vous invite à utiliser les dénominations décrites par les Resign Patterns pour vous faire comprendre de vos collègues quand vous parlez du design d'un programme. Ainsi, vous pourrez briller en société mais surtout vous faire comprendre par vos pairs ;&ndash;)</p>
+
+<!-- more -->
+
+
+<p>Dans le même style, je vous conseille les excellents articles suivants :</p>
+
+<ul>
+<li><a href="http://blog.xebia.fr/2011/11/29/revue-de-presse-xebia-239#Humourdedveloppeur">http://blog.xebia.fr/2011/11/29/revue-de-presse-xebia-239#Humourdedveloppeur</a></li>
+<li><a href="http://www.dodgycoder.net/2011/11/yoda-conditions-pokemon-exception.html">http://www.dodgycoder.net/2011/11/yoda-conditions-pokemon-exception.html</a></li>
+</ul>
+
+
+<h1>Cremational Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 5 :</p>
+
+<h2>Abject Poverty</h2>
+
+<p>Le <strong>Abject Poverty Pattern</strong> est visible dans les logiciels qui sont si difficiles à tester et à maintenir que cela abouti généralement à un dépassement de budget pharaonique.</p>
+
+<h2>Blinder</h2>
+
+<p>Le <strong>Blinder Pattern</strong> est la solution opportune à un problème sans qu'aucune anticipation n'ait été faite sur de futurs modifications dans les exigences. Il est difficile de savoir s'il est nommé de la sorte en raison de la pauvre vision des personnes qui ont faites le design du logiciel pendant la phase de développement, ou du désir de faire souffrir ses yeux pendant la phase de maintenance.</p>
+
+<h2>Fallacy Method</h2>
+
+<p>Le <strong>Fallacy Method Pattern</strong> est visible dans le traitement de cas particuliers. La logique semble correct mais si quiconque tente de tester ces cas aux limites ou s'ils venaient à se produit, alors les erreurs de logiques apparaitraient au grand jour.</p>
+
+<h2>ProtoTry</h2>
+
+<p>Le <strong>ProtoTry Pattern</strong> offre une façon rapide et sale de développer un logiciel. Généralement, l'intention première est de vouloir réécrire le code utilisant le <strong>ProtoTry</strong> mais en l'améliorant en mettant en pratique les leçons apprises pendant la phase de conception. Malheureusement, souvent, un planning inadapté ne le permet pas. Le <strong>ProtoTry</strong> est aussi connu sous le nom de <strong>code Legacy</strong>.</p>
+
+<h2>Simpleton</h2>
+
+<p>Le <strong>Simpleton Pattern</strong> est un pattern extrèmement complexe utilisé pour faire une tache triviale. Le <strong>Simpleton</strong> offre un indicateur fiable sur le niveau de compétence des concepteurs du code.</p>
+
+<h1>Les Destructural Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 7 :</p>
+
+<h2>Adopter</h2>
+
+<p>L'<strong>Adopter Pattern</strong> fournit un foyer à toutes les fonctions orphelines. Il en résulte une large famille de fonctions qui ne se ressemblent pas et qui n'ont de commun que le fait d'avoir été adopté.</p>
+
+<h2>Brig</h2>
+
+<p>Le <strong>Brig Pattern</strong> est un conteneur de classes pour le mauvais logiciel, aussi connu sous le nom de <strong>Module</strong>.</p>
+
+<h2>Compromise</h2>
+
+<p>Le <strong>Compromise Pattern</strong> est utilisé pour trouver un compromis entre la qualité et le planning. Il en résulte généralement un logiciel d'une piètre qualité qui, de plus, est en retard.</p>
+
+<h2>Detonator</h2>
+
+<p>Le <strong>Detonator Pattern</strong> est extrèmement commun mais souvent indétectable. Par exemple, une implémentation fréquente du <strong>Detonator Pattern</strong> est l'utilisation des deux derniers chiffres d'une année lors de la manipulation et le calcul appliqué à des dates. La bombe est présente et n'attend qu'à faire son travail&hellip;</p>
+
+<h2>Fromage</h2>
+
+<p>Le <strong>Fromage Pattern</strong> est souvent remplis de trous. Il consiste en une multitude de petites astuces qui rendent impossible toute portabilité du code. Généralement, plus il est vieux et plus il sent fort!</p>
+
+<h2>Flypaper</h2>
+
+<p>Le <strong>FlyPaper Pattern</strong> est écrit par une personne et maintenu par une autre. Cette dernière se retrouve alors coincé et préfèrerait périr avant de se perdre.</p>
+
+<h2>ePoxy</h2>
+
+<p>L'<strong>ePoxy Pattern</strong> est visible dans les modules logiciels fortement couplés. Lorsque le couplage entre modules augmente, c'est qu'il y a souvent le pattern ePoxy qui lie ces modules.</p>
+
+<h1>Misbehavioral Patterns</h1>
+
+<p>Cette catégorie de Patterns en regroupe 11 :</p>
+
+<h2>Chain of Possibilities</h2>
+
+<p>Le <strong>Chain of Possibilities Pattern</strong> est visible dans les gros modules peu documenté. Personne n'est sûr de l'étendu de ses fonctionnalités, mais ses possibilités semblent infinis. Il est aussi connu sous le nom de <strong>Non-Deterministic Pattern</strong>.</p>
+
+<h2>Commando</h2>
+
+<p>Le <strong>Commando Pattern</strong> est utilisé pour intervenir rapidement et faire que le travail soit fait. Ce pattern est capable de briser toutes les encapsultation afin d'accomplir sa mission. Il ne fait pas de prisonniers.</p>
+
+<h2>Intersperser</h2>
+
+<p>L'<strong>Intersperser Pattern</strong> éparpille ses fonctionnalités dans tout le système, rendant impossible le test, la modification ou même la compréhension d'une fonction.</p>
+
+<h2>Instigator</h2>
+
+<p>L'<strong>Instigator Pattern</strong> semble bénin mais permet de faire des ravages dans d'autres parties du système.</p>
+
+<h2>Momentum</h2>
+
+<p>Le <strong>Momentum Pattern</strong> grossit de manière exponentielle, en taille, en besoin mémoire, en complexité et en temps d'exécution.</p>
+
+<h2>Medicator</h2>
+
+<p>Le <strong>Medicator Pattern</strong> est un tel goulot d'étranglement en terme de performance pour le système que toute autre partie du système semble dopé aux stéroïdes.</p>
+
+<h2>Absolver</h2>
+
+<p>L'<strong>Absolver Pattern</strong> est visible dans des problème résolus par des anciens employés. Tant de problèmes historiques ont été résolus par le logiciel que les personnes présentes peuvent absoudre le logiciel de blâme en déclarant que l'<strong>Absolver</strong> est responsable de tous les problèmes présents. Aussi connu sous le nom de <strong>&ldquo;It&rsquo;s not in my code&rdquo;</strong>.</p>
+
+<h2>Stake</h2>
+
+<p>Le <strong>Stake Pattern</strong> est visible dans les problèmes dirigés par un logiciel écrit par une personne qui a, depuis lors, choisi la voie du management. Ainsi, même si de nombreux problèmes se produisent, l'auteur du pattern <strong>Stake</strong> (qui est donc devenu manageur) empêchera quiconque de réécrire le logiciel sous prétexte qu'il est l'image de la réussite technique du manageur.</p>
+
+<h3>Eulogy</h3>
+
+<p>L'<strong>Eulogy Pattern</strong> est présent dans tous les projets qui emploie les 22 autres Resign Patterns. Il est aussi connu sous le nom de <strong>Post Mortem</strong>.</p>
+
+<h2>Tempest Method</h2>
+
+<p>Le <strong>Tempest Method Pattern</strong> et utilisé dans les derniers jours qui précède la livraison du logiciel. Il est caractérisé par un manque de commentaires tout en introduisant un grand nombre de <strong>Detonator Pattern</strong>.</p>
+
+<h2>Visitor From Hell</h2>
+
+<p>Le <strong>Visitor From Hell Pattern</strong> coïncide avec l'absence de contrôle sur le temps écoulé entre deux vérification d'un tableau. Ainsi, au moins une boucle de contrôle du système aura le pattern <strong>Visitor From Hell</strong> qui surchagera les données critiques.</p>
+]]></content>
+  </entry>
+  
+</feed>

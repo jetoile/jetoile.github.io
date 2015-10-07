@@ -1,0 +1,911 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jetspeed | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/jetspeed/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Retour sur la mise en oeuvre d'un environnement de développement]]></title>
+    <link href="http://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html"/>
+    <updated>2010-01-04T20:17:40+01:00</updated>
+    <id>http://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04</id>
+    <content type="html"><![CDATA[<p><img src="http://maven.apache.org/images/maven-logo-2.gif" alt="left" />
+Cet article présente la mise en œuvre que j'ai appliquée lors de la mise en place d'un environnement de développement devant s'interfacer, dans une démarche pseudo-agile, avec des outils d'intégration continue.</p>
+
+<p>Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j'ai tenté de répondre à ces problématiques que ce soit d'un point de vue méthodologique que d'un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c'est aussi pour cela que j'ai créé ce blog (afin de faire partager mon expérience et d'avoir un retour) ;&ndash;)</p>
+
+<p>Il ne présentera ni l'utilité des outils d'intégration continue ni celle d'une démarche agile (ce projet ne fonctionnait pas en agile mais mettait en œuvre quelques-unes de ses pratiques) qui sont très bien expliqués sur d'autres sites ou blogs. Enfin, il est à noter que ce projet possédait un existant et que mon rôle n'était pas de remettre en cause les solutions retenues.</p>
+
+<!-- more -->
+
+
+<h1>Présentation du contexte et des problématiques</h1>
+
+<h2>Contexte</h2>
+
+<p>Le projet concerné avait pour but, entre autre, de fournir un site web à destination du grand public. Il s'appuyait sur le portail Jetspeed 2 (qui pour rappel est un portail permettant d'héberger des portlets 2 &ndash; JSR 286 à l'image de Liferay ou GateIn) dont les fonctionnalités d'édition avaient été désactivées. Aussi, le portail Jetspeed n'était utilisé que pour ses capacités à &ldquo;modularisé&rdquo; les composants d'affichage à l'aide de portlets qui étaient figés dans les pages. Des services web étaient également utilisés pour permettre de s'interconnecter avec un progiciel utilisé pour implémenter le cœur du métier.</p>
+
+<p>Les outils de build utilisés étaient maven 2 et plus précisément le plugin Jetspeed fournit par ce dernier.</p>
+
+<p>Enfin, le cycle d'itération des développements étaient de 2 semaines&hellip; 2 semaines qui incluaient la définition de ce qu'allait embarquer la livraison (ou si on peut l'appeler comme cela, ce qu'il y aurait dans le sprint), les tests fonctionnels ainsi que la mise en production du livrable&hellip;</p>
+
+<p>L'équipe incluait 12 développeurs et, dans la globalité, un environnement de développement hétérogène (la faute n'incubant pas foncièrement aux développeurs mais plutôt à des délais beaucoup trop serrés ainsi qu'à une très grosse charge de travail).</p>
+
+<h2>Problématiques</h2>
+
+<p>Au vu du contexte, un certain nombre de constatation pouvait être fait rapidement :</p>
+
+<ul>
+<li>des cycles de développement très court,</li>
+<li>un grand nombre de développeurs dont il fallait intégrer le code,</li>
+<li>un environnement très hétérogène (eclipse, netbeans, intelliJ idea pour la partie IDE, des PCs sous Windows, des PCs sous Linux et des Macs pour la partie matérielle),</li>
+<li>une procédure de livraison difficile&hellip;</li>
+</ul>
+
+
+<p>En effet, pour revenir sur ce dernier point, les développeurs utilisaient, pour développer, pluto (le moteur de portlet de référence) en raison de machines pas suffisamment véloces et déployaient en local en utilisant directement le plugin mis à disposition par Jetspeed qui construisait le portail, créait sa base de données dans derby, associait son schéma et la peuplait à l'aide de son mécanisme utilisant Torque. Les fichiers de configurations utilisés par les applications web et contenant des paramètres dépendant de l'environnement où elles étaient déployées étaient embarqués dans les jars qui étaient eux-mêmes embarqués dans les applications web (portlets et services web) (ndlr : pour rappel, Jetspeed ainsi que ses portlets sont packagés sous forme de war).</p>
+
+<p>En outre, afin de permettre une meilleure évolutivité du système, les portlets n'étaient pas déployés via le mécanisme préconisé par Jetspeed (qui est de les déposer dans son répertoire deploy) mais directement déployés comme une application web normale.</p>
+
+<p>En conséquence, la procédure de livraison sur le serveur de production incluait l'utilisation d'une base de données Derby, et une recompilation/redéploiement complet du portail et de ses portlets à l'aide du plugin maven Jetspeed 2 effectués après récupération des sources de notre SCM, modification des fichiers de configuration et lancement du goal install de maven 2 :
+<code>bash
+cd project
+mvn install
+mvn jetspeed:mvn -Pall
+</code></p>
+
+<h1>Méthodologie et objectifs</h1>
+
+<p>Suite à ces constatations, mes objectifs étaient (par ordre de priorité) :</p>
+
+<ul>
+<li>Définir un environnement propre, c'est-à-dire ne faisant plus de choses obscures (comme la modification des web.xml des portlets, le peuplement de la base de données derby ou l'ajout dans notre conteneur de Servlets d'un contexte où était déclarée la ressource jndi pour la base de données derby). Cela était un prérequis à la mise en place d'outils d'intégration continue.</li>
+<li>Externaliser les fichiers de configuration se trouvant dans les jars afin de permettre à notre équipe de production de ne pas avoir à recompiler et redéployer les jars à chaque fois qu'une modification devait être effectuée sur ces derniers.</li>
+<li>Mettre en place un processus pour générer un livrable (par exemple sous forme de zip) à destination de notre équipe de production afin ne pas avoir à recompiler le projet (oui, oui, je sais&hellip; c'est mal mais c'est la vie! ;&ndash;) ) et surtout permettre la reproductivité de l'installation des environnements.</li>
+<li>Fournir, via les outils d'intégration continue, une photo journalière des développements de la veille déployées et opérationnelles (c'est à dire avec une réinitialisation et une injection de données de contenu se trouvant dans une base de données type MySQL).</li>
+</ul>
+
+
+<p>De plus, en parallèle, j'avais pour objectif de fournir aux développeurs un processus de travail plus rigoureux où chaque étape était distincte afin d'avoir une meilleure maitrise des environnements :</p>
+
+<ul>
+<li>installation d'un conteneur de servlet spécifique au projet (c'est-à-dire avec les bon jars dans son classpath et sa configuration prédéfinie)</li>
+<li>création des bases de données, des schémas et injection des données</li>
+<li>déploiement de toutes les applications web de manière automatique</li>
+<li>au besoin, déploiement unitaire d'une application web</li>
+</ul>
+
+
+<h1>Description de l'arborescence Maven</h1>
+
+<p>```bash
+parent
+   |&mdash; portail
+   |&mdash; portlets</p>
+
+<pre><code>      |-- portlet1
+      |-- portlet2 
+</code></pre>
+
+<p>   |&mdash; ws</p>
+
+<pre><code>      |-- ws1
+      |-- ws2
+</code></pre>
+
+<p>   |&mdash; config
+   |&mdash; assembly
+   |&mdash; src</p>
+
+<pre><code>      |-- main
+      |-- resources
+                 |-- sql
+</code></pre>
+
+<p>```</p>
+
+<h1>Mise en oeuvre</h1>
+
+<h2>Un environnement de développement &ldquo;propre&rdquo; avec Maven 2</h2>
+
+<p>Le but de ce point était de proposer une meilleure façon de faire pour générer les wars (ie. modules portail, portlet1, portlet2, ws1 et ws2), à savoir, n'avoir à faire qu'un mvn install pour avoir une application web qu'il était possible de déployer automatiquement dans notre conteneur de Servlet (et non plus un obscur <code>mvn jetspeed:mvn -Pdeploy</code>). En effet, le plugin maven2 de Jetpseed permettait de compiler, générer les wars (le sien et les portlets), et de les déployer dans le conteneur de servlet indiqué. En outre, il permettait également de créer et peupler la base de données utile à son fonctionnement ; la base de données (ie. ses accès et son type) pouvant être indiquée via un fichier de configuration. Pour ce dernier point, le peuplement était fait via la mécanique interne de Jetspeed, à savoir, l'utilisation du framework Torque.</p>
+
+<p>La première tache a été de dumper la base de données afin d'obtenir un fichier sql pouvant être utilisé sur la base de données cible et afin de s'abstraire de Torque.</p>
+
+<p>Une fois la base de données créée et peuplée à l'aide de ce fichier sql, elle nécessitait d'être renseignée dans le contexte de l'application web du portail. Afin d'éviter un couplage fort entre l'application web et son contexte (et ainsi permettre un déploiement à chaud), la datasource a été renseignée directement dans le fichier conf/context.xml du conteneur de servlet tomcat (bon, pour ce coup, on a parlé implémentation parce que je ne sais pas si le fonctionnement est identique pour tous les conteneurs de Servlet&hellip;) partagé par l'ensemble des applications web :
+```xml</p>
+
+<!--?xml version='1.0' encoding='utf-8'?-->
+
+
+<p><Context antiJARLocking="true">
+ <WatchedResource>WEB-INF/web.xml</WatchedResource>
+ <resource name="jdbc/jetspeed" auth="Container" factory="org.apache.commons.dbcp.BasicDataSourceFactory" type="javax.sql.DataSource" username="xxx" password="xxx" driverclassname="xxx" url="jdbc:xxx://xxx:xxx/j2" maxactive="100" maxidle="30" maxwait="10000"></resource>
+</Context>
+<code>``
+Ce fichier a également été mis dans le module config dans le répertoire</code>src/main/resources`.</p>
+
+<p>La seconde tache a été de mettre le plugin Jetspeed dans le cycle de vie maven utilisé par défaut lors de l'exécution du goal maven <code>compile</code> du module portail afin de générer un war qu'il était possible de copier directement dans le répertoire adéquate du conteneur de Servlet afin de permettre son déploiement :
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ <parent>
+  &hellip;
+ </parent></p>
+
+<p> <modelVersion>4.0.0</modelVersion>
+ <prerequisites>
+  <maven>2.0.9</maven>
+ </prerequisites>
+ <groupId>com.xxx</groupId>
+ <artifactId>portail</artifactId>
+ <name>${project.artifactId}</name>
+ <url>${urlRacineSite}/${project.artifactId}</url>
+ <version>0.0.1</version>
+ <packaging>war</packaging></p>
+
+<p> <dependencies>
+  <!-- jetspeed war dependencies -->
+  <dependency>
+   <groupId>org.apache.portals.jetspeed-2</groupId>
+   <artifactId>jetspeed-dependencies</artifactId>
+   <version>${org.apache.portals.jetspeed.version}</version>
+   <type>pom</type>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.portals.jetspeed-2</groupId>
+   <artifactId>jetspeed</artifactId>
+   <version>${org.apache.portals.jetspeed.version}</version>
+   <type>war</type>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.portals.jetspeed-2</groupId>
+   <artifactId>jetspeed-api</artifactId>
+   <version>${org.apache.portals.jetspeed.version}</version>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.portals.pluto</groupId>
+   <artifactId>pluto-container-api</artifactId>
+   <version>${org.apache.pluto.version}</version>
+   <scope>provided</scope>
+  </dependency>
+ </dependencies></p>
+
+<p> <build>
+  <finalName>${project.artifactId}</finalName>
+  <plugins></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+</code></pre>
+
+<p>   </plugin></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.apache.portals.jetspeed-2&lt;/groupId&gt;
+&lt;artifactId&gt;jetspeed-deploy-maven-plugin&lt;/artifactId&gt;
+&lt;version&gt;${org.apache.portals.jetspeed.version}&lt;/version&gt;
+&lt;executions&gt;
+ &lt;execution&gt;
+  &lt;id&gt;deploy-jetspeed-layouts&lt;/id&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;deploy&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;phase&gt;process-resources&lt;/phase&gt;
+  &lt;configuration&gt;
+   &lt;targetBaseDir&gt;
+    ${project.build.directory}/${project.build.finalName}&lt;/targetBaseDir&gt;
+   &lt;destinations&gt;
+    &lt;local&gt;WEB-INF/deploy/local&lt;/local&gt;
+   &lt;/destinations&gt;
+   &lt;deployments&gt;
+    &lt;deployment&gt;
+     &lt;artifact&gt;
+      org.apache.portals.jetspeed-2:jetspeed-layouts:war
+     &lt;/artifact&gt;
+     &lt;destination&gt;local&lt;/destination&gt;
+    &lt;/deployment&gt;
+   &lt;/deployments&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+&lt;/executions&gt;
+&lt;dependencies&gt;
+ &lt;dependency&gt;
+  &lt;groupId&gt;org.apache.portals.jetspeed-2&lt;/groupId&gt;
+  &lt;artifactId&gt;jetspeed-layouts&lt;/artifactId&gt;
+  &lt;version&gt;${org.apache.portals.jetspeed.version}&lt;/version&gt;
+  &lt;type&gt;war&lt;/type&gt;
+ &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+
+<p>   </plugin></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+&lt;configuration&gt;
+ &lt;warName&gt;${pom.artifactId}&lt;/warName&gt;
+ &lt;overlays&gt;
+  &lt;overlay&gt;
+   &lt;id&gt;jetspeed1&lt;/id&gt;
+   &lt;groupId&gt;org.apache.portals.jetspeed-2&lt;/groupId&gt;
+   &lt;artifactId&gt;jetspeed&lt;/artifactId&gt;
+  &lt;/overlay&gt;
+  &lt;overlay&gt;
+   &lt;id&gt;jetspeed2&lt;/id&gt;
+   &lt;groupId&gt;org.apache.portals.jetspeed-2&lt;/groupId&gt;
+   &lt;artifactId&gt;jetspeed&lt;/artifactId&gt;
+  &lt;/overlay&gt;
+ &lt;/overlays&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>   </plugin>
+  </plugins>
+ </build>
+</project>
+```</p>
+
+<p>De la même manière, les portlets (et donc les modules portlet1 et portlet2) devaient pouvoir être générés avec l'exécution du goal maven2 <code>compile</code> (n'oublions pas que les portlets devaient pouvoir être enregistrés dans le portail Jetspeed sans avoir à être déposés dans son répertoire deploy mais juste dans le répertoire de déploiement du conteneur de Servlet). Pour ce faire, le projet maven n'avait qu'à être indiqué comme étant un type war et le web.xml contenu dans le répertoire <code>src/main/webapps/WEB-INF</code> n'avait qu'à être renseigné comme utilisant le Servlet controleur de Jetspeed :</p>
+
+<p>```xml</p>
+
+<!--?xml version="1.0" encoding="UTF-8"?-->
+
+
+<p>&lt;web-app xmlns:xsi=&ldquo;<a href="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</a>&rdquo; xsi:schemalocation=&ldquo;<a href="http://java.sun.com/xml/ns/javaee">http://java.sun.com/xml/ns/javaee</a>
+<a href="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd</a>&rdquo; version=&ldquo;2.5&rdquo; xmlns=&ldquo;<a href="http://java.sun.com/xml/ns/javaee">http://java.sun.com/xml/ns/javaee</a>&rdquo; id=&ldquo;xxx&rdquo;></p>
+
+<p> &lt;filter-mapping>
+  &lt;filter-name>encoding-filter&lt;/filter-name>
+  &lt;url-pattern>/*&lt;/url-pattern>
+ &lt;/filter-mapping></p>
+
+<p> <servlet>
+  <description>
+   MVC Servlet for Jetspeed Portlet Applications
+  </description>
+  &lt;display-name>Jetspeed Container&lt;/display-name>
+  &lt;servlet-name>JetspeedContainer&lt;/servlet-name></p>
+
+<p>  &lt;servlet-class>
+   org.apache.jetspeed.container.JetspeedContainerServlet
+  &lt;/servlet-class></p>
+
+<p>  &lt;init-param>
+   &lt;param-name>contextName&lt;/param-name>&lt;param-value>xxx&lt;/param-value>&lt;/init-param>
+  &lt;load-on-startup>0&lt;/load-on-startup>
+ </servlet></p>
+
+<p> &lt;servlet-mapping>
+  &lt;servlet-name>JetspeedContainer&lt;/servlet-name>
+  &lt;url-pattern>/container/*&lt;/url-pattern>
+ &lt;/servlet-mapping></p>
+
+<p> &lt;jsp-config>
+  <taglib>
+   &lt;taglib-uri><a href="http://java.sun.com/portlet">http://java.sun.com/portlet</a>&lt;/taglib-uri>
+   &lt;taglib-location>/WEB-INF/tld/portlet.tld&lt;/taglib-location>
+  </taglib>
+  <taglib>
+   &lt;taglib-uri><a href="http://java.sun.com/portlet_2_0">http://java.sun.com/portlet_2_0</a>&lt;/taglib-uri>
+   &lt;taglib-location></p>
+
+<pre><code>/WEB-INF/tld/portlet_2_0.tld
+</code></pre>
+
+<p>   &lt;/taglib-location>
+  </taglib>
+ &lt;/jsp-config>
+&lt;/web-app>
+<code>``
+Grâce à ces actions simples, la simple exécution du goal maven</code>compile` était suffisant pour générer les war directement exploitables dans le conteneur de Servlet.</p>
+
+<p>Il est à noter que la base de données originellement peuplée par le portail ne l'est pas ici. Ce point est traité par le paragraphe suivant.</p>
+
+<h2>Une gestion maitrisée des bases de données</h2>
+
+<p>Comme il a été indiqué dans le paragraphe précédent la base de données utilisée par Jetspeed a été dissociée de son processus de génération. Afin de permettre sa création et son peuplement simplement, le plugin maven sql associé à un <em>profile</em> particulié a été utilisé :
+```xml
+<profile>
+ <id>initdb</id>
+ <build>
+  <plugins></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+&lt;artifactId&gt;sql-maven-plugin&lt;/artifactId&gt;
+&lt;dependencies&gt;
+ &lt;!-- specify the dependent jdbc driver here --&gt;
+ &lt;dependency&gt;
+  &lt;groupId&gt;xxx&lt;/groupId&gt;
+  &lt;artifactId&gt;xxx&lt;/artifactId&gt;
+  &lt;version&gt;${xxx.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+&lt;/dependencies&gt;
+&lt;configuration&gt;
+ &lt;driver&gt;xxx.Driver&lt;/driver&gt;
+ &lt;url&gt;jdbc:xxx://xxx:xxxx&lt;/url&gt;
+ &lt;username&gt;xxx&lt;/username&gt;
+ &lt;password&gt;xxx&lt;/password&gt;
+ &lt;settingsKey&gt;sensibleKey&lt;/settingsKey&gt;
+ &lt;!--all executions are ignored if -Dmaven.test.skip=true --&gt;
+ &lt;skip&gt;${maven.test.skip}&lt;/skip&gt;
+&lt;/configuration&gt;
+&lt;executions&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;drop-db-after-test-j2&lt;/id&gt;
+  &lt;phase&gt;test-compile&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;sqlCommand&gt;drop database j2&lt;/sqlCommand&gt;
+   &lt;onError&gt;continue&lt;/onError&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-db-j2&lt;/id&gt;
+  &lt;phase&gt;test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:xxx://xxx:xxxx:j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;sqlCommand&gt;create database j2&lt;/sqlCommand&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-schema-j2&lt;/id&gt;
+  &lt;phase&gt;test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:xxx://xxx:xxxx/j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;srcFiles&gt;
+    &lt;srcFile&gt;src/sql/create-schema.sql&lt;/srcFile&gt;
+   &lt;/srcFiles&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-data-j2&lt;/id&gt;
+  &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:xxx://xxx:xxxx/j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;srcFiles&gt;
+    &lt;srcFile&gt;src/sql/create-data.sql&lt;/srcFile&gt;
+   &lt;/srcFiles&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p>   </plugin></p>
+
+<p>  </plugins>
+ </build>
+</profile>
+```</p>
+
+<p>Ici, les fichiers sql utilisés pour peupler la base de données Jetspeed sont issus du dump de la base alors que les fichiers de création du schéma sont issus des sources de Jetspeed (à noter qu'il aurait également été possible de les dumper) et ont été mis dans le répertoire src/main/sql du module parent.</p>
+
+<p>Il est à noter également que différentes phases du cycle de vie ont été utilisés et qu'elles ne sont pas foncièrement très logique&hellip; (une création d'une base de données sur la phase test n'est pas très adéquate&hellip;). Cependant, cela a été fait en raison d'un bug sur maven qui indique qu'il n'est pas possible de prédire  l'ordonnancement de l'exécution des plugins dans une même phase. Il s'agit donc d'un contournement (certes pas très propre mais qui fonctionne&hellip; ;&ndash;) ).</p>
+
+<h2>Un déploiement automatisé avec Cargo</h2>
+
+<p>Le plugin Jetspeed permettait un déploiement automatique dans le conteneur de Servlet indiqué. Afin de fournir un comportement plus ou moins iso-fonctionnel, j'ai utilisé le plugin maven Cargo pour permettre un déploiement sur le conteneur de Servlet cible (dans notre cas, en local). Pour ce faire, un <em>profile</em> maven a été utilisé :</p>
+
+<p>```xml
+<profiles>
+ <profile>
+  <id>deployer</id>
+  <build>
+   <plugins></p>
+
+<pre><code>&lt;plugin&gt;
+ &lt;groupId&gt;org.codehaus.cargo&lt;/groupId&gt;
+ &lt;artifactId&gt;cargo-maven2-plugin&lt;/artifactId&gt;
+ &lt;version&gt;1.0&lt;/version&gt;
+ &lt;executions&gt;
+  &lt;execution&gt;
+   &lt;id&gt;undeploy&lt;/id&gt;
+   &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+   &lt;goals&gt;
+    &lt;goal&gt;undeploy&lt;/goal&gt;
+   &lt;/goals&gt;
+  &lt;/execution&gt;
+
+  &lt;execution&gt;
+   &lt;id&gt;start&lt;/id&gt;
+   &lt;phase&gt;integration-test&lt;/phase&gt;
+   &lt;goals&gt;
+    &lt;goal&gt;deploy&lt;/goal&gt;
+   &lt;/goals&gt;
+  &lt;/execution&gt;
+
+ &lt;/executions&gt;
+
+ &lt;configuration&gt;
+  &lt;wait&gt;true&lt;/wait&gt;
+  &lt;container&gt;
+   &lt;containerId&gt;xxx&lt;/containerId&gt;
+   &lt;type&gt;remote&lt;/type&gt;
+  &lt;/container&gt;
+  &lt;configuration&gt;
+   &lt;type&gt;runtime&lt;/type&gt;
+   &lt;properties&gt;
+    &lt;cargo.remote.username&gt;xxx&lt;/cargo.remote.username&gt;
+    &lt;cargo.remote.password&gt;xxx&lt;/cargo.remote.password&gt;
+   &lt;/properties&gt;
+  &lt;/configuration&gt;
+
+  &lt;deployer&gt;
+   &lt;type&gt;remote&lt;/type&gt;
+   &lt;deployables&gt;
+    &lt;deployable&gt;
+     &lt;groupId&gt;xxx&lt;/groupId&gt;
+     &lt;artifactId&gt;xxx&lt;/artifactId&gt;
+     &lt;type&gt;war&lt;/type&gt;
+     &lt;properties&gt;
+      &lt;context&gt;xxx&lt;/context&gt;
+     &lt;/properties&gt;
+    &lt;/deployable&gt;
+   &lt;/deployables&gt;
+  &lt;/deployer&gt;
+ &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>   </plugins>
+  </build>
+ </profile>
+</profiles>
+```</p>
+
+<p>Suite à ces actions, le portail, les portlets et les autres applications web étaient déployables via les commandes :
+<code>bash
+mvn install -Pinitdb
+mvn install -Pdeployer
+</code>
+En outre, la commande mvn install permettait également de générer un war directement exploitable par un conteneur de Servlet (et donc directement utilisable dans un livrable à destination de la production).</p>
+
+<h1>Externaliser les fichiers de configuration</h1>
+
+<p>Comme il a été indiqué dans l'introduction, les fonctions métiers (disponible au travers de jars fournis via des modules maven) utilisées par les applications web étaient dépendantes de variables liées à l'environnement, ces variables étant contenues dans un fichier de configuration présent dans le jar. Afin de permettre une meilleure maitrise et une meilleure évolutivité du système, il était indispensable de sortir ces fichiers de configuration des jars et même des applications web.</p>
+
+<p>Pour ce faire, il a été décidé de les mettre dans le classpath serveur. Cependant, Tomcat 6.0 (arf, pour ce coup, je vais devoir parler implémentation&hellip; ;&ndash;) ) semble avoir désactivé par défaut cette fonctionnalité. Aussi, il a été nécessaire d'éditer le fichier catalina.properties se trouvant dans le répertoire conf de notre Tomcat et d'indiquer comme valeur à la clé shared.loader l'emplacement de nos fichiers de configuration (ici, ${catalina.home}/lib/conf).</p>
+
+<p>Ces fichiers ont, bien sûr, été sortis des jars (et mis dans le répertoire src/main/resources du module config) et ont été templatisés pour permettre de modifier facilement leur contenu en fonction de l'environnement d'exécution.</p>
+
+<p>En outre, les fichiers utilisés par l'application et par les tests unitaires mais dont le contenu ne pouvait pas être templatisé simplement (par exemple, la déclaration de la datasource utilisant, lorsque les jars étaient exécutés au sein du conteneur de Servlet, une référence à un annuaire jndi -et donc une ligne de configuration- et, lorsque les jars étaient utilisés unitairement, une référence directe -et donc 4 lignes de configuration-) ont été dupliqués (modulo les modifications adéquates) dans le répertoire src/test/resources du module config. Cela a permis de créer une dépendance de scope test pour les projets qui avait besoin de cette configuration pour exécuter les tests unitaires :</p>
+
+<p><code>xml
+&lt;dependency&gt;
+ &lt;groupId&gt;com.xxx&lt;/groupId&gt;
+ &lt;artifactId&gt;config&lt;/artifactId&gt;
+ &lt;classifier&gt;tests&lt;/classifier&gt;
+ &lt;type&gt;test-jar&lt;/type&gt;
+ &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code>
+Afin de <em>templatiser</em> ces fichiers de configuration, la fonctionnalité de filtrage de maven a été utilisée en complément de l'utilisation de profiles maven :</p>
+
+<p><code>xml
+&lt;build&gt;
+ &lt;resources&gt;
+  &lt;resource&gt;
+   &lt;filtering&gt;true&lt;/filtering&gt;
+   &lt;directory&gt;src/main/resources&lt;/directory&gt;
+  &lt;/resource&gt;
+ &lt;/resources&gt;
+ &lt;filters&gt;
+  &lt;filter&gt;src/main/filters/filter-${environment}.properties&lt;/filter&gt;
+ &lt;/filters&gt;
+ ...
+&lt;/build&gt;
+</code>
+où les profiles étaient :
+```xml
+<profiles>
+ <profile>
+  <id>dev</id>
+  <activation>
+   <activeByDefault>true</activeByDefault>
+  </activation>
+  <properties>
+   <environment>dev</environment>
+  </properties>
+ </profile></p>
+
+<p> <profile>
+  <id>dev-integ</id>
+  <properties>
+   <environment>dev-integ</environment>
+  </properties>
+ </profile>
+</profiles>
+```
+et où les fichiers src/main/filters/filter-${environment}.properties contenaient les association clé/valeur en fonction de l'environnement.</p>
+
+<h2>Mise en place d'un livrable</h2>
+
+<p>Suite au travail décrit dans les paragraphes précédents, cela avait permis de mettre en place un environnement de développement et de build propre. Une réflexion sur la génération d'un livrable à destination de la production était désormais possible.</p>
+
+<p>Pour cela, nous avons décidé d'utiliser le plugin assembly de maven en créant un module supplémentaire (module assembly) et dont le rôle était de générer notre livrable.</p>
+
+<p>Ci-joint notre fichier assembly se trouvant dans le répertoire <code>src/main/assembly</code> du module <code>assembly</code> :
+```xml
+<assembly>
+ <id>1.0</id>
+ <formats>
+  <format>zip</format>
+ </formats>
+ <includeBaseDirectory>false</includeBaseDirectory>
+ <dependencySets></p>
+
+<p>  <dependencySet>
+   <outputDirectory>webapps</outputDirectory>
+   <outputFileNameMapping></p>
+
+<pre><code>${artifact.artifactId}.${artifact.extension}
+</code></pre>
+
+<p>   </outputFileNameMapping>
+   <includes></p>
+
+<pre><code>&lt;include&gt;
+ *:war
+&lt;/include&gt;
+</code></pre>
+
+<p>   </includes>
+  </dependencySet></p>
+
+<p>  <dependencySet>
+   <scope>provided</scope>
+   &lt;!&mdash; notre pom déclarait les jars à mettre dans le classpath serveur avec</p>
+
+<pre><code>un scope provided --&gt;
+</code></pre>
+
+<p>   <useProjectArtifact>false</useProjectArtifact>
+   <useTransitiveDependencies>false</useTransitiveDependencies>
+   <outputDirectory>tomcat_bin/lib</outputDirectory>
+   <includes></p>
+
+<pre><code>&lt;include&gt;
+ *:jar
+&lt;/include&gt;
+</code></pre>
+
+<p>   </includes>
+  </dependencySet>
+ </dependencySets>
+ <fileSets>
+  <fileSet>
+   <directory>../config/target/classes</directory>
+   <outputDirectory>tomcat_parameters/lib/conf</outputDirectory>
+   <includes></p>
+
+<pre><code>&lt;include&gt;
+ **
+&lt;/include&gt;
+</code></pre>
+
+<p>   </includes>
+  </fileSet></p>
+
+<p>  <fileSet>
+   <directory>../src/main/sql/j2</directory>
+   <outputDirectory>portal-sql-db</outputDirectory>
+   <includes></p>
+
+<pre><code>&lt;include&gt;
+ **
+&lt;/include&gt;
+</code></pre>
+
+<p>   </includes>
+  </fileSet>
+ </fileSets>
+</assembly>
+<code>
+et où le `pom.xml` utilisant le plugin était :
+</code>xml
+<build>
+ <plugins>
+  <plugin>
+   <artifactId>maven-assembly-plugin</artifactId>
+   <configuration></p>
+
+<pre><code>&lt;descriptors&gt;
+ &lt;descriptor&gt;src/main/assembly/src.xml&lt;/descriptor&gt;
+&lt;/descriptors&gt;
+</code></pre>
+
+<p>   </configuration>
+   <executions></p>
+
+<pre><code>&lt;execution&gt;
+ &lt;id&gt;make-assembly&lt;/id&gt;
+ &lt;phase&gt;package&lt;/phase&gt;
+ &lt;goals&gt;
+  &lt;goal&gt;single&lt;/goal&gt;
+ &lt;/goals&gt;
+&lt;/execution&gt;
+</code></pre>
+
+<p>   </executions>
+  </plugin>
+ </plugins>
+</build>
+```</p>
+
+<h2>Compilation, génération et déploiement automatisé</h2>
+
+<p>Cette phase faisait suite aux travaux décrits dans les paragraphes précédents et avait pour objectif de fournir une version de la veille de ce qui était présent sur le trunk du SCM, et cela, dans l'idée de permettre aux développeurs de se voir avancer et de tester de manière intégré leur code.</p>
+
+<p>Pour ce faire, le plugin maven cargo a été utilisé conjointement à un profile particulier. En outre, c'est le mode remote qui a été choisi afin de permettre un déploiement des applications web au sein du conteneur de servlet local, ce conteneur de servlet ayant préalablement été modifié afin d'avoir en son sein les variables de configuration dans son classpath ainsi que ses fichiers de configuration modifiés.</p>
+
+<p>```xml
+<profile>
+ <id>dev-integ</id>
+ <build>
+  <plugins>
+   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+&lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+&lt;executions&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;stop-tomcat&lt;/id&gt;
+  &lt;phase&gt;generate-test-sources&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;run&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;tasks&gt;
+    &lt;exec dir="/home/dev/tomcat/bin" executable="sh"&gt;
+     &lt;arg line="shutdown.sh"&gt;
+     &lt;/arg&gt;
+     &lt;sleep seconds="20"&gt;
+     &lt;/sleep&gt;
+    &lt;/exec&gt;
+   &lt;/tasks&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;start-tomcat&lt;/id&gt;
+  &lt;phase&gt;integration-test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;run&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;tasks&gt;
+    &lt;exec dir="/home/dev/tomcat/bin" executable="sh"&gt;
+     &lt;arg line="startup.sh"&gt;
+     &lt;/arg&gt;
+    &lt;/exec&gt;
+   &lt;/tasks&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p>   </plugin></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+&lt;artifactId&gt;sql-maven-plugin&lt;/artifactId&gt;
+&lt;dependencies&gt;
+ &lt;dependency&gt;
+  &lt;groupId&gt;bdd&lt;/groupId&gt;
+  &lt;artifactId&gt;bdd&lt;/artifactId&gt;
+  &lt;version&gt;${bdd.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+&lt;/dependencies&gt;
+
+&lt;configuration&gt;
+ &lt;driver&gt;org.bdd.Driver&lt;/driver&gt;
+ &lt;url&gt;jdbc:xxx://localhost:xxx&lt;/url&gt;
+ &lt;username&gt;xxx&lt;/username&gt;
+ &lt;password&gt;xxx&lt;/password&gt;
+ &lt;settingsKey&gt;sensibleKey&lt;/settingsKey&gt;
+ &lt;skip&gt;${maven.test.skip}&lt;/skip&gt;
+&lt;/configuration&gt;
+
+&lt;executions&gt;
+ &lt;execution&gt;
+  &lt;id&gt;drop-db-after-test-j2&lt;/id&gt;
+  &lt;phase&gt;test-compile&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;sqlCommand&gt;drop database j2&lt;/sqlCommand&gt;
+   &lt;onError&gt;continue&lt;/onError&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-db-j2&lt;/id&gt;
+  &lt;phase&gt;test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:postgresql://localhost:xxx:j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;sqlCommand&gt;create database j2&lt;/sqlCommand&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-schema-j2&lt;/id&gt;
+  &lt;phase&gt;test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:postgresql://localhost:xxx/j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;srcFiles&gt;
+    &lt;srcFile&gt;
+     ${project.basedir}/../src/main/sql/j2/create-schema.sql
+    &lt;/srcFile&gt;
+   &lt;/srcFiles&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;create-data-j2&lt;/id&gt;
+  &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;execute&lt;/goal&gt;
+  &lt;/goals&gt;
+  &lt;configuration&gt;
+   &lt;url&gt;jdbc:postgresql://localhost:5432/j2&lt;/url&gt;
+   &lt;autocommit&gt;true&lt;/autocommit&gt;
+   &lt;srcFiles&gt;
+    &lt;srcFile&gt;
+     ${project.basedir}/../src/main/sql/j2/postgresql-data.sql
+    &lt;/srcFile&gt;
+   &lt;/srcFiles&gt;
+  &lt;/configuration&gt;
+ &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p>   </plugin></p>
+
+<p>   <plugin></p>
+
+<pre><code>&lt;groupId&gt;org.codehaus.cargo&lt;/groupId&gt;
+&lt;artifactId&gt;cargo-maven2-plugin&lt;/artifactId&gt;
+&lt;version&gt;1.0&lt;/version&gt;
+&lt;executions&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;undeploy&lt;/id&gt;
+  &lt;phase&gt;integration-test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;undeploy&lt;/goal&gt;
+  &lt;/goals&gt;
+ &lt;/execution&gt;
+
+ &lt;execution&gt;
+  &lt;id&gt;start&lt;/id&gt;
+  &lt;phase&gt;integration-test&lt;/phase&gt;
+  &lt;goals&gt;
+   &lt;goal&gt;deploy&lt;/goal&gt;
+  &lt;/goals&gt;
+ &lt;/execution&gt;
+&lt;/executions&gt;
+
+&lt;configuration&gt;
+ &lt;wait&gt;true&lt;/wait&gt;
+ &lt;container&gt;
+  &lt;containerId&gt;tomcat6x&lt;/containerId&gt;
+  &lt;type&gt;remote&lt;/type&gt;
+ &lt;/container&gt;
+
+ &lt;configuration&gt;
+  &lt;type&gt;runtime&lt;/type&gt;
+  &lt;properties&gt;
+   &lt;cargo.remote.username&gt;xxx&lt;/cargo.remote.username&gt;
+   &lt;cargo.remote.password&gt;xxx&lt;/cargo.remote.password&gt;
+  &lt;/properties&gt;
+ &lt;/configuration&gt;
+
+ &lt;deployer&gt;
+  &lt;type&gt;remote&lt;/type&gt;
+  &lt;deployables&gt;
+   &lt;deployable&gt;
+    &lt;groupId&gt;xxx&lt;/groupId&gt;
+    &lt;artifactId&gt;portail&lt;/artifactId&gt;
+    &lt;type&gt;war&lt;/type&gt;
+   &lt;/deployable&gt;
+   &lt;deployable&gt;
+    &lt;groupId&gt;xxx&lt;/groupId&gt;
+    &lt;artifactId&gt;portlet1&lt;/artifactId&gt;
+    &lt;type&gt;war&lt;/type&gt;
+   &lt;/deployable&gt;
+   &lt;deployable&gt;
+    &lt;groupId&gt;xxx&lt;/groupId&gt;
+    &lt;artifactId&gt;ws1&lt;/artifactId&gt;
+    &lt;type&gt;war&lt;/type&gt;
+   &lt;/deployable&gt;
+   ...
+  &lt;/deployables&gt;
+ &lt;/deployer&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>   </plugin>
+  </plugins>
+ </build>
+</profile>
+```</p>
+
+<p>Il est à noter qu'ici, les phases utilisés ne sont pas foncièrement cohérente&hellip; en effet, j'ai supprimé quelques petites actions afin de ne pas géner à la visibilité ;&ndash;)</p>
+
+<h1>Conclusion</h1>
+
+<p>Il a été vu dans les paragraphes précédents que maven 2 a servi de point central à la mise en place de l'environnement de développement même s'il est vrai que je n'ai pas utilisé pleinement ses fonctionnalités (les goals <code>deploy</code> ou <code>release</code> par exemple)&hellip;</p>
+
+<p>En outre, je n'ai pas mentionné les outils d'intégration continue qui, bien sûr, exécutait périodiquement certaines de ces phases ainsi qu'une phase transverse où était exécutés des tests d'intégration et d'acceptance sur une instance de type <em>embedded</em> déployée via le plugin cargo.</p>
+
+<p>De même, les outils mis en place de type Sonar n'ont pas été mentionnés ici : cet article n'avait pour but que de présenter une mise en oeuvre d'un environnement de développement (bonne ou mauvaise, je vous laisse en juger&hellip;) qui j'espère donnera quelques idées&hellip;</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li><strong>Apache Maven</strong> de N. De Loof, A. Héritier chez Pearson</li>
+<li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>
+<li>Maven. Definitive Guide : <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">http://www.sonatype.com/products/maven/documentation/book-defguide</a></li>
+<li>Site de maven : <a href="http://maven.apache.org/">http://maven.apache.org/</a></li>
+<li>Site de Cargo : <a href="http://cargo.codehaus.org/Maven2+plugin">http://cargo.codehaus.org/Maven2+plugin</a></li>
+<li>Site du plugin SQL maven : <a href="http://mojo.codehaus.org/sql-maven-plugin/">http://mojo.codehaus.org/sql-maven-plugin/</a></li>
+<li>Site de Tomcat : <a href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></li>
+<li>Site de Jetspeed 2 : <a href="http://portals.apache.org/jetspeed-2/">http://portals.apache.org/jetspeed-2/</a></li>
+<li>Blog de Xebia sur Cargo et Maven : <a href="http://blog.xebia.fr/2008/11/05/lintegration-continue-avec-cargo/">http://blog.xebia.fr/2008/11/05/lintegration-continue-avec-cargo/</a></li>
+<li>Article sur Cargo : <a href="http://www.waltercedric.com/java-j2ee-mainmenu-53/361-maven-build-system/1555-deploy-to-tomcat-6-using-maven.html">http://www.waltercedric.com/java-j2ee-mainmenu-53/361-maven-build-system/1555-deploy-to-tomcat-6-using-maven.html</a></li>
+<li>Présentation de Maven 2 par le BreizhJUG : <a href="http://sites.google.com/a/breizhjug.org/home/2008/Maven">http://sites.google.com/a/breizhjug.org/home/2008/Maven</a></li>
+<li>Présentation de l'intégration continue par le BreizhJUG : <a href="http://sites.google.com/a/breizhjug.org/home/2008/IntegrationContinue">http://sites.google.com/a/breizhjug.org/home/2008/IntegrationContinue</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -35,7 +35,7 @@ A &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.jetoile.fr/index.html">
+  <link rel="canonical" href="http://blog.jetoile.fr/blog/page/11/index.html">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
@@ -196,19 +196,21 @@ A &hellip;">
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow Pour Booster Vos Services REST</a></h2>
+  <h2><a href="/2010/02/utilisation-du-remote-debugger.html">Utilisation Du Remote Debugger</a></h2>
   
   <p>
-    <p><img src="/images/undertow.png" alt="left-small" />
-Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
+    <p><img border="0" src="http://4.bp.blogspot.com/_XLL8sJPQ97g/S3VtYOIAnBI/AAAAAAAAAIg/vs6qhSaG6Gc/s320/blog_fabrice.png" alt="left"/>
+Juste parce que j&#8217;ai la flemme de toujours rechercher le lien et parce que je trouve que cet article explique et résume très bien l&#8217;utilisation du remote debug, je me permets de mettre un lien vers l&#8217;excellent blog de Fabrice Dewasmes :</p>
 
 
 
 
-<p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+<p><a href="http://jtruc.dewasmes.net/?p=162">http://jtruc.dewasmes.net/?p=162</a></p>
 
 
-
+<p><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -Xdebug -Xrunjdwp:transport<span class="o">=</span>dt_socket,address<span class="o">=</span>8000,server<span class="o">=</span>y,suspend<span class="o">=</span>n MonMachin
+</span></code></pre></td></tr></table></div></figure></p>
 
   </p>
   <span class="meta">
@@ -225,112 +227,12 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
 
 
 
-<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time> in 
+<time datetime="2010-02-12T22:59:01+01:00" pubdate data-updated="true">February 12, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/jolokia/'>jolokia</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/metrics/'>metrics</a>, <a class='category' href='/blog/categories/microservice/'>microservice</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2015/06/undertow-pour-booster-vos-services-rest.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/06/breizhcamp-2014-presentation-en-ligne.html">Breizhcamp 2014 - Présentations en Ligne</a></h2>
-  
-  <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breizhcamp.org/">BreizhCamp</a> s&#8217;est déroulé en mai dernier et j&#8217;y avais la chance d&#8217;y présenter un <em>talk</em> sur un retour d&#8217;expérience concernant le passage à l&#8217;échelle d&#8217;un SI afin de lui permettre de supporter 4 millions d&#8217;utilisateurs.</p>
-
-
-
-
-<p>Le synopsis était le suivant :</p>
-
-
-
-
-<blockquote><p><strong>De 20 000 à 4 millions d&#8217;utilisateurs</strong></p>
-
-<p>Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de pouvoir stocker en masse les données des utilisateurs mais également afin d&#8217;être capable de les traiter.</p>
-
-<p>Ce retour d&#8217;expérience montrera comment, avec une approche et des technologies simples, il a été possible de revoir la façon de faire et comment il a été proposé de traiter le sujet.</p>
-
-<p>Il montrera également les pistes qui ont été étudiées et les solutions qui ont été retenues.</p>
-
-<p>Les différents points qui seront abordés seront : Cassandra, REST, Netty, Spring Integration, Jolokia, Metrics saupoudré d&#8217;un peu de &ldquo;Big Data&rdquo;.</p></blockquote>
-
-
-
-
-<p>Encore une fois, je remercie la <em>team</em> pour :</p>
-
-
-
-
-<ul>
-<li>l&#8217;organisation au top,</li>
-<li>pour l&#8217;ambiance qu&#8217;ils ont su apporter à cette conférence,</li>
-<li>mais également pour leur réactivité quant à mettre en ligne les vidéo des différents <em>talk</em> (sur <a href="https://www.youtube.com/playlist?list=PLHWl6dPnEb4l9S-nl4od10OkTOyZEn5Ef">YouTube</a> mais également sur <a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">Parleys</a>)</li>
-</ul>
-
-
-
-
-<p>Du coup, vu que la vidéo de mon <em>talk</em> a été <em>processée</em>, j&#8217;en profite pour mettre le lien (désolé si je n&#8217;arrête pas de danser et désolé pour l&#8217;absence de démo dûe à mon ordinateur capricieux&hellip;) :</p>
-
-
-
-
-<iframe type="text/html" width="420" height="290" mozallowfullscreen="true" webkitallowfullscreen="true" src="http://parleys.com/share.html#play/5391de0ee4b0359b3190f8f4" frameborder="0">&lt;br /&gt;</iframe>
-
-
-
-
-<p>Et je vous invite à aller voir égalemnent les autres talk :
-<a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public</a></p>
-
-
-
-
-<p>A noter également que les conf de Devoxx France ont aussi été publiée depuis un petit moment pour ceux qui seraient à la traine ;&ndash;) :
-<a href="http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public">http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public</a></p>
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-06-12T08:28:38+02:00" pubdate data-updated="true">June 12, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
+    <a class='category' href='/blog/categories/java/'>java</a>
   
 </span>
 
@@ -347,31 +249,48 @@ Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breiz
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/05/breizhcamp-2014.html">Breizhcamp 2014</a></h2>
+  <h2><a href="/2010/01/je-pense-donc-je-code-ou-je-code-donc.html">Je Pense Donc Je Code&#8230; Ou Je Code Donc Je Pense</a></h2>
   
   <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a> qui vient de fêter sa quatrième année.</p>
+    <p><img height="179" src="http://2.bp.blogspot.com/_o_pANlMZn3M/Rbp_szFyo1I/AAAAAAAAAG8/u76G5SqTowY/s400/Get+the+message.jpg" style="float: left; margin-bottom: 10px; margin-right: 10px; margin-top: 10px; max-width: 800px;" width="217" alt="left"/>
+Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c&#8217;est <a href="http://en.wikipedia.org/wiki/Yukihiro_Matsumoto">Yukihiro Matsumoto</a> (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu&hellip;) qui l&#8217;a tenue.</p>
 
 
 
 
-<p>Pour ceux qui ne seraient pas encore au courant de ce qu&#8217;est le breizhCamp, il s&#8217;agit d&#8217;une conférence technique qui se veut être un mix de technologies (même s&#8217;il faut bien reconnaitre que Java y est majoritairement représentée&hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#8217;<a href="http://www.istic.univ-rennes1.fr/">ISTIC</a>.</p>
+<p>Il nous a expliqué ce qui l&#8217;avait amené à créer le langage Ruby : écrire du code dans un langage qui correspond à notre façon de penser; mais il a aussi tenté de nous démontrer pourquoi on devrait utiliser Ruby (chose difficile devant un public de Javaistes&hellip;) : utiliser Ruby fluidifierait notre façon de penser.</p>
 
 
 
 
-<p>Pour cette édition 2014, cela s&#8217;est déroulé sur 2 jours et demi et son <a href="http://www.breizhcamp.org/programme/">programme</a> a été réparti de la manière suivante :</p>
+<p>Pour aller plus loin, il est (presque) de notoriété publique que nos chers voisins allemands raisonnent différemment de nous et qu&#8217;ils sont plus rigoureux et plus carrés. Il est aussi de notoriété publique que la langue allemande est plus rigoureuse que la notre. On peut maintenant s&#8217;interroger : est-ce parce qu&#8217;ils sont plus rigoureux que leur langue est plus rigoureuse ou l&#8217;inverse? Qui influence qui?</p>
 
 
 
 
-<ul>
-<li>Une demi journée de démonstrations (enfin je ne sais comment définir précisément cette demi journée qui était un peu spéciale puisqu&#8217;elle hébergeait le <a href="http://www.labfab.fr/">LabFab</a>, un atelier agile, un hands on NodeJS, une présentation démystifiant les objets connectés, un <em>atelier</em> Devoxx4kids ainsi que diverses démos du NAO ou des <a href="http://optinvent.com/">ORA Smart Glasses</a>)</li>
-<li>2 jours de conférences plus <em>classiques</em> avec des conférences, des <em>hands on</em>, des <em>tools in action</em> ainsi que des <em>quickies</em></li>
-</ul>
+<p>De même, vous avez peut être fait du prolog, du lisp ou même du XSLT. Qu&#8217;est-ce qui a été le plus dur? Apprendre la syntaxe du langage ou devenir le langage (ie. changer votre façon de raisonner)? Pour ma part, l&#8217;apprentissage d&#8217;un nouveau langage s&#8217;est toujours accompagné d&#8217;une période de transition où j&#8217;ai dû comprendre et penser comme le langage. Au final, je finissais par raisonner pareil&hellip; j&#8217;essayais même de faire des backtrack pour résoudre un problème de maths&hellip;</p>
 
 
+
+
+<p>Bien sûr, cela ne touche pas que l&#8217;informatique, et la réflexion est intéressante. On aime un langage parce qu&#8217;on raisonne comme ce dernier ou parce qu&#8217;on raisonne d&#8217;une manière particulière, on aime le langage&hellip; la question est ouverte&hellip;</p>
+
+
+
+
+<p>D&#8217;ailleurs cette question a été déjà traitée dans certains ouvrages comme 1984 de Georges Orwell où, je cite, il est dit [traduction d&#8217;A. Audiberti]:</p>
+
+
+
+
+<blockquote><p>[&hellip;], de moins en moins de mots, et le champ de la conscience de plus en plus restreints.</p>
+
+<p>[&hellip;] Le novlangue est l&#8217;angsoc et l&#8217;angsoc est le novlangue [&hellip;]</p></blockquote>
+
+
+
+
+<p>Sur ce, je clôs ce post!</p>
 
 
   </p>
@@ -389,20 +308,18 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-24T20:00:24+02:00" pubdate data-updated="true">May 24, 2014</time> in 
+<time datetime="2010-01-26T22:53:32+01:00" pubdate data-updated="true">January 26, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
+    <a class='category' href='/blog/categories/divers/'>divers</a>, <a class='category' href='/blog/categories/reflexion/'>reflexion</a>
   
 </span>
 
 
   </span>
 
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/breizhcamp-2014.html">Read on &rarr;</a>
   
 </article>
 
@@ -413,25 +330,11 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/05/rdd-quest-ce-que-cest.html">RDD : Qu&#8217;est Ce Que C&#8217;est</a></h2>
+  <h2><a href="/2010/01/ouvrages-recommandes.html">Ouvrages Recommandés</a></h2>
   
   <p>
-    <p><img src="/images/rdd/spark.png" alt="left-small" /></p>
-
-
-
-
-<p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu&#8217;il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu&#8217;il a rejoint récemment (en juin 2013) montre bien de l&#8217;intérêt qu&#8217;il succite (cela est d&#8217;aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>
-
-
-
-
-<p>Un des points central de Spark est son utilisation des RDDs (<em>Resilient Distributed Datasets</em>).</p>
-
-
-
-
-<p>Cet article tentera d&#8217;expliquer un peu plus précisément ce que sont ces fameux RDDs (enfin, pour être plus précis, il ne s&#8217;agit (comme à mon habitude) que d&#8217;une pseudo-traduction du <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">papier</a> de recherche expliquant ses tenants et aboutissants).</p>
+    <p><img height="149" alt="left" src="http://lh3.ggpht.com/_XLL8sJPQ97g/S1NgYCbzfuI/AAAAAAAAAIc/-SecrXoVIyc/%5BUNSET%5D.jpg?imgmax=800" style="max-width: 800px;" width="200" />
+Ce post présente les ouvrages (techniques) que je recommande vivement&hellip; cependant, certaines références ne sont plus disponibles puisque l&#8217;éditeur O&#8217;Reilly a décidé de fermer sa branche française&hellip; dommage&hellip; mais les éditions anglaises sont toujours là!</p>
 
 
 
@@ -451,12 +354,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-12T09:21:35+02:00" pubdate data-updated="true">May 12, 2014</time> in 
+<time datetime="2010-01-26T22:26:44+01:00" pubdate data-updated="true">January 26, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/big-data/'>big data</a>, <a class='category' href='/blog/categories/rdd/'>rdd</a>, <a class='category' href='/blog/categories/spark/'>spark</a>
+    <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/divers/'>divers</a>
   
 </span>
 
@@ -464,7 +367,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/rdd-quest-ce-que-cest.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/01/ouvrages-recommandes.html">Read on &rarr;</a>
   
 </article>
 
@@ -475,35 +378,21 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Lecture Et Traitement De Fichiers : Comment Faire Simple?</a></h2>
+  <h2><a href="/2010/01/retour-sur-la-mise-en-uvre-d_04.html">Retour Sur La Mise en Oeuvre D&#8217;un Environnement De Développement</a></h2>
   
   <p>
-    <p><img src="/images/batch/logo.png" alt="left-small" /></p>
+    <p><img src="http://maven.apache.org/images/maven-logo-2.gif" alt="left" />
+Cet article présente la mise en œuvre que j&#8217;ai appliquée lors de la mise en place d&#8217;un environnement de développement devant s&#8217;interfacer, dans une démarche pseudo-agile, avec des outils d&#8217;intégration continue.</p>
 
 
 
 
-<p>De nombreuses applications ou systèmes d&#8217;informations nécessitent le chargement de données issues de fichiers.</p>
+<p>Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&#8217;ai tenté de répondre à ces problématiques que ce soit d&#8217;un point de vue méthodologique que d&#8217;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&#8217;est aussi pour cela que j&#8217;ai créé ce blog (afin de faire partager mon expérience et d&#8217;avoir un retour) ;&ndash;)</p>
 
 
 
 
-<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l&#8217;eau.</p>
-
-
-
-
-<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&#8217;il n&#8217;y parait. Si, de plus, on veut ajouter des logs parlant (c&#8217;est à dire avec, au minimum, le temps de traitement d&#8217;un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
-
-
-
-
-<p>Enfin, lors d&#8217;une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d&#8217;information vient à exploser.</p>
-
-
-
-
-<p>Cet article parlera donc de la problématique d&#8217;import de fichiers dans une application en s&#8217;appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d&#8217;ordre sera de le faire le plus simplement possible en s&#8217;appuyant au maximum sur ces framework.</p>
+<p>Il ne présentera ni l&#8217;utilité des outils d&#8217;intégration continue ni celle d&#8217;une démarche agile (ce projet ne fonctionnait pas en agile mais mettait en œuvre quelques-unes de ses pratiques) qui sont très bien expliqués sur d&#8217;autres sites ou blogs. Enfin, il est à noter que ce projet possédait un existant et que mon rôle n&#8217;était pas de remettre en cause les solutions retenues.</p>
 
 
 
@@ -523,12 +412,12 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-04-10T14:15:44+02:00" pubdate data-updated="true">April 10, 2014</time> in 
+<time datetime="2010-01-04T20:17:40+01:00" pubdate data-updated="true">January 4, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/batch/'>batch</a>, <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring-integration/'>spring integration</a>
+    <a class='category' href='/blog/categories/cargo/'>cargo</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jetspeed/'>jetspeed</a>, <a class='category' href='/blog/categories/maven/'>maven</a>
   
 </span>
 
@@ -536,7 +425,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/01/retour-sur-la-mise-en-uvre-d_04.html">Read on &rarr;</a>
   
 </article>
 
@@ -547,26 +436,16 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/04/logstash-petit-tour-dhorizon.html">Logstash : Tour D&#8217;horizon Sur Les Stratégies De Déploiement</a></h2>
+  <h2><a href="/2009/12/eip-quest-ce-que-cest.html">EIP : Qu&#8217;est Ce Que C&#8217;est</a></h2>
   
   <p>
-    <p><img src="/images/logstash/logstash.png" alt="left-small" />
-Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies qui peuvent être utilisées pour <a href="http://logstash.net/">Logstash</a>.</p>
+    <p><img src="http://rcm-images.amazon.com/images/I/51tVn4YqQUL._SL110_.jpg" alt="left" />
+Dans l&#8217;article sur <a href="/2009/12/jbi-une-solution-enterree.html">JBI</a>, j&#8217;ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l&#8217;on doit jongler avec des messages asynchrones.</p>
 
 
 
 
-<p>Pour ce faire, je m&#8217;appuierai sur le très bon <a href="http://www.logstashbook.com/">livre officiel</a> que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.</p>
-
-
-
-
-<p>Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</p>
-
-
-
-
-<p>[<em>ndlr</em> : par contre, je ne ferai, comme à mon habitude, que retranscrire ce qui est présent dans le livre&hellip;]</p>
+<p>En fait, les EIP (<em>Enterprise Integration Patterns</em>) sont issus de l&#8217;excellent livre éponyme de G. Hohpe et B. Woolf chez Addisson Wesley. Ne pouvant que vous recommandez sa lecture si vous trempez dans cette problématique, cet article ne sera qu&#8217;une brève introduction à son contenu (il fait quand même plus de 600 pages, donc je ne vais pas prétendre le résumer&hellip; ;&ndash;)). Cet article se voudra très théorique et d&#8217;autres articles ultérieurs couvriront quelques implémentations d&#8217;EIP comme Apache Camel ou Spring Integration (et peut être, un jour, iBeans). En outre, il suivra le plan du livre dont il est tiré.</p>
 
 
 
@@ -586,12 +465,12 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 
 
-<time datetime="2014-04-07T11:20:26+02:00" pubdate data-updated="true">April 7, 2014</time> in 
+<time datetime="2009-12-13T12:15:29+01:00" pubdate data-updated="true">December 13, 2009</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/logstash/'>logstash</a>, <a class='category' href='/blog/categories/supervision/'>supervision</a>
+    <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/soa/'>soa</a>
   
 </span>
 
@@ -599,7 +478,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/logstash-petit-tour-dhorizon.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2009/12/eip-quest-ce-que-cest.html">Read on &rarr;</a>
   
 </article>
 
@@ -610,38 +489,46 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/03/changement-flux-rss.html">Changement Du Flux RSS</a></h2>
+  <h2><a href="/2009/12/jbi-une-solution-enterree.html">JBI : Qu&#8217;est Ce Que C&#8217;est?</a></h2>
   
   <p>
-    <p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
+    <p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/SyioXBC9u0I/AAAAAAAAAII/DM5NReY1mJ4/s200/jbi.png" alt="left" />
+Voilà mon premier article. Il a pour objectif de présenter JBI (<em>Java Business Service</em>) aussi connue sous le doux nom de JSR 208 (<em>Java Specification Release</em>).</p>
 
 
 
 
-<p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j&#8217;espère qu&#8217;il vous plait.</p>
+<h1>Pourquoi un article sur JBI?</h1>
 
 
 
 
-<p>Normalement, en plus d&#8217;un meilleur confort pour moi lorsque j&#8217;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&#8217;un allègement de ces dernières.</p>
+<p>Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j&#8217;aime bien cette spécification et je trouve qu&#8217;elle a du potentiel et qu&#8217;elle est sous exploitée.</p>
 
 
 
 
-<p>Cependant, en raison d&#8217;une <em>limitation</em> de <a href="http://www.feedburner.com">feedburner</a> sur la taille du fichier <strong>atom.xml</strong>, j&#8217;ai été obligé de ne faire pointer que la catégorie <code>Java</code> (je n&#8217;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&#8217;article ou juste le titre&hellip;).</p>
+<p>Bien sûr, me direz-vous, en tant qu&#8217;utilisateur d&#8217;un PEtALS ou ServiceMix, pourquoi devrais-je comprendre la technologie sous-jacente? Eh bien, c&#8217;est une affaire de goût : si vous préférez utiliser un produit comme une boite noire, passer votre chemin. Par contre, si vous voulez comprendre ce qui se passe à l&#8217;intérieur, j&#8217;espère que cet article pourra répondre à vos attentes.</p>
 
 
 
 
-<p>Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :</p>
+<p>Autre interrogation : pourquoi m&#8217;embêter à comprendre une technologie qui ne décolle pas (du moins de ma fenêtre) et sur laquelle les éditeurs ne communiquent pas énormément (c&#8217;est vrai qu&#8217;ils préfèrent communiquer sur ce qu&#8217;ils offrent et non comment ils le font) ? Là encore, question de goût et puis qui croyait en l&#8217;émergence du téléphone portable ou même de la télé réalité ? (personnellement, je ne croyais ni en l&#8217;un ni en l&#8217;autre&hellip;) cqfd&hellip; ;&ndash;)</p>
 
 
 
 
-<ul>
-<li>soit par celui de <strong>feedburner</strong> mais dans ce cas, il n&#8217;y aura que la catégorie <code>Java</code> : <a href="http://feeds.feedburner.com/jetoile">http://feeds.feedburner.com/jetoile</a> ,</li>
-<li>soit en utilisant celui-ci : <a href="http://blog.jetoile.fr/atom.xml">http://blog.jetoile.fr/atom.xml</a> .</li>
-</ul>
+<p>Ce premier article a donc pour objectif de présenter JBI. Seront abordés ses concepts généraux avec une approche telle que celle décrite dans ses spécifications ainsi qu&#8217;un succinct retour sur ce que je pense de JBI..</p>
+
+
+
+
+<p>Cependant, ne seront pas abordés, ici, les mécanismes utilisés en son sein ainsi que des notions de SOA (de très bon article abordent déjà SOA) même si, qui dit JBI dit SOA (la réciproque n&#8217;est pas foncièrement vrai&hellip;).</p>
+
+
+
+
+<p>Il est à noter que dans cet article j&#8217;utiliserai souvent le terme de composant (peut être à mauvais escient) au lieu du terme service. Il s&#8217;agit d&#8217;un abus de langage lié au fait que j&#8217;ai tenté d&#8217;être le plus clair possible et que en évitant d&#8217;aborder trop de notions afin d&#8217;éviter de vous perdre ;&ndash;).</p>
 
 
 
@@ -661,12 +548,12 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 
 
-<time datetime="2014-03-31T18:54:22+02:00" pubdate data-updated="true">March 31, 2014</time> in 
+<time datetime="2009-12-07T09:58:58+01:00" pubdate data-updated="true">December 7, 2009</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/divers/'>divers</a>, <a class='category' href='/blog/categories/java/'>java</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jbi/'>jbi</a>, <a class='category' href='/blog/categories/soa/'>soa</a>
   
 </span>
 
@@ -674,7 +561,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/03/changement-flux-rss.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2009/12/jbi-une-solution-enterree.html">Read on &rarr;</a>
   
 </article>
 

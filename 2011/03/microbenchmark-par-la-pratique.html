@@ -1,0 +1,1040 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MicroBenchmark : Par La Pratique - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="MicroBenchmark : Par La Pratique March 22, 2011 Cet article fait suite à mon article précédent afin de donner mon rapide retour d&#8217;expérience &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>MicroBenchmark : Par La Pratique</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-03-22T19:17:28+01:00" pubdate data-updated="true">March 22, 2011</time>  
+        </div>
+        <p><img src="https://lh4.googleusercontent.com/-VYpiI5ySjEA/TYKVFQyw27I/AAAAAAAAAU0/XDPtplNTTKQ/s1600/perf03.png" alt="left-small" /></p>
+
+<p>Cet article fait suite à mon article précédent afin de donner mon rapide retour d&#8217;expérience sur quelques écueils qui peuvent être commis lors de l&#8217;écriture d&#8217;un microBenchmark et dans lesquels je suis, bien sûr, tombé :(. Pour remettre dans le contexte, c&#8217;est l&#8217;écriture de ce benchmark qui a entrainé l&#8217;écriture de mon article précédent suite aux résultats que j&#8217;ai pu constater et pour lesquels j&#8217;ai eu l&#8217;aide de mes <a href="/2011/03/microbenchmark-par-la-pratique.html#remerciement">camarades</a>.</p>
+
+<!-- more -->
+
+
+<h1>Contexte</h1>
+
+<p>Un collègue me disait que le foreach était moins performant qu&#8217;une boucle for en raison du fait que l&#8217;invocation d&#8217;une opération supplémentaire (la méthode <code>next()</code>) rendait l&#8217;opération plus lente en raison de la pile de notre cher compteur ordinal (pour ceux qui ne se rappelleraient pas, je vous renvoie sur vos cours d&#8217;assembleur ;&ndash;) ), enfin que, du moins, en .Net ça marchait comme ça. Ma réponse : <em>&ldquo;ben j&#8217;en sais rien&rdquo;</em> puisque je ne savais pas quelles étaient les optimisations faites par le compilateur (ouais, je sais, super les sujets de conversation&hellip;).</p>
+
+<p>Du coup, ni une, ni deux, j&#8217;ai ouvert mon IDE préféré et j&#8217;y ai jeté quelques lignes de code pour avoir ma réponse, et là&hellip; ce fut le drame&hellip; : des résultats bizarres sont apparus&hellip;</p>
+
+<p>Ce petit article a donc pour objectif de vous fournir le résultat de ce qu&#8217;il faut faire et ne pas faire lors de l&#8217;écriture d&#8217;un microBenchmark mais également de fournir la réponse que tout le monde attend, à savoir : <strong>qui est réellement le plus fort entre le for et le foreach</strong> (ça peut éviter d&#8217;avoir à perdre 5 minutes de test&hellip;).</p>
+
+<p>Bien sûr, n&#8217;étant pas expert dans ce domaine, il s&#8217;agit juste d&#8217;un retour d&#8217;expérience dont je vous laisse seul juge de la véracité&hellip; ;&ndash;)</p>
+
+<p><u>Premier disclaimer</u> : contrairement à ce que j&#8217;ai présenté dans mon <a href="/2011/03/microbenchmark-mode-d.html">post précédent</a>, je n&#8217;effectuerai pas, ici, différents tirs sur différentes architectures d&#8217;ordinateurs, VM ou avec différentes options. En effet, ce qui m&#8217;intéresse dans cet article est d&#8217;entrevoir ce qui peut se passer dans la VM et comment cela peut impacter les performances d&#8217;un petit bout de code.</p>
+
+<p><u>Deuxième disclaimer</u> : lors de la procédure d&#8217;élagage, un coefficient de 0,5 sera utilisé afin de lisser au maximum mes résultats et cela, en raison de pics très importants observés (pics liés, comme nous le verrons par la suite soit, au warm-up de la JVM, soit au GC).</p>
+
+<h1>Procédure de test et analyse</h1>
+
+<h2>Première tentative</h2>
+
+<h3>Scénario</h3>
+
+<p>Ma première tentative de benchmark était la suivante :</p>
+
+<ul>
+<li>on instancie une liste d&#8217;un chaîne de caractère,</li>
+<li>on itère dessus sans rien faire,</li>
+<li>on regarde le temps passé.</li>
+</ul>
+
+
+<p>Ce petit test sera exécuté une centaine de fois afin de pouvoir lisser le résultat.</p>
+
+<p>Le code utilisé pour faire ce petit test est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IterableBenchmark0</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_ITEM</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_TEST</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="n">NB_ITEM</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NB_ITEM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Long</span><span class="o">[]</span> <span class="n">res</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">[</span><span class="n">NB_TEST</span><span class="o">];</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NB_TEST</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// for (String value : list) {</span>
+</span><span class='line'>            <span class="c1">// }</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">// int i = 0;</span>
+</span><span class='line'>            <span class="c1">// while (i &lt; list.size()) {</span>
+</span><span class='line'>            <span class="c1">// i++;</span>
+</span><span class='line'>            <span class="c1">// }</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NB_TEST</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">total</span> <span class="o">+=</span> <span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+</span><span class='line'>            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">]);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;sum : &quot;</span> <span class="o">+</span> <span class="n">total</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;moy : &quot;</span> <span class="o">+</span> <span class="n">total</span> <span class="o">/</span> <span class="n">NB_TEST</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’<code>ArrayList</code> utilisé ici sont faites en dehors du test.</p>
+
+<h3>Résultats</h3>
+
+<p>Suite à ce test, les résultats obtenus ont été les suivants :
+<img src="https://lh5.googleusercontent.com/-lI9NU2jROeg/TYfWEzjCs-I/AAAAAAAAAU8/9qW3rgg2xJM/s1600/naif_res01.png" alt="center" /></p>
+
+<p><img src="https://lh3.googleusercontent.com/-BjIbhc2E824/TYfWbycgbTI/AAAAAAAAAVA/xi74Zdu2He0/s1600/naif_res02.png" alt="medium" /></p>
+
+<p>Après élagage des résultats abérants (procédé commun à tous tes des charges), ces résultats peuvent être réduits aux résultats suivants (ici, k = 0,5) :
+<img src="https://lh5.googleusercontent.com/-Ld9lihH08bE/TYfWw4vaxFI/AAAAAAAAAVE/zVJXILl4wtg/s1600/naif_res03.png" alt="medium" /></p>
+
+<h3>Analyse</h3>
+
+<p>Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d&#8217;itérer notre <code>List</code>.</p>
+
+<p>En outre, après élagage, on constate, malgré tout, qu&#8217;une nette différence persiste entre les boucles <code>for</code> et <code>while</code> et notre <code>foreach</code>.</p>
+
+<p>A titre informatif, c&#8217;est à ce moment là que j&#8217;ai dû appeler mes amis (ça ne vous rappelle pas quelque chose&hellip;?)  pour obtenir une analyse plus précise des résultats que je ne comprenais pas&hellip; :(
+Du coup (et là, je ne vais pas me fouler ;&ndash;) ), je vous cite les réponses des différents intéressés (et oui, il est possible d&#8217;avoir plusieurs amis&hellip; (si cela vous amuse, je vous laisse deviner qui a dit quoi) que je remercie encore une fois ;&ndash;) :</p>
+
+<ul>
+<li>première réponse :
+
+<blockquote><p>Ces résultats sont parfaitement logiques.
+Pour for et while, la VM s&#8217;aperçoit au bout de quelques itérations que la boucle est inutile.</p>
+
+<ul>
+<li>on connaît le nombre d&#8217;itérations sans avoir besoin d&#8217;itérer réellement sur la liste (list.size() est fixe) ;</li>
+<li>la boucle n&#8217;a aucun &ldquo;side-effect&rdquo; en-dehors.
+Du coup, la boucle entière est éliminée, d&#8217;où les temps nuls.
+Pour for-each, c&#8217;est plus compliqué :</li>
+<li>La notation syntaxique &ldquo;for-each&rdquo; est compilée sous la forme d&#8217;un parcours d&#8217;itérateur :
+for (Iterator it=list.iterator(); it.hasNext; ) { &hellip; }</li>
+</ul>
+
+
+<p>Du coup, impossible de connaître le nombre d&#8217;itérations à l&#8217;avance : la JVM est obligée de tout parcourir</p>
+
+<ul>
+<li>En plus, pour éviter les modifications concurrentes de la collection (celles qui lancent le fameux  ConcurrentModificationException), la méthode next() effectue des vérifications, qui prennent du temps.</li>
+</ul>
+
+
+<p>Bref, dans ce cas, for-each est moins performant, ou du moins, nettement moins optimisable, que &ldquo;for&rdquo; ou &ldquo;while&rdquo;</p>
+
+<p>Si tu veux un test plus représentatif des performances réelles, moins sujettes à des optimisations agressives, il faut que les boucles aient un &ldquo;side-effect&rdquo; (par exemple, ajouter chaque élément parcouru dans une seconde liste, située en-dehors de la boucle).</p></blockquote></li>
+<li>deuxième réponse :
+
+<blockquote><p>(&hellip;) la Hotspot utilise la zone &ldquo;code cache&rdquo; pour cacher des informations à la volée et compiler du code plus optimisé grâce à JIT en fonction des hotspots détectés. Je viens de retrouver un post sur le blog de Sun qui confirme ce mécanisme. Il montre un exemple sur l&#8217;optimisation d&#8217;une boucle while: <a href="http://blogs.sun.com/ahe/entry/hotspot_and_other_compilers">http://blogs.sun.com/ahe/entry/hotspot_and_other_compilers</a></p></blockquote></li>
+<li>troisième réponse :
+
+<blockquote><p>Alors tout d&#8217;abord, je pense que comparer le for et le foreach n&#8217;a pas de sens en soi&hellip; En effet, il ne faut pas oublier que quand tu écrit ton code Java, celui-ci est compilé en .class (bytecode).</p>
+
+<p>Ces .class sont alors interprétés ou compilés à la volées (par le compilateur Just In Time).</p>
+
+<p>De plus, comme tout micro-benchmark Java, il faut se méfier des résultats.
+Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en fonction des paramètres VM (-server et -client, les cycles d&#8217;optimisation&hellip;)</p>
+
+<p>Ensuite, si ton code est fort utilisé, il sera automatiquement &ldquo;inliné&rdquo; par le JIT&hellip;</p>
+
+<p>Je pense que les conclusions à tirer sont claires&hellip; le code testé est erroné : mon Compilateur Planning m&#8217;a inliné le code à tester et le fait que les deux premières itérations soit si élevées par rapport aux autres résultats est lié au warm-up de ma JVM.</p></blockquote></li>
+</ul>
+
+
+<p>Je pense que les conclusions à tirer sont claires&hellip; le code testé est erroné : mon Compilateur Planning m&#8217;a inliné le code à tester et le fait que les deux premières itérations soit si élevées par rapport aux autres résultats est lié au warm-up de ma JVM.</p>
+
+<h2>Deuxième tentative</h2>
+
+<h3>Scénario</h3>
+
+<p>Du coup, suite à ma première tentative de benchmark infructueuse, deuxième essai en apprenant de mes erreurs&hellip; :</p>
+
+<ul>
+<li>on instancie une liste d&#8217;un chaîne de caractère,</li>
+<li>on itère dessus en ajoutant un effet de bord afin d&#8217;empêcher mon Compilateur Planning de m&#8217;inliner mon code,</li>
+<li>on regarde le temps passé.</li>
+</ul>
+
+
+<p>Comme précédemment, ce petit test sera exécuté une centaine de fois afin de pouvoir lisser le résultat.</p>
+
+<p>Le code utilisé pour faire ce petit test est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IterableBenchmark1</span> <span class="o">{</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_ITEM</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_TEST</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">static</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;(</span><span class="n">NB_ITEM</span><span class="o">);</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">static</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NB_ITEM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">static</span> <span class="n">StringBuilder</span> <span class="n">sideEffect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">Long</span><span class="o">[]</span> <span class="n">res</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Long</span><span class="o">[</span><span class="n">NB_TEST</span><span class="o">];</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NB_TEST</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">            </span><span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+</span><span class='line'><span class="err">            </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">                </span><span class="n">sideEffect</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">            </span><span class="c1">// for (String value : list) {</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// sideEffect.append(value);</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// }</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">            </span><span class="c1">// int i = 0;</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// while (i &lt; list.size()) {</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// sideEffect.append(list.get(i));</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// i++;</span>
+</span><span class='line'><span class="err">            </span><span class="c1">// }</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">            </span><span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">        </span><span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NB_TEST</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">total</span> <span class="o">+=</span> <span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+</span><span class='line'><span class="err">            </span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">res</span><span class="o">[</span><span class="n">j</span><span class="o">]);</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;sum : &quot;</span> <span class="o">+</span> <span class="n">total</span><span class="o">);</span>
+</span><span class='line'><span class="err">        </span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;moy : &quot;</span> <span class="o">+</span> <span class="n">total</span> <span class="o">/</span> <span class="n">NB_TEST</span><span class="o">);</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Résultats</h3>
+
+<p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
+
+<p><img src="https://lh5.googleusercontent.com/--yfx7Mdby8c/TYfXtahEIoI/AAAAAAAAAVI/uscIVmjqEsQ/s1600/sideEffect_res01.png" alt="center" /></p>
+
+<p><img src="https://lh4.googleusercontent.com/-Sze5evxC3P0/TYfX867p4ZI/AAAAAAAAAVM/gZU-aP_AeyY/s1600/sideEffect_res02.png" alt="medium" /></p>
+
+<p>Après élagage des résultats aberrants (procédé commun à tous tests des charges), ces résultats peuvent être réduits aux résultats suivants (ici, k = 0,5) :</p>
+
+<p><img src="https://lh3.googleusercontent.com/-3ekZo0BCGY4/TYfYLLB_TiI/AAAAAAAAAVQ/mz52DXajycg/s1600/sideEffect_res03.png" alt="medium" /></p>
+
+<p>A noter que ce graphique n&#8217;est toujours isssu que d&#8217;un seul tir&hellip;</p>
+
+<h3>Analyse</h3>
+
+<p>Les résultats semblent enfin cohérents! ouf&hellip;!</p>
+
+<p>En effet, on constate que, mis à part les <strong>GC</strong>, et le <strong>warm-up</strong> de ma VM, mon <em>Compilateur Planning</em> n&#8217;a pas réussi à inliner mon code et me fournit, du coup, le résultat attendu.</p>
+
+<p>Après un coup d&#8217;élagage me permettant de me débarrasser de mes pics liés au GC, mes courbes sont lissées et se chevauchent même.</p>
+
+<p>Enfin, j&#8217;ai ma réponse (mais je garde ça pour plus tard même si je suppose que, du coup, vous connaissez le fin mot de l&#8217;histoire!&hellip; mais attendez, ne partez pas&hellip; la suite est intéressante également ;&ndash;))</p>
+
+<h2>Troisième tentative</h2>
+
+<h2>Scénario</h2>
+
+<p>Bon, il est vrai, j&#8217;ai obtenu mon résultat sur ma deuxième tentative.</p>
+
+<p>Cependant, pendant la présentation de Joshua Bloch (cf. <a href="/2011/03/microbenchmark-mode-d.html">post précédent</a>), un point m&#8217;a particulièrement intéressé : le framework <strong>Caliper</strong>.</p>
+
+<p>En effet, ce framework semble être fait pour répondre aux problématiques des microBenchmark.</p>
+
+<p>Du coup, je vais, ici, montrer comment je l&#8217;ai utilisé ainsi que les résultats qu&#8217;il m&#8217;a fourni.</p>
+
+<p>Deux raisons à cela :</p>
+
+<ul>
+<li>valider mes résultats précédents afin de vérifier que je n&#8217;ai rien laissé passer&hellip;</li>
+<li>m&#8217;amuser un peu&hellip; ;&ndash;)</li>
+</ul>
+
+
+<p><u>Disclaimer</u> : cette partie n&#8217;abordera ni comment installer, ni comment utiliser Caliper. Elle est juste fournie à titre indicatif.</p>
+
+<p>Le code utilisé pour faire cette troisième tentative est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IterableBenchmark2</span> <span class="kd">extends</span> <span class="n">SimpleBenchmark</span> <span class="o">{</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_ITEM</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">(</span><span class="n">NB_ITEM</span><span class="o">);</span>
+</span><span class='line'><span class="err">    </span><span class="n">StringBuilder</span> <span class="n">sideEffect</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="nd">@Override</span>
+</span><span class='line'><span class="err">    </span><span class="kd">protected</span> <span class="kt">void</span> <span class="n">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NB_ITEM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="n">sideEffect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="n">StringBuilder</span> <span class="n">timeFor</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">                </span><span class="n">sideEffect</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">j</span><span class="o">));</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="k">return</span> <span class="n">sideEffect</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="n">StringBuilder</span> <span class="n">timeForeach</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">value</span> <span class="o">:</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">                </span><span class="n">sideEffect</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="k">return</span> <span class="n">sideEffect</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="n">StringBuilder</span> <span class="n">timeWhile</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="err">            </span><span class="k">while</span> <span class="o">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'><span class="err">                </span><span class="n">sideEffect</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">j</span><span class="o">));</span>
+</span><span class='line'><span class="err">                </span><span class="n">j</span><span class="o">++;</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="k">return</span> <span class="n">sideEffect</span><span class="o">;</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">Runner</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">IterableBenchmark3</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On remarque ici, que, plutôt que d&#8217;exécuter via un script extérieur mon tir, j&#8217;ai préféré le faire en invoquant directement le <code>main()</code>.</p>
+
+<h3>Résultats</h3>
+
+<p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>0% Scenario{vm=java, trial=0, benchmark=For} 3535251,80 ns; σ=197827,29 ns @ 10 trials
+</span><span class='line'>33% Scenario{vm=java, trial=0, benchmark=Foreach} 3676070,55 ns; σ=190018,30 ns @ 10 trials
+</span><span class='line'>67% Scenario{vm=java, trial=0, benchmark=While} 3508898,75 ns; σ=222565,30 ns @ 10 trials
+</span><span class='line'> 
+</span><span class='line'>benchmark   ms linear runtime
+</span><span class='line'>      For 3,54 ============================
+</span><span class='line'>  Foreach 3,68 ==============================
+</span><span class='line'>    While 3,51 ============================
+</span><span class='line'> 
+</span><span class='line'>vm: java
+</span><span class='line'>trial: 0
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://lh4.googleusercontent.com/-Z8j93HQc0m4/TYfcBM-QiFI/AAAAAAAAAVU/4IS1Gu0Lon4/s1600/caliper01.png" alt="medium" /></p>
+
+<p>Ces résultats sont donnés avec une seul tir.</p>
+
+<p>Pour montrer comme il est aisé d&#8217;effectuer plusieurs tirs avec Caliper (tir qui lance à chaque fois une nouvelle JVM dans un process &ndash; process au sens UNIX du terme &ndash; différent), modifions juste notre méthode <code>main()</code> pour y passer d&#8217;autres options :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">Runner</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">IterableBenchmark3</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="o">{</span> <span class="s">&quot;--trials&quot;</span><span class="o">,</span> <span class="s">&quot;5&quot;</span><span class="o">});</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce qui donne le résultat suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>0% Scenario{vm=java, trial=0, benchmark=For} 3425915,23 ns; σ=207711,73 ns @ 10 trials
+</span><span class='line'> 7% Scenario{vm=java, trial=1, benchmark=For} 3453313,87 ns; σ=193613,25 ns @ 10 trials
+</span><span class='line'>13% Scenario{vm=java, trial=2, benchmark=For} 3807062,28 ns; σ=278917,43 ns @ 10 trials
+</span><span class='line'>20% Scenario{vm=java, trial=3, benchmark=For} 3807244,53 ns; σ=283377,19 ns @ 10 trials
+</span><span class='line'>27% Scenario{vm=java, trial=4, benchmark=For} 3808771,58 ns; σ=270090,07 ns @ 10 trials
+</span><span class='line'>33% Scenario{vm=java, trial=0, benchmark=Foreach} 3504679,81 ns; σ=190093,88 ns @ 10 trials
+</span><span class='line'>40% Scenario{vm=java, trial=1, benchmark=Foreach} 3620052,15 ns; σ=216116,18 ns @ 10 trials
+</span><span class='line'>47% Scenario{vm=java, trial=2, benchmark=Foreach} 3519711,06 ns; σ=173384,58 ns @ 10 trials
+</span><span class='line'>53% Scenario{vm=java, trial=3, benchmark=Foreach} 3527981,05 ns; σ=232274,54 ns @ 10 trials
+</span><span class='line'>60% Scenario{vm=java, trial=4, benchmark=Foreach} 3549837,79 ns; σ=196295,32 ns @ 10 trials
+</span><span class='line'>67% Scenario{vm=java, trial=0, benchmark=While} 3628542,80 ns; σ=223275,59 ns @ 10 trials
+</span><span class='line'>73% Scenario{vm=java, trial=1, benchmark=While} 3569981,43 ns; σ=225773,17 ns @ 10 trials
+</span><span class='line'>80% Scenario{vm=java, trial=2, benchmark=While} 3596601,06 ns; σ=266773,47 ns @ 10 trials
+</span><span class='line'>87% Scenario{vm=java, trial=3, benchmark=While} 3493799,14 ns; σ=220276,60 ns @ 10 trials
+</span><span class='line'>93% Scenario{vm=java, trial=4, benchmark=While} 3642079,85 ns; σ=185312,29 ns @ 10 trials
+</span><span class='line'> 
+</span><span class='line'>benchmark trial   ms linear runtime
+</span><span class='line'>      For     0 3,43 ==========================
+</span><span class='line'>      For     1 3,45 ===========================
+</span><span class='line'>      For     2 3,81 =============================
+</span><span class='line'>      For     3 3,81 =============================
+</span><span class='line'>      For     4 3,81 ==============================
+</span><span class='line'>  Foreach     0 3,50 ===========================
+</span><span class='line'>  Foreach     1 3,62 ============================
+</span><span class='line'>  Foreach     2 3,52 ===========================
+</span><span class='line'>  Foreach     3 3,53 ===========================
+</span><span class='line'>  Foreach     4 3,55 ===========================
+</span><span class='line'>    While     0 3,63 ============================
+</span><span class='line'>    While     1 3,57 ============================
+</span><span class='line'>    While     2 3,60 ============================
+</span><span class='line'>    While     3 3,49 ===========================
+</span><span class='line'>    While     4 3,64 ============================
+</span><span class='line'> 
+</span><span class='line'>vm: java
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://lh6.googleusercontent.com/-0jMElON2GG0/TYfeIplU2lI/AAAAAAAAAVY/8Ws8IPu8_l8/s1600/caliper02.png" alt="medium" /></p>
+
+<p><img src="https://lh3.googleusercontent.com/-Lm7FexMT_jg/TYffb2Hsi3I/AAAAAAAAAVc/xspieQ1S0pc/s1600/caliper021.png" alt="medium" /></p>
+
+<h3>Analyse</h3>
+
+<p>On constate ici que les résultats obtenus avec Caliper sont cohérents avec ceux obtenus précédemment (ie. les résultats sont similaires quelque soit la méthode d&#8217;itération), même si on remarque une légère différence due au bruit ajouté par l&#8217;utilisation du framework, bruit qui ne doit pas être pris en compte puisque si un tel framework venait à être utilisé, tous les résultats analysés seraient, évidemment, issus de l&#8217;utilisation de Caliper. En outre, n&#8217;oublions pas qu&#8217;il faut raisonner en terme de statistique et non en terme de chiffre pur&hellip;</p>
+
+<h2>Quatrième tentative&hellip; juste pour le fun</h2>
+
+<h3>Scénario</h3>
+
+<p>Cette avant dernière tentative est juste faite pour le fun pour montrer le comportement de Caliper avec un microBenchmark douteux&hellip; ie. notre premier test ;&ndash;).</p>
+
+<p>Aussi, reprenons notre troisième tentative et supprimons les effets de bord :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IterableBenchmark3</span> <span class="kd">extends</span> <span class="n">SimpleBenchmark</span> <span class="o">{</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NB_ITEM</span> <span class="o">=</span> <span class="mi">100000</span><span class="o">;</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">(</span><span class="n">NB_ITEM</span><span class="o">);</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="nd">@Override</span>
+</span><span class='line'><span class="err">    </span><span class="kd">protected</span> <span class="kt">void</span> <span class="n">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NB_ITEM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">void</span> <span class="n">timeFor</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">void</span> <span class="n">timeForeach</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">value</span> <span class="o">:</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kt">void</span> <span class="n">timeWhile</span><span class="o">(</span><span class="kt">int</span> <span class="n">reps</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reps</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'><span class="err">            </span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'><span class="err">            </span><span class="k">while</span> <span class="o">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'><span class="err">                </span><span class="n">j</span><span class="o">++;</span>
+</span><span class='line'><span class="err">            </span><span class="o">}</span>
+</span><span class='line'><span class="err">        </span><span class="o">}</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="err"> </span>
+</span><span class='line'><span class="err">    </span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'><span class="err">        </span><span class="n">Runner</span><span class="o">.</span><span class="na">main</span><span class="o">(</span><span class="n">IterableBenchmark3</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span><span class='line'><span class="err">    </span><span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Résultats</h3>
+
+<p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>0% Scenario{vm=java, trial=0, benchmark=For}  Failed to execute java -cp /home/khanh/eclipse-workspace/benchmark/target/classes:/home/khanh/eclipse-workspace/caliper-read-only/caliper/target/classes:/home/khanh/.m2/repository/com/google/code/gson/gson/1.7-SNAPSHOT/gson-1.7-SNAPSHOT.jar:/home/khanh/.m2/repository/com/google/guava/guava/r07/guava-r07.jar:/home/khanh/.m2/repository/com/google/code/java-allocation-instrumenter/java-allocation-instrumenter/2.0/java-allocation-instrumenter-2.0.jar com.google.caliper.InProcessRunner --warmupMillis 3000 --runMillis 1000 --measurementType TIME --marker //ZxJ/ -Dbenchmark=For fr.soat.blog.benchmark.IterableBenchmark3
+</span><span class='line'>starting Scenario{vm=java, trial=0, benchmark=For}
+</span><span class='line'>[caliper] [starting warmup]
+</span><span class='line'>[caliper] [starting measured section]
+</span><span class='line'>Error: Doing 2x as much work didn&#39;t take 2x as much time! Is the JIT optimizing away the body of your benchmark?
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Analyse</h3>
+
+<p>La bonne surprise est que Caliper nous indique clairement que JIT a optimisé notre code et que, donc, notre microBenchmark est erroné!</p>
+
+<p>A voir s&#8217;il se comporte ainsi avec tous les microBenchmark erronés&hellip;</p>
+
+<h2>Cinquième tentative&hellip; allez, une dernière pour la route</h2>
+
+<h3>Scénario</h3>
+
+<p>Cette dernière tentative permet de voir ce qui se passerait si on désactivait JIT via l&#8217;option <code>-Xint</code>.
+Pour rappel, l&#8217;option Xint permet de :</p>
+
+<blockquote><p>Operate in interpreted-only mode. Compilation to native code is disabled, and all bytecodes are executed by the interpreter. The performance benefits offered by the Java HotSpot Client VM&rsquo;s adaptive compiler will not be present in this mode.</p></blockquote>
+
+<p>Le code utilisé est celui de notre première tentative.</p>
+
+<h3>Résultats</h3>
+
+<p>Suite à ce test, les résultats obtenus ont été les suivants :
+<img src="https://lh5.googleusercontent.com/-ADT5BxKL07Y/TYfgAZ0s5aI/AAAAAAAAAVk/8pgxSKpcnL0/s1600/xint_res01.png" alt="center" /></p>
+
+<p><img src="https://lh4.googleusercontent.com/-amtITqXqdR4/TYfgjLGINcI/AAAAAAAAAVo/3R_TdGss_N4/s1600/xint_res02.png" alt="medium" /></p>
+
+<p>Après élagage des résultats aberrants (procédé commun à tous tes des charges), ces résultats peuvent être réduits aux résultats suivants (k = 1) :</p>
+
+<p><img src="https://lh4.googleusercontent.com/-JZbaG93Z9UE/TYfgohOePMI/AAAAAAAAAVs/jgcwFKpjXl8/s1600/xint_res03.png" alt="medium" /></p>
+
+<p>A noter que ce graphique n&#8217;est toujours issu que d&#8217;un seul tir&hellip;</p>
+
+<h3>Analyse</h3>
+
+<p>Bien sûr, ces résultats ne sont pas du tout représentatifs puisque le byte code est seulement interprété par la JVM et que cela ne représente pas la réalité. Cette dernière tentative n&#8217;est présentée qu&#8217;à titre indicatif afin de constater les différences qu&#8217;il peut y avoir entre le code que l&#8217;on écrit (ou compilé) et le code qui est réellement exécuté.</p>
+
+<h1>Conclusion</h1>
+
+<p>Voilà, j&#8217;arrive à la fin de mes conclusions que je vous cite en vrac ;&ndash;) :</p>
+
+<ul>
+<li>faire un microBenchmark est difficile et cet article ne montre qu&#8217;une ébauche des difficultés que cela peut poser,</li>
+<li>il est plus simple d&#8217;utiliser un outil qui sait bien faire son travail,</li>
+<li>il ne faut pas toujours se fier à ce que l&#8217;on peut constater : le risque que le cas observé ne soit pas représentatif de la réalité est élevé,
+d* e manière générale, on peut dire qu&#8217;il y a match nul entre le for et le foreach (en tout cas, dans notre cas de figure!).</li>
+</ul>
+
+
+<p>Bon, un dernier mot : cet article n&#8217;apportera rien aux personnes déjà sensibilisées à ce type de problématiques et ce qu&#8217;on peut retenir est qu&#8217;il ne faut pas tenter d&#8217;optimiser inutilement son code (cf. <a href="/2011/03/microbenchmark-mode-d.html">article précédent</a>). Je trouvais juste les résultats intéressants à montrer ;&ndash;)</p>
+
+<p>Ah oui, encore une chose, pour information, mon ordinateur possède les caractéristiques suivantes :</p>
+
+<p><img src="https://lh5.googleusercontent.com/-yR2nGEaMbxE/TYh5vTtnKdI/AAAAAAAAAWA/J4KlOIGwCWc/s1600/ordi01.PNG" alt="medium" /></p>
+
+<h1>Remerciements</h1>
+
+<p>Par ordre alphabétique :
+* Zouheir Cadi (@ZouheirCadi),
+* <a href="http://thecodersbreakfast.net/">Olivier Croisier</a> (@OlivierCroisier),
+* <a href="http://www.opensides.fr/">Arnault Jeanson</a> (@ArnaultJeanson),
+* Séven Lemesle (@slemesle)
+* et <a href="http://blog.ostyn.fr/">François Ostyn</a> (@ostynf)</p>
+
+<h1>Pour aller plus loin&hellip;</h1>
+
+<ul>
+<li>Présentation de Joshua Blosh sur Parleys : <a href="http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103">http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103</a></li>
+<li>Site du framework Caliper : <a href="http://code.google.com/p/caliper/">http://code.google.com/p/caliper/</a></li>
+<li>Présentation de Cliff Click : <a href="http://www.azulsystems.com/events/javaone_2009/session/2009_J1_Benchmark.pdf">http://www.azulsystems.com/events/javaone_2009/session/2009_J1_Benchmark.pdf</a></li>
+<li>Page Wiki de Sun sur le microBenchmark : <a href="http://wikis.sun.com/display/HotSpotInternals/MicroBenchmarks">http://wikis.sun.com/display/HotSpotInternals/MicroBenchmarks</a></li>
+<li>Page de google Android sur la gestion des perfomances  d’Android : <a href="http://developer.android.com/guide/practices/design/performance.html">http://developer.android.com/guide/practices/design/performance.html</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2011-03-22T19:17:28+01:00" pubdate data-updated="true">March 22, 2011</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/performance/'>performance</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html';
+        var disqus_url = 'http://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2011/03/microbenchmark-mode-d.html" title="Previous Post: MicroBenchmark : mode d'emploi">&laquo; Previous: MicroBenchmark : mode d'emploi</a>
+        
+
+        
+          <a class="pull-right" href="/2011/05/les-repositories-manager-pour-les-nuls.html" title="Next Post: Les repositories Manager pour les nuls... focus sur Nexus">Next: Les repositories Manager pour les nuls... focus sur Nexus &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

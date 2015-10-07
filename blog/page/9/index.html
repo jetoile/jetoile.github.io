@@ -35,7 +35,7 @@ A &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.jetoile.fr/index.html">
+  <link rel="canonical" href="http://blog.jetoile.fr/blog/page/9/index.html">
   <link href="/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
@@ -196,16 +196,11 @@ A &hellip;">
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow Pour Booster Vos Services REST</a></h2>
+  <h2><a href="/2010/10/jmx-pour-les-nuls-introduction.html">JMX Pour Les Nuls&#8230; - Introduction</a></h2>
   
   <p>
-    <p><img src="/images/undertow.png" alt="left-small" />
-Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
-
-
-
-
-<p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png" alt="left-small" />
+Certains l&#8217;auront peut être remarqué mais cela fait un moment que je n&#8217;ai rien posté sur mon blog. En fait, j&#8217;ai été un peu occupé à faire quelque chose qui me tenait à coeur depuis un moment&hellip; : la lecture complète des spécifications JMX (ouais, ça va, on s&#8217;amuse comme on veut/peut&hellip; ;&ndash;) ). Du coup, je me suis dit que cela pouvait également intéresser d&#8217;autres personnes qui aurait pu être découragées par la <a href="http://download.oracle.com/javase/6/docs/technotes/guides/jmx/JMX_1_4_specification.pdf">version agrégée</a> de la spécification (ie. contenant la <a href="http://www.jcp.org/en/jsr/detail?id=3">JSR 3</a> &ndash; <strong>Java Management Extensions (JMX) Specification</strong> &ndash; en version 1.4 et la <a href="http://jcp.org/en/jsr/detail?id=160">JSR 160</a> &ndash; <strong>Java Management Extensions (JMX) Remote API</strong> &ndash; en version 1.0) qui fait très exactement 290 pages et qui se veut être, à ce jour, la dernière en date.</p>
 
 
 
@@ -225,12 +220,12 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
 
 
 
-<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time> in 
+<time datetime="2010-10-26T12:52:53+02:00" pubdate data-updated="true">October 26, 2010</time> in 
     
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/jolokia/'>jolokia</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/metrics/'>metrics</a>, <a class='category' href='/blog/categories/microservice/'>microservice</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
   
 </span>
 
@@ -238,7 +233,7 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2015/06/undertow-pour-booster-vos-services-rest.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/10/jmx-pour-les-nuls-introduction.html">Read on &rarr;</a>
   
 </article>
 
@@ -249,127 +244,12 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
           <div class="row">
             <div class="col-md-offset-3 col-md-6">
               <article>
-  <h2><a href="/2014/06/breizhcamp-2014-presentation-en-ligne.html">Breizhcamp 2014 - Présentations en Ligne</a></h2>
+  <h2><a href="/2010/09/nosql-au-paris-jug.html">NoSQL Au Paris JUG</a></h2>
   
   <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breizhcamp.org/">BreizhCamp</a> s&#8217;est déroulé en mai dernier et j&#8217;y avais la chance d&#8217;y présenter un <em>talk</em> sur un retour d&#8217;expérience concernant le passage à l&#8217;échelle d&#8217;un SI afin de lui permettre de supporter 4 millions d&#8217;utilisateurs.</p>
-
-
-
-
-<p>Le synopsis était le suivant :</p>
-
-
-
-
-<blockquote><p><strong>De 20 000 à 4 millions d&#8217;utilisateurs</strong></p>
-
-<p>Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de pouvoir stocker en masse les données des utilisateurs mais également afin d&#8217;être capable de les traiter.</p>
-
-<p>Ce retour d&#8217;expérience montrera comment, avec une approche et des technologies simples, il a été possible de revoir la façon de faire et comment il a été proposé de traiter le sujet.</p>
-
-<p>Il montrera également les pistes qui ont été étudiées et les solutions qui ont été retenues.</p>
-
-<p>Les différents points qui seront abordés seront : Cassandra, REST, Netty, Spring Integration, Jolokia, Metrics saupoudré d&#8217;un peu de &ldquo;Big Data&rdquo;.</p></blockquote>
-
-
-
-
-<p>Encore une fois, je remercie la <em>team</em> pour :</p>
-
-
-
-
-<ul>
-<li>l&#8217;organisation au top,</li>
-<li>pour l&#8217;ambiance qu&#8217;ils ont su apporter à cette conférence,</li>
-<li>mais également pour leur réactivité quant à mettre en ligne les vidéo des différents <em>talk</em> (sur <a href="https://www.youtube.com/playlist?list=PLHWl6dPnEb4l9S-nl4od10OkTOyZEn5Ef">YouTube</a> mais également sur <a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">Parleys</a>)</li>
-</ul>
-
-
-
-
-<p>Du coup, vu que la vidéo de mon <em>talk</em> a été <em>processée</em>, j&#8217;en profite pour mettre le lien (désolé si je n&#8217;arrête pas de danser et désolé pour l&#8217;absence de démo dûe à mon ordinateur capricieux&hellip;) :</p>
-
-
-
-
-<iframe type="text/html" width="420" height="290" mozallowfullscreen="true" webkitallowfullscreen="true" src="http://parleys.com/share.html#play/5391de0ee4b0359b3190f8f4" frameborder="0">&lt;br /&gt;</iframe>
-
-
-
-
-<p>Et je vous invite à aller voir égalemnent les autres talk :
-<a href="http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public">http://parleys.com/channel/5148921d0364bc17fc56adbe/presentations?sort=date&amp;state=public</a></p>
-
-
-
-
-<p>A noter également que les conf de Devoxx France ont aussi été publiée depuis un petit moment pour ceux qui seraient à la traine ;&ndash;) :
-<a href="http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public">http://parleys.com/channel/5355419ce4b0524a2f28bca0/presentations?sort=date&amp;state=public</a></p>
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-06-12T08:28:38+02:00" pubdate data-updated="true">June 12, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
-  
-</span>
-
-
-  </span>
-
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/05/breizhcamp-2014.html">Breizhcamp 2014</a></h2>
-  
-  <p>
-    <p><img src="/images/bzhcmp/Logo.png" alt="left-small" />
-Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a> qui vient de fêter sa quatrième année.</p>
-
-
-
-
-<p>Pour ceux qui ne seraient pas encore au courant de ce qu&#8217;est le breizhCamp, il s&#8217;agit d&#8217;une conférence technique qui se veut être un mix de technologies (même s&#8217;il faut bien reconnaitre que Java y est majoritairement représentée&hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#8217;<a href="http://www.istic.univ-rennes1.fr/">ISTIC</a>.</p>
-
-
-
-
-<p>Pour cette édition 2014, cela s&#8217;est déroulé sur 2 jours et demi et son <a href="http://www.breizhcamp.org/programme/">programme</a> a été réparti de la manière suivante :</p>
-
-
-
-
-<ul>
-<li>Une demi journée de démonstrations (enfin je ne sais comment définir précisément cette demi journée qui était un peu spéciale puisqu&#8217;elle hébergeait le <a href="http://www.labfab.fr/">LabFab</a>, un atelier agile, un hands on NodeJS, une présentation démystifiant les objets connectés, un <em>atelier</em> Devoxx4kids ainsi que diverses démos du NAO ou des <a href="http://optinvent.com/">ORA Smart Glasses</a>)</li>
-<li>2 jours de conférences plus <em>classiques</em> avec des conférences, des <em>hands on</em>, des <em>tools in action</em> ainsi que des <em>quickies</em></li>
-</ul>
+    <p><img src="http://www.parisjug.org/xwiki/bin/download/Main/WebHome/logoparisjugnvlleversion.jpg" alt="center" />
+<img src="http://sites.google.com/a/breizhjug.org/home/_/rsrc/1214896583171/config/app/images/customLogo/customLogo.gif?revision=4" alt="center" />
+Voilà! C&#8217;est la rentrée!&hellip; et c&#8217;est aussi la rentrée de tous les User Group : cela annonce une année bien chargée en conférences (et donc en émotion ;&ndash;) ) et il est probable qu&#8217;il y en ait pour tous les goûts! Donc plus aucune excuse pour ne pas trouver chaussure à son pied!</p>
 
 
 
@@ -389,279 +269,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 
 
-<time datetime="2014-05-24T20:00:24+02:00" pubdate data-updated="true">May 24, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/breizhcamp/'>breizhcamp</a>, <a class='category' href='/blog/categories/presentation/'>présentation</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/breizhcamp-2014.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/05/rdd-quest-ce-que-cest.html">RDD : Qu&#8217;est Ce Que C&#8217;est</a></h2>
-  
-  <p>
-    <p><img src="/images/rdd/spark.png" alt="left-small" /></p>
-
-
-
-
-<p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu&#8217;il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu&#8217;il a rejoint récemment (en juin 2013) montre bien de l&#8217;intérêt qu&#8217;il succite (cela est d&#8217;aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>
-
-
-
-
-<p>Un des points central de Spark est son utilisation des RDDs (<em>Resilient Distributed Datasets</em>).</p>
-
-
-
-
-<p>Cet article tentera d&#8217;expliquer un peu plus précisément ce que sont ces fameux RDDs (enfin, pour être plus précis, il ne s&#8217;agit (comme à mon habitude) que d&#8217;une pseudo-traduction du <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">papier</a> de recherche expliquant ses tenants et aboutissants).</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-05-12T09:21:35+02:00" pubdate data-updated="true">May 12, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/big-data/'>big data</a>, <a class='category' href='/blog/categories/rdd/'>rdd</a>, <a class='category' href='/blog/categories/spark/'>spark</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/05/rdd-quest-ce-que-cest.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Lecture Et Traitement De Fichiers : Comment Faire Simple?</a></h2>
-  
-  <p>
-    <p><img src="/images/batch/logo.png" alt="left-small" /></p>
-
-
-
-
-<p>De nombreuses applications ou systèmes d&#8217;informations nécessitent le chargement de données issues de fichiers.</p>
-
-
-
-
-<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l&#8217;eau.</p>
-
-
-
-
-<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&#8217;il n&#8217;y parait. Si, de plus, on veut ajouter des logs parlant (c&#8217;est à dire avec, au minimum, le temps de traitement d&#8217;un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
-
-
-
-
-<p>Enfin, lors d&#8217;une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d&#8217;information vient à exploser.</p>
-
-
-
-
-<p>Cet article parlera donc de la problématique d&#8217;import de fichiers dans une application en s&#8217;appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d&#8217;ordre sera de le faire le plus simplement possible en s&#8217;appuyant au maximum sur ces framework.</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-04-10T14:15:44+02:00" pubdate data-updated="true">April 10, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/avis/'>avis</a>, <a class='category' href='/blog/categories/batch/'>batch</a>, <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring-integration/'>spring integration</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/04/logstash-petit-tour-dhorizon.html">Logstash : Tour D&#8217;horizon Sur Les Stratégies De Déploiement</a></h2>
-  
-  <p>
-    <p><img src="/images/logstash/logstash.png" alt="left-small" />
-Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies qui peuvent être utilisées pour <a href="http://logstash.net/">Logstash</a>.</p>
-
-
-
-
-<p>Pour ce faire, je m&#8217;appuierai sur le très bon <a href="http://www.logstashbook.com/">livre officiel</a> que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.</p>
-
-
-
-
-<p>Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</p>
-
-
-
-
-<p>[<em>ndlr</em> : par contre, je ne ferai, comme à mon habitude, que retranscrire ce qui est présent dans le livre&hellip;]</p>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-04-07T11:20:26+02:00" pubdate data-updated="true">April 7, 2014</time> in 
-    
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/logstash/'>logstash</a>, <a class='category' href='/blog/categories/supervision/'>supervision</a>
-  
-</span>
-
-
-  </span>
-
-  
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/04/logstash-petit-tour-dhorizon.html">Read on &rarr;</a>
-  
-</article>
-
-            </div>
-          </div>
-        
-          
-          <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <article>
-  <h2><a href="/2014/03/changement-flux-rss.html">Changement Du Flux RSS</a></h2>
-  
-  <p>
-    <p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
-
-
-
-
-<p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j&#8217;espère qu&#8217;il vous plait.</p>
-
-
-
-
-<p>Normalement, en plus d&#8217;un meilleur confort pour moi lorsque j&#8217;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&#8217;un allègement de ces dernières.</p>
-
-
-
-
-<p>Cependant, en raison d&#8217;une <em>limitation</em> de <a href="http://www.feedburner.com">feedburner</a> sur la taille du fichier <strong>atom.xml</strong>, j&#8217;ai été obligé de ne faire pointer que la catégorie <code>Java</code> (je n&#8217;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&#8217;article ou juste le titre&hellip;).</p>
-
-
-
-
-<p>Du coup, je vous invite à modifier vos lecteurs RSS si vous en utilisez un pour pointer directement sur le nouveau flux :</p>
-
-
-
-
-<ul>
-<li>soit par celui de <strong>feedburner</strong> mais dans ce cas, il n&#8217;y aura que la catégorie <code>Java</code> : <a href="http://feeds.feedburner.com/jetoile">http://feeds.feedburner.com/jetoile</a> ,</li>
-<li>soit en utilisant celui-ci : <a href="http://blog.jetoile.fr/atom.xml">http://blog.jetoile.fr/atom.xml</a> .</li>
-</ul>
-
-
-
-
-  </p>
-  <span class="meta">
-    
-
-
-
-
-
-
-
-
-  
-
-
-
-<time datetime="2014-03-31T18:54:22+02:00" pubdate data-updated="true">March 31, 2014</time> in 
+<time datetime="2010-09-08T12:38:32+02:00" pubdate data-updated="true">September 8, 2010</time> in 
     
 
 <span class="categories">
@@ -674,7 +282,286 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   </span>
 
   
-    <a class="full-article-link pull-right" rel="full-article" href="/2014/03/changement-flux-rss.html">Read on &rarr;</a>
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/09/nosql-au-paris-jug.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/06/sooner-is-better.html">Sooner Is Better</a></h2>
+  
+  <p>
+    <p><img src="http://farm3.static.flickr.com/2089/2172462686_56d3373111.jpg" alt="left-small" /></p>
+
+
+
+
+<p>Bon, voilà, cela fait un moment que je n&#8217;ai pas bloggé&hellip; manque d&#8217;inspiration peut être&hellip; manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard&hellip;</p>
+
+
+
+
+<p>Dans cet article, je voudrais revenir sur un point que j&#8217;avais légèrement abordé dans ce <a href="/2010/02/de-l-du-livrable.html">post</a> portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l&#8217;importance de s&#8217;intégrer aux processus de compilation et de livraison au plus tôt&hellip; en fait, pour être plus précis, je n&#8217;avais pas vraiment abordé cette problématique mais cela vient du même constat&hellip; ;&ndash;)</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-06-14T12:34:55+02:00" pubdate data-updated="true">June 14, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/reflexion/'>réflexion</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/06/sooner-is-better.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html">RTFM Ou De L&#8217;importance De Savoir Lire Une Documentation</a></h2>
+  
+  <p>
+    <p><img height="200" src="http://farm1.static.flickr.com/100/291194341_5d141633c8.jpg" width="200" alt="left"/>
+Ce petit article est plus une tranche de vie ayant pour objectif de montrer l&#8217;importance de savoir lire une documentation qu&#8217;un &ldquo;vrai&rdquo; post intéressant&hellip;</p>
+
+
+
+
+<p>Il est vrai que savoir trouver son information s&#8217;applique énormément dans le monde Open Source où il est crucial de savoir fouiller (documentation, forum, &hellip;) lorsqu&#8217;un fait technique (anomalie? framework incomplet? cas d&#8217;usage délirant? &hellip;) a lieu mais cela s&#8217;applique aussi dans notre vie de programmeur de tous les jours.</p>
+
+
+
+
+<p>Bien sur, le monde Open Source n&#8217;est pas le seul où doit s&#8217;appliquer ce principe.</p>
+
+
+
+
+<p>Je vais donc raconter mon anecdote (stupide, j&#8217;en conviens donc soyez indulgent avec moi)&hellip;</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-05-15T12:24:47+02:00" pubdate data-updated="true">May 15, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/reflexion/'>réflexion</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/05/jmx-et-firewall.html">JMX Et Firewall</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png" alt="left-small" />
+Cet article fait suite à mon <a href="/2010-05-05-jmx-ou-comment-administrer-et.html">post précédent</a> qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu&#8217;à la fin ;&ndash;), avait pour objectif de rappeler en quoi JMX (<em>Java Management eXtension</em>) pouvait être une bonne réponse aux problématiques de supervision et d&#8217;administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall. Cette problématique est indiquée sur le site de Sun/Oracle mais je vais, ici, faire un résumer de la méthode à suivre.</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-05-13T12:16:06+02:00" pubdate data-updated="true">May 13, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/05/jmx-et-firewall.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/05/jmx-ou-comment-administrer-et.html">JMX Ou Comment Administrer Et Superviser Son Système&#8230;</a></h2>
+  
+  <p>
+    <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png" alt="left-small" />
+Je n&#8217;ai encore fait aucun article sur JMX (<em>Java Management eXtension</em>). Pourtant, je pense qu&#8217;il s&#8217;agit d&#8217;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &ldquo;comment ça marche&rdquo; ou je ne fournirai pas de tutoriaux. Il s&#8217;agit juste d&#8217;un petit coup de gueule parce que j&#8217;en ai marre d&#8217;entendre toujours les mêmes inepties sur JMX&hellip;</p>
+
+
+
+
+<p>Bon, pourquoi JMX me direz-vous? Encore une technologie? Encore un nouveau truc dans mon architecture à mettre en œuvre sur lequel il va falloir faire monter des gens en compétence et qu&#8217;il va falloir maintenir?</p>
+
+
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-05-05T12:07:07+02:00" pubdate data-updated="true">May 5, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/reflexion/'>réflexion</a>
+  
+</span>
+
+
+  </span>
+
+  
+    <a class="full-article-link pull-right" rel="full-article" href="/2010/05/jmx-ou-comment-administrer-et.html">Read on &rarr;</a>
+  
+</article>
+
+            </div>
+          </div>
+        
+          
+          <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+              <article>
+  <h2><a href="/2010/04/orchestration-ou-routage.html">Orchestration Ou Routage?</a></h2>
+  
+  <p>
+    <p><img src="http://petals.ow2.org/img/petals_logo.png" alt="left-small" /></p>
+
+
+
+
+<p>Orchestration ou routage? Telle est la question qui se pose souvent&hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s&#8217;agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?</p>
+
+
+
+
+<p><a href="http://petals.ow2.org/">PEtALS Link</a> vient de mettre à disposition un <a href="http://www.petalslink.com/sites/default/files/rsc/docs/whitepapers/White_paper_Orchestration_0.2_122009.pdf">livre blanc</a> traitant du sujet en proposant différentes pistes pour choisir la solution d&#8217;implémentation.</p>
+
+
+
+
+<p>D&#8217;ailleurs, j&#8217;en profite également pour mettre le <a href="http://parleys.com/#id=1892&amp;st=5&amp;sl=40">lien</a> vers la présentation de PEtALS ESB qui a eu lieu au <a href="http://www.poitoucharentesjug.org/">JUG de Poitou Charentes</a>.</p>
+
+
+  </p>
+  <span class="meta">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-04-07T11:55:20+02:00" pubdate data-updated="true">April 7, 2010</time> in 
+    
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/esb/'>esb</a>, <a class='category' href='/blog/categories/soa/'>soa</a>
+  
+</span>
+
+
+  </span>
+
   
 </article>
 

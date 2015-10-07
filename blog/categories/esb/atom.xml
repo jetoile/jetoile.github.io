@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: esb | Jetoile]]></title>
+  <link href="http://blog.jetoile.fr/blog/categories/esb/atom.xml" rel="self"/>
+  <link href="http://blog.jetoile.fr/"/>
+  <updated>2015-10-07T17:01:51+02:00</updated>
+  <id>http://blog.jetoile.fr/</id>
+  <author>
+    <name><![CDATA[Khanh Maudoux]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Orchestration ou Routage?]]></title>
+    <link href="http://blog.jetoile.fr/2010/04/orchestration-ou-routage.html"/>
+    <updated>2010-04-07T11:55:20+02:00</updated>
+    <id>http://blog.jetoile.fr/2010/04/orchestration-ou-routage</id>
+    <content type="html"><![CDATA[<p><img src="http://petals.ow2.org/img/petals_logo.png" alt="left-small" /></p>
+
+<p>Orchestration ou routage? Telle est la question qui se pose souvent&hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s'agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?</p>
+
+<p><a href="http://petals.ow2.org/">PEtALS Link</a> vient de mettre à disposition un <a href="http://www.petalslink.com/sites/default/files/rsc/docs/whitepapers/White_paper_Orchestration_0.2_122009.pdf">livre blanc</a> traitant du sujet en proposant différentes pistes pour choisir la solution d'implémentation.</p>
+
+<p>D'ailleurs, j'en profite également pour mettre le <a href="http://parleys.com/#id=1892&amp;st=5&amp;sl=40">lien</a> vers la présentation de PEtALS ESB qui a eu lieu au <a href="http://www.poitoucharentesjug.org/">JUG de Poitou Charentes</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

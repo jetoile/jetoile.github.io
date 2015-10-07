@@ -1,0 +1,1216 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Undertow Pour Booster Vos Services REST - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Undertow Pour Booster Vos Services REST June 23, 2015 Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur resteasy-netty et &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Undertow Pour Booster Vos Services REST</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time>  
+        </div>
+        <p><img src="/images/undertow.png" alt="left-small" />
+Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
+
+<p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+
+<!-- more -->
+
+
+<p>Au niveau des besoins, ils seront identiques ie. :</p>
+
+<ul>
+<li>utiliser JAX-RS,</li>
+<li>intégrer Swagger,</li>
+<li>intégrer Jolokia,</li>
+<li>générer un livrable autoporteur.</li>
+</ul>
+
+
+<p>RestEasy-Netty, même s&#8217;il existe de nombreux points d&#8217;entrée, demande quelques phases de <em>hack</em> (gestion du <em>crossover domain</em> par exemple) et dispose d&#8217;un mécanisme un peu limité concernant la partie sécurité.</p>
+
+<p>En outre, l&#8217;absence du mécanisme de Servlet reste un peu embêtant pour mettre en place certaines <em>features</em> comme le MDC ( <a href="http://logback.qos.ch/manual/mdc.html"><em>Mapped Diagnostic Context</em></a> ) bien pratique lorsque l&#8217;on est dans une architecture type microservice.</p>
+
+<p>Le code complet est disponible <a href="https://github.com/jetoile/undertow-sample">ici</a>.</p>
+
+<h1>Rappel du cahier des charges</h1>
+
+<p>Comme je l&#8217;ai déjà indiqué dans les autres posts, l&#8217;objectif est seulement de montrer comme il peut être simple d&#8217;exposer un service REST à l&#8217;aide d&#8217;<a href="http://undertow.io/">Undertow</a>. Pour ce faire, un simple service sera exposé et il consistera à répèter ce qu’on lui demande…</p>
+
+<p>Il répondra donc à une requête de type GET du type : <a href="http://localhost:8081/sample/say/">http://localhost:8081/sample/say/</a><message></p>
+
+<p>Du coté de la réponse, elle aura la forme suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;message&quot;</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">message</span><span class="o">&gt;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;time&quot;</span><span class="o">:</span><span class="s2">&quot;2015-06-23T15:18:50.748&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Mise en oeuvre</h1>
+
+<p>A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.11.Final&#39;
+</span><span class='line'>compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-jvm&#39;, version:&#39;1.3.1&#39;
+</span><span class='line'>compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.12&#39;
+</span><span class='line'>compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
+</span><span class='line'>compile group: &#39;javax.servlet&#39;, name: &#39;javax.servlet-api&#39;, version:&#39;3.1.0&#39;
+</span><span class='line'>compile group: &#39;io.dropwizard.metrics&#39;, name: &#39;metrics-core&#39;, version:&#39;3.1.2&#39;
+</span><span class='line'>compile group: &#39;io.undertow&#39;, name: &#39;undertow-core&#39;, version:&#39;1.2.8.Final&#39;
+</span><span class='line'>compile group: &#39;io.undertow&#39;, name: &#39;undertow-servlet&#39;, version:&#39;1.2.8.Final&#39;
+</span><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-undertow&#39;, version:&#39;3.0.11.Final&#39;
+</span><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson2-provider&#39;, version:&#39;3.0.11.Final&#39;
+</span><span class='line'>compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-core&#39;, version:&#39;2.5.4&#39;
+</span><span class='line'>compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-annotations&#39;, version:&#39;2.5.4&#39;
+</span><span class='line'>compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-databind&#39;, version:&#39;2.5.4&#39;
+</span><span class='line'>compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.10&#39;
+</span><span class='line'>compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
+</span><span class='line'>compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
+</span><span class='line'>compile group: &#39;org.slf4j&#39;, name: &#39;slf4j-api&#39;, version:&#39;1.7.12&#39;
+</span><span class='line'>compile group: &#39;ch.qos.logback&#39;, name: &#39;logback-classic&#39;, version:&#39;1.1.3&#39;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Concernant la version des différentes dépendances, on constate que ce n&#8217;est pas swagger2 qui est utilisé en raison d&#8217;une incapacité de ma part à l&#8217;intégrer&hellip; :&lsquo;(</p>
+
+<h1>Implémentation du service REST</h1>
+
+<p>Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial… et la classe ci-dessous fait humblement l’affaire :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Api</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/sample&quot;</span><span class="o">,</span>
+</span><span class='line'>        <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;the sample api&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@Path</span><span class="o">(</span><span class="s">&quot;/sample&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@RolesAllowed</span><span class="o">(</span><span class="s">&quot;admin&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleService</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">SimpleService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@GET</span>
+</span><span class='line'>    <span class="nd">@Path</span><span class="o">(</span><span class="s">&quot;/say/{msg}&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@ApiOperation</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;repeat the word&quot;</span><span class="o">,</span>
+</span><span class='line'>            <span class="n">notes</span> <span class="o">=</span> <span class="s">&quot;response the word&quot;</span><span class="o">,</span>
+</span><span class='line'>            <span class="n">response</span> <span class="o">=</span> <span class="n">DtoResponse</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@ApiResponses</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="o">{</span><span class="nd">@ApiResponse</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="mi">500</span><span class="o">,</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Internal server error&quot;</span><span class="o">)})</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Response</span> <span class="nf">sayHello</span><span class="o">(</span><span class="nd">@PathParam</span><span class="o">(</span><span class="s">&quot;msg&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;sample log&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">final</span> <span class="n">Timer</span> <span class="n">timer</span> <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="na">metricRegistry</span><span class="o">.</span><span class="na">timer</span><span class="o">(</span><span class="n">name</span><span class="o">(</span><span class="n">SimpleService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;say-service&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="kd">final</span> <span class="n">Timer</span><span class="o">.</span><span class="na">Context</span> <span class="n">context</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="na">time</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">DtoResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DtoResponse</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">response</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">response</span><span class="o">.</span><span class="na">setTime</span><span class="o">(</span><span class="n">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">());</span>
+</span><span class='line'>            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;internal error: {}&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">status</span><span class="o">(</span><span class="n">Response</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">INTERNAL_SERVER_ERROR</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">Response</span><span class="o">.</span><span class="na">ok</span><span class="o">(</span><span class="n">response</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">context</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Coté du DTO, il est le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@XmlRootElement</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DtoResponse</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">DtoResponse</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMessage</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMessage</span><span class="o">(</span><span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">LocalDateTime</span> <span class="nf">getTime</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTime</span><span class="o">(</span><span class="n">LocalDateTime</span> <span class="n">time</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On remarquera l&#8217;utilisation de Java8 pour la gestion du temps plutôt que Joda-Time.</p>
+
+<p>En outre, concernant les annotations Swagger et l&#8217;utilisation de metrics, nous y reviendrons plus tard.</p>
+
+<p>Concernant le message de log, de même, nous y reviendrons plus tard avec l&#8217;intégration d&#8217;un MDC pour les logs.</p>
+
+<h1>Mise en oeuvre avec Undertow</h1>
+
+<p>Mettre en place Resteasy avec Undertow est très simple, d’après la documnentation, il suffit de faire :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">SimpleService</span> <span class="n">simpleService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleService</span><span class="o">();</span>
+</span><span class='line'><span class="n">ResteasyDeployment</span> <span class="n">deployment</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResteasyDeployment</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">deployment</span><span class="o">.</span><span class="na">setResources</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="n">asList</span><span class="o">(</span><span class="n">simpleService</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;undertow.port&quot;</span><span class="o">,</span> <span class="n">TestPortProvider</span><span class="o">.</span><span class="na">getPort</span><span class="o">());</span>
+</span><span class='line'><span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;undertow.host&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">TestPortProvider</span><span class="o">.</span><span class="na">getHost</span><span class="o">()));</span>
+</span><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;org.jboss.resteasy.port&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">TestPortProvider</span><span class="o">.</span><span class="na">getPort</span><span class="o">());</span>
+</span><span class='line'><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;org.jboss.resteasy.host&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">TestPortProvider</span><span class="o">.</span><span class="na">getHost</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">UndertowJaxrsServer</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UndertowJaxrsServer</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">DeploymentInfo</span> <span class="n">deploymentInfo</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">undertowDeployment</span><span class="o">(</span><span class="n">deployment</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">setDeploymentName</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">setContextPath</span><span class="o">(</span><span class="s">&quot;/&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">setClassLoader</span><span class="o">(</span><span class="n">Main</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">deployment</span><span class="o">.</span><span class="na">setProviderFactory</span><span class="o">(</span><span class="k">new</span> <span class="n">ResteasyProviderFactory</span><span class="o">());</span>
+</span><span class='line'><span class="n">server</span><span class="o">.</span><span class="na">deploy</span><span class="o">(</span><span class="n">deploymentInfo</span><span class="o">);</span>
+</span><span class='line'><span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Undertow</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">addHttpListener</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">host</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On y constate que pour ajouter un service, il suffit juste de déclarer la classe implémentant JAX-RS via la méthode <code>setResources()</code> sur l’instance de <em>ResteasyDeployment</em> fournit au serveur <em>UndertowJaxrsServer</em> :</p>
+
+<p>Et voilà! On dispose désormais d’un programme exécutable qui démarre un serveur REST basé sur Undertow.</p>
+
+<p>Par contre, il semble que le service ne rende pas vraiment ce que l&#8217;on voulait :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl <span class="s1">&#39;http://localhost:8081/sample/say/&lt;message&gt;&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;message&gt;&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nt">&quot;hour&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;minute&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;second&quot;</span><span class="p">:</span> <span class="mi">51</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;nano&quot;</span><span class="p">:</span> <span class="mi">225000000</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;year&quot;</span><span class="p">:</span> <span class="mi">2015</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;month&quot;</span><span class="p">:</span> <span class="s2">&quot;JUNE&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;dayOfMonth&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;dayOfWeek&quot;</span><span class="p">:</span> <span class="s2">&quot;TUESDAY&quot;</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;dayOfYear&quot;</span><span class="p">:</span> <span class="mi">174</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;monthValue&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+</span><span class='line'>        <span class="nt">&quot;chronology&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nt">&quot;calendarType&quot;</span><span class="p">:</span> <span class="s2">&quot;iso8601&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ISO&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pas de souci, il suffit de préciser comment on souhaite que LocalDateTime soit sérialisé par Jackson :</p>
+
+<p>Ainsi, notre DTO devient :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@XmlRootElement</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DtoResponse</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="nd">@JsonSerialize</span><span class="o">(</span><span class="n">using</span> <span class="o">=</span> <span class="n">LocalDateTimeToStringSerializer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">DtoResponse</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getMessage</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMessage</span><span class="o">(</span><span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">message</span> <span class="o">=</span> <span class="n">message</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">LocalDateTime</span> <span class="nf">getTime</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTime</span><span class="o">(</span><span class="n">LocalDateTime</span> <span class="n">time</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>où :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LocalDateTimeToStringSerializer</span> <span class="kd">extends</span> <span class="n">JsonSerializer</span><span class="o">&lt;</span><span class="n">LocalDateTime</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">serialize</span><span class="o">(</span><span class="n">LocalDateTime</span> <span class="n">value</span><span class="o">,</span> <span class="n">JsonGenerator</span> <span class="n">jgen</span><span class="o">,</span> <span class="n">SerializerProvider</span> <span class="n">provider</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JsonProcessingException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">jgen</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">DateTimeFormatter</span><span class="o">.</span><span class="na">ISO_DATE_TIME</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Après ces modifications, on obtient bien :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;message&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="s2">&quot;2015-06-23T16:04:01.419&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Intégration de Metrics</h1>
+
+<p>Concernant l&#8217;intégration de Metrics, pas grand chose de nouveau et donc pas grand chose à dire ;&ndash;)</p>
+
+<p>Déclarer le registry :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">metricRegistry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MetricRegistry</span><span class="o">();</span>
+</span><span class='line'><span class="kd">final</span> <span class="n">JmxReporter</span> <span class="n">reporter</span> <span class="o">=</span> <span class="n">JmxReporter</span><span class="o">.</span><span class="na">forRegistry</span><span class="o">(</span><span class="n">metricRegistry</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'><span class="n">reporter</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et utiliser le dans vos classes :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">final</span> <span class="n">Timer</span> <span class="n">timer</span> <span class="o">=</span> <span class="n">Main</span><span class="o">.</span><span class="na">metricRegistry</span><span class="o">.</span><span class="na">timer</span><span class="o">(</span><span class="n">name</span><span class="o">(</span><span class="n">SimpleService</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;say-service&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="kd">final</span> <span class="n">Timer</span><span class="o">.</span><span class="na">Context</span> <span class="n">context</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="na">time</span><span class="o">();</span>
+</span><span class='line'><span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">context</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Intégration de la sécurité</h1>
+
+<p>Undertow permet une bien meilleur intégration de la sécurité que RestEasy-Netty. En effet, grâce au mécanisme de Servlet, il est possible de bénéficier de toute la puissance des conteneurs de Servlets.</p>
+
+<p>Du coté du serveur Undertow, il suffit donc de définir un <em>ServletIdentityManager</em> et de lui fournir un <em>LoginConfig</em> :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">deployment</span><span class="o">.</span><span class="na">setSecurityEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ServletIdentityManager</span> <span class="n">identityManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServletIdentityManager</span><span class="o">();</span>
+</span><span class='line'><span class="n">identityManager</span><span class="o">.</span><span class="na">addUser</span><span class="o">(</span><span class="s">&quot;khanh&quot;</span><span class="o">,</span> <span class="s">&quot;khanh&quot;</span><span class="o">,</span> <span class="s">&quot;admin&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">deploymentInfo</span> <span class="o">=</span> <span class="n">deploymentInfo</span><span class="o">.</span><span class="na">setIdentityManager</span><span class="o">(</span><span class="n">identityManager</span><span class="o">).</span><span class="na">setLoginConfig</span><span class="o">(</span><span class="k">new</span> <span class="n">LoginConfig</span><span class="o">(</span><span class="s">&quot;BASIC&quot;</span><span class="o">,</span> <span class="s">&quot;Test Realm&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>où :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ServletIdentityManager</span> <span class="kd">implements</span> <span class="n">IdentityManager</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Charset</span> <span class="n">UTF_8</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&quot;UTF-8&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">UserAccount</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addUser</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">password</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span><span class="o">...</span> <span class="n">roles</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">UserAccount</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserAccount</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">user</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">user</span><span class="o">.</span><span class="na">password</span> <span class="o">=</span> <span class="n">password</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">user</span><span class="o">.</span><span class="na">roles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">roles</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">users</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">user</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Account</span> <span class="nf">verify</span><span class="o">(</span><span class="n">Account</span> <span class="n">account</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// Just re-use the existing account.</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">account</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Account</span> <span class="nf">verify</span><span class="o">(</span><span class="n">String</span> <span class="n">id</span><span class="o">,</span> <span class="n">Credential</span> <span class="n">credential</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">account</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">verifyCredential</span><span class="o">(</span><span class="n">account</span><span class="o">,</span> <span class="n">credential</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">account</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">Account</span> <span class="nf">verify</span><span class="o">(</span><span class="n">Credential</span> <span class="n">credential</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">verifyCredential</span><span class="o">(</span><span class="n">Account</span> <span class="n">account</span><span class="o">,</span> <span class="n">Credential</span> <span class="n">credential</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// This approach should never be copied in a realm IdentityManager.</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">account</span> <span class="k">instanceof</span> <span class="n">UserAccount</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">credential</span> <span class="k">instanceof</span> <span class="n">PasswordCredential</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="kt">char</span><span class="o">[]</span> <span class="n">expectedPassword</span> <span class="o">=</span> <span class="o">((</span><span class="n">UserAccount</span><span class="o">)</span> <span class="n">account</span><span class="o">).</span><span class="na">password</span><span class="o">;</span>
+</span><span class='line'>                <span class="kt">char</span><span class="o">[]</span> <span class="n">suppliedPassword</span> <span class="o">=</span> <span class="o">((</span><span class="n">PasswordCredential</span><span class="o">)</span> <span class="n">credential</span><span class="o">).</span><span class="na">getPassword</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">expectedPassword</span><span class="o">,</span> <span class="n">suppliedPassword</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">credential</span> <span class="k">instanceof</span> <span class="n">DigestCredential</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">DigestCredential</span> <span class="n">digCred</span> <span class="o">=</span> <span class="o">(</span><span class="n">DigestCredential</span><span class="o">)</span> <span class="n">credential</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">MessageDigest</span> <span class="n">digest</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>                <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">digest</span> <span class="o">=</span> <span class="n">digCred</span><span class="o">.</span><span class="na">getAlgorithm</span><span class="o">().</span><span class="na">getMessageDigest</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">account</span><span class="o">.</span><span class="na">getPrincipal</span><span class="o">().</span><span class="na">getName</span><span class="o">().</span><span class="na">getBytes</span><span class="o">(</span><span class="n">UTF_8</span><span class="o">));</span>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">update</span><span class="o">((</span><span class="kt">byte</span><span class="o">)</span> <span class="sc">&#39;:&#39;</span><span class="o">);</span>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">digCred</span><span class="o">.</span><span class="na">getRealm</span><span class="o">().</span><span class="na">getBytes</span><span class="o">(</span><span class="n">UTF_8</span><span class="o">));</span>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">update</span><span class="o">((</span><span class="kt">byte</span><span class="o">)</span> <span class="sc">&#39;:&#39;</span><span class="o">);</span>
+</span><span class='line'>                    <span class="kt">char</span><span class="o">[]</span> <span class="n">expectedPassword</span> <span class="o">=</span> <span class="o">((</span><span class="n">UserAccount</span><span class="o">)</span> <span class="n">account</span><span class="o">).</span><span class="na">password</span><span class="o">;</span>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">expectedPassword</span><span class="o">).</span><span class="na">getBytes</span><span class="o">(</span><span class="n">UTF_8</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>                    <span class="k">return</span> <span class="n">digCred</span><span class="o">.</span><span class="na">verifyHA1</span><span class="o">(</span><span class="n">HexConverter</span><span class="o">.</span><span class="na">convertToHexBytes</span><span class="o">(</span><span class="n">digest</span><span class="o">.</span><span class="na">digest</span><span class="o">()));</span>
+</span><span class='line'>                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NoSuchAlgorithmException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span><span class="s">&quot;Unsupported Algorithm&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>                <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">digest</span><span class="o">.</span><span class="na">reset</span><span class="o">();</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">UserAccount</span> <span class="kd">implements</span> <span class="n">Account</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// In no way whatsoever should a class like this be considered a good idea for a real IdentityManager implementation,</span>
+</span><span class='line'>        <span class="c1">// this is for testing only.</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+</span><span class='line'>        <span class="kt">char</span><span class="o">[]</span> <span class="n">password</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">roles</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kd">private</span> <span class="kd">final</span> <span class="n">Principal</span> <span class="n">principal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Principal</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="nd">@Override</span>
+</span><span class='line'>            <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">};</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">Principal</span> <span class="nf">getPrincipal</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">principal</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nd">@Override</span>
+</span><span class='line'>        <span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getRoles</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">roles</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Il s&#8217;agit ici d&#8217;une Basic Authentification mais il est bien sûr possible d&#8217;en mettre en place d&#8217;autre.</p>
+
+<p>Coté autorisation, il est alors possible de bénéficier de l&#8217;annotation <code>@RolesAllowed</code> de JAX-RS :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Path</span><span class="o">(</span><span class="s">&quot;/sample&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@RolesAllowed</span><span class="o">(</span><span class="s">&quot;admin&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleService</span> <span class="o">{</span>
+</span><span class='line'><span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Intégration d&#8217;un MDC</h1>
+
+<p>Concernant la mise en place d&#8217;un MDC (<em>Mapped Diagnostic Context</em>), le fait de bénéficier du mécanisme de <em>Filter</em> des Servlets rend la chose beaucoup plus simple.</p>
+
+<p>En effet, une fois la couche sécurité branchée, il suffit de récupérer le <code>UserPrincipal</code> dans la requête et l&#8217;enregistrer dans le MDC.</p>
+
+<p>La déclaration des Filters se fait de la manière suivante pour Undertow :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">FilterInfo</span> <span class="n">mdcFilter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FilterInfo</span><span class="o">(</span><span class="s">&quot;MDCFilter&quot;</span><span class="o">,</span> <span class="n">MDCServletFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="n">mdcFilter</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">addFilterUrlMapping</span><span class="o">(</span><span class="s">&quot;MDCFilter&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="n">DispatcherType</span><span class="o">.</span><span class="na">REQUEST</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">FilterInfo</span> <span class="n">mdcInsertingFilter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FilterInfo</span><span class="o">(</span><span class="s">&quot;MDCInsertingServletFilter&quot;</span><span class="o">,</span> <span class="n">MDCInsertingServletFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">addFilter</span><span class="o">(</span><span class="n">mdcInsertingFilter</span><span class="o">);</span>
+</span><span class='line'><span class="n">deploymentInfo</span><span class="o">.</span><span class="na">addFilterUrlMapping</span><span class="o">(</span><span class="s">&quot;MDCInsertingServletFilter&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="n">DispatcherType</span><span class="o">.</span><span class="na">REQUEST</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec le filter ci-dessous :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MDCServletFilter</span> <span class="kd">implements</span> <span class="n">Filter</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">USER_KEY</span> <span class="o">=</span> <span class="s">&quot;username&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span><span class="n">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">ServletResponse</span> <span class="n">response</span><span class="o">,</span>
+</span><span class='line'>                         <span class="n">FilterChain</span> <span class="n">chain</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ServletException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="kt">boolean</span> <span class="n">successfulRegistration</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">HttpServletRequest</span> <span class="n">req</span> <span class="o">=</span> <span class="o">(</span><span class="n">HttpServletRequest</span><span class="o">)</span> <span class="n">request</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">Principal</span> <span class="n">principal</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="na">getUserPrincipal</span><span class="o">();</span>
+</span><span class='line'>        <span class="c1">// Please note that we could have also used a cookie to</span>
+</span><span class='line'>        <span class="c1">// retrieve the user name</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">principal</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="n">principal</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">successfulRegistration</span> <span class="o">=</span> <span class="n">registerUsername</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">successfulRegistration</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">MDC</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">USER_KEY</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">FilterConfig</span> <span class="n">arg0</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Register the user in the MDC under USER_KEY.</span>
+</span><span class='line'><span class="cm">     *</span>
+</span><span class='line'><span class="cm">     * @param username</span>
+</span><span class='line'><span class="cm">     * @return true id the user can be successfully registered</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">registerUsername</span><span class="o">(</span><span class="n">String</span> <span class="n">username</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">username</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">username</span><span class="o">.</span><span class="na">trim</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">MDC</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">USER_KEY</span><span class="o">,</span> <span class="n">username</span><span class="o">);</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ainsi, disposer d&#8217;un MDC permet d&#8217;ajouter automatiquement des informations dans les logs :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;STDOUT&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;encoder&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %-5level %logger{36} %X{req.remoteHost} %X{req.requestURI} - C:%X{username} - %msg%n
+</span><span class='line'>
+</span><span class='line'>            <span class="nt">&lt;/pattern&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/encoder&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/appender&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">&quot;info&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;STDOUT&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/root&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/configuration&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On obtient alors bien les logs voulues :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>17:15:11.466 INFO  f.j.sample.service.SimpleService 127.0.0.1 /sample/say/&lt;message&gt; - C:khanh - sample log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Intégration de Jolokia</h1>
+
+<p>Coté Jolokia, pas grand chose à ajouter par rapport à ma série d&#8217;article précédent&hellip;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">JolokiaServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JolokiaServerConfig</span><span class="o">(</span><span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;());</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">JolokiaServer</span> <span class="n">jolokiaServer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JolokiaServer</span><span class="o">(</span><span class="n">config</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">jolokiaServer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">LOGGER</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;unable to start jolokia server&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Intégration de Swagger</h1>
+
+<p>Concernant l&#8217;intégration de Swagger, le fait de disposer des <em>Filter</em> de Servlet permet de n&#8217;avoir pas à faire de <em>hack</em> immonde pour gérer le CORS (cf. <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a>) : il suffit de déclarer un <em>Filter</em> dans Undertow qui a, en outre, la chance d&#8217;exister :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">CorsFilter</span> <span class="n">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CorsFilter</span><span class="o">();</span>
+</span><span class='line'><span class="n">filter</span><span class="o">.</span><span class="na">setAllowedMethods</span><span class="o">(</span><span class="s">&quot;GET,POST,PUT,DELETE,OPTIONS&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">filter</span><span class="o">.</span><span class="na">setAllowedHeaders</span><span class="o">(</span><span class="s">&quot;X-Requested-With, Content-Type, Content-Length, Authorization&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">filter</span><span class="o">.</span><span class="na">getAllowedOrigins</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;*&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">deployment</span><span class="o">.</span><span class="na">setProviderFactory</span><span class="o">(</span><span class="k">new</span> <span class="n">ResteasyProviderFactory</span><span class="o">());</span>
+</span><span class='line'><span class="n">deployment</span><span class="o">.</span><span class="na">getProviderFactory</span><span class="o">().</span><span class="na">register</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Concernant la déclaration dans Undertow, pas grand chose à ajouter :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">initSwagger</span><span class="o">(</span><span class="n">ResteasyDeployment</span> <span class="n">deployment</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">BeanConfig</span> <span class="n">swaggerConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BeanConfig</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">swaggerConfig</span><span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;swagger.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.0.0&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">swaggerConfig</span><span class="o">.</span><span class="na">setBasePath</span><span class="o">(</span><span class="s">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;swagger.host&quot;</span><span class="o">,</span> <span class="s">&quot;localhost&quot;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;swagger.port&quot;</span><span class="o">,</span> <span class="s">&quot;8081&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">swaggerConfig</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;swagger.title&quot;</span><span class="o">,</span> <span class="s">&quot;jetoile sample app&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">swaggerConfig</span><span class="o">.</span><span class="na">setScan</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">swaggerConfig</span><span class="o">.</span><span class="na">setResourcePackage</span><span class="o">(</span><span class="s">&quot;fr.jetoile.sample.service&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">deployment</span><span class="o">.</span><span class="na">setProviderClasses</span><span class="o">(</span><span class="n">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;com.wordnik.swagger.jaxrs.listing.ResourceListingProvider&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">deployment</span><span class="o">.</span><span class="na">setResourceClasses</span><span class="o">(</span><span class="n">Lists</span><span class="o">.</span><span class="na">newArrayList</span><span class="o">(</span><span class="s">&quot;com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">deployment</span><span class="o">.</span><span class="na">setSecurityEnabled</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Branchement des plugins Maven Appassembler et Assembly</h1>
+
+<p>Coté génération du livrable, encore une fois, pas grand chose à ajouter par rapport à mon précédent article : l&#8217;utilisation des plugins assembly et appassembler est identique.</p>
+
+<h1>Conclusion</h1>
+
+<p>On avait vu dans les articles précédents que RestEasy-Netty était une solution intéressante pour la simplicité de sa mise en oeuvre ainsi que pour le faible overhead.</p>
+
+<p>Cependant, certaines intégrations ressemblaient plus à du <em>hack</em> qu&#8217;à une solution configurable.</p>
+
+<p>Undertow (enfin pour être plus précis RestEasy-Undertow) pour sa part offre la même simplicité que RestEasy-Netty mais il permet en plus de s&#8217;intégrer avec beaucoup d&#8217;autres choses et le fait de retrouver le mécanisme de <em>Filter</em> facilite énormément les choses (par exemple, je ne suis pas sûr que bénéficier du MDC avec RestEasy-Netty ait été aussi simple).</p>
+
+<p>Coté performance, je reviendrai dessus dans un autre article mais je peux déjà dire que la solution RestEasy-Undertow n&#8217;a rien à envier à RestEasy-Netty.</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2015-06-23T14:51:56+02:00" pubdate data-updated="true">June 23, 2015</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>, <a class='category' href='/blog/categories/jolokia/'>jolokia</a>, <a class='category' href='/blog/categories/maven/'>maven</a>, <a class='category' href='/blog/categories/metrics/'>metrics</a>, <a class='category' href='/blog/categories/microservice/'>microservice</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html';
+        var disqus_url = 'http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2014/06/breizhcamp-2014-presentation-en-ligne.html" title="Previous Post: Breizhcamp 2014 - Présentations en ligne">&laquo; Previous: Breizhcamp 2014 - Présentations en ligne</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

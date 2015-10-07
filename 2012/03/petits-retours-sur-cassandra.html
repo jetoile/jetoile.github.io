@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Petits Retours Sur Cassandra - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Petits Retours Sur Cassandra March 13, 2012 Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Petits Retours Sur Cassandra</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-03-13T10:19:01+01:00" pubdate data-updated="true">March 13, 2012</time>  
+        </div>
+        <p><img src="http://2.bp.blogspot.com/-IvTZebKJhAc/T1hsV7nG8nI/AAAAAAAAAjw/qFiNLqvXgnY/s1600/cassandra01.png" alt="left-small" /></p>
+
+<p>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par <a href="http://twitter.com/mfiguiere">Michaël Figuière</a>) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&#8217;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&#8217;ai aimé et ce que je n&#8217;ai pas aimé sur <a href="http://cassandra.apache.org/">Apache Cassandra</a>.</p>
+
+<p>Je tiens toutefois à préciser que je n&#8217;ai aucune expérience réelle sur le produit et que je ne m&#8217;appuierai donc que sur sa <a href="http://www.datastax.com/doc-source/pdf/cassandra10.pdf">documentation officielle</a> en version 1.0 qui date du 2 mars 2012.</p>
+
+<p>En outre, je ne m&#8217;attarderai que sur les points qui m&#8217;ont semblé intéressants et marquants.</p>
+
+<p>Pour ceux qui sont coutumiés de ce blog, je ne changerai pas mes habitudes et je me contenterai seulement de traduire de manière libre les passages qui m&#8217;ont intéressés ;&ndash;). A noter que de nombreux points sont rappelés à différents endroits dans ce document mais c&#8217;est également le cas dans la documentation officielle.</p>
+
+<!-- more -->
+
+
+<h1>Introduction et concepts</h1>
+
+<p>Apache Cassandra est un système permettant de gérer une grande quantité de données de manière distribué. Ces dernières peuvent être structurées, semi structurées ou non.</p>
+
+<p>En fait, Cassandra est été conçu pour être hautement scalable sur un grand nombre de serveurs tout en ne présentant pas de <em>Single Point Of Failure</em>.</p>
+
+<p>Enfin, Cassandra fourni un schéma de données dynamique afin d&#8217;offrir un maximum de flexibilité et de performance.
+Derrière ce jolie discour se cachent quelques termes qu&#8217;il est important de connaitre afin de mieux appréhender les différents concepts manipulés par Cassandra :</p>
+
+<ul>
+<li><strong>Keyspace</strong> : c&#8217;est l&#8217;équivalent d&#8217;une database dans le monde des bases de données relationnel. A noter qu&#8217;il est possible d&#8217;avoir plusieurs Keyspaces sur un même serveur.</li>
+<li><strong>Une famille de colonnes</strong> : c&#8217;est l&#8217;objet principal de données et peut être assimilé à une table dans le monde des bases de données relationnel.</li>
+</ul>
+
+
+<h1>Architecture de Cassandra</h1>
+
+<p>Une instance Cassandra est un collection de noeuds indépendants qui sont configurés ensembles pour former un cluster.</p>
+
+<p>Dans un cluster, tous les noeuds sont égaux, ce qui signifie qu&#8217;il n&#8217;y a pas de noeud maître ou un processus centralisant leur gestion.</p>
+
+<p>En fait, Cassandra utilise un protocole appelé <strong>Gossip</strong> afin de découvrir la localisation et les information sur l&#8217;état des autres noeuds du cluster. Le protocole <strong>Gossip</strong> est un protocole de communication de type <em>peer-to-peer</em> dans lequel les noeuds échangent périodiquement des informations sur leur état mais également sur ce qu&#8217;ils savent des autres noeuds.</p>
+
+<p>Pour être plus précis, le processus s&#8217;exécute toutes les secondes afin d&#8217;échanger les messages avec au plus trois autres noeuds du cluster. De plus, une version est associée à ces messages afin de permettre d&#8217;écraser les informations plus anciennes.</p>
+
+<p>Ainsi, quand un noeud démarre, il regarde, dans un premier temps, son fichier de configuration qui le renseigne sur le nom de son cluster ainsi que les autres noeuds compris dedans. Cela lui permet de les contacter afin de récupérer leur état.</p>
+
+<p>Cependant, afin d&#8217;éviter un partitionnement, tous les noeuds du cluster doivent disposer de la même liste de noeuds dans leurs fichiers de configuration.</p>
+
+<p>La détection des échecs est une méthode pour déterminer localement si un autre noeud est accessible ou pas. En outre, les informations récoltées par ce mécanisme permet à Cassandra d&#8217;éviter d&#8217;émettre des requêtes aux noeuds qui ne sont plus accessibles.</p>
+
+<p>En fait, ce mécanisme fonctionne sur le principe de <em>heartbeat</em> soit de manière directe (ie. en récoltant les informations directement des noeuds) soit de manière indirecte (ie. en récoltant les informations par l&#8217;intermédiaire de la connaissance des autres noeuds &ndash; par transitivité quoi&hellip; ;&ndash;) &ndash; ).</p>
+
+<p>Je ne décrirai pas plus précisément cette partie si ce n&#8217;est une petite précision. En fait, lorsqu&#8217;un noeud est déclaré comme inaccessible, les autres noeuds stockent messages susceptibles d&#8217;avoir été manqué par ce noeud. Cependant, il peut arriver qu&#8217;entre le moment où le noeud devient inaccessible et le moment où sa perte est détectée, un laps de temps s&#8217;écoule et qu&#8217;ainsi, les réplicas ne soient pas conservés. En outre, si le noeud vient à être indisponible pendant une période trop importante (par défaut, une heure), alors les messages ne sont plus stockés. C&#8217;est pour cette raison qu&#8217;il est conseillé d&#8217;exécuter régulièrement l&#8217;outils de réparation des données.</p>
+
+<h1>Partitionnement des données avec Cassandra</h1>
+
+<p>Concernant cette partie, je ne m&#8217;étendrai pas dessus puisque la documentation est suffisante à elle-même.</p>
+
+<p>Cependant, juste un point qui m&#8217;a chagriné.</p>
+
+<p>En effet, il est possible de configurer le partitionnement pour une famille de colonnes en précisant que l&#8217;on veut que cela soit géré avec une stratégie de type <strong>Ordered Partitioners</strong>.</p>
+
+<p>Ce mode peut, en effet, avoir un intérêt si l&#8217;on souhaite récupérer une plage de lignes comprise entre deux valeurs (chose qui n&#8217;est pas possible si le <em>hash MD5</em> des clés des lignes est utilisé).</p>
+
+<p>Cependant, il est conseillé d&#8217;utiliser plutôt une clé deuxième clé d&#8217;indexation positionnée sur la colonne contenant les informations voulues. En effet, utiliser la stratégie <strong>Ordered Partitionners</strong> a les conséquences suivantes :</p>
+
+<ul>
+<li>L&#8217;écriture séquentielle peut entraîner des <em>hotspots</em> : si l&#8217;application tente d&#8217;écrire ou de mettre à jour un ensemble séquentiel de lignes, alors l&#8217;écriture ne sera pas distribué dans le cluster.</li>
+<li>Un <em>overhead</em> accru pour l&#8217;administration du <em>load balancer</em> dans le cluster : les administrateurs doivent calculer manuellement les plages de jetons afin de les répartir dans le cluster.</li>
+<li>Répartition inégale de charge pour des familles de colonnes multiples.</li>
+</ul>
+
+
+<h1>La répartition dans Cassandra</h1>
+
+<p>La réplication est le processus permettant de stocker des copies des données sur de multiples noeuds afin de permettre leur fiabilité et la tolérance à la panne. Quand un <strong>keyspace</strong> est créé dans Cassandra, il lui est affecté la stratégie de distribution des réplicas, c&#8217;est à dire le nombre de réplicas et la manière dont ils sont répliqués dans le cluster. La stratégie de réplication repose sur la configuration du cluster snitch afin de déterminer la localisation physique des noeuds ainsi que leur proximité par rapport aux autres.</p>
+
+<p>Il est souvent fait référence au facteur de réplication (<strong>replication factor</strong>) pour parler du nombre total de réplicas dans le cluster.</p>
+
+<p>Aussi :</p>
+
+<ul>
+<li>Un facteur de réplication de 1 signifie qu&#8217;il n&#8217;y a qu&#8217;une seule copie de chaque ligne.</li>
+<li>Un facteur de réplication de 2 signifie qu&#8217;il existe deux copie de chaque ligne.</li>
+<li>&hellip;</li>
+</ul>
+
+
+<p>Tous les réplicas possèdent la même importance : il n&#8217;y a pas de réplicas principaux ou maîtres du point de vu de la lecture et de la lecture.</p>
+
+<p>Ainsi, la règle générale est que le facteur de réplication ne doit pas être supérieur au nombre de noeuds dans le cluster. Cependant, il est possible d&#8217;augmenter le facteur de réplication puis d&#8217;ajouter le nombre de noeuds désiré à postériori. A noter toutefois que lorsque le facteur de réplication est supérieur au nombre de noeuds, alors les écritures ne sont plus prises en compte tandis que l&#8217;opération de lecture reste viable tant que le degrés de consistance est respecté.</p>
+
+<p>Concernant les stratégies de distribution des réplicas, cela permet de jouer sur la façon dont les réplicas sont répartis dans le cluster pour un keyspace. Cette stratégie est à renseigner lors de la création de la <strong>keyspace</strong>.</p>
+
+<p>De plus, il est possible de configurer la manière dont les noeuds sont groupés ensemble dans la topology du réseau global. Cet élément de configuration correspond au snitch et est associé au cluster. Cassandra utilise alors cette information pour router les requêtes entre les noeuds.</p>
+
+<p>Je n&#8217;en dirai pas plus pour cette partie mais plus d&#8217;informations sont accessibles dans la documentation officielle.</p>
+
+<h1>Cassandra du point de vue de l&#8217;application Client</h1>
+
+<p>Tous les noeuds de Cassandra sont égaux. Ainsi, une demande de lecture ou d&#8217;écrire peut interroger indifféremment n&#8217;importe quel noeud du cluster. Quand un client se connecte à un noeud et demande une opération d&#8217;écriture ou de lecture, le noeud courant sert de coordinateur du point de vue du client.</p>
+
+<p>Le travail du coordinateur est de se comporter comme un proxy entre le client de l&#8217;application et les noeuds qui possèdent la données. C&#8217;est lui qui a la charge de déterminer quels noeuds de l&#8217;anneau devra recevoir la requête.</p>
+
+<p><img src="http://4.bp.blogspot.com/-Y_ErJ1Xzjwk/T1jQ9lh4oDI/AAAAAAAAAj4/Y_MOdH2_2mk/s1600/cassandra02.png" title="crédit photo: Cassandra" alt="medium" /></p>
+
+<p>Concernant les requêtes d&#8217;écriture, le coordinateur émet la requête à tous les réplicas qui possèdent la ligne à modifier. Aussi longtemps qu&#8217;il sont disponibles, ils reçoivent les demandes d&#8217;écriture quelque soit le niveau de consistance demandé par le client. Le niveau de consistance d&#8217;écriture détermine le nombre de noeuds qui doivent acquitter l&#8217;écriture afin de considérer l&#8217;écriture comme ayant réussi.</p>
+
+<p>Il est à noter que, dans le cas où il existe plusieurs <em>data center deployments</em>, Cassandra optimise les performances d&#8217;écriture en choisissant un noeud coordinateur dans chaque <em>data center</em> distant afin de traiter les requêtes des réplica dans le data center. Le noeud coordinateur contacté par l&#8217;application cliente n&#8217;a alors qu&#8217;à transmettre les requêtes d&#8217;écriture à un seul noeud de chaque <em>data center</em> distant.</p>
+
+<p>Si le niveau de consistance choisi est <strong>ONE</strong> ou <strong>LOCAL_QUORUM</strong>, alors seuls les noeuds du même data center que le noeud coordinateur doivent acquitter l&#8217;écriture.</p>
+
+<p><img src="http://1.bp.blogspot.com/-_TFMEXBbdSo/T1jRBazh_wI/AAAAAAAAAkA/7uBwOjhPb5s/s1600/cassandra03.png" title="crédit photo: Cassandra" alt="medium" /></p>
+
+<p>Concernant la lecture, il y a deux types de requêtes de lecture qu&#8217;un coordinateur peut émettre à un réplica :</p>
+
+<ul>
+<li>Une requête de lecture directe. Dans ce cas, le nombre de réplicats contactés par une demande de lecture directe est déterminé par le niveau de consistance spécifié par le client,</li>
+<li>Une requête de réparation de lecture en tâche de fond. Dans ce cas, elle est envoyée à tous les réplicas additionels qui n&#8217;ont pas reçu de requête directe. Ce type de requête permet de vérifier que la ligne est consistante par rapport aux autres réplicas.</li>
+</ul>
+
+
+<p>Ainsi, dans un premier temps, le coordinateur contacte les réplicas en fonction du niveau de consistance qui a été spécifié. Ces réplicas sont choisis en fonction de leurs capacités à répondre rapidement. Ces derniers répondent avec la donnée demandé et, s&#8217;il existe plusieurs réponses, elles sont comparées en mémoire afin de vérifier leur consistance. Si ce n&#8217;est pas le cas, alors c&#8217;est le réplica qui est le plus récent (en se basant sur le timestamp) qui est utilisé par le coordinateur pour répondre au client.</p>
+
+<p>En outre, afin de s&#8217;assurer que tous les réplicas ont la version la plus récente, le coordinateur les contacte en tâche de fond et compare la donnée de tous les réplicas restant qui possède la ligne. Il demande ensuite, éventuellement, une opération d&#8217;écriture afin de mettre à jour la donnée. C&#8217;est cette opération qui est appelé <strong>read repair</strong> et qui peut être configuré par famille de colonne (par défaut, elle est désactivée).</p>
+
+<p><img src="http://4.bp.blogspot.com/-uK_LgOrv6w8/T1jUQ2yvdDI/AAAAAAAAAkI/GQewQ8NmdTc/s1600/cassandra04.png" title="crédit photo: Cassandra" alt="medium" /></p>
+
+<h1>Le modèle de données de Cassandra</h1>
+
+<p>Le modèle de données de Cassandra s&#8217;appuie sur un schéma dynamique, avec un modèle de données orienté colonne.
+Cela signifie que, contrairement à une base de données relationelle, il n&#8217;est pas nécessaire de modéliser toutes les colonnes puisqu&#8217;une ligne n&#8217;a, potentiellement, pas le même ensemble de colonnes.</p>
+
+<p>Les colonnes et leurs méta données peuvent être ajoutées par l&#8217;application lorsque cela s&#8217;avère nécessaire.
+En fait, le modèle de données de Cassandra a été pensé pour répondre à des problématiques de données distribuées et diffère complètement d&#8217;un modèle classique de base de données relationnel où les données sont stockées dans des tables qui sont, dans la plupart des cas, en relation entre elles. En outre, dans un modèle relationnel, les données sont généralement normalisées afin d&#8217;éviter la redondance et des jointures sont faites entre les tables sur des clés communes afin de satisfaire les requêtes.</p>
+
+<p>Dans Cassandra, le <strong>Keyspace</strong> est le conteneur des données de l&#8217;application (un peu comme une database ou un schéma pour une base de données relationnel). Dans ces keyspaces se trouvent une ou plusieurs familles de colonnes (qui correspondent aux tables en base de données relationnelle).</p>
+
+<p>Ces familles de colonnes contiennent des colonnes ainsi qu&#8217;un ensemble de colonnes connexes qui sont identifiées par un clé de ligne. En outre, chaque ligne d&#8217;une famille de colonnes ne dispose pas nécessairement des mêmes colonnes qu&#8217;une autre ligne.</p>
+
+<p>Enfin, Cassandra n&#8217;impose pas de relations entre les familles de colonnes au sens base de données relationnelle : il n&#8217;y a pas de clés étrangères et les jointures entre familles de colonnes ne sont pas supportées.</p>
+
+<p>Ainsi, pour faire simple, chaque famille de données dispose de son ensemble de colonnes qui sont destinées à être consulté ensemble pour satisfaire les requêtes spécifiques à l&#8217;application.</p>
+
+<p>En outre, les familles de colonnes peuvent définir les méta données des colonnes mais pour une colonne donnée correspondant à une ligne, cela est à la charge de l&#8217;application. De plus, chaque ligne peut disposer d&#8217;un ensemble de colonnes différentes.</p>
+
+<p>Par contre, bien que les familles de colonnes puissent être flexibles, dans la pratique, il est conseillé d&#8217;y associer une sorte de schéma (à une famille de colonnes, il est préférable de n&#8217;y mettre qu&#8217;un même type de données).</p>
+
+<p>En fait, il y a deux types de familles de colonnes :</p>
+
+<ul>
+<li><strong>Les familles de colonnes statiques</strong> : elles utilisent un ensemble statique de nom de colonnes et sont très similaires à une table d&#8217;une base de données relationnel même si toutes les colonnes n&#8217;ont pas à être obligatoirement renseignées. A noter, qu&#8217;en général, les méta données des colonnes sont définies, dans ce cas, pour chaque colonne.</li>
+<li><strong>Les familles de colonnes dynamiques</strong> : elles permettent, par exemple, de pré calculer un ensemble de résultats et de les stocker dans une même ligne afin de pouvoir y accéder plus tard. Chaque ligne correspond donc à un snapshot de données correspondant à un requête donnée. A noter que, pour une famille de colonnes dynamique, plutôt que d&#8217;avoir des méta données pour chaque colonne, le type des informations par colonnes (tels que le comparateur et les validateurs) est défini par l&#8217;application lorsque la donnée est insérée.</li>
+</ul>
+
+
+<p>Pour toutes les familles de colonnes, chaque ligne est identifiée de manière unique par sa clé (un peu comme la notion de clé primaire pour les bases de données relationnelles). Une famille de colonnes est, quant à elle, toujours partitionnée par ses clés de ligne qui sont, implicitement, indexées.</p>
+
+<p>En fait,  dans Cassandra, une colonne est le plus petit incrément de données. Elle est modélisée par un tuple qui contient le nom, la valeur et un <em>timestamp</em>. Ce timestamp est utilisé par Cassandra pour déterminer la mise à jour la plus récente dans la colonne (et, dans ce cas, c&#8217;est la plus récente qui est prioritaire lors d&#8217;une requête).</p>
+
+<p><img src="http://3.bp.blogspot.com/-a0aThYoPwxU/T1nHhEkkeiI/AAAAAAAAAkQ/N5n7HZJ1Gb8/s1600/cassandra05.png" title="crédit photo: Cassandra" alt="center" /></p>
+
+<p>Une colonne doit avoir un nom qui peut être un label statique (comme &ldquo;nom&rdquo; ou &ldquo;email&rdquo;) ou peut être mis dynamiquement lorsque la colonne est créée par l&#8217;application.</p>
+
+<p>Les colonnes peuvent être indexées par leurs noms (en utilisant un second index).</p>
+
+<p>Cependant, une limitation de l&#8217;indexation des colonnes est le non support des requêtes qui nécessitent un ordonnancement comme cela peut être le cas avec une collection de données de temps. En effet, dans ce cas, un second index sur la colonne de timestamp ne serait pas suffisant car il n&#8217;est pas possible d&#8217;avoir la main sur l&#8217;ordonnancement de la colonne avec un index secondaire. Pour palier à ce manque, il est toujours possible de maintenir manuellement une famille de colonnes qui ferait office d&#8217;index.</p>
+
+<p>Il est à noter qu&#8217;il n&#8217;est pas obligatoire pour une colonne d&#8217;avoir une valeur puisque, parfois, le nom de cette dernière lui suffit à elle-même.</p>
+
+<p>En plus des colonnes dites &ldquo;classiques&rdquo;, Cassandra offre 3 autres types de colonnes (que je détaillerai pas plus) :</p>
+
+<ul>
+<li><strong>Expiring Columns</strong> qui disposent d&#8217;un TTL (<em>Time To Live</em>).</li>
+<li><strong>Counter Columns</strong> qui permettent de stocker un compteur.</li>
+</ul>
+
+
+<p><img src="http://4.bp.blogspot.com/-_NU2ZTQ6yN0/T1201ywQkBI/AAAAAAAAAkY/zfvptCJ7dxM/s1600/cassandra06.png" alt="center" /></p>
+
+<ul>
+<li><strong>Super Columns</strong> qui permettent de gérer une meta colonne pouvant contenir d&#8217;autres colonnes</li>
+</ul>
+
+
+<p><img src="http://3.bp.blogspot.com/-RyNcDkPN5og/T1209KAYDHI/AAAAAAAAAkg/K42iHZ7csaU/s1600/cassandra07.png" alt="center" /></p>
+
+<p>Concernant, le type de données exploitables par Cassandra, il existe deux notions :</p>
+
+<ul>
+<li>Le <strong>validator</strong> qui est le type de données pour la valeur d&#8217;une colonne (ou la clé d&#8217;une ligne).</li>
+<li>Le <strong>comparator</strong> qui est le type de données pour le nom d&#8217;une colonne.</li>
+</ul>
+
+
+<p>En fait, il est possible de définir un type de données lors de la création d&#8217;une famille de colonnes et que son schéma est précisé (cf. les familles de colonnes statiques). Cassandra stocke alors, par défaut, le nom et les valeurs des colonnes en tableau d&#8217;hexadécimal (<code>BytesType</code>).</p>
+
+<p>Ci-dessous, la liste des valeurs possibles pour les <em>validator</em> et <em>comparator</em> (sauf pour le type <code>CounterColumnType</code> qui ne peut être utilisé que comme valeur de colonne) :
+<img src="http://2.bp.blogspot.com/-ZwnUrailUWs/T13LTaRvLBI/AAAAAAAAAko/Ul9Erfto4gI/s1600/cassandra08.png" alt="medium" /></p>
+
+<p>Plus précisément sur les validator, pour toutes les familles de colonnes, il est conseillé de définir un <em>validator</em> par défaut pour une clé de ligne (qui peut être modifié ou ajouté au besoin). Dans ce cas, une vérification est effectué lors de l&#8217;insertion ou la mise à jour de données.</p>
+
+<p>Concernant le <em>comparator</em>, il est à noter que, dans une ligne, les colonnes sont toujours stockées de manière ordonné par rapport au nom des colonnes. Le comparator précise le type de données pour le nom d&#8217;une colonne mais ne peut être modifié.</p>
+
+<h1>L&#8217;indexation dans Cassandra</h1>
+
+<p>Un index est une structure de données qui permet un accès rapide ainsi qu&#8217;une recherche de données par rapport à un ensemble de critères donnés.</p>
+
+<p>Dans les bases de données classique, une clé primaire est une clé unique utilisée pour identifier chaque ligne d&#8217;une table. Cela permet, comme tous les index, d&#8217;accélérer l&#8217;accès aux données dans une table. La clé primaire garantie également l&#8217;unicité et mais peut également se charger de l&#8217;ordonnancement des données.</p>
+
+<p>Dans Cassandra, l&#8217;index primaire d&#8217;une famille de colonnes correspond à l&#8217;index de ses clés de lignes. Puisque chaque noeud connait la plage de ses clés par noeuds gérés, les requêtes sur les lignes sont plus aisées à localiser en scannant l&#8217;index des lignes sur un noeud donnée.</p>
+
+<p>Avec un partitionnement aléatoire des clés de lignes (qui est la configuration par défaut), les clé de lignes sont partitionnés par le <em>hash MD5</em> et ne peuvent donc pas gérer l&#8217;ordonnancement (au sens ordre des données). Il est à noter qu&#8217;utiliser un partitionnement ordonné n&#8217;est pas conseillé puisque cela implique une maintenance accrue pour la distribution des données sur les noeuds.</p>
+
+<p>Cassandra propose également un index secondaire qui se fait sur la valeur des colonnes. Il permet d&#8217;effectuer des opérations disposant de prédicats d&#8217;égalité (par exemple,  èèwhere column x = value y`). Ainsi, les requêtes sur des valeurs indexées peuvent appliquer une sorte de filtres.</p>
+
+<h1>L&#8217;accès aux données dans Cassandra</h1>
+
+<h2>L&#8217;écriture</h2>
+
+<p>Cassandra est optimisé pour permettre une écriture rapide et hautement disponible des données avec un débit élevé. Pour ce faire, les données sont écrites dans un premier temps dans un <strong>journal de commit</strong> (pour s&#8217;assurer de la durabilité), puis dans une structure en mémoire appelé la <strong>Memtable</strong>. Une écriture est considérée comme ayant réussi si les deux actions précédentes ont réussis. Cela permet d&#8217;avoir peu d&#8217;entrée/sortie disque au moment de l&#8217;écriture. Ainsi, les données sont mises en mémoire et périodiquement écrite sur le disque dans une structure appelé une <strong>SSTable</strong> (pour <em>Sorted String Table</em>). Les <strong>Memtables</strong> et <strong>SSTables</strong> sont maintenus par famille de colonnes : les <strong>Memtables</strong> sont organisées de manière ordonné par clé de ligne et sont flushé dans les <strong>SSTables</strong> séquentiellement.</p>
+
+<p>A noter également que les <strong>SSTables</strong> sont immuables, ce qui signifie qu&#8217;une ligne peut, typiquement, être stockée dans plusieurs fichiers de <strong>SSTable</strong>. Ainsi, pour répondre à une requête de lecture, il est nécessaire de combiner toutes les <strong>SSTables</strong> se trouvant sur le disque pour trouver la valeur d&#8217;une ligne. Pour optimiser ce processus, Cassandra utilise un structure en mémoire appelé <strong>Bloom Filter</strong> : chaque <strong>SSTable</strong> dispose de son propre <strong>Bloom Filter</strong> qui est utilisé pour vérifier si la clé d&#8217;une ligne existe lors d&#8217;une requête.</p>
+
+<p>De plus, en tâche de fond, Cassandra merge périodiquement les <strong>SSTables</strong> ensembles dans un <strong>SSTables</strong> d&#8217;une taille supérieure. Ce processus est appelé <strong>Compaction</strong>. Plus précisément, il regroupe les fragments de lignes ensemble, supprime les colonnes qui ont été marquées comme devant être supprimé et reconstruit les index primaires et secondaires. Bien sûr, ce processus a des impacts sur les <em>disk I/O</em>.</p>
+
+<p>Contrairement aux bases de données relationnelles classique, Cassandra n&#8217;offre pas des transactions dites ACID : il n&#8217;y a pas de locks ou de dépendances transactionnelles lors d&#8217;une mise à jour concurrente de multiples lignes ou de familles de colonnes.</p>
+
+<p>Pour rappel, ACID est l&#8217;acronyme de :</p>
+
+<ul>
+<li><strong>Atomic</strong> : tout ce qu&#8217;il y a dans une transaction doit être réussi ou sinon un rollback est effectué.</li>
+<li><strong>Consistent</strong> : une transaction ne peut pas laisser la base de données dans un état incohérent.</li>
+<li><strong>Isolated</strong> : les transactions ne peuvent pas interagir les unes avec les autres.</li>
+<li><strong>Durable</strong> : les transactions effectuées persistent même après une  défaillance du serveur.</li>
+</ul>
+
+
+<p>Pour sa part, Cassandra ne traite que les concepts d&#8217;isolation et d&#8217;atomicité. En fait, pour être plus précis, une écriture est atomique au niveau des lignes (ie. l&#8217;insertion ou la mise à jour des colonnes d&#8217;une ligne donnée est traitée comme une écriture unique). Ainsi, Cassandra ne supporte pas les transactions dans le sens de mise à jour de lignes multiples. De même, il n&#8217;y a pas de rollback lorsque l&#8217;écriture réussi sur un noeud mais échoue sur les autres (dans ce cas, il n&#8217;est possible de n&#8217;avoir qu&#8217;un rapport d&#8217;erreur mais pas de rollback).</p>
+
+<p>Cassandra utilise les <em>timestamps</em> pour déterminer la mise à jour la plus récente d&#8217;une colonne ; ce <em>timestamp</em> étant fourni par l&#8217;application cliente. Ainsi, la donnée avec le dernier timestamp est toujours celle qui prévaut lors d&#8217;une requête. C&#8217;est pour cela que, si de multiples clients mettent à jour la même donnée de manière concurrente, alors c&#8217;est la donnée la plus récente qui sera persistée.</p>
+
+<p>Du coté de la durabilité, toutes les écritures sur un réplica sont enregistrés à la fois en mémoire et dans le journal de commit avant que l&#8217;acquittement ne soit émis. Si un échec se produit avant l&#8217;écriture sur disque, alors le journal de commit est rejoué du début afin de récupérer les données qui n&#8217;ont pas encore été écrites.</p>
+
+<h2>L&#8217;insertion et la mise à jour</h2>
+
+<p>Plusieurs colonnes peuvent insérées en même temps. Ainsi, lorsque des colonnes sont insérées ou mise à jour dans une famille de colonnes, l&#8217;application cliente précise la clé de ligne pour identifier l&#8217;enregistrement à mettre à jour. La clé de la ligne peut donc être vu come une clé primaire puisqu&#8217;elle doit être unique pour chaque ligne dans une famille de colonnes données. Cependant, à la différence d&#8217;une clé primaire, il est possible d&#8217;insérer des données à une clé primaire déjà présente, mais dans ce cas, Cassandra répondra comme une mise à jour (si elle n&#8217;existe pas, elle sera créé).</p>
+
+<p>De plus, les colonnes sont écrasées si le <em>timestamp</em> d&#8217;une autre version de colonne est plus récente. Il est, cependant, à noter que le timestamp est fourni par le client. Aussi, ces derniers doivent disposer d&#8217;une horloge synchronisée par NTP (<em>Network Time Protocol</em>).</p>
+
+<h2>La suppression</h2>
+
+<p>Lorsqu&#8217;une ligne ou une colonne est supprimé dans Cassandra, il est important de comprendre les points ci-dessous :</p>
+
+<ul>
+<li>la suppression de la donnée du disque n&#8217;est pas immédiate (pour rappel, une données insérée est écrite dans le SSTable qui se trouve sur le disque). En effet, le <strong>SSTable</strong> étant immuable, un marqueur appelé <strong>tombstone</strong> est écrit pour renseigner le nouveau status de la colonne. Les colonnes ainsi marquées persistent pendant un certain laps de temps configurable puis sont réellement supprimées lors du processus de <strong>compaction</strong>.</li>
+<li>une colonne supprimé peut réapparaitre si la routine de réparation de noeud n&#8217;est pas exécuté. En effet, marquer une colonne d&#8217;un tombstone implique qu&#8217;un réplica qui était dans un état non atteignable lors de la suppression ne recevra l&#8217;information que lorsqu&#8217;il sera de nouveau dans un état joignable. Cependant, si un noeud est injoignable plus longtemps que le temps configuré de conservation des tombstones, alors le noeud peut complètement manquer la suppression et répliquer les données supprimées lors de son retour dans le cluster.</li>
+<li>La clé de ligne pour une ligne supprimée apparait toujours dans la plage de résultats d&#8217;une requête. En effet, quand une ligne est supprimée dans Cassandra, ses colonnes correspondantes sont marquées par un <strong>tombstone</strong>. Ainsi, tant que les données marquées par un tombstone ne sont pas réellement supprimées par le processus de <strong>compaction</strong>, la ligne reste vide (ie. sans colonne associées).</li>
+</ul>
+
+
+<h2>La lecture</h2>
+
+<p>Pour rappel, lorsqu&#8217;une requête de lecture d&#8217;une ligne est reçue par un noeud, la ligne doit être combinée de toutes les <strong>SSTables</strong> du noeud qui contiennent les colonnes de la ligne en question ainsi que de toutes les Memtables. Pour optimiser ce processus, Cassandra utilise une structure en mémoire appelée les <strong>bloom filter</strong> : chaque <strong>SSTable</strong> dispose d&#8217;un <strong>bloom filter</strong> associé qui est utilisé pour vérifier s&#8217;il existe des données dans la ligne avant de faire une recherche (et ainsi de faire des entrées/sorties disque).</p>
+
+<h1>La consistance des données dans Cassandra</h1>
+
+<p>Lorsqu&#8217;il est fait question de consistance dans Cassandra, cela s&#8217;applique à la façon dont est maintenue la cohérence des données et comment les lignes de données sont synchronisées entre tous les réplicas.</p>
+
+<p>Cassandra étend le concept de cohérence éventuelle en offrant un consistance réglable.</p>
+
+<p>Ainsi, pour toutes opérations de lecture ou d&#8217;écriture, l&#8217;application cliente peut décider du degrés de consistance que doit avoir la requête. En plus de cela, Cassandra dispose d&#8217;un mécanisme de réparation afin de s&#8217;assurer de la consistance des données entre les différents réplicas.</p>
+
+<h2>Consistance réglable pour les requêtes clientes</h2>
+
+<p>Le niveau de consistance dans Cassandra peut être associé à n&#8217;importe quelle requête de lecture ou d&#8217;écriture. Cela permet aux développeurs de l&#8217;application de trouver le juste milieu entre le temps d&#8217;exécution de leurs requêtes et la consistance qu&#8217;ils souhaitent avoir sur les résultats obtenus.</p>
+
+<p>Lors d&#8217;une écriture, le niveau de consistance précise sur combien de réplicas doit être écrite la donnée avant d&#8217;être acquitté du succès de l&#8217;opération.</p>
+
+<p>Les niveaux de consistance disponibles sont les suivants :</p>
+
+<p><img src="http://1.bp.blogspot.com/-x5hTsbj3l_g/T18dPz_XiHI/AAAAAAAAAkw/CKBq0LoZ6pE/s1600/cassandra11.png" alt="medium" /></p>
+
+<p>En fait, pour être plus précis, un quorum est calculé de la manière ci-dessous :
+<img src="http://1.bp.blogspot.com/-vL7EP1n4Jgs/T18f1aw36II/AAAAAAAAAk4/AshD58ObrgE/s1600/cassandra12.png" alt="center" /></p>
+
+<p>Ainsi, par exemple, si le facteur de réplication est de 3, alors le quorum est de 2 (c&#8217;est à dire que l&#8217;on tolère qu&#8217;un seul réplica est indisponible).</p>
+
+<p>De même, si le facteur de réplication est de 6, alors le quorum des de 4 (c&#8217;est à dire que 2 réplicas peuvent être indisponibles).</p>
+
+<p>Lors d&#8217;une lecture, le niveau de consistance spécifie combien de réplicas doivent répondre avant que le résultat ne soit fourni au client.</p>
+
+<p>Cassandra contacte le nombre de réplicas indiqué afin d&#8217;obtenir la donnée la plus récente (en se basant sur le timestamp).</p>
+
+<p>Les niveaux de consistance disponibles sont les suivants :
+<img src="http://2.bp.blogspot.com/-l5GRGCM3d2Y/T18l1f7VGDI/AAAAAAAAAlA/jPAqImzGCWs/s1600/cassandra13.png" alt="medium" /></p>
+
+<p>Le niveau quorum est calculé de la même manière que pour l&#8217;écriture.</p>
+
+<p>Ainsi, par exemple, pour un facteur de réplication de 3, le quorum est de 2 (c&#8217;est à dire que l&#8217;on tolère qu&#8217;un seul réplica est indisponible).</p>
+
+<p>De même, pour un facteur de réplication de 6, le quorum est de 4 (c&#8217;est à dire que 2 réplicas peuvent être indisponibles).</p>
+
+<p>Concernant le choix du niveau de consistance sur l&#8217;écriture et la lecture, cela dépend, bien sûr, des besoins mais impact fortement le comportement de Cassandra.</p>
+
+<p>Ainsi, si la latence est une priorité, un niveau de consistance à ONE peut être envisageable. Bien sûr, dans ce cas, il y a une forte probabilité que les données lues ne soient pas cohérente.</p>
+
+<p>A l&#8217;inverse, si c&#8217;est l&#8217;écriture qui importe, alors une consistance à un niveau ANY peut répondre au besoin. Dans ce cas, ce sont les données lues qui risquent de ne pas être consistantes.</p>
+
+<p>A noter que si c&#8217;est la consistance qui est importante (c&#8217;est à dire que les données lues sont les plus proches possibles de ce qui a été écrit), alors la formule suivante peut être appliquée :</p>
+
+<p><img src="http://1.bp.blogspot.com/-19RglOrHOBI/T19Zlpb7TBI/AAAAAAAAAlI/Xa7Kqfi3dpY/s1600/cassandra14.png" alt="center" /></p>
+
+<h1>Conclusion</h1>
+
+<p>Dans cet article, j&#8217;ai essayé de mettre en avant les points qui m&#8217;ont marqués (en bien ou en mal) (je tiens quand même à re-préciser que mon avis n&#8217;est que théorique et que je n&#8217;ai pas réellement utilisé le produit).
+Ainsi au niveau des points positifs, j&#8217;ai aimé les choix techniques et les concepts (très enrichissants d&#8217;ailleurs&hellip; ;&ndash;) ).</p>
+
+<p>Cependant, coté points négatifs, je ne suis pas fan des dégradations coté consistance qui peuvent se produire (le coup de l&#8217;élément supprimé qui revit dans le système&hellip; comment dire&hellip; mais WTF???!! ;&ndash;)  &ndash; bon ok, la raison est viable mais quand même&hellip; &ndash;).</p>
+
+<p>Bien sûr, cela est configurable et il s&#8217;agit d&#8217;un choix technique mais j&#8217;avoue avoir été déçu par Cassandra. En outre, le fait de laisser à l&#8217;application cliente le choix du niveau de consistance, même s&#8217;il est louable, me semble dangereux au sens maintenabilité et compréhension du fonctionnement du système.</p>
+
+<p>En tout cas, la documentation du produit est très claire et transparente quant au fonctionnement interne et aux risques encourus, et pour ça, chapeau! ;&ndash;)</p>
+
+<p>Pour conclure, je ne ferai pas de super mot de la fin puisque je ne me suis borné qu&#8217;à traduire quelques bouts par ci par là de la documentation et que je trouve que cela suffit à lui-même ;&ndash;).</p>
+
+<p>Par contre, pour tous ceux que ça intéresse, je vous invite à jeter un oeil à la documentation officielle très complète (aussi bien au niveau configuration que explication).</p>
+
+<p>Enjoy! ;&ndash;)</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-03-13T10:19:01+01:00" pubdate data-updated="true">March 13, 2012</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/architecture/'>architecture</a>, <a class='category' href='/blog/categories/cassandra/'>cassandra</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/nosql/'>nosql</a>, <a class='category' href='/blog/categories/reflexion/'>réflexion</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html';
+        var disqus_url = 'http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2012/02/petit-focus-sur-2-plugins-maven.html" title="Previous Post: Petit focus sur 2 plugins Maven">&laquo; Previous: Petit focus sur 2 plugins Maven</a>
+        
+
+        
+          <a class="pull-right" href="/2012/05/devoxx-2012-elasticsearch-moteur-de.html" title="Next Post: Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud">Next: Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

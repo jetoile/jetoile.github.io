@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Devoxx 2012 : Versionner Son Service Dans Une Architecture SOA Et/ou Cloud - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Devoxx 2012 : Versionner Son Service Dans Une Architecture SOA Et/ou Cloud November 21, 2012 Ça y est&hellip; Devoxx est fini&hellip; :&lsquo;( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Devoxx 2012 : Versionner Son Service Dans Une Architecture SOA Et/ou Cloud</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-11-21T15:12:51+01:00" pubdate data-updated="true">November 21, 2012</time>  
+        </div>
+        <p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
+
+<p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(
+Comme je l&#8217;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&#8217;ai pu assisté à Devoxx.</p>
+
+<p>Cependant, je tenais à revenir sur la présentation &ldquo;<em>Service Versioning in SOA and Cloud</em>&rdquo; par <strong>Ignaz Wanders</strong> (<a href="https://twitter.com/ignazw">@ignazw</a>) dont le synopsis était :</p>
+
+<blockquote><p>Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</p></blockquote>
+
+<br/>
+
+
+<blockquote><p>We often see design-type versioning, resulting in Big Bang governance strategies. A runtime versioning strategy may be, in fact, be preferable.</p></blockquote>
+
+<br/>
+
+
+<blockquote><p>Every change must be built, and every change must be governed. A &ldquo;cheap&rdquo; build may lead to a large governance impact. But conversely, a small governance cost may lead to a large build impact. Both build and governance costs need to be taken into account and carefully balanced when choosing and implementing a service versioning strategy.</p></blockquote>
+
+<p>Dans cet article, je me contenterai de montrer quelques-uns des slides de la présentation de Ignaz Wanders qui définissent et synthétisent très bien les différentes stratégies possibles en partant de comment numéroter ses services pour arriver à une proposition qu&#8217;il aimerait avoir du coté du consortium OASIS avec un WS-Versioning. Les slides étant suffisant en eux-mêmes et n&#8217;ayant pas envie de répéter/déformer leur contenu, je ne mettrai donc que les photos prises pendant la conférence&hellip;</p>
+
+<!-- more -->
+
+
+<p><img src="http://3.bp.blogspot.com/-jQmsfBODkbk/UKwAQe5_3hI/AAAAAAAAAyI/U2o6JrWPC0A/s1600/_IMG_20121114_183004.jpg" alt="small" /></p>
+
+<p>D&#8217;ailleurs, une version pdf dont le contenu est similaire (identique?) est accessible <a href="http://www.servicetechsymposium.com/dl/presentations/the_service_versioning_balancing_act.pdf">ici</a>.</p>
+
+<p>Enjoy! ;&ndash;)</p>
+
+<p><img src="http://4.bp.blogspot.com/-V3A7YsME1qc/UKv_rdwByZI/AAAAAAAAAww/dAFqcrxg9No/s1600/_IMG_20121114_180323.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-xbCED_gA8FI/UKv_u5wLLtI/AAAAAAAAAw4/ftroF40s15k/s1600/_IMG_20121114_180329.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-XgRKL4EkTAM/UKv_x_SQ17I/AAAAAAAAAxA/xFxPFfhuMvY/s1600/_IMG_20121114_180536.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-HVdfl4dxTkM/UKv_1JlCcsI/AAAAAAAAAxI/yc4CU7WU_64/s1600/_IMG_20121114_180815.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-EHMmEnybKBo/UKv_4XJenuI/AAAAAAAAAxQ/dIsguCfMjhw/s1600/_IMG_20121114_181020.jpg" alt="medium" /></p>
+
+<p><img src="http://3.bp.blogspot.com/-Y4wEcftNOD8/UKv_8kw0TqI/AAAAAAAAAxY/w92mR9tPBoU/s1600/_IMG_20121114_181306.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-39pTw8YZvf0/UKv__6d0rNI/AAAAAAAAAxg/XFBaryDXQ5U/s1600/_IMG_20121114_181445.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-deIWO4ytlUU/UKwADCvsYGI/AAAAAAAAAxo/tWO4VBEzI6g/s1600/_IMG_20121114_182310.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-q8PAIg75_mU/UKwAFVcDg4I/AAAAAAAAAxw/ylFPvFhCyJM/s1600/_IMG_20121114_182732.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-6SCvJCOB0_A/UKwAI8wOZ1I/AAAAAAAAAx4/ffn8uhngv9A/s1600/_IMG_20121114_182754.jpg" alt="medium" /></p>
+
+<p><img src="http://2.bp.blogspot.com/-LwnYPf2AUek/UKwAMZaiUKI/AAAAAAAAAyA/8VI-LkSn0Mg/s1600/_IMG_20121114_182903.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-nHjSNerL9nc/UKwAS7CkIhI/AAAAAAAAAyQ/8tXgU50Ohv0/s1600/_IMG_20121114_183054.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-aKBOUmyQc3g/UKwBv2ke-BI/AAAAAAAAAy4/-mtm_ERfCUk/s1600/_IMG_20121114_183135.jpg" alt="medium" /></p>
+
+<p><img src="http://4.bp.blogspot.com/-7tcZYwkXHCY/UKwAZ-ouTlI/AAAAAAAAAyg/PqGdkqlXY_k/s1600/_IMG_20121114_183326.jpg" alt="medium" /></p>
+
+<p><img src="http://1.bp.blogspot.com/-afWGOsx4Es4/UKwAcX7W76I/AAAAAAAAAyo/4g4lXp3N5JA/s1600/_IMG_20121114_183509.jpg" alt="medium" /></p>
+
+<p><img src="http://3.bp.blogspot.com/-4i4O9yO_nSg/UKwAeejTZqI/AAAAAAAAAyw/9oa_EsrStMI/s1600/_IMG_20121114_183710.jpg" alt="medium" /></p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2012-11-21T15:12:51+01:00" pubdate data-updated="true">November 21, 2012</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/architecture/'>architecture</a>, <a class='category' href='/blog/categories/devoxx/'>devoxx</a>, <a class='category' href='/blog/categories/eip/'>eip</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/soa/'>soa</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html';
+        var disqus_url = 'http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2012/11/devoxx-2012-cest-fini.html" title="Previous Post: Devoxx 2012 : c'est fini...">&laquo; Previous: Devoxx 2012 : c'est fini...</a>
+        
+
+        
+          <a class="pull-right" href="/2013/03/demarrer-une-webapp-en-mode-embedded.html" title="Next Post: Démarrer une webapp en mode embedded avec Maven">Next: Démarrer une webapp en mode embedded avec Maven &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

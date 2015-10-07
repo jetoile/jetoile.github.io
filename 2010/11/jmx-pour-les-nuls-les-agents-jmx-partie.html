@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JMX Pour Les Nuls... - Les Agents JMX - Partie 3 - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="JMX Pour Les Nuls... - Les Agents JMX - Partie 3 November 8, 2010 Cette troisième partie sur JMX reste dans la continuité de la série d&#8217; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>JMX Pour Les Nuls... - Les Agents JMX - Partie 3</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-11-08T15:50:22+01:00" pubdate data-updated="true">November 8, 2010</time>  
+        </div>
+        <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left" />
+Cette troisième partie sur JMX reste dans la continuité de la série d&#8217;article sur ce sujet (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités et <a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&#8217;est un agent JMX et à quoi il sert.</p>
+
+<p>Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.</p>
+
+<!-- more -->
+
+
+<h1>Table des matières</h1>
+
+<ul>
+<li>JMX, qu&#8217;est ce que c&#8217;est?
+
+<ul>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite">Généralités</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture">Architecture JMX</a>
+
+<ul>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation">Niveau instrumentation</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent">Niveau agent</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue">Niveau service distribué</a></li>
+</ul>
+</li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant">Composants JMX</a>
+
+<ul>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean">MBeans</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification">Modèle de notifications</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee">Classe de métadonnées de MBeans</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur">Serveur de MBeans</a></li>
+<li><a href="/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service">Service d&#8217;agents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spécifications
+
+<ul>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">JMX Instrumentation</a>
+
+<ul>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean">MBean</a>
+
+<ul>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard">MBean Standard</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic">Dynamic MBean</a></li>
+</ul>
+</li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification">Notification</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open">Open MBean</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model">Model MBean</a></li>
+</ul>
+</li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent">Agent JMX</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">Concepts</a>
+
+<ul>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName">ObjectName</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance">ObjectInstance</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute">Attribute et AttributeList</a></li>
+<li><a href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception">Les Exceptions</a></li>
+</ul>
+</li>
+<li><a href="/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server">MBean Server</a></li>
+<li><a href="/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic">Chargement dynamique des MBeans</a></li>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html">Les services JMX</a>
+
+<ul>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring">Service Monitoring</a></li>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer">Service Timer</a></li>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation">Service Relation</a></li>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite">Service Sécurité</a></li>
+</ul>
+</li>
+<li><a href="/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector">Les Connecteurs</a></li>
+</ul>
+</li>
+</ul>
+
+
+<p><a name="agent"></a></p>
+
+<h1>Agent JMX</h1>
+
+<p>Un agent JMX est une entité de management qui s’exécute sur une machine virtuelle Java et qui permet de faire la liaison entre les MBean et l’application de management. Un agent JMX est composé d’un MBean server, d’un ensemble de MBean représentant les ressources à administrer et superviser, d’un ensemble minimal de services d’agent qui se présentent sous forme de MBean et d’au moins un adaptateur de protocol ou connecteur.</p>
+
+<p>L’architecture d’un agent JMX peut donc se définir comme tel :</p>
+
+<ul>
+<li>Les MBeans qui représentent les ressources à administrer et superviser</li>
+<li>Le MBean server qui est la clé de voute de l’architecture d’un agent JMX</li>
+<li>Les services d’agent qui peuvent être des composants pré-définis ou des services spécifiques et  qui peuvent être classés de la manière suivante :
+
+<ul>
+<li><strong>Services d’agent dynamiques</strong> qui permettent à l’agent d’instancier des MBeans qui utilisent indifféremment des classes Java ou des librairies natives qui peuvent être téléchargées dynamiquement sur le réseau</li>
+<li><strong>Services d’agent de management</strong> utilisés pour superviser la valeur des attributs des MBean : le service notifie sous certaines conditions ses écouteurs lors du changement de valeur d’un attribut du MBean</li>
+<li><strong>Services timer d’agent</strong> qui permet d’émettre périodiquement des notifications</li>
+<li><strong>Services de relation d’agent</strong> qui définit les associations entre les MBeans et qui est garant de la consistence des relations</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Les applications de management peuvent accéder à l’agent JMX aux travers de différents adaptateurs de protocole et connecteurs. Ces objets font parti intégrantes de l’application agent mais ne sont pas définis par les spécifications JMX.</p>
+
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNHQb2x4MpI/AAAAAAAAANg/OPcRpH9yrII/s1600/jmx24.png" alt="medium" /></p>
+
+<p>L’architecture JMX permet aux objets d’invoquer les opérations suivantes sur un agent JMX :</p>
+
+<ul>
+<li>Gérer les MBeans existants en :
+
+<ul>
+<li>Récupérant la valeur de ses attributs</li>
+<li>Changeant la valeur de ses attributs</li>
+<li>Invoquant des opérations sur ce dernier</li>
+</ul>
+</li>
+<li>Récupérer les notifications émises par n’importe quel MBean</li>
+<li>Instancier et enregistrer des MBeans à partir de :
+
+<ul>
+<li>Classes Java déjà présentent dans la JVM de l’agent JMX</li>
+<li>Classes Java téléchargées d’une autre machine ou présentent sur le réseau</li>
+</ul>
+</li>
+<li>Utiliser les services d’agent pour implémenter une stratégie de management qui impactera les MBean existants.</li>
+</ul>
+
+
+<p>Il est à noter que ces objets peuvent être indifférement du coté de l’agent ou dans une application de management distante.</p>
+
+<p>Les adaptateurs de protocole et les connecteurs rendent l’agent accessible d’une application de management distante et offrent une vue, au travers d’un protocole spécifique, des MBeans instanciés et enregistrés dans le MBean Server.</p>
+
+<p>Les connecteurs sont utilisés pour connecter un agent JMX à une application de management qui supporte JMX, c&#8217;est-à-dire une application développée en utilisant des services distribués tels que définis par la spécification JMX. Ce type de communication implique une couche serveur dans l’agent et une couche cliente dans l’application de management.</p>
+
+<p>Un connecteur est spécifique à un protocole donné mais l’application de management peut posséder plusieurs connecteurs indifféremment puisqu’ils ont la même interface.</p>
+
+<p>Un adaptateur de protocole fournit une interface de management de l’agent JMX au travers un protocole donné. Il adapte les opérations du MBean et du MBean Server en une représentation de ce protocole éventuellement avec un modèle différent des informations (comme dans le cas de SNMP). Dans ce cas, l’application de gestion est généralement spécifique au protocole utilisé : elles accèdent à l’agent JMX non à travers une représentation de MBean Server distant mais au travers des opérations qui s’interfacent à celles offertes par le MBean Server.
+Les serveurs de connecteurs et les adaptateurs de protocole utilisent les services du MBean Server pour invoquer les opérations de l’application de management aux MBeans et pour transmettre les notifications des MBeans aux applications.</p>
+
+<p>Il est à noter que pour qu’un agent soit gérable, il doit inclure au moins un adaptateur de protocole ou un serveur de connecteurs. Enfin, ces connecteurs et adaptateurs doivent être implémentés comme des MBeans afin qu’ils puissent également être gérable et plus particulièrement afin qu’ils puissent être chargés ou déchargés dynamiquement lorsque cela est nécessaire.</p>
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2010-11-08T15:50:22+01:00" pubdate data-updated="true">November 8, 2010</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jmx/'>jmx</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html';
+        var disqus_url = 'http://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html" title="Previous Post: JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2">&laquo; Previous: JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2</a>
+        
+
+        
+          <a class="pull-right" href="/2010/11/jmx-pour-les-nuls-les-classes-de-base.html" title="Next Post: JMX pour les nuls... - Les classes de base - Partie 4">Next: JMX pour les nuls... - Les classes de base - Partie 4 &raquo;</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,3 +1,22 @@
+#Pour générer
+
+* bundle
+* bundle exec rake preview
+
+* bundle exec rake new_post["Zombie Ninjas Attack: A survivor's retrospective"]
+* bundle exec rake new_page[super-awesome/page.html]
+
+* bundle exec rake generate   # Generates posts and pages into the public directory
+* bundle exec rake watch      # Watches ource/ an sass/ for changes and regenerates
+* bundle exec rake preview    # Watches, and mounts a webserver at http://localhost:4000
+
+* bundle exec rake generate
+* bundle exec rake deploy
+
+* git add .
+* git commit -m 'your message'
+* git push origin source
+
 ## What is Octopress?
 
 Octopress is [Jekyll](https://github.com/mojombo/jekyll) blogging at its finest.

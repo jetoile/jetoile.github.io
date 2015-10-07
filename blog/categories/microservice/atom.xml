@@ -4,7 +4,7 @@
   <title><![CDATA[Category: microservice | Jetoile]]></title>
   <link href="http://blog.jetoile.fr/blog/categories/microservice/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2015-10-07T17:01:51+02:00</updated>
+  <updated>2015-10-07T18:30:38+02:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Template de projets REST]]></title>
+    <link href="http://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
+    <updated>2015-10-07T17:33:08+02:00</updated>
+    <id>http://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
+    <content type="html"><![CDATA[<p><img src="/images/template_rest.png" alt="left-small" />
+Il y a déjà un long moment, j'avais posté une série d'article expliquant comment il était possible de faire des web service de type REST de manière simple via <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">RestEasy-Netty</a> ou via <a href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow</a>.</p>
+
+<p>Dans la continuité de cette course au plus léger, je me suis dit que cela pouvait être intéressant de faire une petite étude un peu plus exhaustive des solutions légères qui existaient.</p>
+
+<p>L'objectif étant extraire une sorte de bench un peu naïf et un peu <em>out of the box</em>. Parmi les solutions retenues, il y a :</p>
+
+<ul>
+<li>Resteasy-Netty</li>
+<li>Resteasy-Undertow</li>
+<li>Restlet</li>
+<li>SpringBoot</li>
+<li>Resteasy sur Tomcat en utilisant ses connecteurs NIO</li>
+<li>Resteasy sur Jetty</li>
+</ul>
+
+
+<p>Cette article est là pour restituer mes résultats&hellip;</p>
+
+<!-- more -->
+
+
+<p>En fait, non&hellip; j'ai menti puisque je ne ferai aucun retour mais que je donnerai seulement le lien vers mon github où il est possible de trouver ces <em>bootstrap</em> de projets&hellip;</p>
+
+<p>En effet, faire un <em>bench</em> est dangereux et complexe surtout quand toutes les implémentations ne sont pas maitrisées et qu'un <em>tuning</em> de ces dernières peut grandement modifier le résultat.</p>
+
+<p>En outre, avoir un service exhaustif (autre que un simple <em>helloword</em>) qui est représentatif d'une vrai application et qui ne fait pas que taper dans le cache de la JVM ou de l'OS est plus complexe qu'écrire un simple <em>sample</em>.</p>
+
+<p>Enfin, par manque de moyen (2 ordinateurs reliés par un wifi capricieux et par flemme de me monter des environnements plus représentatifs), je n'ai pu obtenir de résultats fiables&hellip;</p>
+
+<p>Aussi, ci-joint les <em>repos</em> où il est possible de trouver le code (qui se veut ultra simple et qui a été fait sans chercher l'optimisation et sur un coin de table donc si des bourdes ont été faites, je m'en excuse&hellip;) :</p>
+
+<ul>
+<li><a href="https://github.com/jetoile/resteasy-netty-sample">Sample RestEasy-Netty</a></li>
+<li><a href="https://github.com/jetoile/dropwizard-sample">Sample Dropwizard</a></li>
+<li><a href="https://github.com/jetoile/restlet-sample">Sample Restlet</a></li>
+<li><a href="https://github.com/jetoile/undertow-sample">Sample RestReasy-Undertow</a></li>
+<li><a href="https://github.com/jetoile/tomcat-resteasy-sample">Sample Tomcat/Jetty</a> : simple webapp à déployer dans les conteneurs avec les bonnes options</li>
+<li><a href="https://github.com/jetoile/springboot-sample">Sample SpringBoot</a></li>
+<li><a href="https://github.com/jetoile/gatling-sample">Sample de projet Gatling pour le tir de performance</a></li>
+</ul>
+
+
+<p>Ainsi, si le coeur vous en dit, vous pourrez vous faire vous même une idée de qui est le plus fort&hellip; et même comparer avec vos solutions maisons&hellip; ;)</p>
+
+<p>Allez, et parce que je suis sympa, je mets quand même le rapport Gatling obtenu suite à 1 seul tir en local. Je laisse le lecteur se faire une idée&hellip; ou pas&hellip;</p>
+
+<ul>
+<li><a href="/images/res_charge_gatling/dropwizard-1/index.html">Résultat Dropwizard</a></li>
+<li><a href="/images/res_charge_gatling/jetty-1/index.html">Résultat Jetty</a></li>
+<li><a href="/images/res_charge_gatling/netty-1/index.html">Résultat RestEasy-Netty</a></li>
+<li><a href="/images/res_charge_gatling/restlet-1/index.html">Résultat Restlet</a></li>
+<li><a href="/images/res_charge_gatling/springboot-1/index.html">Résultat SpringBoot</a></li>
+<li><a href="/images/res_charge_gatling/tomcat-nio-1/index.html">Résultat Tomcat NIO</a></li>
+<li><a href="/images/res_charge_gatling/undertow-1/index.html">Résultat RestEasy-Undertow</a></li>
+</ul>
+
+
+<p>Voilà un article un peu facile et qui n'apporte pas grand chose mais je trouvais qu'il était toujours intéressant pour les lecteurs curieux d'avoir la possibilité de voir différentes implementations&hellip;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Undertow pour booster vos services REST]]></title>

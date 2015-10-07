@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2015-10-07T17:01:51+02:00</updated>
+  <updated>2015-10-07T18:30:38+02:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Template De Projets REST]]></title>
+    <link href="http://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
+    <updated>2015-10-07T17:33:08+02:00</updated>
+    <id>http://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/template_rest.png" alt="left-small" />
+Il y a déjà un long moment, j&#8217;avais posté une série d&#8217;article expliquant comment il était possible de faire des web service de type REST de manière simple via <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">RestEasy-Netty</a> ou via <a href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow</a>.</p>
+
+<p>Dans la continuité de cette course au plus léger, je me suis dit que cela pouvait être intéressant de faire une petite étude un peu plus exhaustive des solutions légères qui existaient.</p>
+
+<p>L&#8217;objectif étant extraire une sorte de bench un peu naïf et un peu <em>out of the box</em>. Parmi les solutions retenues, il y a :</p>
+
+<ul>
+<li>Resteasy-Netty</li>
+<li>Resteasy-Undertow</li>
+<li>Restlet</li>
+<li>SpringBoot</li>
+<li>Resteasy sur Tomcat en utilisant ses connecteurs NIO</li>
+<li>Resteasy sur Jetty</li>
+</ul>
+
+
+<p>Cette article est là pour restituer mes résultats&hellip;</p>
+
+<!-- more -->
+
+
+<p>En fait, non&hellip; j&#8217;ai menti puisque je ne ferai aucun retour mais que je donnerai seulement le lien vers mon github où il est possible de trouver ces <em>bootstrap</em> de projets&hellip;</p>
+
+<p>En effet, faire un <em>bench</em> est dangereux et complexe surtout quand toutes les implémentations ne sont pas maitrisées et qu&#8217;un <em>tuning</em> de ces dernières peut grandement modifier le résultat.</p>
+
+<p>En outre, avoir un service exhaustif (autre que un simple <em>helloword</em>) qui est représentatif d&#8217;une vrai application et qui ne fait pas que taper dans le cache de la JVM ou de l&#8217;OS est plus complexe qu&#8217;écrire un simple <em>sample</em>.</p>
+
+<p>Enfin, par manque de moyen (2 ordinateurs reliés par un wifi capricieux et par flemme de me monter des environnements plus représentatifs), je n&#8217;ai pu obtenir de résultats fiables&hellip;</p>
+
+<p>Aussi, ci-joint les <em>repos</em> où il est possible de trouver le code (qui se veut ultra simple et qui a été fait sans chercher l&#8217;optimisation et sur un coin de table donc si des bourdes ont été faites, je m&#8217;en excuse&hellip;) :</p>
+
+<ul>
+<li><a href="https://github.com/jetoile/resteasy-netty-sample">Sample RestEasy-Netty</a></li>
+<li><a href="https://github.com/jetoile/dropwizard-sample">Sample Dropwizard</a></li>
+<li><a href="https://github.com/jetoile/restlet-sample">Sample Restlet</a></li>
+<li><a href="https://github.com/jetoile/undertow-sample">Sample RestReasy-Undertow</a></li>
+<li><a href="https://github.com/jetoile/tomcat-resteasy-sample">Sample Tomcat/Jetty</a> : simple webapp à déployer dans les conteneurs avec les bonnes options</li>
+<li><a href="https://github.com/jetoile/springboot-sample">Sample SpringBoot</a></li>
+<li><a href="https://github.com/jetoile/gatling-sample">Sample de projet Gatling pour le tir de performance</a></li>
+</ul>
+
+
+<p>Ainsi, si le coeur vous en dit, vous pourrez vous faire vous même une idée de qui est le plus fort&hellip; et même comparer avec vos solutions maisons&hellip; ;)</p>
+
+<p>Allez, et parce que je suis sympa, je mets quand même le rapport Gatling obtenu suite à 1 seul tir en local. Je laisse le lecteur se faire une idée&hellip; ou pas&hellip;</p>
+
+<ul>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/dropwizard-1/index.html">Résultat Dropwizard</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/jetty-1/index.html">Résultat Jetty</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/netty-1/index.html">Résultat RestEasy-Netty</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/restlet-1/index.html">Résultat Restlet</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/springboot-1/index.html">Résultat SpringBoot</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/tomcat-nio-1/index.html">Résultat Tomcat NIO</a></li>
+<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/undertow-1/index.html">Résultat RestEasy-Undertow</a></li>
+</ul>
+
+
+<p>Voilà un article un peu facile et qui n&#8217;apporte pas grand chose mais je trouvais qu&#8217;il était toujours intéressant pour les lecteurs curieux d&#8217;avoir la possibilité de voir différentes implementations&hellip;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Undertow Pour Booster Vos Services REST]]></title>
@@ -7956,76 +8023,6 @@ Comme je l&#8217;ai dit dans un article précédent, je ne ferai pas de compte-r
 <p><img src="http://1.bp.blogspot.com/-afWGOsx4Es4/UKwAcX7W76I/AAAAAAAAAyo/4g4lXp3N5JA/s1600/_IMG_20121114_183509.jpg" alt="medium" /></p>
 
 <p><img src="http://3.bp.blogspot.com/-4i4O9yO_nSg/UKwAeejTZqI/AAAAAAAAAyw/9oa_EsrStMI/s1600/_IMG_20121114_183710.jpg" alt="medium" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Devoxx 2012 : C'est Fini...]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html"/>
-    <updated>2012-11-19T13:15:30+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini</id>
-    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
-
-<p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(</p>
-
-<p>Pour ceux qui ne le sauraient pas encore, Devoxx est L’évènement à ne pas manquer.</p>
-
-<p>Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa 11ième édition et qui a lieu à Anvers (Belgique). Elle a également fait récemment de nombreux petits avec <a href="http://devoxx.fr/">Devoxx France</a> qui en est à sa 2ième édition et qui aura lieu cette année du 27 au 29 mars 2013 à Paris mais également avec le petit nouveau : Devoxx UK (du 25 au 26 mars 2013 à Londres).</p>
-
-<p>Elle a regroupé cette année prêt de 3400 participants venant de tous les pays dont environ 200 français.</p>
-
-<!-- more -->
-
-
-<p>Pour avoir un retour exhaustif, je vous renvoi sur d&#8217;autres blogs :</p>
-
-<ul>
-<li>Le blog de Nicolas Martignole :
-
-<ul>
-<li><a href="http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/">http://www.touilleur-express.fr/2012/11/14/retour-sur-devoxx-2012-et-infos-sur-devoxx-france-2013/</a></li>
-<li><a href="http://www.touilleur-express.fr/2012/11/17/devoxx-2012/">http://www.touilleur-express.fr/2012/11/17/devoxx-2012/</a></li>
-</ul>
-</li>
-<li>Le blog de Nicolas DeLoof :
-
-<ul>
-<li><a href="http://blog.loof.fr/2012/11/devoxx-2012-day-1.html">http://blog.loof.fr/2012/11/devoxx-2012-day-1.html</a></li>
-<li><a href="http://blog.loof.fr/2012/11/devoxx-day-2.html">http://blog.loof.fr/2012/11/devoxx-day-2.html</a></li>
-<li><a href="http://blog.loof.fr/2012/11/devoxx-day-3.html">http://blog.loof.fr/2012/11/devoxx-day-3.html</a></li>
-<li><a href="http://blog.loof.fr/2012/11/devoxx-day-4.html">http://blog.loof.fr/2012/11/devoxx-day-4.html</a></li>
-<li><a href="http://blog.loof.fr/2012/11/devoxx-day-5.html">http://blog.loof.fr/2012/11/devoxx-day-5.html</a></li>
-</ul>
-</li>
-<li>Le blog de Nicolas Frankel :
-
-<ul>
-<li><a href="http://blog.frankel.ch/devoxx-2012-day-1">http://blog.frankel.ch/devoxx-2012-day-1</a></li>
-<li><a href="http://blog.frankel.ch/devoxx-2012-day-2">http://blog.frankel.ch/devoxx-2012-day-2</a></li>
-<li><a href="http://blog.frankel.ch/devoxx-2012-day-3">http://blog.frankel.ch/devoxx-2012-day-3</a></li>
-<li><a href="http://blog.frankel.ch/devoxx-2012-day-4">http://blog.frankel.ch/devoxx-2012-day-4</a></li>
-<li><a href="http://blog.frankel.ch/devoxx-2012-final-day">http://blog.frankel.ch/devoxx-2012-final-day</a></li>
-</ul>
-</li>
-<li>Le blog de Romain Maton
-
-<ul>
-<li><a href="http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html">http://www.web-tambouille.fr/2012/11/19/un-devoxx-2012-sous-le-signe-du-web-java-javascript-html5-mobile-scala-android.html</a></li>
-</ul>
-</li>
-</ul>
-
-
-<p>Egalement, en bonus et en attendant la deuxième édition de Devoxx France, une petite vidéo de Roy von Rijn :</p>
-
-<iframe allowfullscreen="allowfullscreen" frameborder="0" height="281" mozallowfullscreen="mozallowfullscreen" src="http://player.vimeo.com/video/53695846?badge=0" webkitallowfullscreen="webkitallowfullscreen" width="500"></iframe>
-
-
-<p><a href="http://vimeo.com/53695846">Impressions of Devoxx (2012)</a> from <a href="http://vimeo.com/royvanrijn">Roy van Rijn</a> on <a href="http://vimeo.com/">Vimeo</a></p>
-
-<p>Pour ma part, je ne ferai pas de compte-rendu de conférences mais je me contenterai seulement de revenir dans un article ultérieur sur quelques-uns des points qui m&#8217;ont particulièrement marqués.</p>
-
-<p>Au final, pour résumer, un ENORME merci à toute l&#8217;équipe de Devoxx World (ainsi qu&#8217;aux sponsors) qui, une fois encore, nous a offert une conférence aux petits oignons avec des speakers et du contenu de qualité (cela va de soit) et qui m&#8217;a permis de faire la connaissance le plein de nouveaux copains mais également de renouveler ma garde robe&hellip; ;&ndash;)</p>
 ]]></content>
   </entry>
   

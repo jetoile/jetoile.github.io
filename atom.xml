@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-01-04T21:15:02+01:00</updated>
+  <updated>2016-01-17T19:57:00+01:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,646 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hadoop Ecosysteme Bootstrap]]></title>
+    <link href="http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html"/>
+    <updated>2016-01-18T10:00:00+01:00</updated>
+    <id>http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
+Comme je l&#8217;ai déjà dit dans un article <a href="2015/10/hadoop-et-son-ecosysteme.html">précédent</a>, la force d&#8217;Hadoop n&#8217;est plus dans Hadoop en lui-même mais plutôt dans son écosystème.</p>
+
+<p>Du coup, même lorsqu&#8217;on développe avec Spark, il est courant de vouloir s&#8217;interfacer avec le métastore de Hive ou encore avec SolR si l&#8217;objectif est de vouloir indexer dans ce dernier.</p>
+
+<p>Parfois encore, l&#8217;objectif est de lire ou d&#8217;écrire de Kafka via Spark (ou en Spark Streaming).</p>
+
+<p>Ainsi, lorsqu&#8217;on fait du développement avec des composants &ldquo;BigData&rdquo;, on a souvent besoin d&#8217;un écosystème complet.</p>
+
+<p>Alors, bien sûr, dans un monde idéal, il est possible de disposer de tout l&#8217;écosystème via Docker ou via une machine virtuelle. Pourtant, parfois, il n&#8217;est pas possible de disposer de la pleine puissance de son poste parce qu&#8217;on est, parfois (sic&hellip;), dans un contexte où disposer des droits administrateurs de son poste (et pire quand il s&#8217;agit d&#8217;un poste sous Windows&hellip;) est impossible.</p>
+
+<p>Pour ce faire, il existe quelques solutions comme <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a>. Cependant, chaque composant doit alors être démarré dans le bon ordre et il faut avouer que c&#8217;est un peu verbeux&hellip;</p>
+
+<p>En outre, les couches clientes fonctionnent principalement dans la même JVM.</p>
+
+<p>L&#8217;objectif de ce post est de proposer une alternative beaucoup moins verbeuse et plus pratique.</p>
+
+<p>Il ne s&#8217;agit que d&#8217;une simple surcouche à Hadoop-mini-cluters mais la solution proposée offre également d&#8217;autres possibilités qui ne sont pas offertes par la solution :</p>
+
+<ul>
+<li>possibilité de disposer d&#8217;un SolR qu&#8217;il soit en mode embedded ou en mode cloud</li>
+<li>possibilité d&#8217;avoir un oozie accessible par un client externe à la JVM</li>
+</ul>
+
+
+<p>De plus, la solution proposée dans cet article (enfin plutôt sur mon <a href="https://github.com/jetoile/hadoop-bootstrap">github</a>&hellip;) propose :</p>
+
+<ul>
+<li>de démarrer l&#8217;écosystème nécessaire dans un contexte de Test d&#8217;intégration</li>
+<li>de démarrer l&#8217;écosystème nécessaire en mode standalone avec une simple commande</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>Contexte et proposition</h1>
+
+<p>Comme je l&#8217;ai dit précédemment, le besoin était de pouvoir disposer de l&#8217;écosystème nécessaire à l&#8217;exécution de tests d&#8217;intégration mais également de pouvoir démarrer l&#8217;écosystème nécessaire en mode <em>standalone</em>.</p>
+
+<p>Bien sûr, le tout capable de fonctionner sous Linux mais aussi sous Windows&hellip; (<em>ndlr</em> : oui&hellip; on n&#8217;a pas toujours la main sur ce que nous impose le client&hellip; :&lsquo;( )</p>
+
+<p><a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.</p>
+
+<p>Enfin, comme je l&#8217;ai déjà dit, <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> a été conçu pour les TU/TI mais dans un cas de foncionnement en mode <em>standalone</em> il faut alors accéder aux composants de manière <em>remote</em>.</p>
+
+<p>Parmi les besoins, les composants suivants :</p>
+
+<ul>
+<li>HDFS</li>
+<li>Zookeeper</li>
+<li>HBase</li>
+<li>Hive (ie. HiveMetastore et Hiveserver2)</li>
+<li>Kafka</li>
+<li>Oozie</li>
+<li>SolRCloud</li>
+<li>SolR en mode <em>embedded</em></li>
+</ul>
+
+
+<p>Concernant les parties Spark ou MapReduce, ces frameworks disposant déjà d&#8217;un mode &ldquo;développement&rdquo;, il m&#8217;était inutile de les proposer dans ma solution.</p>
+
+<p>La surcouche proposée (que j&#8217;ai décidé d&#8217;appeler <strong>Hadoop-bootstrap</strong>) se trouve <a href="https://github.com/jetoile/hadoop-bootstrap">ici</a></p>
+
+<p>Elle nécessite cependant quelques pré-requis&hellip;</p>
+
+<h1>Prérequis</h1>
+
+<p>Pour fonctionner, Hadoop-bootstrap nécessite d&#8217;avoir téléchargé et décompressé Hadoop sur son poste. Dans mon cas, j&#8217;ai juste récupéré la version d&#8217;<a href="http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz">Apache</a> que j&#8217;ai décompressée dans <code>/opt/hadoop</code></p>
+
+<p>Il faut ensuite positionner la variable d&#8217;environnement <code>HADOOP_HOME</code> à l&#8217;endroit où la version d&#8217;Hadoop a été décompressée.</p>
+
+<p>Pour l&#8217;utilisation de Oozie, il est nécessaire de télécharger les <code>sharelib</code> de Oozie qui contient les librairies permettant de lancer des actions Hive, Spark, Shell ou autre : <a href="http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz">http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz</a></p>
+
+<p>Il suffit alors de modifier le fichier <code>default.properties</code> en y renseignant les variables <code>HADOOP_HOME</code> et <code>oozie.sharelib.path</code> avec les bonnes valeurs.</p>
+
+<h1>Fonctionnement</h1>
+
+<p>Une fois la partie prérequis réalisée, il ne reste plus qu&#8217;à générer :</p>
+
+<ul>
+<li>le jar si le besoin est d&#8217;utiliser Hadoop-bootstrap dans un contexte de tests d&#8217;intégration</li>
+<li>le tar.gz si le besoin est d&#8217;utiliser Hadoop-bootstrap dans son mode <em>standalone</em></li>
+</ul>
+
+
+<p>Pour ce faire, exécuter simplement la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Pour un fonctionnement en test d&#8217;intégration ou unitaire</h2>
+
+<p>Pour ce mode, il est possible de faire de 2 manières différentes :</p>
+
+<ul>
+<li>démarrer les composants nécessaires manuellement</li>
+<li>utiliser un wrapper qui prend en paramètre les composants à démarrer</li>
+</ul>
+
+
+<p>Attention cependant, dans les 2 cas, il est faut démarrer/arrêter les composants dans le bon ordre&hellip;</p>
+
+<h3>Zookeeper</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Bootstrap</span> <span class="n">zookeeper</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">zookeeper</span> <span class="o">=</span> <span class="n">ZookeeperBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">zookeeper</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>HDFS</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="n">Bootstrap</span> <span class="n">hdfs</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hdfs</span> <span class="o">=</span> <span class="n">HdfsBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hdfs</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HDFS</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>HBase</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">zookeeper</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">hdfs</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">hbase</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hdfs</span> <span class="o">=</span> <span class="n">HdfsBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">zookeeper</span> <span class="o">=</span> <span class="n">ZookeeperBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">hbase</span> <span class="o">=</span> <span class="n">HBaseBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hbase</span><span class="o">.</span><span class="na">stop</span><span class="o">()</span>
+</span><span class='line'>  <span class="n">zookeeper</span><span class="o">.</span><span class="na">stop</span><span class="o">()</span>
+</span><span class='line'>  <span class="n">hdfs</span><span class="o">.</span><span class="na">stop</span><span class="o">()</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HDFS</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">HBASE</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Hive</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">zookeeper</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">hiveMetastore</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">hiveServer2</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">zookeeper</span> <span class="o">=</span> <span class="n">ZookeeperBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hiveMetastore</span> <span class="o">=</span> <span class="n">HiveMetastoreBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hiveServer2</span> <span class="o">=</span> <span class="n">HiveServer2Bootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hiveServer2</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hiveMetastore</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">zookeeper</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">HIVEMETA</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">HIVESERVER2</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Kafka</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">zookeeper</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">kafka</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">zookeeper</span> <span class="o">=</span> <span class="n">ZookeeperBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">kafka</span> <span class="o">=</span> <span class="n">KafkaBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">kafka</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">zookeeper</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">KAFKA</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>SolRCloud</h3>
+
+<p>La difficulté pour intégrer ce composant était que le mode SolR Cloud n&#8217;existait pas. Dans mon contexte d&#8217;utilisation, la cible était SolR Cloud qui impose l&#8217;utilisation de Zookeeper. Concernant l&#8217;interaction d&#8217;un client externe, il doit donc récupérer la configuration de SolR au sein de Zookeeper : le mode de fonctionnement est donc différent d&#8217;un SolR en <em>standalone</em>.</p>
+
+<p>Pour faire fonctionner le mode SolR Cloud, il a fallu interagir directement avec Zookeeper en y écrivant les informations sur la collection cible car le mode embarqué n&#8217;offrait pas les API suffisantes pour créer une collection.</p>
+
+<p>Actuellement, ce mode ne fonctionne qu&#8217;avec une collection qui doit être connue et renseignée préalablement (schema.xml, &hellip;).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">zookeeper</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">solr</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">zookeeper</span> <span class="o">=</span> <span class="n">ZookeeperBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">solr</span> <span class="o">=</span> <span class="n">SolrCloudBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">solr</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">zookeeper</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">SOLRCLOUD</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Oozie</h3>
+
+<p>La difficulté pour intégrer ce composant était que <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d&#8217;intéragir avec le serveur.</p>
+
+<p>En outre, pour utiliser les action Oozie tierce, il était nécesssaire de télécharger oozie. J&#8217;ai juste simplifié ce mode en obligeant l&#8217;utilisateur à disposer déjà de oozie sur son poste pour accélérer le mode de fonctionnement.</p>
+
+<p>Il est donc nécessaire de télécharger les <code>sharelib</code> de Oozie qui contiennet les librairies permettant de lancer des actions Hive, Spark, Shell ou autre (en fait, pour être plus précis, les sharelib sont dans la distribution d&#8217;Oozie : on télécharge donc Oozie&hellip;) : <a href="http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz">http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz</a></p>
+
+<p>Il suffit ensuite de modifier le fichier <code>default.properties</code> en y renseignant la variable <code>oozie.sharelib.path</code> avec la bonne valeur.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">hdfs</span><span class="o">;</span>
+</span><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">Bootstrap</span> <span class="n">oozie</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hdfs</span> <span class="o">=</span> <span class="n">HdfsBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">oozie</span> <span class="o">=</span> <span class="n">OozieBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">oozie</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hdfs</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">static</span> <span class="kd">private</span> <span class="n">HadoopBootstrap</span> <span class="n">hadoopBootstrap</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HadoopBootstrap</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HDFS</span><span class="o">,</span> <span class="n">Component</span><span class="o">.</span><span class="na">OOZIE</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">hadoopBootstrap</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Pour un fonctionnement en mode <em>standalone</em></h2>
+
+<p>Pour ce mode de fonctionnement, il suffit de récupérer le tar.gz généré lors de la compilation. Il est <em>autoporteur</em> et il suffit de le décompresser puis de démarrer Hadoop-bootstrap.</p>
+
+<p>Ses fichiers de configuration se trouvent dans le répertoire <code>conf</code>.</p>
+
+<p>Afin de pouvoir choisir les composants à démarrer, il suffit de modifier le contenu du fichier <code>hadoop.properties</code> se trouvant dans le répertoire <code>conf</code>.</p>
+
+<p>Pour démarrer l&#8217;écosystème, il suffit d&#8217;exécuter la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bin/hadoop-bootstrap start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour arrêter hadoop-bootstrap, exécuter la commande suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bin/hadoop-bootstrap stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour démarrer hadoop-bootstrap en mode interactif, exécuter la commande :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bin/hadoop-bootstrap console
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<div>
+<iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/ef_9Y7a2ar8" width="560"></iframe></div>
+
+
+<p>A noter que ces commande fonctionne également sous Windows.</p>
+
+<p>Concernant macOS, je n&#8217;ai pas testé mais cela ne devrait pas poser de difficultées.</p>
+
+<h1>Conclusion</h1>
+
+<p><a href="https://github.com/jetoile/hadoop-bootstrap">Hadoop-bootstrap</a> n&#8217;est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a>.</p>
+
+<p>Cependant, il est plus simple d&#8217;utilisation car limite plus l&#8217;utilisation des composants.</p>
+
+<p>Il permet, en outre, d&#8217;utiliser l&#8217;écosystème Hadoop en mode <em>standalone</em> (écosystème fonctionnant, bien sûr, en mode dégradé&hellip;) et d&#8217;interagir avec avec des clients externes (par exemple, <code>hdfs dfs</code> fonctionne bien avec le hdfs démarré). Pour plus d&#8217;information, il suffit d&#8217;aller voir la classe <code>ManualIntegrationBootstrapTest</code> dans le package <code>fr.jetoile.sample.integrationtest</code>.</p>
+
+<p>Alors, oui, ce n&#8217;est pas une révolution mais, au moins, ca permettra à l&#8217;utilisateur de ne pas à avoir à se battre avec les conflits de jar que j&#8217;ai pu avec avec SolR et Hadoop&hellip; ;)</p>
+
+<p>Pour plus d&#8217;informations, les <a href="https://github.com/jetoile/hadoop-bootstrap/tree/master/src/test/java/fr/jetoile/sample/component">tests unitaires</a> et les <a href="https://github.com/jetoile/hadoop-bootstrap/blob/master/src/test/java/fr/jetoile/sample/integrationtest/IntegrationBootstrapTest.java">tests d&#8217;<em>intégration</em></a>.</p>
+
+<p>A noter que pour faire fonctionner certains composants, je n&#8217;ai pas fait dans la finesse&hellip; et j&#8217;ai allègrement <em>hacker</em> certaines classes&hellip;</p>
+
+<p>A noter également que j&#8217;ai simplement copier/coller les tests de <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion <em>remote</em>.</p>
+
+<p>Voilà, ce n&#8217;est pas le plus beau code que j&#8217;ai pu faire, mais j&#8217;espère que ca pourra aider certains et, au pire, n&#8217;hésitez pas à contribuer ou à forker pour en faire ce que vous en voulez ;)</p>
+
+<h2>Limitations connues</h2>
+
+<ul>
+<li>phoenix ne fonctionne pas (voir la branche phoenix)</li>
+<li>une seule collection possible avec SolR</li>
+<li>des optimisations sur Oozie sont possibles (notamment sur la partie téléchargement/décompression)</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Loggons Beaucoup Mais Loggons Bien...]]></title>
@@ -6851,689 +7491,6 @@ Concernant l&#8217;initialisation des webDriver, cela est fait au niveau de la c
 <li>code : <a href="http://github.com/jetoile/fluentlenium-cucumber/">http://github.com/jetoile/fluentlenium-cucumber/</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FluentLenium Et Cucumber JVM Sont Sur Un Bateau...]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html"/>
-    <updated>2013-03-14T16:39:36+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur</id>
-    <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
-
-<p>Dans un <a href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html">article précédent</a>, j&#8217;avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n&#8217;a pas été fait que pour l&#8217;exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d&#8217;acceptance en mode boite noire sur l&#8217;application.</p>
-
-<p>Pour faire les tests d&#8217;acceptance, le choix de Cucumber JVM a été fait afin de permettre l&#8217;expression de tests d&#8217;acceptance avec une sémantique utilisant le pattern <strong>Given/When/Then</strong> mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.</p>
-
-<p>L&#8217;application à tester étant une application web, un besoin s&#8217;est fait sentir de tester la partie rendue. Dans cet article, lorsque l&#8217;on parlera de tester la partie rendue, il sera question de vérifier que l&#8217;élément recherché se trouve bien dans le document html remonté dans le navigateur web. Pour rappel (cf. le paragraphe Contexte de ce <a href="2013/03/demarrer-une-webapp-en-mode-embedded.html">post</a>), l&#8217;application testée s&#8217;appuie sur un framework web java de type Struts2.</p>
-
-<p>Aussi, il ne sera pas question, ici, de tester le rendu dans différents navigateurs.</p>
-
-<p>Il a été décidé de partir sur une solution s&#8217;appuyant sur un runtime à base de Selenium : en effet, un besoin latent étant, à terme, de tester le rendu de l&#8217;application web sur les différents navigateurs, cette solution semblait correspondre le mieux aux besoins.</p>
-
-<p>Bref, passons ce besoin pour revenir à notre objectif premier, à savoir, vérifier la présence des éléments dans l&#8217;arbre DOM remonté par l&#8217;application web.</p>
-
-<p>Pour résumer, il a été décidé de partir sur :</p>
-
-<ul>
-<li>Cucumber JVM pour la partie représentation/écriture des scénarii,</li>
-<li>Selenium pour la partie exécution des tests.</li>
-</ul>
-
-
-<p>Cependant, la syntaxe sur la partie WebDriver de Selenium 2 étant assez verbeuse, il a été décidé d&#8217;utiliser le framework FluentLenium qui offre une API plus simple et plus naturelle (enfin plus fluent quoi! ;&ndash;) ). En outre, en plus d&#8217;une API plus facile d&#8217;utilisation, la notion native de Page de FluentLenium poussant à mieux découpler la représentation d&#8217;une page et son test, cela a joué en sa faveur ;&ndash;)</p>
-
-<p>Ainsi, cet article présentera comment il a été possible d&#8217;intégrer Cucumber JVM avec FluentLenium afin de pouvoir faire tourner des tests avec Selenium.</p>
-
-<p>A noter que je ne m&#8217;attarderai pas, dans cet article, à présenter exhaustivement les différents protagonistes mais seulement les quelques points qu&#8217;il est nécessaires de connaitre afin d&#8217;intégrer ensemble ces différents framework.</p>
-
-<p>[update] Suite à discussion avec la créatrice de FluentLenium, un autre article a été initié et apporte de nombreux compléments mais également correction à cet article. Pour en savoir, plus, rendez vous <a href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html">ici</a>&hellip;</p>
-
-<!-- more -->
-
-
-<h1>Présentation des protagonistes</h1>
-
-<h2>Cucumber JVM</h2>
-
-<p><img src="http://2.bp.blogspot.com/-vb7zd_BqITk/UTmwyd4yWsI/AAAAAAAAA3w/tYVxH4hxlig/s1600/cucumber2.jpg" alt="center" /></p>
-
-<p><a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> est un fork Java de <a href="http://cukes.info/">Cucumber</a> inialement développé en Ruby.</p>
-
-<p>Tout comme <a href="http://jbehave.org/">JBehave</a>, il est orienté BDD (<em>Behaviour Driven Development</em>) et il permet d&#8217;écrire ses <strong>scénarii</strong> de tests en suivant le pattern <strong>Given/When/Then</strong> qui correspond à déterminer un ensemble de <a href="https://github.com/cucumber/cucumber/wiki/Step-Definitions">Step</a>.</p>
-
-<p>Ces scénarii s&#8217;écrivent dans des fichiers <strong>features</strong> qui sont lus par Cucumber JVM. Ce dernier se charge alors de faire correspondre les <strong>Steps</strong> avec les fixtures associés. Ces <strong>steps</strong> sont des méthodes Java annotées par :</p>
-
-<ul>
-<li>@Given(value = &ldquo;&rdquo;)</li>
-<li>@When(value = &ldquo;&rdquo;)</li>
-<li>@Then(value = &ldquo;&rdquo;)</li>
-</ul>
-
-
-<p>A noter que seule la valeur de l&#8217;annotation est utilisée par Cucumber JVM.</p>
-
-<p>Alors que les steps à la sémantique Given permettront de poser les conditions nécessaires à l&#8217;exécution du scénario, les steps When exécuteront l&#8217;action à tester et les steps Then testeront que tout s&#8217;est bien passé en utilisant le framework d&#8217;assertion de son choix tels que JUnit, Fest-assert et/ou Harmcrest.</p>
-
-<p>A noter également que pour passer un état d&#8217;une Step à une autre, Cucumber JVM nous oblige à stocker ces derniers dans des variables de classe ou à passer par son mécanisme d&#8217;injection à l&#8217;aide de framework IoC tels que <a href="http://picocontainer.codehaus.org/">Picocontainer</a>.</p>
-
-<p>Ainsi, on peut résumer grossièrement en disant qu&#8217;un scénario est écrit dans un fichier <strong>feature</strong> et est composé d&#8217;un ensemble de Step qui sont associés à des méthodes qui correspondent aux différentes <strong>fixtures</strong>.</p>
-
-<p>Pour plus d&#8217;informations sur le BDD, je vous renvoie sur un <a href="http://blog.soat.fr/2011/06/breizhcamp-behaviour-driven-development-par-olivier-billard-et-thierry-henrio/">compte rendu</a> d&#8217;une présentation d&#8217;Olivier Billard et de Thierry Henrio réalisé au BreizhCamp que j&#8217;avais fait à l&#8217;époque.</p>
-
-<h2>Selenium 2</h2>
-
-<p><img src="http://4.bp.blogspot.com/-xOJkyRycXEU/UTmxGd1a-nI/AAAAAAAAA4A/kMPuTOc5tpY/s1600/big-logo.png" alt="center" /></p>
-
-<p>Dans notre cas d&#8217;usage, il y a assez peu de chose à dire sur <a href="http://docs.seleniumhq.org/">Selenium</a> si ce n&#8217;est qu&#8217;il permet, en fournissant différents <strong>WebDriver</strong>, de tester le rendu d&#8217;une page HTML en simulant différentes actions telles que le submit de formulaires, le clique d&#8217;un bouton et en allant chercher différents éléments dans la page rendue.</p>
-
-<p>Il propose différentes implémentations de WebDriver tels que <strong>FirefoxDriver</strong> ou <strong>HtmlUnitDriver</strong>.</p>
-
-<p>Selenium offre également la possibilité d&#8217;exécuter les navigateurs qu&#8217;il lance sur différentes machines via Selenium Server mais, dans notre cas, cette fonctionnalité ne sera pas utile. De même, il ne sera pas abordé la partie Selenium IDE qui est peu exploitable car difficilement maintenable. En effet, il est courant et même fortement recommandé de séparer, pour des raisons évidentes, les scénarii à tester du rendu de la page (par exemple en utilisant le <a href="http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern">Page Object Design Pattern</a>).</p>
-
-<p>Les liens suivants détaillent plus précisément ces différents points :</p>
-
-<ul>
-<li><a href="http://fr.slideshare.net/MathildeLemee/selenium-testng-selenium-grid-best-practices">http://fr.slideshare.net/MathildeLemee/selenium-testng-selenium-grid-best-practices</a></li>
-<li><a href="http://docs.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations">http://docs.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations</a></li>
-</ul>
-
-
-<h2>FluentLenium</h2>
-
-<p><img src="http://1.bp.blogspot.com/-fyH1CNEBvIw/UTmxNk5WZTI/AAAAAAAAA4I/obgbEW5Ae6w/s1600/code.png" alt="center" /></p>
-
-<p><a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a> est un framework utilisant Selenium mais proposant une API plus simple et plus naturelle que celle offerte par ce dernier.</p>
-
-<p>Il a été pensé pour s&#8217;intégrer à des tests exécutés avec JUnit ou TestNG et se charge donc d&#8217;initialiser le <strong>WebDriver</strong> Selenium à chaque fois qu&#8217;il exécute un test.</p>
-
-<p>Pour ce faire, il utilise, au moment de l&#8217;écriture de ces lignes, le mécanisme de <strong>Rule</strong> JUnit qui fait, grosso modo, comme le @Before de JUnit mais qui peut être partagé entre les différentes classes de test.</p>
-
-<p>En outre, FluentLenium s&#8217;appuie sur la notion de <strong>FluentPage</strong> et de <strong>FluentTest</strong>. En fait, pour faire simple, les classes de tests doivent étendre FluentTest, ce qui permet à toutes les méthodes annotées par @Test d&#8217;initialiser le WebDriver Selenium. La classe peut, de plus, bénéficier des méthodes portées par FluentTest.</p>
-
-<p>La notion de FluentPage permet, quant à elle, de représenter une page (au sens HTML). Cette implémentation du <a href="http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern">Page Object Design Pattern</a> incite ainsi l&#8217;utilisateur à découpler le test du contenu de la page qui sera alors la seule à être garante du rendu.</p>
-
-<p>Enfin, via l&#8217;annotation <strong>Page</strong>, les classes qui étendent FluentPage peuvent être injectées directement dans l&#8217;implémentation du FluentTest. Les liens suivants détaillent plus précisément ces différents points :</p>
-
-<ul>
-<li><a href="http://fr.slideshare.net/MathildeLemee/fluentlenium">http://fr.slideshare.net/MathildeLemee/fluentlenium</a></li>
-<li><a href="https://github.com/FluentLenium/FluentLenium">https://github.com/FluentLenium/FluentLenium</a></li>
-</ul>
-
-
-<h1>Etude sur la mise en oeuvre</h1>
-
-<p>On a vu dans le paragraphe précédent quelques-unes des notions nécessaires à l&#8217;intégration de nos trois comparses.</p>
-
-<p>Cependant, il est intéressant de noter que Cucumber JVM et FluentLenium s&#8217;appuient sur deux paradigmes potentiellement opposés. En effet, alors que Cucumber JVM dispose d&#8217;une représentation par Step formalisé par des méthodes java, FluentLenium propose une granularité par méthode.</p>
-
-<p>En outre, deux points sont primordiaux :</p>
-
-<ul>
-<li>FluentLenium s&#8217;appuie sur la notion de Rule JUnit pour instancier, démarrer puis stopper le webDriver,</li>
-<li>Cucumber JVM ne supporte pas la <a href="https://github.com/cucumber/cucumber-jvm/issues/393">notion de Rule</a> et refuse tout autre Runner différent que le sien.</li>
-</ul>
-
-
-<p>Bien sûr, on peut se douter qu&#8217;il est possible de contourner le problème sinon cet article serait un peu mensongé&hellip; ;&ndash;)</p>
-
-<p>En fait, la solution qui a été mise en place pour faire fonctionner conjointement ces deux framework est assez simple : faire que les classes déclarant les <strong>Steps</strong> Cucumber JVM délèguent à une classe étendant FluentTest les différentes actions et vérifications.</p>
-
-<p>Cette classe pourra porter les différentes pages (au sens FluentLenium) et devra exposer les méthodes adéquates qui initialiseront et arrêteront le webDriver cible (méthodes fournies par FluentTest).</p>
-
-<p>A titre informatif, le fait d&#8217;utiliser l&#8217;<em>Autocloseable</em> (et plus précisément le <em>try-with-resources</em>) de Java 7 s&#8217;est traduit par un échec puisque le driver doit rester actif entre les différentes Steps.</p>
-
-<p>De même, essayer d&#8217;injecter via Picocontainer les pages ne fonctionne pas car, à ce jour, l&#8217;implémentation même de FluentLenium fait que les annotations @Page qui permettent d&#8217;initialiser et d&#8217;instancier les <strong>FluentPages</strong> doivent être dans une implémentation de <strong>FluentTest</strong>.</p>
-
-<p>Ainsi, cela pourrait se traduire par le code suivant :</p>
-
-<p><code>HomePageStep.java</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.Then</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.When</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fest.assertions.fluentlenium.FluentLeniumAssertions</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HomePageStep</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * injection par pico donc pas besoin d&#39;initialiser le driver (deja fait par le delegator)</span>
-</span><span class='line'><span class="cm">     * @param fluentLeniumDelegate</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">HomePageStep</span><span class="o">(</span><span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">fluentLeniumDelegate</span> <span class="o">=</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@When</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;I go on home page&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">homePageIsDisplayed</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">goTo</span><span class="o">(</span><span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">homePage</span><span class="o">).</span><span class="na">await</span><span class="o">().</span><span class="na">untilPage</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Then</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;home page is displayed&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">homePageIsDisplayed</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">FluentLeniumAssertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">homePage</span><span class="o">).</span><span class="na">isAt</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@When</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;I submit the form&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">submitForm</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">homePage</span><span class="o">.</span><span class="na">submit</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>ResultPageStep.java</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ResultPageStep</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * injection par pico donc pas besoin d&#39;initialiser le driver (deja fait par le delegator)</span>
-</span><span class='line'><span class="cm">     * @param fluentLeniumDelegate</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">ResultPageStep</span><span class="o">(</span><span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">fluentLeniumDelegate</span> <span class="o">=</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Then</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;I am on result page&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">isOnPage</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">FluentLeniumAssertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">(</span><span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">resultPage</span><span class="o">).</span><span class="na">isAt</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>CommonStep.java</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.When</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommonStep</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">StepHelper</span><span class="o">(</span><span class="n">FluentTestDelegator</span> <span class="n">fluentLeniumDelegate</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">fluentLeniumDelegate</span> <span class="o">=</span> <span class="n">fluentLeniumDelegate</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@When</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;I stop my driver&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">webDrivercloser</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">fluentLeniumDelegate</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>FluentTestDelegator.java</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.When</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.adapter.FluentTest</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.annotation.Page</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.WebDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.htmlunit.HtmlUnitDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.remote.DesiredCapabilities</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FluentTestDelegator</span> <span class="kd">extends</span> <span class="n">FluentTest</span> <span class="kd">implements</span> <span class="n">AutoCloseable</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Page</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">HomePage</span> <span class="n">homePage</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Page</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">ResultPage</span> <span class="n">resultPage</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">FluentTestDelegator</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">init</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">    * Appel des operations faites par le Rule Junit de FluentTest</span>
-</span><span class='line'><span class="cm">    */</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">initFluent</span><span class="o">(</span><span class="k">new</span> <span class="n">HtmlUnitDriver</span><span class="o">()).</span><span class="na">withDefaultUrl</span><span class="o">(</span><span class="s">&quot;http://localhost:9090&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="c1">//        initFluent(getDefaultDriver()).withDefaultUrl(&quot;http://localhost:9090&quot;);</span>
-</span><span class='line'>        <span class="n">initTest</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">setDefaultConfig</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">getDriver</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">quit</span><span class="o">();</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>HomePage.jave</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.DataTable</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.FluentPage</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.domain.FluentList</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.domain.FluentWebElement</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">fest</span><span class="o">.</span><span class="na">assertions</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">fluentlenium</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">filter</span><span class="o">.</span><span class="na">FilterConstructor</span><span class="o">.</span><span class="na">withText</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HomePage</span> <span class="kd">extends</span> <span class="n">FluentPage</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getUrl</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;/webapp/home&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">isAt</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">title</span><span class="o">()).</span><span class="na">containsIgnoringCase</span><span class="o">(</span><span class="s">&quot;homePage&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">submit</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">submit</span><span class="o">(</span><span class="s">&quot;#searchForm &gt; form&quot;</span><span class="o">).</span><span class="na">await</span><span class="o">().</span><span class="na">untilPage</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>ResultPage.java</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ResultPage</span> <span class="kd">extends</span> <span class="n">FluentPage</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getUrl</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;/webapp/result&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">isAt</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">title</span><span class="o">()).</span><span class="na">containsIgnoringCase</span><span class="o">(</span><span class="s">&quot;resultPage&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>scenario1.feature</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'># encoding: iso-8859-1
-</span><span class='line'>
-</span><span class='line'>Feature: homepage test
-</span><span class='line'>
-</span><span class='line'>  Scenario: homePage should be displayed
-</span><span class='line'>    When I go on home page
-</span><span class='line'>    Then home page is displayed
-</span><span class='line'>    Then I stop my driver
-</span><span class='line'>
-</span><span class='line'>  Scenario: a submit on homePage should redirect to resultPage
-</span><span class='line'>    When I go on home page
-</span><span class='line'>    And I submit the form
-</span><span class='line'>    Then I am on result page
-</span><span class='line'>    Then I stop my driver
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On constate que le code est un peu plus verbeux que ce qu&#8217;on aurait souhaité avoir mais cela fonctionne sans soucis.
-A noter que via la méthode init de <strong>FluentTestDelegator</strong>, il est possible de préciser le <strong>webDriver</strong> à utiliser (dans notre cas, HtmlUnitDriver).</p>
-
-<h1>Mise en oeuvre</h1>
-
-<p>On a vu dans le paragraphe précédent comment il était possible de faire fonctionner conjointement Cucumber JVM et FluentLenium.</p>
-
-<p>Du coup, il n&#8217;y a plus grand chose à rajouter dans ce paragraphe si ce n&#8217;est la configuration de notre chef d&#8217;orchestre (à savoir Maven) qui a été utilisé pour faire fonctionner tout ce beau monde&hellip; ;&ndash;)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependencies&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.hamcrest<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hamcrest-all<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.3<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>batik<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>batik-ext<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>    <span class="c">&lt;!-- pas de montee de version de junit pour cause de conflit avec hamcrest --&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;exclusions&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;exclusion&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>hamcrest-core<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>org.hamcrest<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;/exclusion&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/exclusions&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>info.cukes<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>cucumber-junit<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>info.cukes<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>cucumber-java<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>info.cukes<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>cucumber-picocontainer<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.fluentlenium<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>fluentlenium-festassert<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;exclusions&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;exclusion&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;artifactId&gt;</span>junit-dep<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;/exclusion&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/exclusions&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.easytesting<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>fest-assert<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
-</span><span class='line'>   <span class="nt">&lt;plugins&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;plugin&gt;</span>
-</span><span class='line'>                    <span class="nt">&lt;artifactId&gt;</span>maven-failsafe-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>                    <span class="nt">&lt;executions&gt;</span>
-</span><span class='line'>                        <span class="nt">&lt;execution&gt;</span>
-</span><span class='line'>                            <span class="nt">&lt;goals&gt;</span>
-</span><span class='line'>                                <span class="nt">&lt;goal&gt;</span>integration-test<span class="nt">&lt;/goal&gt;</span>
-</span><span class='line'>                                <span class="nt">&lt;goal&gt;</span>verify<span class="nt">&lt;/goal&gt;</span>
-</span><span class='line'>                            <span class="nt">&lt;/goals&gt;</span>
-</span><span class='line'>                        <span class="nt">&lt;/execution&gt;</span>
-</span><span class='line'>                    <span class="nt">&lt;/executions&gt;</span>
-</span><span class='line'>                    <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>                        <span class="nt">&lt;includes&gt;</span>
-</span><span class='line'>                            <span class="nt">&lt;include&gt;</span>**/RunCucumberFeatures.java<span class="nt">&lt;/include&gt;</span>
-</span><span class='line'>                        <span class="nt">&lt;/includes&gt;</span>
-</span><span class='line'>                    <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;/plugin&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.junit.Cucumber</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Cucumber</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@Cucumber.Options</span><span class="o">(</span><span class="n">features</span> <span class="o">=</span> <span class="s">&quot;classpath:fr/jetoile/webapp/acceptance&quot;</span><span class="o">,</span> <span class="n">format</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;html:target/cucumber&quot;</span><span class="o">,</span> <span class="s">&quot;json:target/cucumber.json&quot;</span><span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunCucumberFeatures</span> <span class="o">{</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Conclusion</h1>
-
-<p>On a vu dans cet article (qui est la suite logique d&#8217;un <a href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html">article précédent</a>) comment il était possible de faire des tests d&#8217;acceptance en utilisant conjointement Cucumber JVM et FluentLenium.</p>
-
-<p>A l&#8217;utilisation, cela s&#8217;avère agréable et rapide à écrire surtout avec quelques petits tweaks supplémentaires qui n&#8217;ont pas été exposés ici (profile Maven pour ne démarrer que le serveur embedded et exécution des scénarii Cucumber avec IntelliJ 12 avec possibilité de bénéficier du debugger que ce soit au niveau de l&#8217;exécution des tests (debugger ou utilisation d&#8217;un webDriver autre que HtmlUnitDriver) ou de l&#8217;application cible (via <code>mvnDebug</code>)).</p>
-
-<p>Bref, en tout cas, même si la mise en oeuvre a été un peu galère, il a été possible de bénéficier du meilleur des deux framework sans avoir à se &ldquo;taper&rdquo; la lourdeux de Selenium&hellip; ;&ndash;).</p>
-
-<p>Bien sûr, il est existe bien d&#8217;autres solutions mais je te laisse, précieux lecteur, le soin de les évaluer ;&ndash;)</p>
 ]]></content>
   </entry>
   

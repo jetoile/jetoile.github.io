@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hadoop | Jetoile]]></title>
   <link href="http://blog.jetoile.fr/blog/categories/hadoop/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-01-17T19:57:00+01:00</updated>
+  <updated>2016-01-18T12:34:11+01:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -19,7 +19,7 @@
     <updated>2016-01-18T10:00:00+01:00</updated>
     <id>http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap</id>
     <content type="html"><![CDATA[<p><img src="/images/hadoop-all.png" alt="left-small" />
-Comme je l'ai déjà dit dans un article <a href="2015/10/hadoop-et-son-ecosysteme.html">précédent</a>, la force d'Hadoop n'est plus dans Hadoop en lui-même mais plutôt dans son écosystème.</p>
+Comme je l'ai déjà dit dans un article <a href="/2015/10/hadoop-et-son-ecosysteme.html">précédent</a>, la force d'Hadoop n'est plus dans Hadoop en lui-même mais plutôt dans son écosystème.</p>
 
 <p>Du coup, même lorsqu'on développe avec Spark, il est courant de vouloir s'interfacer avec le métastore de Hive ou encore avec SolR si l'objectif est de vouloir indexer dans ce dernier.</p>
 

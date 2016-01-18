@@ -7,7 +7,7 @@ categories:
 - Hadoop
 ---
 ![left-small](/images/hadoop-all.png)
-Comme je l'ai déjà dit dans un article [précédent](2015/10/hadoop-et-son-ecosysteme.html), la force d'Hadoop n'est plus dans Hadoop en lui-même mais plutôt dans son écosystème.
+Comme je l'ai déjà dit dans un article [précédent](/2015/10/hadoop-et-son-ecosysteme.html), la force d'Hadoop n'est plus dans Hadoop en lui-même mais plutôt dans son écosystème.
 
 Du coup, même lorsqu'on développe avec Spark, il est courant de vouloir s'interfacer avec le métastore de Hive ou encore avec SolR si l'objectif est de vouloir indexer dans ce dernier.
 

@@ -17,13 +17,13 @@ Ainsi, lorsqu'on fait du développement avec des composants "BigData", on a souv
 
 Alors, bien sûr, dans un monde idéal, il est possible de disposer de tout l'écosystème via Docker ou via une machine virtuelle. Pourtant, parfois, il n'est pas possible de disposer de la pleine puissance de son poste parce qu'on est, parfois (sic...), dans un contexte où disposer des droits administrateurs de son poste (et pire quand il s'agit d'un poste sous Windows...) est impossible.
 
-Pour ce faire, il existe quelques solutions comme [Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters). Cependant, chaque composant doit alors être démarré dans le bon ordre et il faut avouer que c'est un peu verbeux...
+Pour ce faire, il existe quelques solutions comme [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters). Cependant, chaque composant doit alors être démarré dans le bon ordre et il faut avouer que c'est un peu verbeux...
 
 En outre, les couches clientes fonctionnent principalement dans la même JVM.
 
 L'objectif de ce post est de proposer une alternative beaucoup moins verbeuse et plus pratique.
 
-Il ne s'agit que d'une simple surcouche à Hadoop-mini-cluters mais la solution proposée offre également d'autres possibilités qui ne sont pas offertes par la solution :
+Il ne s'agit que d'une simple surcouche à Hadoop-mini-clusters mais la solution proposée offre également d'autres possibilités qui ne sont pas offertes par la solution :
 
 * possibilité de disposer d'un SolR qu'il soit en mode embedded ou en mode cloud
 * possibilité d'avoir un oozie accessible par un client externe à la JVM
@@ -41,9 +41,9 @@ Comme je l'ai dit précédemment, le besoin était de pouvoir disposer de l'éco
 
 Bien sûr, le tout capable de fonctionner sous Linux mais aussi sous Windows... (_ndlr_ : oui... on n'a pas toujours la main sur ce que nous impose le client... :'( )
 
-[Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters) est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.
+[Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters) est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.
 
-Enfin, comme je l'ai déjà dit, [Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters) a été conçu pour les TU/TI mais dans un cas de foncionnement en mode _standalone_ il faut alors accéder aux composants de manière _remote_.
+Enfin, comme je l'ai déjà dit, [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters) a été conçu pour les TU/TI mais dans un cas de foncionnement en mode _standalone_ il faut alors accéder aux composants de manière _remote_.
 
 Parmi les besoins, les composants suivants :
 
@@ -326,7 +326,7 @@ public static void tearDown() throws BootstrapException {
 
 ###Oozie
 
-La difficulté pour intégrer ce composant était que [Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters) ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d'intéragir avec le serveur.
+La difficulté pour intégrer ce composant était que [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters) ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d'intéragir avec le serveur.
 
 En outre, pour utiliser les action Oozie tierce, il était nécesssaire de télécharger oozie. J'ai juste simplifié ce mode en obligeant l'utilisateur à disposer déjà de oozie sur son poste pour accélérer le mode de fonctionnement.
 
@@ -399,14 +399,14 @@ Pour démarrer hadoop-bootstrap en mode interactif, exécuter la commande :
 <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/ef_9Y7a2ar8" width="560"></iframe></div>
 
 
-A noter que ces commande fonctionne également sous Windows.
+A noter que ces commandes fonctionnent également sous Windows.
 
 Concernant macOS, je n'ai pas testé mais cela ne devrait pas poser de difficultées.
 
 
 #Conclusion
 
-[Hadoop-bootstrap](https://github.com/jetoile/hadoop-bootstrap) n'est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans [Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters).
+[Hadoop-bootstrap](https://github.com/jetoile/hadoop-bootstrap) n'est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters).
 
 Cependant, il est plus simple d'utilisation car limite plus l'utilisation des composants.
 
@@ -416,9 +416,9 @@ Alors, oui, ce n'est pas une révolution mais, au moins, ca permettra à l'utili
 
 Pour plus d'informations, les [tests unitaires](https://github.com/jetoile/hadoop-bootstrap/tree/master/src/test/java/fr/jetoile/sample/component) et les [tests d'_intégration_](https://github.com/jetoile/hadoop-bootstrap/blob/master/src/test/java/fr/jetoile/sample/integrationtest/IntegrationBootstrapTest.java).
 
-A noter que pour faire fonctionner certains composants, je n'ai pas fait dans la finesse... et j'ai allègrement _hacker_ certaines classes...
+A noter que pour faire fonctionner certains composants, je n'ai pas fait dans la finesse... et j'ai allègrement _hacké_ certaines classes...
 
-A noter également que j'ai simplement copier/coller les tests de [Hadoop-mini-cluters](https://github.com/sakserv/hadoop-mini-clusters) sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion _remote_.
+A noter également que j'ai simplement copier/coller les tests de [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters) sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion _remote_.
 
 Voilà, ce n'est pas le plus beau code que j'ai pu faire, mais j'espère que ca pourra aider certains et, au pire, n'hésitez pas à contribuer ou à forker pour en faire ce que vous en voulez ;)
 

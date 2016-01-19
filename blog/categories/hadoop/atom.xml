@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Hadoop | Jetoile]]></title>
   <link href="http://blog.jetoile.fr/blog/categories/hadoop/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-01-18T12:34:11+01:00</updated>
+  <updated>2016-01-19T19:44:55+01:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -29,13 +29,13 @@ Comme je l'ai déjà dit dans un article <a href="/2015/10/hadoop-et-son-ecosyst
 
 <p>Alors, bien sûr, dans un monde idéal, il est possible de disposer de tout l'écosystème via Docker ou via une machine virtuelle. Pourtant, parfois, il n'est pas possible de disposer de la pleine puissance de son poste parce qu'on est, parfois (sic&hellip;), dans un contexte où disposer des droits administrateurs de son poste (et pire quand il s'agit d'un poste sous Windows&hellip;) est impossible.</p>
 
-<p>Pour ce faire, il existe quelques solutions comme <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a>. Cependant, chaque composant doit alors être démarré dans le bon ordre et il faut avouer que c'est un peu verbeux&hellip;</p>
+<p>Pour ce faire, il existe quelques solutions comme <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a>. Cependant, chaque composant doit alors être démarré dans le bon ordre et il faut avouer que c'est un peu verbeux&hellip;</p>
 
 <p>En outre, les couches clientes fonctionnent principalement dans la même JVM.</p>
 
 <p>L'objectif de ce post est de proposer une alternative beaucoup moins verbeuse et plus pratique.</p>
 
-<p>Il ne s'agit que d'une simple surcouche à Hadoop-mini-cluters mais la solution proposée offre également d'autres possibilités qui ne sont pas offertes par la solution :</p>
+<p>Il ne s'agit que d'une simple surcouche à Hadoop-mini-clusters mais la solution proposée offre également d'autres possibilités qui ne sont pas offertes par la solution :</p>
 
 <ul>
 <li>possibilité de disposer d'un SolR qu'il soit en mode embedded ou en mode cloud</li>
@@ -60,9 +60,9 @@ Comme je l'ai déjà dit dans un article <a href="/2015/10/hadoop-et-son-ecosyst
 
 <p>Bien sûr, le tout capable de fonctionner sous Linux mais aussi sous Windows&hellip; (<em>ndlr</em> : oui&hellip; on n'a pas toujours la main sur ce que nous impose le client&hellip; :&lsquo;( )</p>
 
-<p><a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.</p>
+<p><a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.</p>
 
-<p>Enfin, comme je l'ai déjà dit, <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> a été conçu pour les TU/TI mais dans un cas de foncionnement en mode <em>standalone</em> il faut alors accéder aux composants de manière <em>remote</em>.</p>
+<p>Enfin, comme je l'ai déjà dit, <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> a été conçu pour les TU/TI mais dans un cas de foncionnement en mode <em>standalone</em> il faut alors accéder aux composants de manière <em>remote</em>.</p>
 
 <p>Parmi les besoins, les composants suivants :</p>
 
@@ -381,7 +381,7 @@ public static void tearDown() throws BootstrapException {</p>
 
 <h3>Oozie</h3>
 
-<p>La difficulté pour intégrer ce composant était que <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d'intéragir avec le serveur.</p>
+<p>La difficulté pour intégrer ce composant était que <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d'intéragir avec le serveur.</p>
 
 <p>En outre, pour utiliser les action Oozie tierce, il était nécesssaire de télécharger oozie. J'ai juste simplifié ce mode en obligeant l'utilisateur à disposer déjà de oozie sur son poste pour accélérer le mode de fonctionnement.</p>
 
@@ -460,13 +460,13 @@ public static void tearDown() throws BootstrapException {</p>
 <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/ef_9Y7a2ar8" width="560"></iframe></div>
 
 
-<p>A noter que ces commande fonctionne également sous Windows.</p>
+<p>A noter que ces commandes fonctionnent également sous Windows.</p>
 
 <p>Concernant macOS, je n'ai pas testé mais cela ne devrait pas poser de difficultées.</p>
 
 <h1>Conclusion</h1>
 
-<p><a href="https://github.com/jetoile/hadoop-bootstrap">Hadoop-bootstrap</a> n'est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a>.</p>
+<p><a href="https://github.com/jetoile/hadoop-bootstrap">Hadoop-bootstrap</a> n'est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a>.</p>
 
 <p>Cependant, il est plus simple d'utilisation car limite plus l'utilisation des composants.</p>
 
@@ -476,9 +476,9 @@ public static void tearDown() throws BootstrapException {</p>
 
 <p>Pour plus d'informations, les <a href="https://github.com/jetoile/hadoop-bootstrap/tree/master/src/test/java/fr/jetoile/sample/component">tests unitaires</a> et les <a href="https://github.com/jetoile/hadoop-bootstrap/blob/master/src/test/java/fr/jetoile/sample/integrationtest/IntegrationBootstrapTest.java">tests d'<em>intégration</em></a>.</p>
 
-<p>A noter que pour faire fonctionner certains composants, je n'ai pas fait dans la finesse&hellip; et j'ai allègrement <em>hacker</em> certaines classes&hellip;</p>
+<p>A noter que pour faire fonctionner certains composants, je n'ai pas fait dans la finesse&hellip; et j'ai allègrement <em>hacké</em> certaines classes&hellip;</p>
 
-<p>A noter également que j'ai simplement copier/coller les tests de <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-cluters</a> sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion <em>remote</em>.</p>
+<p>A noter également que j'ai simplement copier/coller les tests de <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion <em>remote</em>.</p>
 
 <p>Voilà, ce n'est pas le plus beau code que j'ai pu faire, mais j'espère que ca pourra aider certains et, au pire, n'hésitez pas à contribuer ou à forker pour en faire ce que vous en voulez ;)</p>
 

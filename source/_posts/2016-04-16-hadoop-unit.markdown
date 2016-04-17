@@ -45,7 +45,7 @@ Ainsi dans un exemple, cela peut donner :
 <dependency>
     <groupId>fr.jetoile.hadoop</groupId>
     <artifactId>hadoop-unit-hbase</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -130,14 +130,14 @@ Ainsi, en mode embedded, le plugin peut s'utiliser de la manière suivante :
     <dependency>
         <groupId>fr.jetoile.hadoop</groupId>
         <artifactId>hadoop-unit-hdfs</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <scope>test</scope>
     </dependency>
 
     <dependency>
         <groupId>fr.jetoile.hadoop</groupId>
         <artifactId>hadoop-unit-client-hdfs</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -174,7 +174,7 @@ Ainsi, en mode embedded, le plugin peut s'utiliser de la manière suivante :
         <plugin>
             <artifactId>hadoop-unit-maven-plugin</artifactId>
             <groupId>fr.jetoile.hadoop</groupId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
             <executions>
                 <execution>
                     <id>start</id>
@@ -248,7 +248,7 @@ En utilisation remote, cela donne :
     <dependency>
         <groupId>fr.jetoile.hadoop</groupId>
         <artifactId>hadoop-unit-client-hdfs</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -283,7 +283,7 @@ En utilisation remote, cela donne :
 <plugin>
     <artifactId>hadoop-unit-maven-plugin</artifactId>
     <groupId>fr.jetoile.hadoop</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <executions>
         <execution>
             <id>start</id>
@@ -306,7 +306,7 @@ En utilisation remote, cela donne :
 <plugin>
     <artifactId>hadoop-unit-maven-plugin</artifactId>
     <groupId>fr.jetoile.hadoop</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <executions>
         <execution>
             <id>stop</id>

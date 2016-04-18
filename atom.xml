@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-04-16T18:13:07+02:00</updated>
+  <updated>2016-04-17T20:34:53+02:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,853 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hadoop Unit]]></title>
+    <link href="http://blog.jetoile.fr/2016/04/hadoop-unit.html"/>
+    <updated>2016-04-16T18:16:01+02:00</updated>
+    <id>http://blog.jetoile.fr/2016/04/hadoop-unit</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
+Dans mon dernier <a href="http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html">post</a>, j&#8217;avais parlé d&#8217;une surcouche que j&#8217;avais développé afin de faciliter l&#8217;utilisation de quelques-uns des composants de l&#8217;écosystème Hadoop, à savoir :</p>
+
+<ul>
+<li>Hdfs,</li>
+<li>Zookeeper,</li>
+<li>HiveMetastore,</li>
+<li>Hiveserver2,</li>
+<li>SolR,</li>
+<li>SolRCloud,</li>
+<li>Oozie,</li>
+<li>Kafka,</li>
+<li>et HBase.</li>
+</ul>
+
+
+<p>Il s&#8217;appelait alors Hadoop-Bootstrap mais il s&#8217;agissait aussi d&#8217;une première version qui a, bien sûr, évolué.</p>
+
+<p>Cet article présentera donc quels ont été les améliorations qui ont été apportées.</p>
+
+<p><em>Disclaimer</em> : je tiens à repréciser que Hadoop-unit n&#8217;est qu&#8217;une solution de contournement permettant de simuler une partie de l&#8217;écosystème Hadoop afin de permettre de disposer en local d&#8217;un ersatz de distribution afin de fluidifier le développement mais proposant aussi d&#8217;effectuer des tests d&#8217;intégration dans un environnement dégradé. Cela peut également permettre d&#8217;éviter de monter un cluster Hadoop dédié aux tests d&#8217;intégration.</p>
+
+<!-- more -->
+
+
+<h1>Description des changements/évolutions</h1>
+
+<p>Alors que la première version d&#8217;Hadoop Unit (aka. Hadoop Bootstrap) était monolithique, le projet a été découpé en modules permettant ainsi de ne démarrer que les composants qui sont présents dans le classpath de l&#8217;environnement de test (en maven le scope de test).</p>
+
+<p>Ainsi, par exemple, si l&#8217;application nécessite HBase (qui nécessite lui-même Hdfs et Zookeeper), il n&#8217;y a qu&#8217;à ajouter au classpath de test la dépendance à HBase.</p>
+
+<p>Dans ce cas, grâce à la transitivité Maven, les modules Zookeeper et Hdfs seront automatiquement ajoutés au classpath de test et les composants démarrés avant HBase.</p>
+
+<p>En outre, cela permet de ne pas à avoir à se soucier de l&#8217;ordre de démarrage.</p>
+
+<p>Pour information, afin de permettre ce mécanisme, il y a dernier un simple SPI.</p>
+
+<p>Ainsi dans un exemple, cela peut donner :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-hbase<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec dans le test d&#8217;intégration :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Test</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">hBaseShouldStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_TABLE_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">colFamName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_COL_FAMILY_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">colQualiferName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_COL_QUALIFIER_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Integer</span> <span class="n">numRowsToPut</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_NUM_ROWS_TO_PUT_KEY</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">hadoop</span><span class="o">.</span><span class="na">conf</span><span class="o">.</span><span class="na">Configuration</span> <span class="n">hbaseConfiguration</span> <span class="o">=</span> <span class="n">HBaseConfiguration</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;hbase.zookeeper.quorum&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_HOST_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="s">&quot;hbase.zookeeper.property.clientPort&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_PORT_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;hbase.master&quot;</span><span class="o">,</span> <span class="s">&quot;127.0.0.1:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_MASTER_PORT_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;zookeeper.znode.parent&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_ZNODE_PARENT_KEY</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Creating table {} with column family {}&quot;</span><span class="o">,</span> <span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">createHbaseTable</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Populate the table with {} rows.&quot;</span><span class="o">,</span> <span class="n">numRowsToPut</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRowsToPut</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">putRow</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">colQualiferName</span><span class="o">,</span> <span class="s">&quot;row_&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Fetching and comparing the results&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRowsToPut</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getRow</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">colQualiferName</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;row_&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">value</span><span class="o">()));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bien sûr, il reste possible de préciser les composants à démarrer mais, dans ce cas, il est à la charge du développeur de vérifier que les modules sont bien dans son classpath et qu&#8217;il démarre bien les composants dans le bon ordre.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HDFS</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HBASE</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin, il a été ajouté un plugin Maven permettant de démarrer les composants de l&#8217;écosystème :</p>
+
+<ul>
+<li>soit dans le même classloader que le test,</li>
+<li>soit de démarrer hadoop unit dans une autre jvm modulo que hadoop-unit-standalone ait été installé sur le poste en local.</li>
+</ul>
+
+
+<p>Ce dernier mode est celui à privilégier dans les tests d&#8217;intégration car cela évite les problèmes de conflits de dépendances engendrés par le fait que tous les composants d&#8217;Hadoop Unit s&#8217;éxécute dans la même JVM (chose qui bien sûr n&#8217;est pas le cas dans le vraie vie&hellip;).</p>
+
+<p>Ainsi, en mode embedded, le plugin peut s&#8217;utiliser de la manière suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-client-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;id&gt;</span>start<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goal&gt;</span>embedded-start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;values&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;value&gt;</span>HDFS<span class="nt">&lt;/value&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/values&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'><span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HdfsBootstrapIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">private</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">configuration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertiesConfiguration</span><span class="o">(</span><span class="s">&quot;default.properties&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ConfigurationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BootstrapException</span><span class="o">(</span><span class="s">&quot;bad config&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">hdfsShouldStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">hdfsFsHandle</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">FSDataOutputStream</span> <span class="n">writer</span> <span class="o">=</span> <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_FILE_KEY</span><span class="o">)));</span>
+</span><span class='line'>        <span class="n">writer</span><span class="o">.</span><span class="na">writeUTF</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_STRING_KEY</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Read the file and compare to test string</span>
+</span><span class='line'>        <span class="n">FSDataInputStream</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_FILE_KEY</span><span class="o">)));</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readUTF</span><span class="o">(),</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_STRING_KEY</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span> <span class="s">&quot;http://localhost:%s/webhdfs/v1?op=GETHOMEDIRECTORY&amp;user.name=guest&quot;</span><span class="o">,</span>
+</span><span class='line'>                        <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span> <span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_HTTP_PORT_KEY</span> <span class="o">)</span> <span class="o">)</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">URLConnection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="na">openConnection</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">connection</span><span class="o">.</span><span class="na">setRequestProperty</span><span class="o">(</span> <span class="s">&quot;Accept-Charset&quot;</span><span class="o">,</span> <span class="s">&quot;UTF-8&quot;</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">BufferedReader</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span> <span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">response</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="s">&quot;{\&quot;Path\&quot;:\&quot;/user/guest\&quot;}&quot;</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En utilisation remote, cela donne :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-client-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;hadoopUnitPath&gt;</span>/home/khanh/tools/hadoop-unit-standalone<span class="nt">&lt;/hadoopUnitPath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exec&gt;</span>./hadoop-unit-standalone<span class="nt">&lt;/exec&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;values&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;value&gt;</span>HDFS<span class="nt">&lt;/value&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/values&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;outputFile&gt;</span>/tmp/toto.txt<span class="nt">&lt;/outputFile&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;hadoopUnitPath&gt;</span>/home/khanh/tools/hadoop-unit-standalone<span class="nt">&lt;/hadoopUnitPath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exec&gt;</span>./hadoop-unit-standalone<span class="nt">&lt;/exec&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;outputFile&gt;</span>/tmp/toto.txt<span class="nt">&lt;/outputFile&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Trucs et astuces</h1>
+
+<p>Il est possible d&#8217;intéragir avec Hadoop Unit (et même si il s&#8217;agit d&#8217;un cluster Hadoop dégradé) avec les moyens standards, à savoir :</p>
+
+<ul>
+<li>hbase shell</li>
+<li>kafka-console commande</li>
+<li>hdfs commande</li>
+<li>hive shell</li>
+</ul>
+
+
+<p>Ainsi, il devient possible de faire des choses comme :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>kafka-console-consumer --zookeeper localhost:22010 --topic topic
+</span><span class='line'>hdfs dfs -ls hdfs://localhost:20112/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou lancer un hbase shell ou hive shell pour créer des tables ou des tables hive et/ou peupler et/ou requêter ces derniers.</p>
+
+<p>Hadoop Unit propose également des classes utilitaires (à n&#8217;utiliser que dans le contexte des tests bien sûr!) qui lisent directement la configuration d&#8217;Hadoop Unit (le fichier <code>default.properties</code>) et qui permettent de bénéficier simplement :</p>
+
+<ul>
+<li>d&#8217;un FileSystem Hdfs</li>
+<li>d&#8217;avoir une syntaxe fluent pour créer les tables hive via jdbc (cette partie est directement tirée de <a href="http://dbsetup.ninja-squad.com/">DBSetup</a> de <a href="http://ninja-squad.com/">Ninja Squad</a>)</li>
+<li>des bonnes dépendances pour utiliser Spark 1.6.0 (cf. conflit de lib)</li>
+<li>des bonnes dépendances pour utiliser Spark-solr (cf. conflit de lib)</li>
+</ul>
+
+
+<h1>Conclusion</h1>
+
+<p>Comme je l&#8217;ai déjà dit maintes et maintes fois, Hadoop Unit n&#8217;est qu&#8217;une solution de contournement (ou la solution du pauvre au choix&hellip; ;) ) mais cela peut permettre d&#8217;accélérer les phases de développement (en utilisant hadoop-unit-standalone par exemple) et peut permettre d&#8217;effectuer quelques tests d&#8217;intégration.</p>
+
+<p>Hadoop Unit s&#8217;appuie sur le travail de <a href="https://github.com/sakserv/hadoop-mini-clusters">Shane Kumpf</a> et est lié aux versions des composants d&#8217;Hortonworks (d&#8217;ailleurs, une grosse partie des tests est directement un copier/coller de ce qu&#8217;à fait Shane Kumpf).</p>
+
+<p>Il ne propose ni Spark ni Map/Reduce car ces derniers n&#8217;ont pas besoin d&#8217;être simulés puisqu&#8217;ils proposent un mode de développement.</p>
+
+<p>Enfin, pour plus d&#8217;informations sur l&#8217;utilisation d&#8217;Hadoop-Unit, je vous invite à aller sur la page du projet <a href="https://github.com/jetoile/hadoop-unit">github</a> et/ou de faire des Pull Request si vous avez des remarques/bugs et/ou à forker si cela vous convient pas.</p>
+
+<p>Pour conclure, et même si cela se trouve sur github, voilà un exemple de ce qu&#8217;il est possible de faire avec Hadoop Unit :</p>
+
+<ul>
+<li><p>Exemple 1</p>
+
+<ul>
+<li>émettre des données dans un topic Kafka</li>
+<li>consommer les données en utilisant Spark Streaming</li>
+<li>écrire les résultats dans HBase et/ou SolrCloud et/ou HDFS</li>
+</ul>
+</li>
+<li><p>Exemple 2</p>
+
+<ul>
+<li>upload dans hdfs un fichier au format csv</li>
+<li>créer une table hive associée</li>
+<li>transformer via Spark SQL le csv en parquet (en utilisant le métastore de Hive)</li>
+<li>indexer les données au format parquet dans SolrCloud en utilisant Spark</li>
+</ul>
+</li>
+</ul>
+
+
+<p>soit :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SparkSolrIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">private</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">SparkSolrIntegrationTest</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Operation</span> <span class="n">CREATE_TABLES</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Operation</span> <span class="n">DROP_TABLES</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span><span class="o">,</span> <span class="n">SQLException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">configuration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertiesConfiguration</span><span class="o">(</span><span class="s">&quot;default.properties&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ConfigurationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BootstrapException</span><span class="o">(</span><span class="s">&quot;bad config&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">CREATE_TABLES</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">sequenceOf</span><span class="o">(</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;CREATE EXTERNAL TABLE IF NOT EXISTS default.test(id INT, value STRING) &quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; ROW FORMAT DELIMITED FIELDS TERMINATED BY &#39;;&#39;&quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; STORED AS TEXTFILE&quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; LOCATION &#39;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test&#39;&quot;</span><span class="o">),</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DROP_TABLES</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">sequenceOf</span><span class="o">(</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;DROP TABLE IF EXISTS default.test&quot;</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Before</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">URISyntaxException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">fileSystem</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">mkdirs</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">mkdirs</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test_parquet&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">copyFromLocalFile</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">SparkSolrIntegrationTest</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">().</span><span class="na">getResource</span><span class="o">(</span><span class="s">&quot;test.csv&quot;</span><span class="o">).</span><span class="na">toURI</span><span class="o">()),</span> <span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test/test.csv&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">HiveSetup</span><span class="o">(</span><span class="n">HiveConnectionUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getDestination</span><span class="o">(),</span> <span class="n">Operations</span><span class="o">.</span><span class="na">sequenceOf</span><span class="o">(</span><span class="n">CREATE_TABLES</span><span class="o">)).</span><span class="na">launch</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@After</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">clean</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">HiveSetup</span><span class="o">(</span><span class="n">HiveConnectionUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getDestination</span><span class="o">(),</span> <span class="n">Operations</span><span class="o">.</span><span class="na">sequenceOf</span><span class="o">(</span><span class="n">DROP_TABLES</span><span class="o">)).</span><span class="na">launch</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">fileSystem</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh&quot;</span><span class="o">),</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">spark_should_read_parquet_file_and_index_into_solr</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">SolrServerException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">//given</span>
+</span><span class='line'>        <span class="n">SparkConf</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SparkConf</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">setMaster</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">setAppName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">JavaSparkContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaSparkContext</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//read hive-site from classpath</span>
+</span><span class='line'>        <span class="n">HiveContext</span> <span class="n">hiveContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HiveContext</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">sc</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">sql</span> <span class="o">=</span> <span class="n">hiveContext</span><span class="o">.</span><span class="na">sql</span><span class="o">(</span><span class="s">&quot;SELECT * FROM default.test&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">sql</span><span class="o">.</span><span class="na">write</span><span class="o">().</span><span class="na">parquet</span><span class="o">(</span><span class="s">&quot;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test_parquet/file.parquet&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//when</span>
+</span><span class='line'>        <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaSparkContext</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SQLContext</span> <span class="n">sqlContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SQLContext</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">file</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="na">read</span><span class="o">().</span><span class="na">parquet</span><span class="o">(</span><span class="s">&quot;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test_parquet/file.parquet&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">select</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="s">&quot;value&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">JavaRDD</span><span class="o">&lt;</span><span class="n">SolrInputDocument</span><span class="o">&gt;</span> <span class="n">solrInputDocument</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="na">toJavaRDD</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">SolrInputDocument</span> <span class="n">solr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SolrInputDocument</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">solr</span><span class="o">.</span><span class="na">setField</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">solr</span><span class="o">.</span><span class="na">setField</span><span class="o">(</span><span class="s">&quot;value_s&quot;</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">solr</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">});</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">collectionName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">SolrCloudBootstrap</span><span class="o">.</span><span class="na">SOLR_COLLECTION_NAME</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">zkHostString</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_PORT_KEY</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SolrSupport</span><span class="o">.</span><span class="na">indexDocs</span><span class="o">(</span><span class="n">zkHostString</span><span class="o">,</span> <span class="n">collectionName</span><span class="o">,</span> <span class="mi">1000</span><span class="o">,</span> <span class="n">solrInputDocument</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//then</span>
+</span><span class='line'>        <span class="n">CloudSolrClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CloudSolrClient</span><span class="o">(</span><span class="n">zkHostString</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SolrDocument</span> <span class="n">collection1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">collectionName</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">collection1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">collection1</span><span class="o">.</span><span class="na">getFieldValue</span><span class="o">(</span><span class="s">&quot;value_s&quot;</span><span class="o">)).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="s">&quot;value1&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hadoop Ecosysteme Bootstrap]]></title>
@@ -6617,878 +7464,6 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 <li><p><a href="http://www.igvita.com/2012/08/28/web-performance-power-tool-http-archive-har/">http://www.igvita.com/2012/08/28/web-performance-power-tool-http-archive-har/</a></p></li>
 <li><p><a href="http://fr.slideshare.net/watsonmw/performance-monitoring-in-a-day">http://fr.slideshare.net/watsonmw/performance-monitoring-in-a-day</a></p></li>
 <li><p>code du POC : <a href="https://github.com/jetoile/fluentlenium-cucumber/tree/harStorage">https://github.com/jetoile/fluentlenium-cucumber/tree/harStorage</a></p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FluentLenium Et Cucumber JVM... Complément Et Precision]]></title>
-    <link href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html"/>
-    <updated>2013-04-11T21:38:54+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement</id>
-    <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
-
-<p>Dans mon article précédent, j&#8217;avais tenté d&#8217;expliquer comment il était possible d&#8217;intégrer les frameworks <a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> et <a href="http://docs.seleniumhq.org/">Selenium</a> au travers de <a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a>.</p>
-
-<p>En effet, pour rappel, FluentLenium permettait d&#8217;abstraire Selenium en lui offrant une API plus <em>fluent</em> mais également en lui apportant nativement ce qu&#8217;il préconise, à savoir le <a href="http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern">Page Object Design Pattern</a>.</p>
-
-<p>Pour ce faire, j&#8217;avais proposé d&#8217;utiliser la délégation de l&#8217;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&#8217;injection de Cucumber JVM.</p>
-
-<p>Cependant, suite à discussion avec la créatrice de FluentLenium (à savoir <a href="https://twitter.com/mathildelemee">Mathilde</a>), on s&#8217;est rendu compte que l&#8217;axe utilisé était légèrement biaisé (même s&#8217;il fonctionnait&hellip;).</p>
-
-<p>Cet article revient donc sur ce point en proposant une solution plus simple mais présentera également comment il est possible de tester le scénario Cucumber avec différents navigateurs et il y aura un petit mot sur l&#8217;utilisation de navigateurs déportés (via les RemoteWebDriver de Selenium 2).</p>
-
-<p>Pour ce faire, il sera découpé en 3 parties qui couvriront des usecases différents se traduisant donc par des implémentations différentes :</p>
-
-<ul>
-<li>cas de tests pour un site simple,</li>
-<li>cas de tests pour un site complet,</li>
-<li>cas de tests multi-navigateurs pour un site complet.</li>
-</ul>
-
-
-<p>A noter que je ne reviendrai pas sur les principes des différents frameworks/concepts mais juste sur comment il est possible d&#8217;implémenter ces différents usecases.</p>
-
-<p>A noter également que l&#8217;article précédent aurait pu être modifié mais qu&#8217;en raison du nombre important de changements, il était plus simple d&#8217;en initier un autre&hellip;</p>
-
-<!-- more -->
-
-
-<h1>Cas de tests pour un site simple</h1>
-
-<h2>Présentation et proposition d&#8217;implémentation</h2>
-
-<p>Ce premier cas d&#8217;usage couvre le cas : &ldquo;j&#8217;ai un site que je veux tester avec Cucumber JVM et l&#8217;ensemble des steps peut être réuni dans une seule et même classe.&rdquo;</p>
-
-<p>Bon je vois déjà la levée de bouclier : pourquoi réunir toutes les steps dans une seule et même classe. En fait, la raison du pourquoi sera expliquée un peu plus tard dans le paragraphe <em>Limites</em> de ce chapitre donc patience&hellip; ;&ndash;)</p>
-
-<p>Contrairement à la façon que j&#8217;avais présentée dans mon article précédent, il n&#8217;est pas obligatoire de déléguer la déclaration des pages <code>FluentPage</code> à une autre classe étendant <code>FluentTest</code>. En fait, il suffit juste de faire étendre la classe contenant les steps cucumber de <code>FluentAdapter</code>, d&#8217;y déclarer les pages et d&#8217;appeler dans la méthode annotée par @Before (celui de Cucumber JVM bien sûr) les méthode d&#8217;initialisation du contexte de FluentLenium.</p>
-
-<p>Pour rappel, cette initialisation instancie le WebDriver utilisé par Selenium 2 mais également les pages (annotées par l&#8217;annotation <code>@Page</code>) présentes dans la classe courante (ou ses parentes) qui doit, au minimum, étendre de <code>FluentAdapter</code>. Cela se fait au travers des méthodes <code>initFluent()</code> et <code>initTest()</code>.</p>
-
-<p>Le code est donc extrêmement simple puisqu&#8217;il suffit de faire quelque chose du style :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.After</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.Before</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.Given</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.Then</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.java.en.When</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.FluentAdapter</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.annotation.Page</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.htmlunit.HtmlUnitDriver</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">fest</span><span class="o">.</span><span class="na">assertions</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleStep</span> <span class="kd">extends</span> <span class="n">FluentAdapter</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@Page</span>
-</span><span class='line'> <span class="n">BingPage</span> <span class="n">page</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@Before</span>
-</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">this</span><span class="o">.</span><span class="na">initFluent</span><span class="o">(</span><span class="k">new</span> <span class="n">HtmlUnitDriver</span><span class="o">());</span>
-</span><span class='line'>  <span class="k">this</span><span class="o">.</span><span class="na">initTest</span><span class="o">();</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@Given</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;j accede a bing&quot;</span><span class="o">)</span>
-</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">step1</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">goTo</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@When</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;je recherche ([^ ]*) &quot;</span><span class="o">)</span>
-</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">step2</span><span class="o">(</span><span class="n">String</span> <span class="n">keyword</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">fill</span><span class="o">(</span><span class="s">&quot;#sb_form_q&quot;</span><span class="o">).</span><span class="na">with</span><span class="o">(</span><span class="n">keyword</span><span class="o">);</span>
-</span><span class='line'>  <span class="n">submit</span><span class="o">(</span><span class="s">&quot;#sb_form_go&quot;</span><span class="o">);</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@Then</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;le titre est ([^ ]*) &quot;</span><span class="o">)</span>
-</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">step3</span><span class="o">(</span><span class="n">String</span> <span class="n">keyword</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">assertThat</span><span class="o">(</span><span class="n">title</span><span class="o">()).</span><span class="na">contains</span><span class="o">(</span><span class="n">keyword</span><span class="o">);</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@After</span>
-</span><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">after</span><span class="o">(){</span>
-</span><span class='line'>  <span class="k">this</span><span class="o">.</span><span class="na">quit</span><span class="o">();</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>où BingPage est :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.FluentPage</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BingPage</span> <span class="kd">extends</span> <span class="n">FluentPage</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'> <span class="nd">@Override</span>
-</span><span class='line'> <span class="kd">public</span> <span class="n">String</span> <span class="nf">getUrl</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="s">&quot;http://www.bing.com&quot;</span><span class="o">;</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>et la feature, la suivante :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Feature: basic
-</span><span class='line'>
-</span><span class='line'>  Scenario: scenar1
-</span><span class='line'>    Given j accede a bing
-</span><span class='line'>    When je recherche toto
-</span><span class='line'>    Then le titre est toto
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il est intéressant de remarquer la simplicité de la chose (et rien à voir avec l&#8217;implémentation que j&#8217;avais proposé précédemment!).</p>
-
-<p>A part cela, peu de choses à ajouter : le code parle de lui même&hellip;</p>
-
-<h2>Limites</h2>
-
-<p>On vient de voir comme il était simple de faire cohabiter FluentLenium et Cucumber JVM.</p>
-
-<p>Bien sûr, il y a un mais&hellip; (ça serait trop simple sinon) : comme on peut le constater, actuellement, toutes les steps se trouvent être dans la même classe. Cependant, dans le cas d&#8217;un site web un peu plus complexe, il est courant et même encouragé de séparer les steps dans différentes classes.</p>
-
-<p>Dans l&#8217;implémentation précédente, l&#8217;annotation <code>@Before</code> a été utilisée pour initialiser le contexte (et plus particulièrement le webDriver et les pages pour ensuite injecter le webDriver dans ces dernières).</p>
-
-<p>Cependant, dans le cas où les steps se trouvent être dans plusieurs classes, cela pose potentiellement un problème.</p>
-
-<p>En effet, Cucumber JVM instancie la classe qui contient la définition de la step dès qu&#8217;il en a besoin et appelle la méthode annotée par <code>@Before</code> à l&#8217;instanciation de cette classe. Ainsi, dans notre cas, si les steps s&#8217;étaient trouvées dans deux classes, chacune étendant <code>FluentAdapter</code> et appelant <code>initFluent()</code> et <code>initTest()</code> dans la méthode annotée par @Before, alors cette instanciation aurait été faite deux fois et non une seule fois comme on aurait pu s&#8217;y attendre pour un même scénario donné&hellip;</p>
-
-<p>Pire, les pages déclarées dans les classes n&#8217;auraient pas eu la même instance du webDriver et elles ne se seraient pas vu l&#8217;une l&#8217;autre&hellip;</p>
-
-<p>Pas glop tout ça&hellip; :&lsquo;(</p>
-
-<p>Ainsi, l&#8217;implémentation précédente fonctionne pour des cas &ldquo;simples&rdquo; mais si la partie test d’acceptante/intégration avait été plus complexe, alors cela aurait empêché la réutilisation et le découplage.</p>
-
-<h1>Cas de tests pour un site complet</h1>
-
-<h2>Présentation et proposition d&#8217;implémentation</h2>
-
-<p>Il a été vu dans le paragraphe précédent qu&#8217;il pouvait être utile de disposer de plusieurs classes disposant des implémentations des fixtures.
-Cependant, la question principale est de trouver comment il est possible de n&#8217;instancier qu&#8217;une seule fois par scénario le webDriver et de l&#8217;injecter dans des instances de pages propres au scénario.</p>
-
-<p>La proposition présentée dans l&#8217;article précédent (modulo qu&#8217;il ne faut pas étendre de <code>FluentTest</code> mais de <code>FluentAdapter</code>) reste viable, mais il y a plus simple.</p>
-
-<p>En effet, dans la proposition faite précédemment, la classe <code>FluentTestDelegator</code> avait à sa charge, à la fois la déclaration des pages, et l&#8217;instanciation et l&#8217;initialisation du contexte de FluentLenium. Pour rappel, cette instanciation/initialisation était réalisée par <a href="http://picocontainer.codehaus.org/">Pico Container</a> lors de l&#8217;injection de l&#8217;instance de cette classe dans la classe contenant les fixtures.</p>
-
-<p>En fait, il est plus propre, d&#8217;un point de vue séparation des concepts, de laisser à cette classe le soin de proposer les fixtures d&#8217;initialisation du webDriver tout en séparant la déclaration des pages.</p>
-
-<p>Cela peut être réalisé en créant une classe (<code>FluentPageInjector</code>) étendant de <code>FluentAdapter</code> qui définit les pages et de la faire étendre d&#8217;une classe (<code>FluentLeniumStepInitilizer</code>) qui définit les fixtures d&#8217;instanciation du webDriver.</p>
-
-<p>Cela offre deux avantages : les classes qui définissent les steps de navigation n&#8217;ont qu&#8217;à étendre de <code>FluentPageInjector</code> pour avoir une visibilité sur les pages (tout en continuant d&#8217;injecter via pico l&#8217;instance de <code>FluentLeniumStepInitilizer</code>) et il devient alors possible de variabiliser le webDriver à utiliser.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Feature: browser
-</span><span class='line'>
-</span><span class='line'>  Scenario: navigation version firefox
-</span><span class='line'>    Given I connect on url http://localhost:8080 with firefox
-</span><span class='line'>    Given j accede a la homePage
-</span><span class='line'>    And je suis sur homePage
-</span><span class='line'>    When je submit
-</span><span class='line'>    Then je suis sur la page result
-</span><span class='line'>    And driver is closed
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>  Scenario: navigation version chrome
-</span><span class='line'>    Given I connect on url http://localhost:8080 with chrome with parameters webdriver.chrome.driver:/opt/chromedriver/chromedriver
-</span><span class='line'>    Given j accede a la homePage
-</span><span class='line'>    And je suis sur homePage
-</span><span class='line'>    When je submit
-</span><span class='line'>    Then je suis sur la page result
-</span><span class='line'>    And driver is closed
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>  Scenario: navigation version phantomjs
-</span><span class='line'>    Given I connect on url http://localhost:8080 with phantomjs with parameters phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs
-</span><span class='line'>    Given j accede a la homePage
-</span><span class='line'>    And je suis sur homePage
-</span><span class='line'>    When je submit
-</span><span class='line'>    Then je suis sur la page result
-</span><span class='line'>    And driver is closed
-</span></code></pre></td></tr></table></div></figure>
-
-
-<br/>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">step</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.FluentAdapter</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.fluentlenium.core.annotation.Page</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">page.HomePage</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">page.ResultPage</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FluentPageInjector</span> <span class="kd">extends</span> <span class="n">FluentAdapter</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Page</span>
-</span><span class='line'>    <span class="kd">protected</span> <span class="n">HomePage</span> <span class="n">homePage</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Page</span>
-</span><span class='line'>    <span class="kd">protected</span> <span class="n">ResultPage</span> <span class="n">resultPage</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On remarque, comme dit plus haut, que cette classe n&#8217;a qu&#8217;un seul rôle qui est de déclarer les pages tout en étendant de <code>FluentAdapter</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HomePageStep</span> <span class="kd">extends</span> <span class="n">FluentPageInjector</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="kd">public</span> <span class="nf">HomePageStep</span><span class="o">(</span><span class="n">FluentLeniumStepInitilizer</span> <span class="n">delegator</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">homePage</span> <span class="o">=</span> <span class="n">delegator</span><span class="o">.</span><span class="na">homePage</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">resultPage</span> <span class="o">=</span> <span class="n">delegator</span><span class="o">.</span><span class="na">resultPage</span><span class="o">;</span>
-</span><span class='line'>     <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>     <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^j accede a la homePage$&quot;</span><span class="o">)</span>
-</span><span class='line'>     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">j_accede_a_homePage</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">goTo</span><span class="o">(</span><span class="n">homePage</span><span class="o">);</span>
-</span><span class='line'>     <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^je suis sur homePage$&quot;</span><span class="o">)</span>
-</span><span class='line'>     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">je_suis_sur_homePage</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">homePage</span><span class="o">.</span><span class="na">isAt</span><span class="o">();</span>
-</span><span class='line'>     <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="nd">@When</span><span class="o">(</span><span class="s">&quot;^je submit$&quot;</span><span class="o">)</span>
-</span><span class='line'>     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">je_submit</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-</span><span class='line'>      <span class="n">homePage</span><span class="o">.</span><span class="na">submit</span><span class="o">();</span>
-</span><span class='line'>     <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<br/>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ResultPageStep</span> <span class="kd">extends</span> <span class="n">FluentPageInjector</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">ResultPageStep</span><span class="o">(</span><span class="n">FluentLeniumStepInitilizer</span> <span class="n">delegator</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">resultPage</span> <span class="o">=</span> <span class="n">delegator</span><span class="o">.</span><span class="na">resultPage</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@When</span><span class="o">(</span><span class="s">&quot;^je suis sur la page result$&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">je_suis_sur_la_page_result</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">resultPage</span><span class="o">.</span><span class="na">isAt</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ces classes correspondent aux classes qui définissent les fixtures. Elles étendent de <code>FluentPageInjector</code> de façon à pouvoir bénéficier de la visibilité sur les pages. Par contre, il est intéressant de constater que, dans son constructeur, la classe <code>FluentLeniumStepInitializer</code> est injecté via Pico Container. Cela permet d&#8217;affecter la valeur des pages.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FluentLeniumStepInitilizer</span> <span class="kd">extends</span> <span class="n">FluentPageInjector</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^I connect on url ([^ ]*) with ([^ ]*) with parameters ([^ ]*)$&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">browser_connect</span><span class="o">(</span><span class="n">String</span> <span class="n">host</span><span class="o">,</span> <span class="n">String</span> <span class="n">browser</span><span class="o">,</span> <span class="n">String</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">init</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">browser</span><span class="o">,</span> <span class="n">parameters</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Then</span><span class="o">(</span><span class="s">&quot;^drivers are closed&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">quit</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@After</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">afterClose</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">quit</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="n">String</span> <span class="n">host</span><span class="o">,</span> <span class="n">String</span> <span class="n">browserName</span><span class="o">,</span> <span class="n">String</span> <span class="n">parametersLine</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">Browser</span> <span class="n">browser</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">DesiredCapabilities</span> <span class="n">capabilities</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DesiredCapabilities</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">String</span><span class="o">[]</span> <span class="n">parameters</span> <span class="o">=</span> <span class="n">parametersLine</span><span class="o">.</span><span class="na">slip</span><span class="o">(</span><span class="s">&quot;;&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">parameter</span> <span class="o">:</span> <span class="n">parameters</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(!</span><span class="n">parameter</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>                <span class="n">String</span><span class="o">[]</span> <span class="n">key_value</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&quot;:&quot;</span><span class="o">);</span>
-</span><span class='line'>                <span class="n">capabilities</span><span class="o">.</span><span class="na">setCapability</span><span class="o">(</span><span class="n">key_value</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">key_value</span><span class="o">[</span><span class="mi">1</span><span class="o">]);</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="o">.</span><span class="na">getBrowser</span><span class="o">(</span><span class="n">browserLine</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
-</span><span class='line'>        <span class="n">capabilities</span><span class="o">.</span><span class="na">setBrowserName</span><span class="o">(</span><span class="n">browser</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">initWebDriver</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">browserHost</span><span class="o">,</span> <span class="n">browser</span><span class="o">,</span> <span class="n">capabilities</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">initWebDriver</span><span class="o">(</span><span class="n">String</span> <span class="n">host</span><span class="o">,</span> <span class="n">String</span> <span class="n">browserHost</span><span class="o">,</span> <span class="n">Browser</span> <span class="n">browser</span><span class="o">,</span> <span class="n">DesiredCapabilities</span> <span class="n">capabilities</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">Fluent</span> <span class="n">fluent</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">WebDriver</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">browser</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">driver</span> <span class="o">=</span> <span class="n">BrowserMapper</span><span class="o">.</span><span class="na">getDriver</span><span class="o">(</span><span class="n">browser</span><span class="o">,</span> <span class="n">capabilities</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">fluent</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">initFluent</span><span class="o">(</span><span class="n">driver</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">fluent</span><span class="o">.</span><span class="na">withDefaultUrl</span><span class="o">(</span><span class="n">host</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">initTest</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette classe étend par transitivité <code>FluentAdapter</code> et dispose donc de la visibilité sur les méthodes d&#8217;initialisation de <code>FluentLenium</code>. En outre, en étendant <code>FluentPageInjector</code> (qui étend de <code>FluentAdapter</code>), cela lui permet, à l&#8217;appel de <code>initTest()</code>, d&#8217;initialiser les pages.
-Concernant l&#8217;initialisation des webDriver, cela est fait au niveau de la classe <code>BrowserMapper</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">enum</span> <span class="n">Browser</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">HTMLUNIT</span><span class="o">(</span><span class="s">&quot;default&quot;</span><span class="o">),</span>
-</span><span class='line'>    <span class="n">FIREFOX</span><span class="o">(</span><span class="s">&quot;firefox&quot;</span><span class="o">),</span>
-</span><span class='line'>    <span class="n">CHROME</span><span class="o">(</span><span class="s">&quot;chrome&quot;</span><span class="o">),</span>
-</span><span class='line'>    <span class="n">PHANTOMJS</span><span class="o">(</span><span class="s">&quot;phantomjs&quot;</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Browser</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Browser</span> <span class="nf">getBrowser</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">Browser</span> <span class="n">browser</span> <span class="o">:</span> <span class="n">values</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">browser</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">browser</span><span class="o">;</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">HTMLUNIT</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<br/>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.Capabilities</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.WebDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.chrome.ChromeDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.firefox.FirefoxDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.htmlunit.HtmlUnitDriver</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.phantomjs.PhantomJSDriver</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BrowserMapper</span> <span class="o">{</span>
-</span><span class='line'> <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="kd">private</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Browser</span><span class="o">,</span> <span class="n">WebDriverLazyLoader</span><span class="o">&gt;</span> <span class="n">browserMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">Browser</span><span class="o">,</span> <span class="n">WebDriverLazyLoader</span><span class="o">&gt;();</span>
-</span><span class='line'>
-</span><span class='line'> <span class="kd">static</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">browserMapper</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">Browser</span><span class="o">.</span><span class="na">CHROME</span><span class="o">,</span> <span class="k">new</span> <span class="n">WebDriverLazyLoader</span><span class="o">(</span><span class="n">ChromeDriver</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
-</span><span class='line'>  <span class="n">browserMapper</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">Browser</span><span class="o">.</span><span class="na">FIREFOX</span><span class="o">,</span> <span class="k">new</span> <span class="n">WebDriverLazyLoader</span><span class="o">(</span><span class="n">FirefoxDriver</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
-</span><span class='line'>  <span class="n">browserMapper</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">Browser</span><span class="o">.</span><span class="na">HTMLUNIT</span><span class="o">,</span> <span class="k">new</span> <span class="n">WebDriverLazyLoader</span><span class="o">(</span><span class="n">HtmlUnitDriver</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
-</span><span class='line'>  <span class="n">browserMapper</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">Browser</span><span class="o">.</span><span class="na">PHANTOMJS</span><span class="o">,</span> <span class="k">new</span> <span class="n">WebDriverLazyLoader</span><span class="o">(</span><span class="n">PhantomJSDriver</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="n">WebDriver</span> <span class="nf">getDriver</span><span class="o">(</span><span class="n">Browser</span> <span class="n">browser</span><span class="o">,</span> <span class="n">Capabilities</span> <span class="n">capabilities</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>  <span class="n">WebDriverLazyLoader</span> <span class="n">webDriverLazyLoader</span> <span class="o">=</span> <span class="n">browserMapper</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">browser</span><span class="o">);</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">webDriverLazyLoader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">browser</span> <span class="o">==</span> <span class="n">Browser</span><span class="o">.</span><span class="na">PHANTOMJS</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">webDriverLazyLoader</span><span class="o">.</span><span class="na">getWebDriverClass</span><span class="o">(</span><span class="n">capabilities</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">browser</span> <span class="o">==</span> <span class="n">Browser</span><span class="o">.</span><span class="na">CHROME</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>                <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;webdriver.chrome.driver&quot;</span><span class="o">,</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">capabilities</span><span class="o">.</span><span class="na">getCapability</span><span class="o">(</span><span class="s">&quot;webdriver.chrome.driver&quot;</span><span class="o">));</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">webDriverLazyLoader</span><span class="o">.</span><span class="na">getWebDriverClass</span><span class="o">(</span><span class="n">capabilities</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>                <span class="k">return</span> <span class="n">webDriverLazyLoader</span><span class="o">.</span><span class="na">getWebDriverClass</span><span class="o">();</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">browserMapper</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Browser</span><span class="o">.</span><span class="na">HTMLUNIT</span><span class="o">).</span><span class="na">getWebDriverClass</span><span class="o">();</span>
-</span><span class='line'> <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette classe permet de faire le pont avec les webDriver qu&#8217;il est possible d&#8217;utiliser. Cependant, la petite astuce consiste à instancier de manière &ldquo;Lazy&rdquo; ces derniers.</p>
-
-<p>En effet, appeler le constructeur d&#8217;un webDriver l&#8217;instancie mais le démarre également (ie. que la fenêtre du navigateur s&#8217;ouvre réellement). Du coup, la petite classe présentée ci-dessous a été utilisée.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.Capabilities</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.openqa.selenium.WebDriver</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">class</span> <span class="nc">WebDriverLazyLoader</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">Class</span> <span class="n">webDriverClass</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">WebDriverLazyLoader</span><span class="o">(</span><span class="n">Class</span> <span class="n">webDriverClass</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">webDriverClass</span> <span class="o">=</span> <span class="n">webDriverClass</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">WebDriver</span> <span class="nf">getWebDriverClass</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">WebDriver</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">webDriverClass</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ReflectiveOperationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">WebDriver</span> <span class="nf">getWebDriverClass</span><span class="o">(</span><span class="n">Capabilities</span> <span class="n">capabilities</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="o">(</span><span class="n">WebDriver</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">webDriverClass</span><span class="o">.</span><span class="na">getConstructor</span><span class="o">(</span><span class="n">Capabilities</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">newInstance</span><span class="o">(</span><span class="n">capabilities</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ReflectiveOperationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Limites</h2>
-
-<p>Comme on a pu le voir dans ce chapitre, il est aisé de partager les fixtures Cucumber JVM dans des classes différentes tout en bénéficiant de FluentLenium.</p>
-
-<p>Cependant, pour certains besoins, il peut être utile de vouloir lancer les tests d&#8217;acceptance/intégration sur différents navigateurs.</p>
-
-<p>Bien sûr, chaque step pourrait boucler sur l&#8217;ensemble des navigateurs sur lesquels les tests doivent être exécutés, mais cela induirait des problématiques d&#8217;entrelacement des actions et donc soulèverait des problématiques comme la gestion d&#8217;un contexte par webDriver, l&#8217;accès à un rapport &ldquo;illisible&rdquo; ou un manque de contrôle sur les préconditions du test qui sont, généralement, lié au scénario et non à une Step.</p>
-
-<p>Le chapitre suivant tentera de répondre à cette problématique en proposant un moyen de &ldquo;boucler&rdquo; sur le scénario avec différents navigateurs.</p>
-
-<h1>Cas de tests multi-navigateurs pour un site complet</h1>
-
-<h2>Présentation et proposition d&#8217;implémentation</h2>
-
-<p>Il a été vu dans le chapitre précédent comment il était possible d&#8217;exécuter des tests d&#8217;acceptances/intégration sur un navigateur donné.</p>
-
-<p>Ce chapitre présentera, pour sa part, une façon de les lancer sur différents navigateurs sans avoir à faire de copier/coller ;&ndash;).</p>
-
-<p>En fait, Cucumber JVM permet nativement de boucler sur un scénario en utilisant différents paramètres. Cela se fait par le mécanisme de <code>scenario outline</code>.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Feature: multibrowser
-</span><span class='line'>
-</span><span class='line'>  Scenario Outline: multi browser navigation version 1:
-</span><span class='line'>    Given I connect on url http://localhost:8080 with &lt;browser&gt; with parameters &lt;parameters&gt;
-</span><span class='line'>    Given j accede a la homePage
-</span><span class='line'>    And je suis sur homePage
-</span><span class='line'>    When je submit
-</span><span class='line'>    Then je suis sur la page result
-</span><span class='line'>    And driver is closed
-</span><span class='line'>  Examples:
-</span><span class='line'>    | browser | parameters                                             |
-</span><span class='line'>    | firefox |                                                        |
-</span><span class='line'>    | default |                                                        |
-</span><span class='line'>    | chrome  | webdriver.chrome.driver:/opt/chromedriver/chromedriver |
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Et&hellip; c&#8217;est tout!</p>
-
-<p>Le code n&#8217;a pas à être modifié : Cucumber JVM s&#8217;occupe de tout! ;&ndash;)</p>
-
-<h2>Limites</h2>
-
-<p>On a vu dans le paragraphe précédent comment il était possible d&#8217;exécuter facilement des tests d&#8217;acceptance/intégration en s&#8217;appuyant sur la notion de scénario outline offerte nativement par Cucumber JVM.</p>
-
-<p>Coté limitation, je n&#8217;en vois pas trop&hellip;</p>
-
-<p>Peut être le fait de ne pas instancier le webDriver pour chaque scénario (opération assez coûteuse en temps) mais cela est aisément résolvable en utilisant une sorte de cache de webDriver fonctionnant sur le principe de singleton qui serait réinialisé lors de l&#8217;appel à la step drivers are closed qui serait isolée dans son propre <code>scenario outline</code> :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>  Scenario Outline: browsers are closed:
-</span><span class='line'>    Then driver is closed
-</span><span class='line'>  Examples:
-</span><span class='line'>    | browser   | parameters                                                            |
-</span><span class='line'>    | firefox   |                                                                       |
-</span><span class='line'>    | default   |                                                                       |
-</span><span class='line'>    | phantomjs | phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs |
-</span><span class='line'>    | chrome    | webdriver.chrome.driver:/opt/chromedriver/chromedriver                |
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Conclusion</h1>
-
-<p>Il a été présenté dans cet article comment il était possible d&#8217;implémenter l&#8217;intégration de Cucumber JVM et de Selenium à l&#8217;aide de FluentLenium.</p>
-
-<p>Cet article n&#8217;a, cependant, pas fait mention de l&#8217;exécution des tests sur des navigateurs distants via les <strong>RemoteWebDriver</strong> mais cela est tout à fait possible (même si le code montré ici ne le présente pas) et est même totalement fonctionnel : pour ce faire (code disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/tree/multiNav">ici</a>), il suffit de fournir, entre autre, des paramètres supplémentaires comme l&#8217;url de connexion au hub Selenium et d&#8217;instancier un <code>RemoteWebDriver</code> plutôt que le webDriver.</p>
-
-<p>De même, le code permettant d&#8217;instancier à la mode singleton les webDriver est disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/blob/multiNav/src/test/java/step/FluentLeniumStepInitilizer.java">ici</a> (voir la méthode <code>initCachedWebDriver()</code> de la classe <code>FluentLeniumStepInitilizer</code>).</p>
-
-<p>Enfin, un dernier mot sur la façon dont il est possible d&#8217;exécuter tout ce beau monde (comme ça, je réponds à la remarque très pertinente de <a href="https://twitter.com/josepaumard">José</a> ;&ndash;) ) parce que faire des tests, c&#8217;est bien, les jouer, c&#8217;est mieux!</p>
-
-<p>Il est possible de jouer les tests d&#8217;au moins trois manières distinctes : une orienté &ldquo;vraie vie&rdquo; (ie. utilisable au sein d&#8217;un build maven et donc exécutable via une usine d&#8217;intégration continue) et deux autres plutôt orientés développement.</p>
-
-<p>Ainsi, pour jouer les tests via maven, il suffit de le déclarer dans le <code>pom.xml</code> le plugin failsafe en le branchant sur la &ldquo;bonne phase&rdquo;, à savoir le runner Cucumber JVM :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-failsafe-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>integration-test<span class="nt">&lt;/goal&gt;</span>
-</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>verify<span class="nt">&lt;/goal&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;includes&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;include&gt;</span>**/BasicRunner.java<span class="nt">&lt;/include&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/includes&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Coté jouabilité des tests sur un environnement de développement  il est possible d&#8217;exécuter le <strong>Runner</strong> Cucumber JVM directement (comme lors de l&#8217;exécution d&#8217;une classe de test unitaire) ou d&#8217;utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas&hellip;).</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">cucumber.api.junit.Cucumber</span><span class="o">;</span>
-</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.runner.RunWith</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Cucumber</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@Cucumber.Options</span><span class="o">(</span><span class="n">features</span> <span class="o">=</span> <span class="s">&quot;classpath:fr/jetoile/webapp/acceptance&quot;</span><span class="o">,</span> <span class="n">format</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;html:target/cucumber&quot;</span><span class="o">,</span> <span class="s">&quot;json:target/cucumber.json&quot;</span><span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunCucumberFeatures</span> <span class="o">{</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s1600/screenshot01.png" alt="medium" /></p>
-
-<br/>
-
-
-<p><img src="http://3.bp.blogspot.com/-FkF8ZO6r6co/UWXnUNjqjII/AAAAAAAAA4g/obtSC7BS6kI/s1600/screenshot02.png" alt="medium" /></p>
-
-<p>Enfin, pour rappel, mon usecase étant de tester mon application web en boite noire, un prérequis était que mon application web soit démarrée au préalable.</p>
-
-<p>Pour ce faire, le plugin maven Jetty (ou Tomcat au choix) a été utilisé et branché sur la phase de pré-integration.</p>
-
-<p>Lors de l&#8217;exécution des tests en mode développement (ie. en les lançant comme un TU ou à l&#8217;aide du plugin Cucumber JVM via l&#8217;IDE), un profil n&#8217;exécutant pas le plugin failsafe mais uniquement le démarrage du jetty/tomcat embarqué a été utilisé.</p>
-
-<h1>Pour aller plus loin&hellip;</h1>
-
-<ul>
-<li>article sur les limitations de Cucumber JVM pour le partage de données entre steps : <a href="http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/">http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/</a></li>
-<li>page de fluentLenium : <a href="https://github.com/FluentLenium/FluentLenium">https://github.com/FluentLenium/FluentLenium</a></li>
-<li>page des webDriver de Selenium : <a href="http://docs.seleniumhq.org/docs/03_webdriver.jsp">http://docs.seleniumhq.org/docs/03_webdriver.jsp</a></li>
-<li>code : <a href="http://github.com/jetoile/fluentlenium-cucumber/">http://github.com/jetoile/fluentlenium-cucumber/</a></li>
 </ul>
 
 ]]></content>

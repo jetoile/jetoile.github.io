@@ -1,0 +1,1120 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hadoop Unit - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Hadoop Unit April 16, 2016 Dans mon dernier post, j&#8217;avais parlé d&#8217;une surcouche que j&#8217;avais développé afin de faciliter l&#8217; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.jetoile.fr/2016/04/hadoop-unit.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Hadoop Unit</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2016-04-16T18:16:01+02:00" pubdate data-updated="true">April 16, 2016</time>  
+        </div>
+        <p><img src="/images/hadoop-all.png" alt="left-small" />
+Dans mon dernier <a href="/2016/01/hadoop-ecosysteme-bootstrap.html">post</a>, j&#8217;avais parlé d&#8217;une surcouche que j&#8217;avais développé afin de faciliter l&#8217;utilisation de quelques-uns des composants de l&#8217;écosystème Hadoop, à savoir :</p>
+
+<ul>
+<li>Hdfs,</li>
+<li>Zookeeper,</li>
+<li>HiveMetastore,</li>
+<li>Hiveserver2,</li>
+<li>SolR,</li>
+<li>SolRCloud,</li>
+<li>Oozie,</li>
+<li>Kafka,</li>
+<li>et HBase.</li>
+</ul>
+
+
+<p>Il s&#8217;appelait alors Hadoop-Bootstrap mais il s&#8217;agissait aussi d&#8217;une première version qui a, bien sûr, évolué.</p>
+
+<p>Cet article présentera donc quels ont été les améliorations qui ont été apportées.</p>
+
+<p><em>Disclaimer</em> : je tiens à repréciser que Hadoop-unit n&#8217;est qu&#8217;une solution de contournement permettant de simuler une partie de l&#8217;écosystème Hadoop afin de permettre de disposer en local d&#8217;un ersatz de distribution afin de fluidifier le développement mais proposant aussi d&#8217;effectuer des tests d&#8217;intégration dans un environnement dégradé. Cela peut également permettre d&#8217;éviter de monter un cluster Hadoop dédié aux tests d&#8217;intégration.</p>
+
+<!-- more -->
+
+
+<h1>Description des changements/évolutions</h1>
+
+<p>Alors que la première version d&#8217;Hadoop Unit (aka. Hadoop Bootstrap) était monolithique, le projet a été découpé en modules permettant ainsi de ne démarrer que les composants qui sont présents dans le classpath de l&#8217;environnement de test (en maven le scope de test).</p>
+
+<p>Ainsi, par exemple, si l&#8217;application nécessite HBase (qui nécessite lui-même Hdfs et Zookeeper), il n&#8217;y a qu&#8217;à ajouter au classpath de test la dépendance à HBase.</p>
+
+<p>Dans ce cas, grâce à la transitivité Maven, les modules Zookeeper et Hdfs seront automatiquement ajoutés au classpath de test et les composants démarrés avant HBase.</p>
+
+<p>En outre, cela permet de ne pas à avoir à se soucier de l&#8217;ordre de démarrage.</p>
+
+<p>Pour information, afin de permettre ce mécanisme, il y a dernier un simple SPI.</p>
+
+<p>Ainsi dans un exemple, cela peut donner :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-hbase<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec dans le test d&#8217;intégration :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Test</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">hBaseShouldStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_TABLE_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">colFamName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_COL_FAMILY_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">colQualiferName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_COL_QUALIFIER_NAME_KEY</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Integer</span> <span class="n">numRowsToPut</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_TEST_NUM_ROWS_TO_PUT_KEY</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">hadoop</span><span class="o">.</span><span class="na">conf</span><span class="o">.</span><span class="na">Configuration</span> <span class="n">hbaseConfiguration</span> <span class="o">=</span> <span class="n">HBaseConfiguration</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;hbase.zookeeper.quorum&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_HOST_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="s">&quot;hbase.zookeeper.property.clientPort&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_PORT_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;hbase.master&quot;</span><span class="o">,</span> <span class="s">&quot;127.0.0.1:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_MASTER_PORT_KEY</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">hbaseConfiguration</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;zookeeper.znode.parent&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HBASE_ZNODE_PARENT_KEY</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Creating table {} with column family {}&quot;</span><span class="o">,</span> <span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">createHbaseTable</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Populate the table with {} rows.&quot;</span><span class="o">,</span> <span class="n">numRowsToPut</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRowsToPut</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">putRow</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">colQualiferName</span><span class="o">,</span> <span class="s">&quot;row_&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;HBASE: Fetching and comparing the results&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRowsToPut</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Result</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getRow</span><span class="o">(</span><span class="n">tableName</span><span class="o">,</span> <span class="n">colFamName</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">colQualiferName</span><span class="o">,</span> <span class="n">hbaseConfiguration</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;row_&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">value</span><span class="o">()));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bien sûr, il reste possible de préciser les composants à démarrer mais, dans ce cas, il est à la charge du développeur de vérifier que les modules sont bien dans son classpath et qu&#8217;il démarre bien les composants dans le bon ordre.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@BeforeClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">ZOOKEEPER</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HDFS</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">Component</span><span class="o">.</span><span class="na">HBASE</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">startAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@AfterClass</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HadoopBootstrap</span><span class="o">.</span><span class="na">INSTANCE</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">stopAll</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Enfin, il a été ajouté un plugin Maven permettant de démarrer les composants de l&#8217;écosystème :</p>
+
+<ul>
+<li>soit dans le même classloader que le test,</li>
+<li>soit de démarrer hadoop unit dans une autre jvm modulo que hadoop-unit-standalone ait été installé sur le poste en local.</li>
+</ul>
+
+
+<p>Ce dernier mode est celui à privilégier dans les tests d&#8217;intégration car cela évite les problèmes de conflits de dépendances engendrés par le fait que tous les composants d&#8217;Hadoop Unit s&#8217;éxécute dans la même JVM (chose qui bien sûr n&#8217;est pas le cas dans le vraie vie&hellip;).</p>
+
+<p>Ainsi, en mode embedded, le plugin peut s&#8217;utiliser de la manière suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-client-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;id&gt;</span>start<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;goal&gt;</span>embedded-start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;values&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;value&gt;</span>HDFS<span class="nt">&lt;/value&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/values&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'><span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>avec :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HdfsBootstrapIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">private</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">configuration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertiesConfiguration</span><span class="o">(</span><span class="s">&quot;default.properties&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ConfigurationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BootstrapException</span><span class="o">(</span><span class="s">&quot;bad config&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">hdfsShouldStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">hdfsFsHandle</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">FSDataOutputStream</span> <span class="n">writer</span> <span class="o">=</span> <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_FILE_KEY</span><span class="o">)));</span>
+</span><span class='line'>        <span class="n">writer</span><span class="o">.</span><span class="na">writeUTF</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_STRING_KEY</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Read the file and compare to test string</span>
+</span><span class='line'>        <span class="n">FSDataInputStream</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_FILE_KEY</span><span class="o">)));</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">readUTF</span><span class="o">(),</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_TEST_STRING_KEY</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">hdfsFsHandle</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">URL</span> <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span> <span class="s">&quot;http://localhost:%s/webhdfs/v1?op=GETHOMEDIRECTORY&amp;user.name=guest&quot;</span><span class="o">,</span>
+</span><span class='line'>                        <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span> <span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_HTTP_PORT_KEY</span> <span class="o">)</span> <span class="o">)</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">URLConnection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="na">openConnection</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">connection</span><span class="o">.</span><span class="na">setRequestProperty</span><span class="o">(</span> <span class="s">&quot;Accept-Charset&quot;</span><span class="o">,</span> <span class="s">&quot;UTF-8&quot;</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">BufferedReader</span> <span class="n">response</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span> <span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span> <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">()</span> <span class="o">)</span> <span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">response</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="s">&quot;{\&quot;Path\&quot;:\&quot;/user/guest\&quot;}&quot;</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En utilisation remote, cela donne :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-client-hdfs<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;hadoopUnitPath&gt;</span>/home/khanh/tools/hadoop-unit-standalone<span class="nt">&lt;/hadoopUnitPath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exec&gt;</span>./hadoop-unit-standalone<span class="nt">&lt;/exec&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;values&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;value&gt;</span>HDFS<span class="nt">&lt;/value&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/values&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;outputFile&gt;</span>/tmp/toto.txt<span class="nt">&lt;/outputFile&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>1.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;hadoopUnitPath&gt;</span>/home/khanh/tools/hadoop-unit-standalone<span class="nt">&lt;/hadoopUnitPath&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exec&gt;</span>./hadoop-unit-standalone<span class="nt">&lt;/exec&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;outputFile&gt;</span>/tmp/toto.txt<span class="nt">&lt;/outputFile&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Trucs et astuces</h1>
+
+<p>Il est possible d&#8217;intéragir avec Hadoop Unit (et même si il s&#8217;agit d&#8217;un cluster Hadoop dégradé) avec les moyens standards, à savoir :</p>
+
+<ul>
+<li>hbase shell</li>
+<li>kafka-console commande</li>
+<li>hdfs commande</li>
+<li>hive shell</li>
+</ul>
+
+
+<p>Ainsi, il devient possible de faire des choses comme :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>kafka-console-consumer --zookeeper localhost:22010 --topic topic
+</span><span class='line'>hdfs dfs -ls hdfs://localhost:20112/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ou lancer un hbase shell ou hive shell pour créer des tables ou des tables hive et/ou peupler et/ou requêter ces derniers.</p>
+
+<p>Hadoop Unit propose également des classes utilitaires (à n&#8217;utiliser que dans le contexte des tests bien sûr!) qui lisent directement la configuration d&#8217;Hadoop Unit (le fichier <code>default.properties</code>) et qui permettent de bénéficier simplement :</p>
+
+<ul>
+<li>d&#8217;un FileSystem Hdfs</li>
+<li>d&#8217;avoir une syntaxe fluent pour créer les tables hive via jdbc (cette partie est directement tirée de <a href="http://dbsetup.ninja-squad.com/">DBSetup</a> de <a href="http://ninja-squad.com/">Ninja Squad</a>)</li>
+<li>des bonnes dépendances pour utiliser Spark 1.6.0 (cf. conflit de lib)</li>
+<li>des bonnes dépendances pour utiliser Spark-solr (cf. conflit de lib)</li>
+</ul>
+
+
+<h1>Conclusion</h1>
+
+<p>Comme je l&#8217;ai déjà dit maintes et maintes fois, Hadoop Unit n&#8217;est qu&#8217;une solution de contournement (ou la solution du pauvre au choix&hellip; ;) ) mais cela peut permettre d&#8217;accélérer les phases de développement (en utilisant hadoop-unit-standalone par exemple) et peut permettre d&#8217;effectuer quelques tests d&#8217;intégration.</p>
+
+<p>Hadoop Unit s&#8217;appuie sur le travail de <a href="https://github.com/sakserv/hadoop-mini-clusters">Shane Kumpf</a> et est lié aux versions des composants d&#8217;Hortonworks (d&#8217;ailleurs, une grosse partie des tests est directement un copier/coller de ce qu&#8217;à fait Shane Kumpf).</p>
+
+<p>Il ne propose ni Spark ni Map/Reduce car ces derniers n&#8217;ont pas besoin d&#8217;être simulés puisqu&#8217;ils proposent un mode de développement.</p>
+
+<p>Enfin, pour plus d&#8217;informations sur l&#8217;utilisation d&#8217;Hadoop-Unit, je vous invite à aller sur la page du projet <a href="https://github.com/jetoile/hadoop-unit">github</a> et/ou de faire des Pull Request si vous avez des remarques/bugs et/ou à forker si cela vous convient pas.</p>
+
+<p>Pour conclure, et même si cela se trouve sur github, voilà un exemple de ce qu&#8217;il est possible de faire avec Hadoop Unit :</p>
+
+<ul>
+<li><p>Exemple 1</p>
+
+<ul>
+<li>émettre des données dans un topic Kafka</li>
+<li>consommer les données en utilisant Spark Streaming</li>
+<li>écrire les résultats dans HBase et/ou SolrCloud et/ou HDFS</li>
+</ul>
+</li>
+<li><p>Exemple 2</p>
+
+<ul>
+<li>upload dans hdfs un fichier au format csv</li>
+<li>créer une table hive associée</li>
+<li>transformer via Spark SQL le csv en parquet (en utilisant le métastore de Hive)</li>
+<li>indexer les données au format parquet dans SolrCloud en utilisant Spark</li>
+</ul>
+</li>
+</ul>
+
+
+<p>soit :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SparkSolrIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">static</span> <span class="kd">private</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">SparkSolrIntegrationTest</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Operation</span> <span class="n">CREATE_TABLES</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Operation</span> <span class="n">DROP_TABLES</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">BootstrapException</span><span class="o">,</span> <span class="n">SQLException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span><span class="o">,</span> <span class="n">NotFoundServiceException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">configuration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertiesConfiguration</span><span class="o">(</span><span class="s">&quot;default.properties&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ConfigurationException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BootstrapException</span><span class="o">(</span><span class="s">&quot;bad config&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">CREATE_TABLES</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">sequenceOf</span><span class="o">(</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;CREATE EXTERNAL TABLE IF NOT EXISTS default.test(id INT, value STRING) &quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; ROW FORMAT DELIMITED FIELDS TERMINATED BY &#39;;&#39;&quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; STORED AS TEXTFILE&quot;</span> <span class="o">+</span>
+</span><span class='line'>                                <span class="s">&quot; LOCATION &#39;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test&#39;&quot;</span><span class="o">),</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DROP_TABLES</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">sequenceOf</span><span class="o">(</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;DROP TABLE IF EXISTS default.test&quot;</span><span class="o">));</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Before</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">before</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">URISyntaxException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">fileSystem</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">mkdirs</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">mkdirs</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test_parquet&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">copyFromLocalFile</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="n">SparkSolrIntegrationTest</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">().</span><span class="na">getResource</span><span class="o">(</span><span class="s">&quot;test.csv&quot;</span><span class="o">).</span><span class="na">toURI</span><span class="o">()),</span> <span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh/test/test.csv&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">HiveSetup</span><span class="o">(</span><span class="n">HiveConnectionUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getDestination</span><span class="o">(),</span> <span class="n">Operations</span><span class="o">.</span><span class="na">sequenceOf</span><span class="o">(</span><span class="n">CREATE_TABLES</span><span class="o">)).</span><span class="na">launch</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@After</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">clean</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">new</span> <span class="nf">HiveSetup</span><span class="o">(</span><span class="n">HiveConnectionUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getDestination</span><span class="o">(),</span> <span class="n">Operations</span><span class="o">.</span><span class="na">sequenceOf</span><span class="o">(</span><span class="n">DROP_TABLES</span><span class="o">)).</span><span class="na">launch</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">FileSystem</span> <span class="n">fileSystem</span> <span class="o">=</span> <span class="n">HdfsUtils</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getFileSystem</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">fileSystem</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="k">new</span> <span class="n">Path</span><span class="o">(</span><span class="s">&quot;/khanh&quot;</span><span class="o">),</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">spark_should_read_parquet_file_and_index_into_solr</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">SolrServerException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">//given</span>
+</span><span class='line'>        <span class="n">SparkConf</span> <span class="n">conf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SparkConf</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">setMaster</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">setAppName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">JavaSparkContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaSparkContext</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//read hive-site from classpath</span>
+</span><span class='line'>        <span class="n">HiveContext</span> <span class="n">hiveContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HiveContext</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">sc</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">sql</span> <span class="o">=</span> <span class="n">hiveContext</span><span class="o">.</span><span class="na">sql</span><span class="o">(</span><span class="s">&quot;SELECT * FROM default.test&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">sql</span><span class="o">.</span><span class="na">write</span><span class="o">().</span><span class="na">parquet</span><span class="o">(</span><span class="s">&quot;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test_parquet/file.parquet&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//when</span>
+</span><span class='line'>        <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaSparkContext</span><span class="o">(</span><span class="n">conf</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SQLContext</span> <span class="n">sqlContext</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SQLContext</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">file</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="na">read</span><span class="o">().</span><span class="na">parquet</span><span class="o">(</span><span class="s">&quot;hdfs://localhost:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/khanh/test_parquet/file.parquet&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">DataFrame</span> <span class="n">select</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="s">&quot;value&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">JavaRDD</span><span class="o">&lt;</span><span class="n">SolrInputDocument</span><span class="o">&gt;</span> <span class="n">solrInputDocument</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="na">toJavaRDD</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">SolrInputDocument</span> <span class="n">solr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SolrInputDocument</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">solr</span><span class="o">.</span><span class="na">setField</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">solr</span><span class="o">.</span><span class="na">setField</span><span class="o">(</span><span class="s">&quot;value_s&quot;</span><span class="o">,</span> <span class="n">r</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">solr</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">});</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">collectionName</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">SolrCloudBootstrap</span><span class="o">.</span><span class="na">SOLR_COLLECTION_NAME</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">zkHostString</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="n">Config</span><span class="o">.</span><span class="na">ZOOKEEPER_PORT_KEY</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SolrSupport</span><span class="o">.</span><span class="na">indexDocs</span><span class="o">(</span><span class="n">zkHostString</span><span class="o">,</span> <span class="n">collectionName</span><span class="o">,</span> <span class="mi">1000</span><span class="o">,</span> <span class="n">solrInputDocument</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//then</span>
+</span><span class='line'>        <span class="n">CloudSolrClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CloudSolrClient</span><span class="o">(</span><span class="n">zkHostString</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">SolrDocument</span> <span class="n">collection1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">getById</span><span class="o">(</span><span class="n">collectionName</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">collection1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">collection1</span><span class="o">.</span><span class="na">getFieldValue</span><span class="o">(</span><span class="s">&quot;value_s&quot;</span><span class="o">)).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="s">&quot;value1&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2016-04-16T18:16:01+02:00" pubdate data-updated="true">April 16, 2016</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/hadoop/'>Hadoop</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://blog.jetoile.fr/2016/04/hadoop-unit.html" data-via="jetoile" data-counturl="http://blog.jetoile.fr/2016/04/hadoop-unit.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.jetoile.fr/2016/04/hadoop-unit.html';
+        var disqus_url = 'http://blog.jetoile.fr/2016/04/hadoop-unit.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2016/01/hadoop-ecosysteme-bootstrap.html" title="Previous Post: Hadoop ecosysteme bootstrap">&laquo; Previous: Hadoop ecosysteme bootstrap</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

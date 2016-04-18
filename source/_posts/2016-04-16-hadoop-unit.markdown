@@ -17,7 +17,9 @@ Dans mon dernier [post](/2016/01/hadoop-ecosysteme-bootstrap.html), j'avais parl
 * SolRCloud,
 * Oozie,
 * Kafka,
-* et HBase.
+* HBase,
+* MongoDB [New \o/ ],
+* et Cassandra [New \o/ ].
 
 Il s'appelait alors Hadoop-Bootstrap mais il s'agissait aussi d'une première version qui a, bien sûr, évolué.
 

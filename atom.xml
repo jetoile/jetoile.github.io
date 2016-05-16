@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-04-18T18:29:47+02:00</updated>
+  <updated>2016-05-16T14:38:58+02:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hadoop Unit 1.3]]></title>
+    <link href="http://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html"/>
+    <updated>2016-05-16T14:20:51+02:00</updated>
+    <id>http://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" /> Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&#8217;avais posté précédemment sur un composant au doux nom d&#8217;Hadoop-Unit.</p>
+
+<p>J&#8217;ai le plaisir de vous annoncer qu&#8217;il a été releasé en version 1.3 et qu&#8217;il est également disponible sur maven central.</p>
+
+<p>Il intègre dans sa nouvelle version :</p>
+
+<ul>
+<li>support d&#8217;ElasticSearch 5.0.0-alpha2</li>
+<li>correction de bugs : la variable d&#8217;environnement HADOOP_UNIT n&#8217;est plus nécessaire que pour les utilisateurs de Windows (merci Florent ;))</li>
+<li>passage en version 0.1.6 de <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop Mini Cluster</a></li>
+</ul>
+
+
+<p>A noter que pour utiliser Hadoop Unit en mode standalone, il est maintenant nécessaire de choisir entre Hadoop-Unit version SolR et Hadoop-Unit version ElasticSearch.</p>
+
+<p>Cela est dû à un conflit de jars (Lucene pour ne pas le citer&hellip;) qui oblige à gérer ces composants indépendamment&hellip;</p>
+
+<p>Pour les téléchargements, ça se passe ici :</p>
+
+<ul>
+<li><a href="http://search.maven.org/remotecontent?filepath=fr/jetoile/hadoop/hadoop-unit-standalone-elasticsearch/1.3/hadoop-unit-standalone-elasticsearch-1.3.tar.gz">Hadoop-Unit compatible ElasticSearch</a></li>
+<li><a href="http://search.maven.org/remotecontent?filepath=fr/jetoile/hadoop/hadoop-unit-standalone-solr/1.3/hadoop-unit-standalone-solr-1.3.tar.gz">Hadoop-Unit compatible SolR</a></li>
+</ul>
+
+
+<p>Enjoy ;)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hadoop Unit]]></title>
@@ -7048,426 +7082,6 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 <p>Enjoy! ;&ndash;)</p>
 
 <p>PS : en plus, pour une fois, il ne pleut pas&hellip; ;&ndash;)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Industrialiser La Récolte De Métriques Web]]></title>
-    <link href="http://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html"/>
-    <updated>2013-04-25T22:01:09+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques</id>
-    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7c/0_a7KhiLEfw/s1600/01-timeline-harstorage5.png" alt="left-small" /></p>
-
-<p> A l&#8217;origine, une des principales raisons à la mise en place d&#8217;un serveur d&#8217;intégration continue était l&#8217;automatisation des processus qui, fait manuellement, étaient souvent consommateur de temps et générateur d&#8217;erreurs humaines. Petit à petit, ce dernier s&#8217;est imposé comme l&#8217;orchestrateur de tous les processus et est devenu un des points central de l&#8217;usine de développement. En effet, en plus de ses capacités à compiler, packager, faire passer les tests unitaires, d&#8217;intégration et d&#8217;acceptance, il est souvent utilisé pour livrer mais également pour effectuer des tests de non régression.</p>
-
-<p>Parmi ces tests de non regression, il est possible d&#8217;y inclure (en plus des classiques tests unitaires, d&#8217;intégration et d&#8217;acceptances) les tests de performances (<a href="http://jmeter.apache.org/">JMeter</a>, <a href="http://jmeter.apache.org/">Gatling</a>, <a href="http://clif.ow2.org/">Clif</a>) et la remontée de métriques de qualité de code (<a href="http://pmd.sourceforge.net/">PMD/CPD</a>, <a href="http://findbugs.sourceforge.net/">Findbugs</a>, <a href="http://checkstyle.sourceforge.net/">Checkstyle</a>, ou plus simplement <a href="http://www.sonarsource.org/">Sonar</a>).</p>
-
-<p>Bien évidemment, récupérer des métriques sans les consolider ni les comparer avec l&#8217;historique est totalement inutile car cela n&#8217;offrirait aucune visibilité sur l&#8217;amélioration ou la dégradation du produit.</p>
-
-<p>Ce petit laïus semble trivial pour ceux qui font du Java (enfin je l&#8217;espère&hellip; ;&ndash;) ). Cependant il l&#8217;est un peu moins dans le monde pur web (ie. lorsque l&#8217;on veut tester une couche pur front). Bien sûr, il y a Selenium &amp; co mais cela ne permet de ne tester que le fonctionnel. En outre, en cherchant dans la littérature (pour rappel, je ne suis pas développeur front), on peut constater que, souvent, les outils utilisés pour obtenir des métriques sur la qualité de rendu d&#8217;une page ou le temps de chargement de ses différents composants sont souvent intégrés au <a href="https://developers.google.com/chrome-developer-tools/">navigateur du développeur</a> et que, souvent, il est nécessaire de se faire des nœuds au cerveau pour les intégrer aux usines logicielles telles que celles dont l&#8217;écosystème Java a l&#8217;habitude.</p>
-
-<p>Vous l&#8217;aurez compris, cet article a donc pour objectif de montrer comment il est possible d&#8217;intégrer tout ce beau monde&hellip;</p>
-
-<p>Il se limitera cependant à la récupération de métriques sur la qualité de rendu d&#8217;une page ainsi qu&#8217;à son temps de chargement.</p>
-
-<p>Dans un premier temps, cet article présentera donc comment il est possible de récupérer des métriques type <a href="http://yslow.org/">YSlow</a> ou <a href="https://developers.google.com/speed/pagespeed/">Pagespeed</a> (ie. une note globale sur la page) puis, dans un second temps, comment il est possible de récupérer des métriques sur le temps de chargement des pages. Enfin, pour faire le liant avec mes articles précédent, on verra comment il est possible de remonter et historiser ces métriques au travers un test d&#8217;acceptance.</p>
-
-<p>Evidemment, l&#8217;objectif n&#8217;étant pas d&#8217;obtenir ces métriques de manière &ldquo;one shot&rdquo;, une attention particulière sera portée sur l&#8217;intégration de ces outils à une usine logicielle et à leurs capacités à fournir une évolution dans le temps.</p>
-
-<!-- more -->
-
-
-<h1>HTML et ses bonnes pratiques</h1>
-
-<h2>Contexte</h2>
-
-<p>Parmi les outils courants pour récupérer une évaluation d&#8217;une page HTML au sein d&#8217;un navigateur, il existe YSlow et Pagespeed. Ces deux outils fournissent un ensemble de notes qui permettent de qualifier les <em>bonnes</em> pratiques tels que la minification des fichiers Javascript.</p>
-
-<p><img src="http://1.bp.blogspot.com/-FK0JmFOA6-E/UXhYlIp8YuI/AAAAAAAAA6M/X7S8oxoqMA4/s1600/01-pagespeed_chrome.png" alt="medium" /></p>
-
-<p><img src="http://3.bp.blogspot.com/-BzaEnN79iIo/UXhZTxUiGaI/AAAAAAAAA6Y/YTmOqzR5c7M/s1600/yslow.png" alt="medium" /></p>
-
-<p> Bien sûr, le fait d&#8217;utiliser un plugin de navigateur n&#8217;est pas ce qu&#8217;il y a de plus industrialisable. Le besoin peut être décomposé en deux étapes :</p>
-
-<ul>
-<li>la récupération des métriques,</li>
-<li>la présentation de ces métriques dans un <em>dashboard</em> afin qu&#8217;elles soient lisibles et qu&#8217;il soit possible de voir leur évolution dans le temps.</li>
-</ul>
-
-
-<h2>Solution et mise en oeuvre</h2>
-
-<p>Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.</p>
-
-<p>Du coté de YSlow, cela est facilement faisable en s&#8217;appuyant sur phantomjs.</p>
-
-<p>Pour ce faire, il suffit de récupérer et d&#8217;installer le binaire de <a href="http://phantomjs.org/">phantomjs</a>. Il reste ensuite à récupérer le script yslow.js puis d&#8217;exécuter la commande suivante :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/opt/phantomjs/bin/phantomjs yslow.js &lt;url page&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://2.bp.blogspot.com/-YmCjl2Qldg8/UXgB31zhtoI/AAAAAAAAA5U/P79Nn3j6Pvo/s1600/01-yslow_cmd2.png" alt="medium" /></p>
-
-<p>Il est également possible de s&#8217;appuyer sur <a href="http://nodejs.org/">nodejs</a> mais l&#8217;opération devient alors un peu plus compliqué : il faut d&#8217;abord installer nodejs puis yslow avant de pouvoir lancer la génération du rapport en passant par la génération d&#8217;un fichier HAR (<a href="http://httparchive.org/index.php">HTTP ARchive</a>) :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo /opt/nodejs/bin/npm install yslow -g
-</span><span class='line'>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; | yslow
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://2.bp.blogspot.com/-gD-DFJtuChI/UXgBG-wifGI/AAAAAAAAA5M/2M1bFUsavqc/s1600/01-yslow_cmd.png" alt="medium" /></p>
-
-<p> Coté génération du rapport Pagespeed, trois pistes ont été étudiées :</p>
-
-<ul>
-<li>la première en utilisant un <a href="https://github.com/pauly/pagespeed">module nodejs</a>,</li>
-<li>la deuxième en compilant Pagespeed directement depuis le <a href="https://code.google.com/p/page-speed/">site de google</a>,</li>
-<li>la troisième en s&#8217;appuyant sur un <a href="https://code.google.com/p/harstorage/downloads/list">binaire déjà compilé</a> trouvé sur le site de <a href="https://code.google.com/p/harstorage/">HarStorage</a>.</li>
-</ul>
-
-
-<p>Les deux premières solutions se sont malheureusement avérées être un échec : en effet, concernant le module nodejs, il s&#8217;est avéré être incompatible à l&#8217;installation avec la version courante de nodejs (0.10.4). Or une version antérieure se trouvait être incompatible avec le module YSlow&hellip; (j&#8217;avoue ne pas m&#8217;être amusé à tester toutes les versions de nodejs et j&#8217;ai donc laissé cette piste de coté).</p>
-
-<p>Du coté de la deuxième piste, je n&#8217;ai malheureusement pas réussi à la faire compiler&hellip; :&lsquo;( et cela malgré moultes tentatives sur les versions 1.7, 1.8 et 1.9 sur mon système Linux (Ubuntu 12.10) mais également sur un système disposant de XUbuntu 11.10. Cette piste a donc également été abandonnée&hellip;</p>
-
-<p>La troisième tentative a, heureusement, été plus concluante. Ainsi, après téléchargement du binaire, il est possible, en lui fournissant un fichier HAR (générable, par exemple, à l&#8217;aide du module netsniff de phantomjs), de générer nos métriques PageSpeed :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; &gt; monhar.har
-</span><span class='line'>./pagespeed_bin --input_file monhar.har
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://3.bp.blogspot.com/-EPCoFg22lhA/UXhTkX7iPOI/AAAAAAAAA5k/mHf-dyeVctI/s1600/01-pagespeed_cmd.png" alt="medium" /></p>
-
-<p> La génération des rapports ayant été effectuée, l&#8217;étape suivante pour répondre à notre cahier des charges consiste à remonter nos métriques récoltées par YSlow dans un outils un peu plus agréable.</p>
-
-<p>Pour ce faire, le plugin <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">TAP</a> (<em>Test Anything Protocol</em>) de Jenkins a été utilisé. Ainsi, combiné avec l&#8217;exécution de récupération de la métrique, cela permet d&#8217;avoir au sein de Jenkins un job dédié à la génération de cette dernière et à son affichage, la gestion de l&#8217;historisation étant déléguée à l&#8217;historique du job.</p>
-
-<p>Cependant, YSlow ne prenant en entrée qu&#8217;une url, un job doit être créé pour chaque page ciblée.</p>
-
-<p><img src="http://2.bp.blogspot.com/-FEOYf1dOdCA/UXhXRxIT9SI/AAAAAAAAA50/iMrSJG1J3N4/s1600/01-tap.png" alt="medium" /></p>
-
-<p><img src="http://2.bp.blogspot.com/-cFZAvtOQj0k/UXhX3xVuVUI/AAAAAAAAA58/9JNC8XhNsRo/s1600/01-tap1.png" alt="medium" /></p>
-
-<p>Coté Pagespeed, j&#8217;avoue ne pas avoir cherché mais le chapitre suivant proposera une solution simple et efficace pour obtenir une visualisation et une historisation de ces métriques.</p>
-
-<h2>Conclusion</h2>
-
-<p>Comme on a pu le constater, la génération de métriques YSlow et/ou Pagespeed oblige (je n&#8217;ai pas trouvé d&#8217;autres moyens plus simples :&lsquo;( ) à passer par des frameworks tierces tels que phantomjs ou nodejs.</p>
-
-<p>Pour le lecteur qui a su lire entre les lignes, il a pu constater qu&#8217;il y a deux approches possibles : soit passer par phantomjs (qui offre un navigateur headless) pour capturer la page rendu en déléguant au script de YSlow l&#8217;analyse de la page, soit passer par phantomjs pour générer un fichier HAR (qui contient, entre autre, les ressources chargées par la page ainsi que leur temps de récupération et le statut associé) puis de le passer à YSlow (via son module nodeJS) ou à PageSpeed.</p>
-
-<p>En outre, du fait que les résultats obtenus l&#8217;ont été par page, pour un site complet, cela peut vite devenir&hellip; rébarbatif (pour rester poli)&hellip; pas glop&hellip;</p>
-
-<h1>Vitesse de rendu</h1>
-
-<h2>Contexte</h2>
-
-<p>Dans la première partie, nous avons vu comment il était possible de générer des rapports d&#8217;exécution de bonnes pratiques d&#8217;une page HTML. Dans ce chapitre, nous nous intéresserons à la récupération de métriques de rendu d&#8217;une page au sens temps de récupération de ses différents éléments.</p>
-
-<p><img src="http://2.bp.blogspot.com/-9lTF11FrC0M/UXhZk7aI6gI/AAAAAAAAA6g/0ei3KIbIxUQ/s1600/02-timeline_firefox.png" alt="medium" /></p>
-
-<p><img src="http://2.bp.blogspot.com/-ImWAUCGEEIk/UXhZtgHULqI/AAAAAAAAA6o/RV8oNYSYBWg/s1600/01-timeline.png" alt="medium" /></p>
-
-<p> Comme précédemment, le problème peut être décomposé en deux étapes :</p>
-
-<ul>
-<li>la génération du rapport,</li>
-<li>sa représentation graphique pour une utilisation exploitable ainsi que son historisation.</li>
-</ul>
-
-
-<p>Pour la partie génération, plusieurs pistes ont été étudiées :</p>
-
-<ul>
-<li>utilisation de phantomjs et de son plugin loadpage,</li>
-<li>utilisation de phantomjs et de son plugin netsniff (se trouvant dans le répertoire examples) pour générer un rapport HAR.</li>
-</ul>
-
-
-<p>Coté affichage et historisation, nous verrons que cela a, encore une fois, été un peu galère même si les résultats obtenus sont satisfaisant (ouf&hellip; heureusement).</p>
-
-<h2>Solution et mise en oeuvre</h2>
-
-<p>La première piste étudiée a été celle utilisant le plugin loadpage.js de phantomjs :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/loadspeed.js &lt;url page&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://2.bp.blogspot.com/-EnsolVkBftc/UXhYbNBGVSI/AAAAAAAAA6E/_gwMF7JBVnY/s1600/01-timeline-loadspeed.png" alt="medium" /></p>
-
-<p> Cependant, ce plugin ne renvoie que le temps de chargement de la page et ne fournit pas un niveau de granulatité suffisante.</p>
-
-<p>Le deuxième piste étudiée a été l&#8217;utilisation du plugin netsniff de phantomjs. Ce plugin permet de générer un fichier HAR (HTTP ARchive) qui contient l&#8217;ensemble des ressources chargées par la page ainsi que leur temps de chargement.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js &lt;url page&gt; &gt; monFichier.har
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> Cette solution semble satisfaisante. Ne reste plus qu&#8217;à afficher le fichier HAR dans un dashboard&hellip;</p>
-
-<p>Coté affichage, deux approches ont été testées :</p>
-
-<ul>
-<li>HarViewer,</li>
-<li>HarStorage.</li>
-</ul>
-
-
-<p><a href="https://github.com/jarib/har">HarViewer</a> est un visualisateur de fichiers HAR. Il s&#8217;agit d&#8217;un programme ruby et demande donc une installation de ce dernier.</p>
-
-<p><img src="http://4.bp.blogspot.com/-U2Ki3STxZYM/UXhZ7TQPV6I/AAAAAAAAA6w/UbXv2iVxqVU/s1600/01-timeline-har1.png" alt="medium" /></p>
-
-<p> Cependant, il ne permet pas de suivre l&#8217;évolution d&#8217;une page dans le temps (pas de fonctionnalité d&#8217;historisation ni de comparaison)&hellip; dommage&hellip;</p>
-
-<p>Du coté de <a href="https://code.google.com/p/harstorage/">HarStorage</a>, son <a href="https://code.google.com/p/harstorage/wiki/Installation">installation</a> demande de nombreux autres composants (MongoDB, Python, &hellip;). Cependant, il offre une interface web par laquelle il est possible d&#8217;uploader ses fichiers HAR et, ainsi, d&#8217;en obtenir un stockage et donc, une historisation. Cerise sur la gateau, il offre également (modulo quelques manipulations) une génération et une visualisation des métriques PageSpeed.</p>
-
-<p><img src="http://1.bp.blogspot.com/-m9UWNizIcgQ/UXhaHh19BQI/AAAAAAAAA64/JDn7UAs0O_4/s1600/01-timeline-harstorage1.png" alt="medium" /></p>
-
-<p><img src="http://4.bp.blogspot.com/-1H5GqfbNF6Y/UXhaP7dQSjI/AAAAAAAAA7A/0Mq75mOVQ74/s1600/01-timeline-harstorage2.png" alt="medium" /></p>
-
-<p><img src="http://1.bp.blogspot.com/-bCcDJ9DDRLU/UXhaP-REdGI/AAAAAAAAA7E/4SbClht1xao/s1600/01-timeline-harstorage3.png" alt="medium" /></p>
-
-<p><img src="http://4.bp.blogspot.com/-xPHq6jh2V8A/UXhaQU3VcHI/AAAAAAAAA7I/8tyx8vKdB_4/s1600/01-timeline-harstorage4.png" alt="medium" /></p>
-
-<p><img src="http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7M/LzB4r9hRU98/s1600/01-timeline-harstorage5.png" alt="medium" /></p>
-
-<h2>Conclusion</h2>
-
-<p>On a vu dans ce chapitre comment il était possible de générer et de visualiser des timeline de rendu de pages HTML. La solution HarStorage me semble, dans le cadre d&#8217;une phase d&#8217;industrialisation, la solution la plus aboutie en permettant de conserver un historique pour évaluer l&#8217;évolution de la page tout en fournissant un moyen de visualiser les métriques de PageSpeed (chose qui n&#8217;avait, pour rappel, pas été abordé dans le chapitre précédent).</p>
-
-<p>Cependant, on a pu constater qu&#8217;il était nécessaire de faire pas mal d&#8217;actions : génération d&#8217;un fichier HAR puis upload manuel dans HarStorage ou exécution manuel de HarViewer.</p>
-
-<p>En outre, le même constat peut être fait que pour le chapitre précédent : les résultats obtenus l&#8217;ont été par page&hellip; pas glop&hellip;</p>
-
-<h1>Automatisation totale</h1>
-
-<h2>Contexte</h2>
-
-<p>On a vu dans les chapitres précédent comment générer des rapports au format HAR via phantomjs. Cependant, dans le cas où des tests d&#8217;acceptance sont déjà mis en place sur le projet via, par exemple, Selenium et Cucumber JVM, il peut être judicieux de se servir de l&#8217;existant pour intégrer la génération des rapports ainsi que la remonté de ces dernières dans l&#8217;outils de DashBoard.</p>
-
-<p>Cela permet ainsi de faire une pierre deux coups, mais également d&#8217;éviter les étapes manuelles ou d&#8217;avoir à maintenir des jobs jenkins un peu trop techniques.</p>
-
-<h2>Solution et mise en oeuvre</h2>
-
-<p>Comme annoncé précédemment, l&#8217;objectif de ce chapitre est d&#8217;étudier la faisabilité d&#8217;intégration de la génération de rapport HAR et leur upload dans HarStorage avec notre trio <a href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html">Cucumber JVM/FluentLenium/Selenium</a>.</p>
-
-<p>En fait, il est possible d&#8217;automatiser la génération d&#8217;un rapport HAR à travers Selenium (et donc FluentLenium) en utilisant un proxy. Pour ce faire deux approches sont possibles :</p>
-
-<ul>
-<li>utiliser le proxy <a href="http://opensource.webmetrics.com/browsermob-proxy/">BrowserMobProxy</a> de manière autonome,</li>
-<li>utiliser le proxy BrowserMobProxy de manière programmatique.</li>
-</ul>
-
-
-<p>La partie upload au sein de HarStorage peut également être faite à l&#8217;aide des API Rest offertes par HarStorage.</p>
-
-<p>Pour la première piste, je ne m&#8217;étendrai pas dessus puisque la solution est directement accessible sur le <a href="https://code.google.com/p/harstorage/wiki/JavaTutorial">site de HarStorage</a>. Il est juste important de noter que cette dernière nécessite d&#8217;avoir préalablement récupérer le proxy BrowserMobProxy en le compilant si nécessaire via un coup de mvn package -Preleasse (l&#8217;assembly se trouve branché au profil release) et de l&#8217;avoir lancé avec un port d&#8217;écoute donné, port qui est nommé PROXY_API_PORT dans le code :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>./bin/browsermob-proxy --port 9090
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> En effet, BrowserMobProxy se comporte comme un serveur de proxy qu&#8217;il est possible de créer et d&#8217;enregistrer dynamiquement. Dans le code, la variable de classe PROXY_PORT correspond au port du proxy réel qui sera créé au sein du server BrowserMobProxy exécuté sur le port indiqué par PROXY_API_PORT. La classe fournit n&#8217;a pour rôle que d&#8217;interagir avec le serveur BrowserMobProxy au travers de son API REST (création d&#8217;un proxy, création et récupération du HAR).</p>
-
-<p>La deuxième approche consiste, quant à elle, à créer ce serveur programmatiquement puis à lui demander l&#8217;instanciation d&#8217;un proxy Selenium (il n&#8217;y a donc pas besoin de récupérer le serveur BrowerMobProxy).</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ProxyServer</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProxyServer</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">PROXY_API_PORT</span><span class="o">));</span>
-</span><span class='line'>   <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="c1">// Change browser settings</span>
-</span><span class='line'>   <span class="n">Proxy</span> <span class="n">proxy</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">seleniumProxy</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="c1">////////////////////////////////////////////////</span>
-</span><span class='line'>   <span class="c1">// ip a renseigner soit manuellement soit en utilisant NetworkInterface</span>
-</span><span class='line'>   <span class="c1">////////////////////////////////////////////////</span>
-</span><span class='line'>   <span class="n">String</span> <span class="n">ip</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
-</span><span class='line'>   <span class="n">proxy</span><span class="o">.</span><span class="na">setHttpProxy</span><span class="o">(</span><span class="n">ip</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">PROXY_API_PORT</span><span class="o">);</span>
-</span><span class='line'>   <span class="n">proxy</span><span class="o">.</span><span class="na">setHttpProxy</span><span class="o">(</span><span class="n">ip</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">PROXY_API_PORT</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">DesiredCapabilities</span> <span class="n">capabilities</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DesiredCapabilities</span><span class="o">();</span>
-</span><span class='line'>   <span class="n">capabilities</span><span class="o">.</span><span class="na">setCapability</span><span class="o">(</span><span class="n">CapabilityType</span><span class="o">.</span><span class="na">PROXY</span><span class="o">,</span> <span class="n">proxy</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">Driver</span> <span class="n">firefoxDriver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FirefoxDriver</span><span class="o">(</span><span class="n">capabilities</span><span class="o">)</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">server</span><span class="o">.</span><span class="na">newHar</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="c1">////////////////////////////////////////////////</span>
-</span><span class='line'>   <span class="c1">// ma navigation via selenium avec le driver</span>
-</span><span class='line'>   <span class="c1">////////////////////////////////////////////////</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="c1">// Read data from container</span>
-</span><span class='line'>   <span class="n">Har</span> <span class="n">har</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">getHar</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">String</span> <span class="n">strFilePath</span> <span class="o">=</span> <span class="s">&quot;target/selenium_report.har&quot;</span><span class="o">;</span>
-</span><span class='line'>   <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">strFilePath</span><span class="o">);</span>
-</span><span class='line'>   <span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>       <span class="n">file</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
-</span><span class='line'>   <span class="o">}</span>
-</span><span class='line'>   <span class="n">FileOutputStream</span> <span class="n">fos</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
-</span><span class='line'>   <span class="n">har</span><span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="n">fos</span><span class="o">);</span>
-</span><span class='line'>   <span class="n">server</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="n">InputStreamReader</span> <span class="n">inputStreamReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span><span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="n">file</span><span class="o">)</span> <span class="o">);</span>
-</span><span class='line'>   <span class="n">LineNumberReader</span> <span class="n">lineNumberReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LineNumberReader</span><span class="o">(</span><span class="n">inputStreamReader</span><span class="o">);</span>
-</span><span class='line'>   <span class="n">String</span> <span class="n">ligne</span><span class="o">;</span>
-</span><span class='line'>   <span class="n">String</span> <span class="n">res</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
-</span><span class='line'>   <span class="k">while</span> <span class="o">((</span><span class="n">ligne</span> <span class="o">=</span> <span class="n">lineNumberReader</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>           <span class="n">res</span> <span class="o">+=</span> <span class="n">ligne</span><span class="o">;</span>
-</span><span class='line'>   <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="c1">// Send results to HAR Storage</span>
-</span><span class='line'>   <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>       <span class="n">HarStorage</span> <span class="n">hs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HarStorage</span><span class="o">(</span><span class="n">HARSTORAGE_HOST</span><span class="o">,</span> <span class="n">Integer</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">HARSTORAGE_PORT</span><span class="o">));</span>
-</span><span class='line'>
-</span><span class='line'>       <span class="n">String</span> <span class="n">response</span> <span class="o">=</span> <span class="n">hs</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">res</span><span class="o">);</span>
-</span><span class='line'>       <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
-</span><span class='line'>   <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>       <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span><span class='line'>   <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Par contre, il semble que le driver de phantomjs ne fonctionne pas&hellip; dommage&hellip;</p>
-
-<p>Bien sûr, cela est parfaitement intégrable à ce qui a été fait dans mon article précédent (ie. via Cucumber JVM et FluentLenium), ce qui permet d&#8217;obtenir une feature Cucumber JVM du type :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Feature: harstorage
-</span><span class='line'>
-</span><span class='line'>  Scenario Outline: har browser navigation:
-</span><span class='line'>    Given I connect on url http://127.0.0.1:8080 with different browsers and I register the HarStorage Server on 127.0.0.1:5000 with name test:
-</span><span class='line'>      | &lt;browser&gt; | &lt;parameters&gt; | &lt;host&gt; | &lt;version&gt; | &lt;platform&gt; |
-</span><span class='line'>    Given j accede a la homePage
-</span><span class='line'>    And je suis sur homePage
-</span><span class='line'>    When je submit
-</span><span class='line'>    Then je suis sur la page result
-</span><span class='line'>    Then I send har files to the HarStorage Server
-</span><span class='line'>    Then drivers are closed
-</span><span class='line'>  Examples:
-</span><span class='line'>    | browser | parameters | host | version | platform |
-</span><span class='line'>    | firefox |            | none |         |          |
-</span><span class='line'>#    | firefox |            | http://10.147.2.83:4444/wd/hub |         | win7     |
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Conclusion</h2>
-
-<p>On a vu dans ce paragraphe qu&#8217;il était aisé d&#8217;intégrer la génération et l&#8217;upload d&#8217;un fichier HAR issu d&#8217;un scénario fonctionnel dans HarStorage.</p>
-
-<p>Cependant, ce mécanisme ne fonctionne malheureusement pas avec phantomjs, ce qui peut forcer à l&#8217;utilisation de Selenium Server (à noter que cela n&#8217;a pas été testé avec d&#8217;autres driver que Firefox).</p>
-
-<p>Enfin, un point essentiel à noter est que par cette méthode, le temps d&#8217;exécution du javascript n&#8217;est pas remonté dans la timeline. En effet, l&#8217;utilisation d&#8217;un proxy ne fournit pas cette information alors qu&#8217;avec une génération direct d&#8217;un fichier HAR via phantomjs, cette donnée est bien présente.</p>
-
-<h1>Conclusion</h1>
-
-<p>Cet article a montré (enfin je l&#8217;espère&hellip;) comment il était possible d&#8217;automatiser la génération de métrique de rendu des pages HTML  dans une usine logicielle .</p>
-
-<p>C&#8217;est vrai que de nombreuses technologies/manipulations sont nécessaires alors qu&#8217;il existe de nombreux(?) services qui rendent le même service (<a href="http://gtmetrix.com/">GTMetrix</a>, <a href="http://www.webpagetest.org/compare">WebPageSpeed</a>, &hellip;).</p>
-
-<p>Malheureusement, ces services ne sont généralement branchées qu&#8217;en production (pas d&#8217;accès aux serveurs de tests/intégrations des entreprises) alors que les avoir au plus tôt dans le cycle de développement permettrait de minimiser les risques de régression et surtout de pousser à avoir une meilleure qualité telle que nous le permet Sonar.</p>
-
-<p>Je tiens tout de même à préciser que j&#8217;ai été déçu de ne pas trouver une solution plus simple d&#8217;intégration de ces outils dans nos usines de développement.</p>
-
-<p>Cela pourrait s&#8217;expliquer par un manque de maturité de l&#8217;environnement Java pour faire du Web 2.0 (sic) ou par une mutation du métier de développeur web qui tendrait vers une meilleure qualité logicielle mais qui n&#8217;aurait pas encore assimilé/intégré toutes les contraintes induites par une usine logicielle telle que celles que l&#8217;on connait dans notre monde Java&hellip; enfin, en gros, il reste du boulot&hellip;</p>
-
-<h1>Pour aller plus loin&hellip;</h1>
-
-<ul>
-<li>YSlow : <a href="http://yslow.org">http://yslow.org</a></li>
-<li><p>PageSpeed : <a href="https://code.google.com/p/page-speed">https://code.google.com/p/page-speed</a></p></li>
-<li><p>HAR : <a href="http://www.softwareishard.com/blog/har-12-spec/">http://www.softwareishard.com/blog/har-12-spec/</a></p></li>
-<li><p>HarViewer : <a href="https://github.com/jarib/har">https://github.com/jarib/har</a></p></li>
-<li>HarStorage : <a href="https://code.google.com/p/harstorage/">https://code.google.com/p/harstorage/</a></li>
-<li>BrowserMobProxy : <a href="http://opensource.webmetrics.com/browsermob-proxy/">http://opensource.webmetrics.com/browsermob-proxy/</a></li>
-<li><p>Jenkins TAP Plugin : <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin</a></p></li>
-<li><p>CucumberJVM : <a href="https://github.com/cucumber/cucumber-jvm">https://github.com/cucumber/cucumber-jvm</a></p></li>
-<li>FluentLenium : <a href="https://github.com/FluentLenium/FluentLenium">https://github.com/FluentLenium/FluentLenium</a></li>
-<li><p>Selenium : <a href="http://docs.seleniumhq.org/">http://docs.seleniumhq.org/</a></p></li>
-<li><p>PhantomJS : <a href="http://phantomjs.org/">http://phantomjs.org/</a></p></li>
-<li><p>NodeJS : <a href="http://nodejs.org/">http://nodejs.org/</a></p></li>
-<li><p><a href="http://www.igvita.com/2012/08/28/web-performance-power-tool-http-archive-har/">http://www.igvita.com/2012/08/28/web-performance-power-tool-http-archive-har/</a></p></li>
-<li><p><a href="http://fr.slideshare.net/watsonmw/performance-monitoring-in-a-day">http://fr.slideshare.net/watsonmw/performance-monitoring-in-a-day</a></p></li>
-<li><p>code du POC : <a href="https://github.com/jetoile/fluentlenium-cucumber/tree/harStorage">https://github.com/jetoile/fluentlenium-cucumber/tree/harStorage</a></p></li>
-</ul>
-
 ]]></content>
   </entry>
   

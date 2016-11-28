@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-05-16T14:38:58+02:00</updated>
+  <updated>2016-11-28T17:02:06+01:00</updated>
   <id>http://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sqoop Et Parquet : Mode D'emploi]]></title>
+    <link href="http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html"/>
+    <updated>2016-11-28T11:15:19+01:00</updated>
+    <id>http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi</id>
+    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/Apache_Sqoop_logo.svg.png" alt="left-small" /> Dans le monde du <em>BigData</em> (en l&#8217;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&#8217;une base de données dans son Datalake.</p>
+
+<p>Pour ce faire, <a href="http://sqoop.apache.org/">Apache Sqoop</a> est une des alternatives pour le faire (peut être pas la meilleure mais bon&hellip;).</p>
+
+<p>En effet, Sqoop permet d&#8217;importer (et exporter également) les données d&#8217;une base de données dans :</p>
+
+<ul>
+<li>hdfs au format <em>plain text</em>, sequencefile, avro ou parquet</li>
+<li>hive</li>
+<li>hbase</li>
+</ul>
+
+
+<p>En outre, il permet d&#8217;avoir un mode incrémental afin de gérer le mode delta.</p>
+
+<p>Cependant, comme on le verra dans cet article, Sqoop n&#8217;est pas aussi trivial qu&#8217;il peut le paraitre.</p>
+
+<p>C&#8217;est ce qui sera détaillé dans cet article : à savoir une sorte de mini retour d&#8217;expérience&hellip; et heureux en plus ;)</p>
+
+<!--more-->
+
+
+<h1>Cas d&#8217;usage</h1>
+
+<p>Techniquement, voilà ce qui est souhaité concernant l&#8217;import des données dans hdfs :</p>
+
+<ul>
+<li>pouvoir ingérer le contenu d&#8217;une base de données dans hdfs au format parquet ou avro,</li>
+<li>pouvoir ingérer les données de la table en mode incrémental,</li>
+<li>pouvoir préciser la requête avec <code>--query</code> en raison que la colonne utilisée par le <code>--split-by</code> dispose d&#8217;un index partitionné.</li>
+</ul>
+
+
+<p>Pour être plus précis sur les besoins, la volonté de disposer des données au format parquet ou avro est liée au besoin d&#8217;effectuer des traitements Spark simplement (par exemple, pouvoir repartitionner les données en fonction d&#8217;un certain nombre de colonne).</p>
+
+<p>En outre, concernant le mode incrémental, cela est lié au fait que des données sont reçues quotidiennement et que des traitements sont effectués à l&#8217;aide de PL/SQL (<em>no comment&hellip;</em>). Heureusement, il peut être considérer que les informations reçues/calculées sont seulement ajoutées aux tables.</p>
+
+<p>Enfin, afin de permettre la parallélisation du traitement, plusieurs <em>mappers</em> seront utilisés. Afin de permettre le calcul des <em>ranges</em> affectés à chacun des <em>mappers</em>, il est nécessaire de préciser l&#8217;option <code>--split-by</code>. Cependant, dans notre cas d&#8217;usage, la colonne utilisée pour le split-by dispose d&#8217;un index mais est partitionné. Etant donné qu&#8217;il n&#8217;est pas possible (toujours dans notre cas précis) de préciser l&#8217;option <code>--boundary-query</code>, c&#8217;est donc le comportement par défaut qui est appliqué (à savoir un <code>select min(&lt;split-by&gt;), max(&lt;split-by&gt;)</code>). Cependant, attaquer la table sans préciser la partition implique que notre temps d&#8217;exécution du min/max dure plusieurs heures, chose non acceptable dans le cas du fonctionnement incrémental.</p>
+
+<p>Aussi, il a été décidé d&#8217;ingérer la table partition par partition en précisant la partition à chaque fois avec l&#8217;option <code>--query</code> (à noter que l&#8217;option <code>--where</code> aurait pu suffire mais que cela n&#8217;a pas été testé).</p>
+
+<h1>Mise en oeuvre</h1>
+
+<p>Afin de mettre en oeuvre notre cas d&#8217;usage, plusieurs expérimentations on été effectuées.</p>
+
+<p>Dans ce chapitre, il sera expliqué ce qui a pu être constaté ainsi que les <em>workaround</em> qui ont été trouvées lorsqu&#8217;un soucis se présentait.</p>
+
+<h2>Import au format parquet ou avro</h2>
+
+<p>En fait, lorsque la commande <code>sqoop import</code> est utilisée avec les options <code>--as-avrodatafile</code> ou <code>--as-parquetfile</code>, les données récupérées sont toutes de type string. Aussi, il est nécessaire de préciser le type de chaque colonne avec l&#8217;option <code>--map-column-java</code>. Pour trouver le typage de chaque colonne, une simple requête jdbc a été effectuée afin de trouver les colonnes et leurs types.</p>
+
+<h2>Import incrémental</h2>
+
+<p>Le mode incrémental ne supportant pas le format avro, il a donc été écarté et l&#8217;import s&#8217;est fait au format parquet.</p>
+
+<h2>Parallélisation de l&#8217;import</h2>
+
+<p>En fait, le fait de préciser la requête d&#8217;import avec sqoop 1.4.6 en mode parquet est buggé&hellip;
+En effet, il existe 2 <em>issues</em> qui traitent de ce problème :</p>
+
+<ul>
+<li><a href="https://issues.apache.org/jira/browse/SQOOP-2582">SQOOP-2582</a> &ndash; Query import won&rsquo;t work for parquet</li>
+<li><a href="https://issues.apache.org/jira/browse/SQOOP-2408">SQOOP-2408</a> &ndash; Sqoop doesnt support &mdash;as-parquetfile with -query option.</li>
+</ul>
+
+
+<p>Après avoir appliqué les 2 patchs et recompilé Sqoop (avec un joli <code>ant package -Dhadoopversion=210</code>, le verdict tombe&hellip; : une erreur kite.</p>
+
+<p>Heureusement, une montée de version de kite directement dans le lib de sqoop permet de faire fonctionner l&#8217;import (ie. remplacer <code>kite-data-core-1.0.0.jar</code> par <code>kite-data-core-1.1.0.jar</code>, <code>kite-data-hive-1.0.0.jar</code> par <code>kite-data-hive-1.1.0.jar</code>, <code>kite-data-mapreduce-1.0.0.jar</code> par <code>kite-data-mapreduce-1.1.0.jar</code> et <code>```kite-hadoop-compatibility-1.0.0.jar</code> par <code>kite-hadoop-compatibility-1.1.0.jar</code>).</p>
+
+<h1>Conclusion</h1>
+
+<p>Ce mini retour d&#8217;expérience sur l&#8217;utilisation de Sqoop (dans sa version 1.4.6) a permis de voir qu&#8217;il était tout à fait possible d&#8217;importer des données d&#8217;une base de données dans hdfs au format parquet.</p>
+
+<p>Cependant, il semble que, pour l&#8217;instant, Sqoop manque <em>un peu</em> de maturité avec Parquet et trouver des contournements pour faire fonctionner le tout n&#8217;est pas des plus trivial mais heureusement, cela fonctionne ;)</p>
+
+<p>A noter que dans notre cas d&#8217;usage, il n&#8217;y avait pas, bien sûr, qu&#8217;une seule table mais plusieurs centaines.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hadoop Unit 1.3]]></title>
@@ -7054,34 +7139,6 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 <li>Site d&#8217;Hawt.io : <a href="http://hawt.io/">http://hawt.io/</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BreizhCamp 2013]]></title>
-    <link href="http://blog.jetoile.fr/2013/06/breizhcamp-2013.html"/>
-    <updated>2013-06-13T01:27:32+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/06/breizhcamp-2013</id>
-    <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-Q9wf4o9BcBc/UboAHmjPqbI/AAAAAAAAA8M/2DZwYkDxpUg/s1600/logo.png" alt="left-small" /></p>
-
-<p>Pour ceux qui l&#8217;aurait loupé, le BreizhCamp dans sa version 2013 a actuellement lieu.</p>
-
-<p>Etant un grand amoureux de la Bretagne, je ne pouvais manquer le cru de cette année&hellip;</p>
-
-<p>En outre, j&#8217;ai eu la chance d&#8217;y présenter un <strong>Tools In Action</strong> d&#8217;&frac12; heure sur le sujet des tests d&#8217;acceptance et plus précisément sur la façon dont il est possible d&#8217;intégrer Cucumber JVM, Selenium et FluentLenium.</p>
-
-<p>Les slides sont dès à présent disponibles :</p>
-
-<iframe frameborder="0" height="400" marginheight="0" marginwidth="0" scrolling="no" src="http://www.slideshare.net/slideshow/embed_code/22931252" width="476"></iframe>
-
-
-<p>Et un projet d&#8217;exemple est accessible <a href="http://github.com/jetoile/sample-cucumber">ici</a>.</p>
-
-<p>A noter que cette présentation concorde parfaitement avec la version de FluentLenium dans sa version 9.0 (comme par hasard! ;&ndash;) ).</p>
-
-<p>Enjoy! ;&ndash;)</p>
-
-<p>PS : en plus, pour une fois, il ne pleut pas&hellip; ;&ndash;)</p>
 ]]></content>
   </entry>
   

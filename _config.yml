@@ -2,7 +2,8 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://blog.jetoile.fr
+url: https://blog.jetoile.fr
+enfore_ssl: blog.jetoile.fr
 title: Jetoile
 subtitle: Je toile ou J* au choix...
 author: Khanh Maudoux

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: archetype | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/archetype/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/archetype/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Maven pour les nuls... les archetypes]]></title>
-    <link href="http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html"/>
+    <link href="https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html"/>
     <updated>2011-06-05T22:48:02+02:00</updated>
-    <id>http://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes</id>
+    <id>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-l-NZQRxE0vI/TevA5LfJQ_I/AAAAAAAAAXI/IP8zRk4wbeg/s1600/maven-logo-2.gif" alt="left-small" /></p>
 
 <p>Dans le cadre d'une problématique d'une usine logiciel, il peut s'avérer utile de posséder un patron ou template de projet qui fournit les &ldquo;bonnes&rdquo; pratiques que doivent respecter l'ensemble des applications du projet.</p>

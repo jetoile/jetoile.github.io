@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: architecture | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/architecture/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/architecture/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
     <updated>2012-11-21T15:12:51+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
+    <id>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
 
 <p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(
@@ -84,9 +84,9 @@ Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu e
   
   <entry>
     <title type="html"><![CDATA[Découpage de projets : projet vs. modules]]></title>
-    <link href="http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html"/>
+    <link href="https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html"/>
     <updated>2012-08-28T11:47:11+02:00</updated>
-    <id>http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules</id>
+    <id>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-wz814rCkbHY/UC1JmXEpcyI/AAAAAAAAAoA/6YjiYTg7fzw/s1600/couteaux.png" alt="left-small" /></p>
 
 <p>Lorsqu'un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d'approches :</p>
@@ -175,9 +175,9 @@ projet11                  scm : branches/projet1/projet11
   
   <entry>
     <title type="html"><![CDATA[Petits retours sur Cassandra]]></title>
-    <link href="http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html"/>
+    <link href="https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html"/>
     <updated>2012-03-13T10:19:01+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra</id>
+    <id>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-IvTZebKJhAc/T1hsV7nG8nI/AAAAAAAAAjw/qFiNLqvXgnY/s1600/cassandra01.png" alt="left-small" /></p>
 
 <p>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par <a href="http://twitter.com/mfiguiere">Michaël Figuière</a>) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d'une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j'ai aimé et ce que je n'ai pas aimé sur <a href="http://cassandra.apache.org/">Apache Cassandra</a>.</p>
@@ -506,9 +506,9 @@ Ainsi au niveau des points positifs, j'ai aimé les choix techniques et les conc
   
   <entry>
     <title type="html"><![CDATA[Resign Patterns : les nouveaux patterns]]></title>
-    <link href="http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
+    <link href="https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
     <updated>2011-12-02T23:04:54+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
+    <id>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-mP_z1e0Qo6M/TtiCRYS_PVI/AAAAAAAAAgQ/Dntolyd6oUg/s1600/Fail.png" title="Crédit photo : http://www.flickr.com/photos/esthervargasc/6010520395/" alt="left-small" /></p>
 
 <p>Cet article est une traduction &ldquo;libre&rdquo; de l'excellent papier de <a href="mitework@yercompany.com">Michael Duell</a> qui se nomme <a href="http://www.lsd.ic.unicamp.br/~oliva/fun/prog/resign-patterns">&ldquo;Resign Patterns&rdquo; Ailments of Unsuitable Project-Disoriented Software</a>.</p>
@@ -636,9 +636,9 @@ Ainsi au niveau des points positifs, j'ai aimé les choix techniques et les conc
   
   <entry>
     <title type="html"><![CDATA[Présentation sur les problématiques liées à une architecture distribuée]]></title>
-    <link href="http://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html"/>
+    <link href="https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html"/>
     <updated>2011-09-23T23:17:00+02:00</updated>
-    <id>http://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune</id>
+    <id>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune</id>
     <content type="html"><![CDATA[<p>Ci-dessous se trouve une présentation que j'ai donné sur les problématiques liées aux architectures distribuées. Pour information, c'est un retour d'expérience d'une mission qui date un peu puisque c'était en 2007 mais les préconisations restent identiques à ce jour.</p>
 
 <p>Enjoy et n'hésitez pas à commenter ;&ndash;)</p>

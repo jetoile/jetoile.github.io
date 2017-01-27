@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: intégration continue | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/integration-continue/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/integration-continue/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[BreizhCamp 2013]]></title>
-    <link href="http://blog.jetoile.fr/2013/06/breizhcamp-2013.html"/>
+    <link href="https://blog.jetoile.fr/2013/06/breizhcamp-2013.html"/>
     <updated>2013-06-13T01:27:32+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/06/breizhcamp-2013</id>
+    <id>https://blog.jetoile.fr/2013/06/breizhcamp-2013</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-Q9wf4o9BcBc/UboAHmjPqbI/AAAAAAAAA8M/2DZwYkDxpUg/s1600/logo.png" alt="left-small" /></p>
 
 <p>Pour ceux qui l'aurait loupé, le BreizhCamp dans sa version 2013 a actuellement lieu.</p>
@@ -43,9 +43,9 @@
   
   <entry>
     <title type="html"><![CDATA[Industrialiser la récolte de métriques Web]]></title>
-    <link href="http://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html"/>
+    <link href="https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html"/>
     <updated>2013-04-25T22:01:09+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques</id>
+    <id>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7c/0_a7KhiLEfw/s1600/01-timeline-harstorage5.png" alt="left-small" /></p>
 
 <p> A l'origine, une des principales raisons à la mise en place d'un serveur d'intégration continue était l'automatisation des processus qui, fait manuellement, étaient souvent consommateur de temps et générateur d'erreurs humaines. Petit à petit, ce dernier s'est imposé comme l'orchestrateur de tous les processus et est devenu un des points central de l'usine de développement. En effet, en plus de ses capacités à compiler, packager, faire passer les tests unitaires, d'intégration et d'acceptance, il est souvent utilisé pour livrer mais également pour effectuer des tests de non régression.</p>
@@ -404,9 +404,9 @@ Then drivers are closed
   
   <entry>
     <title type="html"><![CDATA[FluentLenium et Cucumber JVM... complément et precision]]></title>
-    <link href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html"/>
+    <link href="https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html"/>
     <updated>2013-04-11T21:38:54+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement</id>
+    <id>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
 
 <p>Dans mon article précédent, j'avais tenté d'expliquer comment il était possible d'intégrer les frameworks <a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> et <a href="http://docs.seleniumhq.org/">Selenium</a> au travers de <a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a>.</p>
@@ -993,9 +993,9 @@ public class RunCucumberFeatures {
   
   <entry>
     <title type="html"><![CDATA[FluentLenium et Cucumber JVM sont sur un bateau...]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html"/>
     <updated>2013-03-14T16:39:36+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur</id>
+    <id>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
 
 <p>Dans un <a href="/2013/03/demarrer-une-webapp-en-mode-embedded.html">article précédent</a>, j'avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n'a pas été fait que pour l'exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d'acceptance en mode boite noire sur l'application.</p>
@@ -1453,9 +1453,9 @@ public class RunCucumberFeatures {
   
   <entry>
     <title type="html"><![CDATA[Démarrer une webapp en mode embedded avec Maven]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
     <updated>2013-03-06T15:26:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
+    <id>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-2c2Ie9Tla54/UTaEjXrNaiI/AAAAAAAAA20/MWhTcyyJvMg/s1600/image.png" alt="left-small" /></p>
 
 <p>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu'il doit disposer de tests, qu'ils soient unitaire, d'intégration, fonctionnel ou d'acceptance.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jsp | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jsp/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jsp/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Précompiler ses jsp]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html"/>
     <updated>2012-11-05T12:57:40+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/precompiler-ses-jsp</id>
+    <id>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-9Hhc_8qdf1Y/UIhESh6Ls9I/AAAAAAAAAso/2fJIJUvqvIo/s1600/title.png" alt="left-small" /></p>
 
 <p>Parce qu'il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.</p>

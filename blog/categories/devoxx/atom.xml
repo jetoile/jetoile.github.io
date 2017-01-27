@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: devoxx | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/devoxx/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/devoxx/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
     <updated>2012-11-21T15:12:51+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
+    <id>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
 
 <p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(
@@ -84,9 +84,9 @@ Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu e
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 : c'est fini...]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html"/>
     <updated>2012-11-19T13:15:30+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini</id>
+    <id>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
 
 <p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(</p>
@@ -154,9 +154,9 @@ Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu e
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud]]></title>
-    <link href="http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
+    <link href="https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
     <updated>2012-05-22T11:37:00+02:00</updated>
-    <id>http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
+    <id>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
 Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
 
@@ -186,9 +186,9 @@ Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2011 - What's probably coming in Java Message Service 2.0]]></title>
-    <link href="http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
+    <link href="https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
     <updated>2011-11-20T22:49:24+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
+    <id>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-FB-AoRLfOOs/Tsk-J2XdFUI/AAAAAAAAAgE/CpRpQXHqH5M/s1600/devoxx1.jpg" alt="left-small" />
 La semaine dernière, j'ai eu la chance d'aller à Devoxx en Belgique à Anvers.</p>
 

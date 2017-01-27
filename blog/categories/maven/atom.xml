@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: maven | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/maven/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/maven/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Undertow pour booster vos services REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
     <updated>2015-06-23T14:51:56+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
+    <id>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
     <content type="html"><![CDATA[<p><img src="/images/undertow.png" alt="left-small" />
 Il y a quelques temps, j'avais fait une série d'articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
 
@@ -608,9 +608,9 @@ deployment.getProviderFactory().register(filter);
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty et bien plus encore... mode d'emploi...]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
     <updated>2014-03-10T08:03:49+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-HYBTn5anFdE/Uxdv3cRgu_I/AAAAAAAABP4/gsCZjUIxDyQ/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
 
 <p>L'informatique évolue constamment et c'est également le cas des architectures qui ont tendance à s'orienter de plus en plus vers l'utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d'un point de vue temps de réponse mais également d'un point de vue charge suportée). C'est dans ce contexte que des solutions comme <a href="http://restlet.org/">Restlet</a> ou <a href="http://restx.io/">RestX</a> (pour n'en citer que quelques-unes) ont vu le jour.</p>
@@ -1251,7 +1251,7 @@ import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;</p>
  * This class is {@link org.jboss.netty.channel.ChannelHandler.Sharable}.
  *
  * @author The Netty Project
- * @author Andy Taylor (<a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#97;&#110;&#x64;&#x79;&#x2e;&#116;&#97;&#121;&#108;&#x6f;&#114;&#x40;&#106;&#x62;&#111;&#x73;&#115;&#46;&#x6f;&#114;&#x67;">&#x61;&#x6e;&#100;&#x79;&#x2e;&#x74;&#97;&#x79;&#108;&#111;&#114;&#x40;&#x6a;&#x62;&#111;&#x73;&#115;&#46;&#111;&#x72;&#x67;</a>)
+ * @author Andy Taylor (<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#97;&#x6e;&#x64;&#x79;&#46;&#x74;&#97;&#x79;&#108;&#x6f;&#x72;&#64;&#106;&#98;&#x6f;&#x73;&#x73;&#x2e;&#x6f;&#114;&#103;">&#x61;&#110;&#100;&#121;&#46;&#x74;&#97;&#x79;&#108;&#x6f;&#x72;&#x40;&#106;&#x62;&#111;&#115;&#x73;&#x2e;&#111;&#x72;&#x67;</a>)
  * @author Trustin Lee
  * @author Norman Maurer
  * @version $Rev: 2368 $, $Date: 2010-10-18 17:19:03 +0900 (Mon, 18 Oct 2010) $
@@ -1503,9 +1503,9 @@ mvn package
   
   <entry>
     <title type="html"><![CDATA[FluentLenium et Cucumber JVM... complément et precision]]></title>
-    <link href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html"/>
+    <link href="https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html"/>
     <updated>2013-04-11T21:38:54+02:00</updated>
-    <id>http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement</id>
+    <id>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
 
 <p>Dans mon article précédent, j'avais tenté d'expliquer comment il était possible d'intégrer les frameworks <a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> et <a href="http://docs.seleniumhq.org/">Selenium</a> au travers de <a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a>.</p>
@@ -2092,9 +2092,9 @@ public class RunCucumberFeatures {
   
   <entry>
     <title type="html"><![CDATA[FluentLenium et Cucumber JVM sont sur un bateau...]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html"/>
     <updated>2013-03-14T16:39:36+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur</id>
+    <id>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small" /></p>
 
 <p>Dans un <a href="/2013/03/demarrer-une-webapp-en-mode-embedded.html">article précédent</a>, j'avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n'a pas été fait que pour l'exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d'acceptance en mode boite noire sur l'application.</p>
@@ -2552,9 +2552,9 @@ public class RunCucumberFeatures {
   
   <entry>
     <title type="html"><![CDATA[Démarrer une webapp en mode embedded avec Maven]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
     <updated>2013-03-06T15:26:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
+    <id>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-2c2Ie9Tla54/UTaEjXrNaiI/AAAAAAAAA20/MWhTcyyJvMg/s1600/image.png" alt="left-small" /></p>
 
 <p>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu'il doit disposer de tests, qu'ils soient unitaire, d'intégration, fonctionnel ou d'acceptance.</p>

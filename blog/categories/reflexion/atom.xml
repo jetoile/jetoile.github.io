@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: reflexion | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/reflexion/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/reflexion/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Je pense donc je code... ou je code donc je pense]]></title>
-    <link href="http://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html"/>
+    <link href="https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html"/>
     <updated>2010-01-26T22:53:32+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc</id>
+    <id>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc</id>
     <content type="html"><![CDATA[<p><img height="179" src="http://2.bp.blogspot.com/_o_pANlMZn3M/Rbp_szFyo1I/AAAAAAAAAG8/u76G5SqTowY/s400/Get+the+message.jpg" style="float: left; margin-bottom: 10px; margin-right: 10px; margin-top: 10px; max-width: 800px;" width="217" alt="left"/>
 Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c'est <a href="http://en.wikipedia.org/wiki/Yukihiro_Matsumoto">Yukihiro Matsumoto</a> (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu&hellip;) qui l'a tenue.</p>
 

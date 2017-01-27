@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: hadoop | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/hadoop/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/hadoop/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hadoop et son écosystème]]></title>
-    <link href="http://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html"/>
+    <link href="https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html"/>
     <updated>2015-10-09T14:53:03+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme</id>
+    <id>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme</id>
     <content type="html"><![CDATA[<p><img src="/images/hadoop-all.png" alt="left-small" />
 Avec l'arrivé de Apache Spark, Hadoop est souvent vu comme désuet et <em>legacy</em>. Il est vrai que le monde BigData est en perpétuelle évolution et qu'un produit peut être déprécié en quelques mois.</p>
 

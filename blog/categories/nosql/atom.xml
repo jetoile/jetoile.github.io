@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: nosql | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/nosql/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/nosql/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud]]></title>
-    <link href="http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
+    <link href="https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
     <updated>2012-05-22T11:37:00+02:00</updated>
-    <id>http://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
+    <id>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
 Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
 
@@ -47,9 +47,9 @@ Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute
   
   <entry>
     <title type="html"><![CDATA[Petits retours sur Cassandra]]></title>
-    <link href="http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html"/>
+    <link href="https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html"/>
     <updated>2012-03-13T10:19:01+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra</id>
+    <id>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-IvTZebKJhAc/T1hsV7nG8nI/AAAAAAAAAjw/qFiNLqvXgnY/s1600/cassandra01.png" alt="left-small" /></p>
 
 <p>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par <a href="http://twitter.com/mfiguiere">Michaël Figuière</a>) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d'une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j'ai aimé et ce que je n'ai pas aimé sur <a href="http://cassandra.apache.org/">Apache Cassandra</a>.</p>

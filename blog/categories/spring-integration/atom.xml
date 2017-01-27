@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: spring integration | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/spring-integration/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/spring-integration/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Lecture et traitement de fichiers : comment faire simple?]]></title>
-    <link href="http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html"/>
+    <link href="https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html"/>
     <updated>2014-04-10T14:15:44+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple</id>
+    <id>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple</id>
     <content type="html"><![CDATA[<p><img src="/images/batch/logo.png" alt="left-small" /></p>
 
 <p>De nombreuses applications ou systèmes d'informations nécessitent le chargement de données issues de fichiers.</p>
@@ -220,9 +220,9 @@
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
     <updated>2014-03-24T19:12:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-XR47rmCwXK0/Ux8gpmR-TLI/AAAAAAAABR0/T1h_RtvDED0/s1600/resteasy_jolokia_metrics_orig3.png" alt="left-small" /></p>
 
 <p>Pour faire suite à mes articles <a href="/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>, nous allons voir, dans cet article, comment il est possible de créer un service activator avec <a href="http://projects.spring.io/spring-integration/">Spring Integration</a> qui exposera via resteasy-netty4 un service REST.</p>
@@ -659,9 +659,9 @@ return Response.ok().build();
   
   <entry>
     <title type="html"><![CDATA[Spring Integration vs. Apache Camel]]></title>
-    <link href="http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
+    <link href="https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
     <updated>2010-03-15T23:29:48+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
+    <id>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/S56PashF4SI/AAAAAAAAAJA/OVagPG4D-g0/s320/apache_spring.png" alt="left-small" />
 Lors d'un <a href="/2009/12/eip-quest-ce-que-cest.html">post précédent</a>, j'avais parlé des <a href="/blog/2009/12/13/eip-quest-ce-que-cest/">EIPs</a> (<strong>Enterprise Integration Patterns</strong>) en expliquant qu'il s'agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.</p>
 

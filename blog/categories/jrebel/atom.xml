@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jrebel | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jrebel/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jrebel/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JRebel ou comment accélérer le développement]]></title>
-    <link href="http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html"/>
+    <link href="https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html"/>
     <updated>2010-02-24T23:19:33+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24</id>
+    <id>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/S4VHVRtCwTI/AAAAAAAAAI4/TexL6XUuprc/s200/jrebel.png" alt="left-small" /></p>
 
 <p>Dans des posts précédents (<a href="/2010/01/retour-sur-la-mise-en-uvre-d_04.html">ici</a> et <a href="http://jetoile.blogspot.com/2010/02/de-l-du-livrable.html">là</a>), j'avais parlé d'une façon d'utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d'applications web avec Cargo. Cependant, afin d'optimiser le temps de développement, il est préférable, plutôt que d'avoir à redéployer l'application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n'avoir pas à le faire mais d'avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.</p>

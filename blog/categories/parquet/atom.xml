@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Parquet | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/parquet/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/parquet/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Sqoop et Parquet : Mode d'emploi]]></title>
-    <link href="http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html"/>
+    <link href="https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html"/>
     <updated>2016-11-28T11:15:19+01:00</updated>
-    <id>http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi</id>
+    <id>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi</id>
     <content type="html"><![CDATA[<p><img src="/images/Apache_Sqoop_logo.svg.png" alt="left-small" /> Dans le monde du <em>BigData</em> (en l'occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d'une base de données dans son Datalake.</p>
 
 <p>Pour ce faire, <a href="http://sqoop.apache.org/">Apache Sqoop</a> est une des alternatives pour le faire (peut être pas la meilleure mais bon&hellip;).</p>

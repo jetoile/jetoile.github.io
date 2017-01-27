@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jms | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jms/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jms/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2011 - What's probably coming in Java Message Service 2.0]]></title>
-    <link href="http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
+    <link href="https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html"/>
     <updated>2011-11-20T22:49:24+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
+    <id>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-FB-AoRLfOOs/Tsk-J2XdFUI/AAAAAAAAAgE/CpRpQXHqH5M/s1600/devoxx1.jpg" alt="left-small" />
 La semaine dernière, j'ai eu la chance d'aller à Devoxx en Belgique à Anvers.</p>
 

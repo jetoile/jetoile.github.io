@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tomcat | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/tomcat/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/tomcat/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Démarrer une webapp en mode embedded avec Maven]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
     <updated>2013-03-06T15:26:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
+    <id>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-2c2Ie9Tla54/UTaEjXrNaiI/AAAAAAAAA20/MWhTcyyJvMg/s1600/image.png" alt="left-small" /></p>
 
 <p>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu'il doit disposer de tests, qu'ils soient unitaire, d'intégration, fonctionnel ou d'acceptance.</p>
@@ -428,9 +428,9 @@
   
   <entry>
     <title type="html"><![CDATA[Précompiler ses jsp]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html"/>
     <updated>2012-11-05T12:57:40+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/precompiler-ses-jsp</id>
+    <id>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-9Hhc_8qdf1Y/UIhESh6Ls9I/AAAAAAAAAso/2fJIJUvqvIo/s1600/title.png" alt="left-small" /></p>
 
 <p>Parce qu'il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.</p>

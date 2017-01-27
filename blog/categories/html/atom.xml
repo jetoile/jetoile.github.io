@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: html | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/html/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/html/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Livereload et Linux ou comment rédiger du html simplement]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
     <updated>2014-03-20T11:24:11+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
+    <id>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
 
 <p>Cet article n'a rien à voir avec le monde Java.</p>

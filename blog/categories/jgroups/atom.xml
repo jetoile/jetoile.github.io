@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jgroups | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jgroups/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jgroups/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Pour les gouverner tous - partie 3/3]]></title>
-    <link href="http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html"/>
+    <link href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html"/>
     <updated>2011-02-24T18:49:13+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33</id>
+    <id>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small" /></p>
 
 <p>Cet article fait suite à mes précédents posts (<a href="/2011/01/pour-les-gouverner-tous-partie-13.html">ici</a> et <a href="/2011/02/pour-les-gouverner-tous-partie-23.html">là</a>) et à pour objectif d'intégrer la partie JMX à mon petit POC JGroups afin d'offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d'une application distribuée (ie. d'aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d'une application d'obtenir la valeur d'une donnée offerte par les autres instances.</p>
@@ -532,9 +532,9 @@ void handleRemove() throws Exception {
   
   <entry>
     <title type="html"><![CDATA[Pour les gouverner tous - partie 2/3]]></title>
-    <link href="http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html"/>
+    <link href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html"/>
     <updated>2011-02-20T18:41:34+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23</id>
+    <id>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small" /></p>
 
 <p>Cet article fait suite à mon <a href="/2011/01/pour-les-gouverner-tous-partie-13.html">article précédent</a> et a pour objectif de présenter un petit POC (<em>Proof Of Concept</em>) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d'utiliser JGroups pour permettre à plusieurs instances d'une même application de se partager les valeurs d'une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s'agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d'une donnée auprès des autres instance déjà présentes dans le système. En outre, les autres instances déjà présentes devront recevoir directement la valeur de la donnée de la nouvelle instance.</p>
@@ -843,9 +843,9 @@ A noter que si les différentes instances venaient à ne pas se voir, cela peut 
   
   <entry>
     <title type="html"><![CDATA[Pour les gouverner tous - partie 1/3]]></title>
-    <link href="http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html"/>
+    <link href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html"/>
     <updated>2011-01-31T18:37:27+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13</id>
+    <id>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small" /></p>
 
 <p>Pour ceux qui l'auraient manqués (comment ça? Personne ne me suit&hellip; :( ), j'ai annoncé dans un post précédent que j'avais ouvert un compte sur GitHub pour hoster du code. Bien sûr, il y avait une petite idée derrière&hellip; ;&ndash;)</p>
@@ -879,9 +879,9 @@ A noter que si les différentes instances venaient à ne pas se voir, cela peut 
   
   <entry>
     <title type="html"><![CDATA[JGroups : tour d'horizon]]></title>
-    <link href="http://blog.jetoile.fr/2010/12/jgroups-tour-d.html"/>
+    <link href="https://blog.jetoile.fr/2010/12/jgroups-tour-d.html"/>
     <updated>2010-12-28T17:42:18+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/12/jgroups-tour-d</id>
+    <id>https://blog.jetoile.fr/2010/12/jgroups-tour-d</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TRtn71JxZPI/AAAAAAAAATI/0vNqJjOXKlY/s1600/jgroups_logo_450px.png" alt="left-small" />
 Actuellement, le besoin de rendre les systèmes ou les applications interopérables est indéniable. Pour ce faire, de nombreuses technologies ont vues le jour. Il peut s'agir des MOM (<em>Message-Oriented Middleware</em>), des protocoles de communication entre les applications clientes et serveurs (REST, Soap, RMI, &hellip;), de solutions propriétaires utilisées pour permettre la communication entre les serveurs pour des problématiques de réplication ou de synchronisation ou même de solutions basées sur le paradigme NoSQL.</p>
 

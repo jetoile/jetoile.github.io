@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: cloudbees | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/cloudbees/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/cloudbees/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Petite découverte de CloudBees]]></title>
-    <link href="http://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html"/>
+    <link href="https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html"/>
     <updated>2011-11-14T22:40:16+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees</id>
+    <id>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-F_mNTL2_BE4/TsACHNBk0fI/AAAAAAAAAdE/Ngcp8YNiDL0/s1600/cloudbees03.png" alt="left-small" /></p>
 
 <p>La semaine dernière, j'ai eu la chance d'assister à un atelier sur <a href="http://www.cloudbees.com/">CloudBees</a> chez nos amis de <a href="http://blog.xebia.fr/">Xebia</a>.</p>

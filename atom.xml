@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,10 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[Sqoop Et Parquet : Mode D'emploi]]></title>
-    <link href="http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html"/>
+    <link href="https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html"/>
     <updated>2016-11-28T11:15:19+01:00</updated>
-    <id>http://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/Apache_Sqoop_logo.svg.png" alt="left-small" /> Dans le monde du <em>BigData</em> (en l&#8217;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&#8217;une base de données dans son Datalake.</p>
+    <id>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/Apache_Sqoop_logo.svg.png" alt="left-small" /> Dans le monde du <em>BigData</em> (en l&#8217;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&#8217;une base de données dans son Datalake.</p>
 
 <p>Pour ce faire, <a href="http://sqoop.apache.org/">Apache Sqoop</a> est une des alternatives pour le faire (peut être pas la meilleure mais bon&hellip;).</p>
 
@@ -100,10 +100,10 @@ En effet, il existe 2 <em>issues</em> qui traitent de ce problème :</p>
   
   <entry>
     <title type="html"><![CDATA[Hadoop Unit 1.3]]></title>
-    <link href="http://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html"/>
+    <link href="https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html"/>
     <updated>2016-05-16T14:20:51+02:00</updated>
-    <id>http://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" /> Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&#8217;avais posté précédemment sur un composant au doux nom d&#8217;Hadoop-Unit.</p>
+    <id>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" /> Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&#8217;avais posté précédemment sur un composant au doux nom d&#8217;Hadoop-Unit.</p>
 
 <p>J&#8217;ai le plaisir de vous annoncer qu&#8217;il a été releasé en version 1.3 et qu&#8217;il est également disponible sur maven central.</p>
 
@@ -134,11 +134,11 @@ En effet, il existe 2 <em>issues</em> qui traitent de ce problème :</p>
   
   <entry>
     <title type="html"><![CDATA[Hadoop Unit]]></title>
-    <link href="http://blog.jetoile.fr/2016/04/hadoop-unit.html"/>
+    <link href="https://blog.jetoile.fr/2016/04/hadoop-unit.html"/>
     <updated>2016-04-16T18:16:01+02:00</updated>
-    <id>http://blog.jetoile.fr/2016/04/hadoop-unit</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
-Dans mon dernier <a href="http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html">post</a>, j&#8217;avais parlé d&#8217;une surcouche que j&#8217;avais développé afin de faciliter l&#8217;utilisation de quelques-uns des composants de l&#8217;écosystème Hadoop, à savoir :</p>
+    <id>https://blog.jetoile.fr/2016/04/hadoop-unit</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
+Dans mon dernier <a href="https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html">post</a>, j&#8217;avais parlé d&#8217;une surcouche que j&#8217;avais développé afin de faciliter l&#8217;utilisation de quelques-uns des composants de l&#8217;écosystème Hadoop, à savoir :</p>
 
 <ul>
 <li>Hdfs,</li>
@@ -983,11 +983,11 @@ Dans mon dernier <a href="http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-boots
   
   <entry>
     <title type="html"><![CDATA[Hadoop Ecosysteme Bootstrap]]></title>
-    <link href="http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html"/>
+    <link href="https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html"/>
     <updated>2016-01-18T10:00:00+01:00</updated>
-    <id>http://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
-Comme je l&#8217;ai déjà dit dans un article <a href="http://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html">précédent</a>, la force d&#8217;Hadoop n&#8217;est plus dans Hadoop en lui-même mais plutôt dans son écosystème.</p>
+    <id>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
+Comme je l&#8217;ai déjà dit dans un article <a href="https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html">précédent</a>, la force d&#8217;Hadoop n&#8217;est plus dans Hadoop en lui-même mais plutôt dans son écosystème.</p>
 
 <p>Du coup, même lorsqu&#8217;on développe avec Spark, il est courant de vouloir s&#8217;interfacer avec le métastore de Hive ou encore avec SolR si l&#8217;objectif est de vouloir indexer dans ce dernier.</p>
 
@@ -1623,13 +1623,13 @@ Comme je l&#8217;ai déjà dit dans un article <a href="http://blog.jetoile.fr/2
   
   <entry>
     <title type="html"><![CDATA[Loggons Beaucoup Mais Loggons Bien...]]></title>
-    <link href="http://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html"/>
+    <link href="https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html"/>
     <updated>2016-01-05T12:40:17+01:00</updated>
-    <id>http://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/log/log.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/log/log.png" alt="left-small" />
 Cela fait un moment que je n&#8217;ai rien écrit&hellip; Cependant, un sujet me taraude depuis un moment&hellip; et il s&#8217;agit de la gestion des logs dans les applications.</p>
 
-<p>J&#8217;ai déjà pesté dans des <a href="http://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">articles précédents</a> sur le fait qu&#8217;une application devait toujours être monitorée et supervisée mais, en plus de cela, le comportement d&#8217;une application doit également être traçable.</p>
+<p>J&#8217;ai déjà pesté dans des <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">articles précédents</a> sur le fait qu&#8217;une application devait toujours être monitorée et supervisée mais, en plus de cela, le comportement d&#8217;une application doit également être traçable.</p>
 
 <p>Le sujet n&#8217;est pas ce qu&#8217;on peut dire le plus sexy du monde mais j&#8217;ai souvent constaté que ce dernier était souvent assez mal maitrisé. Donc désolé si j&#8217;enfonce des portes ouvertes mais bref&hellip;</p>
 
@@ -1748,7 +1748,7 @@ L’AOP (_Aspect Oriented Programming_) est également un très bon candidat pou
 </ul>
 
 
-<p><img src="http://blog.jetoile.fr/images/log/log_schema3.png" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/log/log_schema3.png" alt="medium" /></p>
 
 <table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
 <tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
@@ -1840,10 +1840,10 @@ Une autre solution consiste à utiliser un broker  de message type JMS, RabbitMQ
   
   <entry>
     <title type="html"><![CDATA[Hadoop Et Son écosystème]]></title>
-    <link href="http://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html"/>
+    <link href="https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html"/>
     <updated>2015-10-09T14:53:03+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" />
 Avec l&#8217;arrivé de Apache Spark, Hadoop est souvent vu comme désuet et <em>legacy</em>. Il est vrai que le monde BigData est en perpétuelle évolution et qu&#8217;un produit peut être déprécié en quelques mois.</p>
 
 <p>Cependant, restreindre le terme Hadoop aux seuls technologies MapReduce, HDFS et YARN est, pour moi, une erreur.</p>
@@ -1863,10 +1863,10 @@ Avec l&#8217;arrivé de Apache Spark, Hadoop est souvent vu comme désuet et <em
   
   <entry>
     <title type="html"><![CDATA[Template De Projets REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
     <updated>2015-10-07T17:33:08+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/template_rest.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/template_rest.png" alt="left-small" />
 Il y a déjà un long moment, j&#8217;avais posté une série d&#8217;article expliquant comment il était possible de faire des web service de type REST de manière simple via <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">RestEasy-Netty</a> ou via <a href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow</a>.</p>
 
 <p>Dans la continuité de cette course au plus léger, je me suis dit que cela pouvait être intéressant de faire une petite étude un peu plus exhaustive des solutions légères qui existaient.</p>
@@ -1914,13 +1914,13 @@ Il y a déjà un long moment, j&#8217;avais posté une série d&#8217;article ex
 <p>Allez, et parce que je suis sympa, je mets quand même le rapport Gatling obtenu suite à 1 seul tir en local. Je laisse le lecteur se faire une idée&hellip; ou pas&hellip;</p>
 
 <ul>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/dropwizard-1/index.html">Résultat Dropwizard</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/jetty-1/index.html">Résultat Jetty</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/netty-1/index.html">Résultat RestEasy-Netty</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/restlet-1/index.html">Résultat Restlet</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/springboot-1/index.html">Résultat SpringBoot</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/tomcat-nio-1/index.html">Résultat Tomcat NIO</a></li>
-<li><a href="http://blog.jetoile.fr/images/res_charge_gatling/undertow-1/index.html">Résultat RestEasy-Undertow</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/dropwizard-1/index.html">Résultat Dropwizard</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/jetty-1/index.html">Résultat Jetty</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/netty-1/index.html">Résultat RestEasy-Netty</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/restlet-1/index.html">Résultat Restlet</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/springboot-1/index.html">Résultat SpringBoot</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/tomcat-nio-1/index.html">Résultat Tomcat NIO</a></li>
+<li><a href="https://blog.jetoile.fr/images/res_charge_gatling/undertow-1/index.html">Résultat RestEasy-Undertow</a></li>
 </ul>
 
 
@@ -1930,10 +1930,10 @@ Il y a déjà un long moment, j&#8217;avais posté une série d&#8217;article ex
   
   <entry>
     <title type="html"><![CDATA[Undertow Pour Booster Vos Services REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
     <updated>2015-06-23T14:51:56+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/undertow.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/undertow.png" alt="left-small" />
 Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
 
 <p>Cette article repart du même besoin, à savoir disposer d&#8217;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
@@ -2873,10 +2873,10 @@ Il y a quelques temps, j&#8217;avais fait une série d&#8217;articles sur <a hre
   
   <entry>
     <title type="html"><![CDATA[Breizhcamp 2014 - Présentations en Ligne]]></title>
-    <link href="http://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html"/>
+    <link href="https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html"/>
     <updated>2014-06-12T08:28:38+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/bzhcmp/Logo.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/bzhcmp/Logo.png" alt="left-small" />
 Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breizhcamp.org/">BreizhCamp</a> s&#8217;est déroulé en mai dernier et j&#8217;y avais la chance d&#8217;y présenter un <em>talk</em> sur un retour d&#8217;expérience concernant le passage à l&#8217;échelle d&#8217;un SI afin de lui permettre de supporter 4 millions d&#8217;utilisateurs.</p>
 
 <p>Le synopsis était le suivant :</p>
@@ -2915,10 +2915,10 @@ Pour ceux qui auraient manqué l&#8217;information, le <a href="http://www.breiz
   
   <entry>
     <title type="html"><![CDATA[Breizhcamp 2014]]></title>
-    <link href="http://blog.jetoile.fr/2014/05/breizhcamp-2014.html"/>
+    <link href="https://blog.jetoile.fr/2014/05/breizhcamp-2014.html"/>
     <updated>2014-05-24T20:00:24+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/05/breizhcamp-2014</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/bzhcmp/Logo.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2014/05/breizhcamp-2014</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/bzhcmp/Logo.png" alt="left-small" />
 Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a> qui vient de fêter sa quatrième année.</p>
 
 <p>Pour ceux qui ne seraient pas encore au courant de ce qu&#8217;est le breizhCamp, il s&#8217;agit d&#8217;une conférence technique qui se veut être un mix de technologies (même s&#8217;il faut bien reconnaitre que Java y est majoritairement représentée&hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#8217;<a href="http://www.istic.univ-rennes1.fr/">ISTIC</a>.</p>
@@ -2938,11 +2938,11 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <ul>
 <li><p>la pluie&hellip; non mais ALLO QUOI!!?? où était-elle? A peine quelques gouttes&hellip; et ils osent utiliser le mot <code>breizh</code>?!
-<img src="http://blog.jetoile.fr/images/bzhcmp/temps.jpg" alt="medium" /></p></li>
+<img src="https://blog.jetoile.fr/images/bzhcmp/temps.jpg" alt="medium" /></p></li>
 <li><p>concernant la présentation &ldquo;Développer en Java et en Caleçon&rdquo; par Nicolas : le titre était mensonger! A peine une photo de caleçon et encore&hellip; le public a dû insister&hellip; et en plus ce n&#8217;était pas la meilleure&hellip;! A déconseiller au risque d&#8217;être déçu!! La vraie aurait dû être la suivante :
-<img src="http://blog.jetoile.fr/images/bzhcmp/nico_calecon.jpg" title="Crédit photo : http://developer-blog.cloudbees.com/2013/04/cloudbees-works-from-home.html" alt="medium" /></p></li>
+<img src="https://blog.jetoile.fr/images/bzhcmp/nico_calecon.jpg" title="Crédit photo : http://developer-blog.cloudbees.com/2013/04/cloudbees-works-from-home.html" alt="medium" /></p></li>
 <li><p>une photo de van et même pas un seul poney&hellip; quelle déception&hellip; encore une fois une publicité mensongère&hellip;!
-<img src="http://blog.jetoile.fr/images/bzhcmp/van.png" title="Crédit photo : https://twitter.com/lhuet35/status/469719681902051328" alt="medium" /></p></li>
+<img src="https://blog.jetoile.fr/images/bzhcmp/van.png" title="Crédit photo : https://twitter.com/lhuet35/status/469719681902051328" alt="medium" /></p></li>
 </ul>
 
 
@@ -2950,30 +2950,30 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <p>Concernant l&#8217;ambiance, j&#8217;ai été tellement déçu que je n&#8217;arrive même pas à le retranscrire. D&#8217;ailleurs les photos parlent d&#8217;elles-mêmes (il ne s&#8217;agit que de quelques photos qui ne sauraient être représentatives de l&#8217;ambiance réelle mais bon, <em>no comment</em>&hellip;)</p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/oculus.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/oculus.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/bieres.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/bieres.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/selfie.png" title="Crédit photo : https://twitter.com/seb_brousse/status/469160895869095936/photo/1" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/selfie.png" title="Crédit photo : https://twitter.com/seb_brousse/status/469160895869095936/photo/1" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/diner.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/diner.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
 <p>Et que dire des sponsors&hellip; des sociétés inconnues!
-<img src="http://blog.jetoile.fr/images/bzhcmp/sponsors.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<img src="https://blog.jetoile.fr/images/bzhcmp/sponsors.png" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
 <p>Ou encore des keynotes qui étaient complètement plates et sans aucune saveur&hellip;
-<img src="http://blog.jetoile.fr/images/bzhcmp/balles.png" title="Crédit photo : https://twitter.com/NicoPennec/status/469889709985263616/photo/1" alt="medium" /></p>
+<img src="https://blog.jetoile.fr/images/bzhcmp/balles.png" title="Crédit photo : https://twitter.com/NicoPennec/status/469889709985263616/photo/1" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/IMG_20140523_094741.jpg" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/IMG_20140523_094741.jpg" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/IMG_20140523_095432.jpg" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/IMG_20140523_095432.jpg" alt="medium" /></p>
 
 <p>Et de l&#8217;orga&hellip; même pas capable de s&#8217;habiller correctement&hellip;
-<img src="http://blog.jetoile.fr/images/bzhcmp/IMG_3457.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<img src="https://blog.jetoile.fr/images/bzhcmp/IMG_3457.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/IMG_3473.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/IMG_3473.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
-<p><img src="http://blog.jetoile.fr/images/bzhcmp/IMG_3480.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
+<p><img src="https://blog.jetoile.fr/images/bzhcmp/IMG_3480.JPG" title="Crédit photo : https://secure.flickr.com/photos/alexlg/sets/72157644386460788/with/14244372981/" alt="medium" /></p>
 
 <p>Heureusement, cette année, tout comme l&#8217;année dernière, j&#8217;ai eu la chance d&#8217;y présenter un talk (j&#8217;en remercie d&#8217;ailleurs l&#8217;équipe) qui, malgré quelques soucis techniques (mon ordi a refusé de &ldquo;partager&rdquo; son signal vidéo sur le rétroprojecteur m&#8217;empêchant ainsi de faire les démos prévues), s&#8217;est, à priori, bien passé (ndlr : j&#8217;attends les notes ainsi que la vidéo pour pouvoir juger du carnage&hellip; ;&ndash;) )&hellip; J&#8217;en profite d&#8217;ailleurs pour mettre à disposition mes slides.</p>
 
@@ -3003,10 +3003,10 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   
   <entry>
     <title type="html"><![CDATA[RDD : Qu'est Ce Que C'est]]></title>
-    <link href="http://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html"/>
+    <link href="https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html"/>
     <updated>2014-05-12T09:21:35+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/rdd/spark.png" alt="left-small" /></p>
+    <id>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/rdd/spark.png" alt="left-small" /></p>
 
 <p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu&#8217;il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu&#8217;il a rejoint récemment (en juin 2013) montre bien de l&#8217;intérêt qu&#8217;il succite (cela est d&#8217;aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>
 
@@ -3070,7 +3070,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <p>Pour comprendre les avantages des RDDs comme abstraction de mémoire distribuée, une comparaison avec les mémoires partagées distribuées (<em>DSM</em>) a été faite.</p>
 
-<p><img src="http://blog.jetoile.fr/images/rdd/comparaisonRdd.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/rdd/comparaisonRdd.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
 
 <p>Dans un système à base de mémoire partagée distribuée, les applications lisent et écrivent de manière aléatoire dans un espace d&#8217;adressage global. La principale différence entre les RDDs et DSM est que les RDDs ne peuvent créés qu&#8217;au travers de transformations <em>macros</em> alors que DSM permet la lecture et l&#8217;écriture sur chaque allocation mémoire. Cela réduit l&#8217;utilisation des RDDs aux applications qui nécessitent de l&#8217;écriture en bloc mais cela permet une meilleure tolérance aux pannes. En outre, une autre particularité des RDDs est sa nature immuable qui permets de mieux gérer les cas où des noeuds peuvent être lents en effectuant des copies des tâches lentes comme dans MapReduce. Avec DSM, cela est difficilement implémentable car deux copies d&#8217;une tâche doivent potentiellement accéder aux mêmes allocations mémoires et que cela peut créer des conflits avec des mises à jour éventuelle.</p>
 
@@ -3080,7 +3080,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <p>Les principales transformations et actions disponibles dans Spark sont les suivantes :</p>
 
-<p><img src="http://blog.jetoile.fr/images/rdd/spark_operation_action.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/rdd/spark_operation_action.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
 
 <p>En fait, les <strong>transformations</strong> sont des opérations <em>lazy</em> qui permette de définir un nouveau RDD alors que les <strong>actions</strong> permettent d&#8217;exécuter un calcul et de retourner une valueur au programme ou de l&#8217;écrire sur un stockage externe. En plus de ces opérations, un RDD peut être persisté (méthode <code>persist</code>). En outre, il est possible d&#8217;obtenir l&#8217;ordre des partitions d&#8217;un RDD. Les opérations telles que <code>groupByKey</code>, <code>reduceByKey</code> et le <code>sort</code> fournissent un hash ou un interval de RDD partitionné.</p>
 
@@ -3094,7 +3094,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 </ul>
 
 
-<p><img src="http://blog.jetoile.fr/images/rdd/rdd_interface.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/rdd/rdd_interface.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
 
 <p>Ainsi, par exemple, un RDD qui représente un fichier HDFS a une partition pour chaque bloc de fichiers et connait l&#8217;emplacement de la machine où se trouve ce dernier. De même, le résultat d&#8217;une opération <code>map</code> sur ce RDD dispose des mêmes partitions mais applique la fonction <em>map</em> aux données parentes.</p>
 
@@ -3116,7 +3116,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 </ul>
 
 
-<p><img src="http://blog.jetoile.fr/images/rdd/rdd_dependencies.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/rdd/rdd_dependencies.png" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf" alt="center" /></p>
 
 <h1>Implémentation</h1>
 
@@ -3171,10 +3171,10 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   
   <entry>
     <title type="html"><![CDATA[Lecture Et Traitement De Fichiers : Comment Faire Simple?]]></title>
-    <link href="http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html"/>
+    <link href="https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html"/>
     <updated>2014-04-10T14:15:44+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/batch/logo.png" alt="left-small" /></p>
+    <id>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/batch/logo.png" alt="left-small" /></p>
 
 <p>De nombreuses applications ou systèmes d&#8217;informations nécessitent le chargement de données issues de fichiers.</p>
 
@@ -3197,14 +3197,14 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <p><em>ndlr</em> : je ne présenterai pas le fonctionnement de Spring Batch à base de <strong>Job</strong> et <strong>Step</strong> puisque cela se trouve très facilement dans les documents officiels, livres ou articles de blog et je mettrai plutôt l&#8217;accent sur la faisabilité de tel ou tel chose.</p>
 
-<p><img src="http://blog.jetoile.fr/images/batch/spring-batch-reference-model.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/batch/spring-batch-reference-model.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></p>
 
 <p>Spring Batch offre nativement la possibilité de traiter les fichiers par <em>chunk</em> via :</p>
 
 <ul>
 <li><code>FlatFileItemReader</code> qui permet de lire un fichier plat ligne par ligne et où chaque ligne dispose de la même information (il est également possible de traiter des types de lignes différentes issues du même fichier avec <code>PatternMatchingCompositeLineMapper</code>).</li>
 <li><code>StaxEventItemReader</code> pour lire fichiers xml composés de format de <em>fragments</em> identiques :
-<img src="http://blog.jetoile.fr/images/batch/xmlinput.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></li>
+<img src="https://blog.jetoile.fr/images/batch/xmlinput.png" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html" alt="center" /></li>
 </ul>
 
 
@@ -3370,7 +3370,7 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
 
 <p>Cela engendre peut être un <em>overhead</em> conséquent mais on est, au moins sûr, d&#8217;éviter le <em>Out Of Memory</em> dans le cas de fichiers volumineux. En outre, cela permet de bénéficier de la puissance des EIP (routage ou filtrage sur le nom du fichier par exemple) tant que le fichier n&#8217;a pas à être chargé.</p>
 
-<p><img src="http://blog.jetoile.fr/images/batch/archi_combo.png" alt="large" /></p>
+<p><img src="https://blog.jetoile.fr/images/batch/archi_combo.png" alt="large" /></p>
 
 <h1>Conclusion</h1>
 
@@ -3404,10 +3404,10 @@ Encore un an de plus pour le <a href="http://www.breizhcamp.org/">breizhCamp</a>
   
   <entry>
     <title type="html"><![CDATA[Logstash : Tour D'horizon Sur Les Stratégies De Déploiement]]></title>
-    <link href="http://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html"/>
+    <link href="https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html"/>
     <updated>2014-04-07T11:20:26+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/logstash/logstash.png" alt="left-small" />
+    <id>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/logstash/logstash.png" alt="left-small" />
 Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies qui peuvent être utilisées pour <a href="http://logstash.net/">Logstash</a>.</p>
 
 <p>Pour ce faire, je m&#8217;appuierai sur le très bon <a href="http://www.logstashbook.com/">livre officiel</a> que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.</p>
@@ -3443,7 +3443,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 </ul>
 
 
-<p><img src="http://blog.jetoile.fr/images/logstash/archi01.png" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/logstash/archi01.png" alt="center" /></p>
 
 <p>En fait, une configuration typique de Logstash est la suivante :</p>
 
@@ -3509,7 +3509,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 </ul>
 
 
-<p><img src="http://blog.jetoile.fr/images/logstash/archi02.png" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/logstash/archi02.png" alt="center" /></p>
 
 <p>En fait, le <strong>broker</strong> permet de servir de buffer entre les agents et le serveur Logstash. Cela est essentiel pour les raisons suivantes :</p>
 
@@ -3542,7 +3542,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 <p>A titre informatif, il est possible d&#8217;utiliser un <em>Appender</em> syslog dans log4j ou logback (entre autre).</p>
 
-<p><img src="http://blog.jetoile.fr/images/logstash/archi03.png" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/logstash/archi03.png" alt="center" /></p>
 
 <h3>A la mode agent</h3>
 
@@ -3593,13 +3593,13 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 <p>Par exemple, si Redis est utilisé comme broker entre les agents Logstash et le serveur central, il peut être intéressant de passer Redis en mode <em>failover</em> afin d&#8217;éviter une perte d&#8217;événements lors de la transmission de ces derniers. Pour ce faire, il suffit de configurer le plugin <strong>redis</strong> de la section <strong>output</strong>  avec l&#8217;option <code>shuffle_hosts</code> pour indiquer à l&#8217;agent Logstash de n&#8217;utiliser qu&#8217;un seul noeud Redis lors de sa phase d&#8217;écriture. Du coté du serveur central, il suffit d&#8217;ajouter (et de configurer) autant de plugin <strong>redis</strong> de la section <strong>input</strong> que de noeud.</p>
 
-<p><img src="http://blog.jetoile.fr/images/logstash/archi04.png" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/logstash/archi04.png" alt="center" /></p>
 
 <p>Afin de permettre à la partie stockage/indexation d&#8217;être scalable, il suffit de configurer ElasticSearch en mode cluster, ce qui est natif chez lui.</p>
 
 <p>Enfin, il est possible de rendre le serveur central Logstash robuste à la panne en en créant d&#8217;autres instances (mode <em>failover</em>) qui partageront la même configuration.</p>
 
-<p><img src="http://blog.jetoile.fr/images/logstash/archi05.png" alt="center" /></p>
+<p><img src="https://blog.jetoile.fr/images/logstash/archi05.png" alt="center" /></p>
 
 <h1>Conclusion</h1>
 
@@ -3622,10 +3622,10 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   
   <entry>
     <title type="html"><![CDATA[Changement Du Flux RSS]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/changement-flux-rss.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/changement-flux-rss.html"/>
     <updated>2014-03-31T18:54:22+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/changement-flux-rss</id>
-    <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/rss_jetoile.png" alt="left-small" /></p>
+    <id>https://blog.jetoile.fr/2014/03/changement-flux-rss</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/rss_jetoile.png" alt="left-small" /></p>
 
 <p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j&#8217;espère qu&#8217;il vous plait.</p>
 
@@ -3654,9 +3654,9 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   
   <entry>
     <title type="html"><![CDATA[Changement De Look Et D'hébergeur]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html"/>
     <updated>2014-03-28T10:00:03+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur</id>
+    <id>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur</id>
     <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/octopress/img_octopress_blogger.png" alt="left-small" /></p>
 
 <p>Cet article n&#8217;a rien à voir avec Java et il est plus à titre informatif.</p>
@@ -3704,7 +3704,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 <p><del>Pour l&#8217;instant, je n&#8217;ai pas réussi à importer les commentaires via <a href="http://disqus.com/">Disqus</a> (enfin l&#8217;import est fait mais les commentaires ne s&#8217;affichent pas&hellip; :&lsquo;( ).</del>
 [<em>ndlr</em> : après un coup de remapping des url des commentaires importés via <strong>Disqus</strong>, les commentaires sont revenus \o/]</p>
 
-<p><del>La partie rss est un peu <em>buggé</em> car mon flux <em>atom</em> généré par Octopress est trop gros pour être utilisé par <a href="http://www.feedburner.com">feedburner</a> (du coup, le flux n&#8217;est pas global mais seulement sur la catégorie <code>Java</code>).</del> [<em>ndlr</em> : cf ce <a href="http://blog.jetoile.fr/2014/03/changement-flux-rss.html">post</a> ]</p>
+<p><del>La partie rss est un peu <em>buggé</em> car mon flux <em>atom</em> généré par Octopress est trop gros pour être utilisé par <a href="http://www.feedburner.com">feedburner</a> (du coup, le flux n&#8217;est pas global mais seulement sur la catégorie <code>Java</code>).</del> [<em>ndlr</em> : cf ce <a href="https://blog.jetoile.fr/2014/03/changement-flux-rss.html">post</a> ]</p>
 
 <p>Enfin, il faut encore que je change l&#8217;image de bannière ;&ndash;)</p>
 
@@ -3718,12 +3718,12 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty4 Et Spring Integration : Ils Reviennent Et Ils Ne Sont Pas Content!]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
     <updated>2014-03-24T19:12:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-XR47rmCwXK0/Ux8gpmR-TLI/AAAAAAAABR0/T1h_RtvDED0/s1600/resteasy_jolokia_metrics_orig3.png" alt="left-small" /></p>
 
-<p>Pour faire suite à mes articles <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>, nous allons voir, dans cet article, comment il est possible de créer un service activator avec <a href="http://projects.spring.io/spring-integration/">Spring Integration</a> qui exposera via resteasy-netty4 un service REST.</p>
+<p>Pour faire suite à mes articles <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>, nous allons voir, dans cet article, comment il est possible de créer un service activator avec <a href="http://projects.spring.io/spring-integration/">Spring Integration</a> qui exposera via resteasy-netty4 un service REST.</p>
 
 <p>Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.</p>
 
@@ -3866,7 +3866,7 @@ Cet article fera un rapide tour d&#8217;horizon sur les différentes stratégies
 
 <h2>Intégration complète de Spring Integration</h2>
 
-<p>Pour rappel, Spring Integration est une implémentation des <a href="http://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html">EIP</a> (<em>Enterprise Integration Patterns</em>) et propose donc une mise en oeuvre de l&#8217;architecture <strong>Pipes and Filters</strong>.</p>
+<p>Pour rappel, Spring Integration est une implémentation des <a href="https://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html">EIP</a> (<em>Enterprise Integration Patterns</em>) et propose donc une mise en oeuvre de l&#8217;architecture <strong>Pipes and Filters</strong>.</p>
 
 <p><img src="http://3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png" alt="large" /></p>
 
@@ -4360,9 +4360,9 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
   
   <entry>
     <title type="html"><![CDATA[Livereload Et Linux Ou Comment Rédiger Du Html Simplement]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
     <updated>2014-03-20T11:24:11+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
+    <id>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
 
 <p>Cet article n&#8217;a rien à voir avec le monde Java.</p>
@@ -4792,12 +4792,12 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty 4, Jackon 2... Les Mêmes Mais en Mieux...]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html"/>
     <updated>2014-03-17T08:43:12+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-Vzol1CndcjY/Uxib17Rlf2I/AAAAAAAABQI/Qi4u0DWe2s4/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
 
-<p>Pour faire suite à mon <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a> qui montrait comment il était possible de construire une <em>stack</em> légère basée sur Resteasy-Netty3, Jackson, <a href="http://www.jolokia.org/">Jolokia</a> et <a href="https://helloreverb.com/developers/swagger">Swagger</a>, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.</p>
+<p>Pour faire suite à mon <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a> qui montrait comment il était possible de construire une <em>stack</em> légère basée sur Resteasy-Netty3, Jackson, <a href="http://www.jolokia.org/">Jolokia</a> et <a href="https://helloreverb.com/developers/swagger">Swagger</a>, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.</p>
 
 <p>Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&#8217;être exhaustif, cela permet de faire le tour complet&hellip; ;&ndash;)</p>
 
@@ -5244,9 +5244,9 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty Et Bien Plus Encore... Mode D'emploi...]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
     <updated>2014-03-10T08:03:49+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-HYBTn5anFdE/Uxdv3cRgu_I/AAAAAAAABP4/gsCZjUIxDyQ/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
 
 <p>L&#8217;informatique évolue constamment et c&#8217;est également le cas des architectures qui ont tendance à s&#8217;orienter de plus en plus vers l&#8217;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&#8217;un point de vue temps de réponse mais également d&#8217;un point de vue charge suportée). C&#8217;est dans ce contexte que des solutions comme <a href="http://restlet.org/">Restlet</a> ou <a href="http://restx.io/">RestX</a> (pour n&#8217;en citer que quelques-unes) ont vu le jour.</p>
@@ -5748,7 +5748,7 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 
 <h2>Intégration de Jolokia</h2>
 
-<p>Une autre étape de notre périple consiste à activer Jolokia que j&#8217;ai déjà présenté dans un <a href="http://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html">article précédent</a>.</p>
+<p>Une autre étape de notre périple consiste à activer Jolokia que j&#8217;ai déjà présenté dans un <a href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html">article précédent</a>.</p>
 
 <p>Dans notre cas d&#8217;usage, cela sera fait de manière programmatique.</p>
 
@@ -6321,7 +6321,7 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 
 <h2>Branchement des plugins Maven Appassembler et Assembly</h2>
 
-<p>Afin de générer une application utilisable <em>out of the box</em>, le plugin maven <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">appassembler</a> a été utilisé. Pour ceux qui ne saurait pas ce que c&#8217;est, je les invite à regarder soit la documentation officielle soit un article que j&#8217;avais fait <a href="http://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html">précédemment</a> (#autopromo ;&ndash;) ).</p>
+<p>Afin de générer une application utilisable <em>out of the box</em>, le plugin maven <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">appassembler</a> a été utilisé. Pour ceux qui ne saurait pas ce que c&#8217;est, je les invite à regarder soit la documentation officielle soit un article que j&#8217;avais fait <a href="https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html">précédemment</a> (#autopromo ;&ndash;) ).</p>
 
 <p>Ainsi, ici, le goal <code>generate-daemons</code> du plugin a été utilisé :</p>
 
@@ -6627,12 +6627,12 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
   
   <entry>
     <title type="html"><![CDATA[Jolokia : Le Piment Qui Vous Veut Du Bien]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html"/>
     <updated>2014-03-04T00:30:40+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien</id>
+    <id>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png" alt="left-small" /></p>
 
-<p> Dans des articles précédents, je m&#8217;étais déjà exprimé sur le fait que je trouvais qu&#8217;il était important de monitorer son application (qu&#8217;il s&#8217;agisse d&#8217;une application web, d&#8217;un batch ou d&#8217;une application standalone) (cf. <a href="http://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">ici</a>). J&#8217;avais même creusé un peu la spécification JMX (cf. <a href="http://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">là</a>).</p>
+<p> Dans des articles précédents, je m&#8217;étais déjà exprimé sur le fait que je trouvais qu&#8217;il était important de monitorer son application (qu&#8217;il s&#8217;agisse d&#8217;une application web, d&#8217;un batch ou d&#8217;une application standalone) (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">ici</a>). J&#8217;avais même creusé un peu la spécification JMX (cf. <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">là</a>).</p>
 
 <p>Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&#8217;ai découvert récemment (merci Romain ;&ndash;) ) mais qui existe depuis un moment (la version 1.0.0 est apparue en octobre 2011 sur le repo Maven central et le premier commit apparaissant sur Github date de Juillet 2010) : cet outils est <strong>Jolokia</strong>.</p>
 
@@ -7127,7 +7127,7 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 </ul>
 
 
-<p>Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d&#8217;énormes avantages comme, par exemple, accèder aux informations de n&#8217;importe quelle application qui, généralement, n&#8217;est pas accessible pour des raisons de sécurité (cf. <a href="http://blog.jetoile.fr/2010/05/jmx-et-firewall.html">ici</a>).</p>
+<p>Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d&#8217;énormes avantages comme, par exemple, accèder aux informations de n&#8217;importe quelle application qui, généralement, n&#8217;est pas accessible pour des raisons de sécurité (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-et-firewall.html">ici</a>).</p>
 
 <p>Bien sûr, il existe d&#8217;autres solutions comme l&#8217;utilisation de <a href="http://www.crashub.org/">CraSH</a> mais exposer ses MBeans via JSON over HTTP est tellement simple et peut surtout être exploité simplement par les équipes de production ;&ndash;) .</p>
 

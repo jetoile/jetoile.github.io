@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jmx | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jmx/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jmx/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Undertow pour booster vos services REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
     <updated>2015-06-23T14:51:56+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
+    <id>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
     <content type="html"><![CDATA[<p><img src="/images/undertow.png" alt="left-small" />
 Il y a quelques temps, j'avais fait une série d'articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
 
@@ -608,9 +608,9 @@ deployment.getProviderFactory().register(filter);
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html"/>
     <updated>2014-03-24T19:12:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-XR47rmCwXK0/Ux8gpmR-TLI/AAAAAAAABR0/T1h_RtvDED0/s1600/resteasy_jolokia_metrics_orig3.png" alt="left-small" /></p>
 
 <p>Pour faire suite à mes articles <a href="/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>, nous allons voir, dans cet article, comment il est possible de créer un service activator avec <a href="http://projects.spring.io/spring-integration/">Spring Integration</a> qui exposera via resteasy-netty4 un service REST.</p>
@@ -1047,9 +1047,9 @@ return Response.ok().build();
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html"/>
     <updated>2014-03-17T08:43:12+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-Vzol1CndcjY/Uxib17Rlf2I/AAAAAAAABQI/Qi4u0DWe2s4/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
 
 <p>Pour faire suite à mon <a href="/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a> qui montrait comment il était possible de construire une <em>stack</em> légère basée sur Resteasy-Netty3, Jackson, <a href="http://www.jolokia.org/">Jolokia</a> et <a href="https://helloreverb.com/developers/swagger">Swagger</a>, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.</p>
@@ -1339,9 +1339,9 @@ MyNettyJaxrsServer netty = new MyNettyJaxrsServer();
   
   <entry>
     <title type="html"><![CDATA[JAXRS, Netty et bien plus encore... mode d'emploi...]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html"/>
     <updated>2014-03-10T08:03:49+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
+    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-HYBTn5anFdE/Uxdv3cRgu_I/AAAAAAAABP4/gsCZjUIxDyQ/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
 
 <p>L'informatique évolue constamment et c'est également le cas des architectures qui ont tendance à s'orienter de plus en plus vers l'utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d'un point de vue temps de réponse mais également d'un point de vue charge suportée). C'est dans ce contexte que des solutions comme <a href="http://restlet.org/">Restlet</a> ou <a href="http://restx.io/">RestX</a> (pour n'en citer que quelques-unes) ont vu le jour.</p>
@@ -1982,7 +1982,7 @@ import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;</p>
  * This class is {@link org.jboss.netty.channel.ChannelHandler.Sharable}.
  *
  * @author The Netty Project
- * @author Andy Taylor (<a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#97;&#x6e;&#100;&#x79;&#46;&#x74;&#97;&#121;&#108;&#111;&#114;&#64;&#106;&#x62;&#111;&#x73;&#x73;&#x2e;&#x6f;&#x72;&#x67;">&#x61;&#x6e;&#x64;&#121;&#x2e;&#116;&#x61;&#121;&#x6c;&#111;&#x72;&#64;&#106;&#98;&#111;&#115;&#115;&#46;&#111;&#x72;&#103;</a>)
+ * @author Andy Taylor (<a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#97;&#x6e;&#x64;&#121;&#46;&#x74;&#97;&#121;&#x6c;&#111;&#114;&#x40;&#106;&#98;&#x6f;&#115;&#x73;&#x2e;&#111;&#114;&#103;">&#97;&#x6e;&#100;&#x79;&#x2e;&#116;&#97;&#121;&#x6c;&#x6f;&#114;&#64;&#106;&#98;&#x6f;&#115;&#115;&#x2e;&#x6f;&#114;&#103;</a>)
  * @author Trustin Lee
  * @author Norman Maurer
  * @version $Rev: 2368 $, $Date: 2010-10-18 17:19:03 +0900 (Mon, 18 Oct 2010) $
@@ -2234,9 +2234,9 @@ mvn package
   
   <entry>
     <title type="html"><![CDATA[Jolokia : le piment qui vous veut du bien ]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html"/>
     <updated>2014-03-04T00:30:40+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien</id>
+    <id>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png" alt="left-small" /></p>
 
 <p> Dans des articles précédents, je m'étais déjà exprimé sur le fait que je trouvais qu'il était important de monitorer son application (qu'il s'agisse d'une application web, d'un batch ou d'une application standalone) (cf. <a href="/2010/05/jmx-ou-comment-administrer-et.html">ici</a>). J'avais même creusé un peu la spécification JMX (cf. <a href="/2010/10/jmx-pour-les-nuls-introduction.html">là</a>).</p>

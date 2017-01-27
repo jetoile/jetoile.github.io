@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: soa | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/soa/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/soa/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html"/>
     <updated>2012-11-21T15:12:51+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
+    <id>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-TdkQLPVtGoU/UKkTTw9Zn7I/AAAAAAAAAwM/kdDLDr0zwDw/s1600/devoxxLogo.png" alt="left-small" /></p>
 
 <p>Ça y est&hellip; <a href="http://devoxx.com/">Devoxx</a> est fini&hellip; :&lsquo;(
@@ -84,9 +84,9 @@ Comme je l'ai dit dans un article précédent, je ne ferai pas de compte-rendu e
   
   <entry>
     <title type="html"><![CDATA[Découpage de projets : projet vs. modules]]></title>
-    <link href="http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html"/>
+    <link href="https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html"/>
     <updated>2012-08-28T11:47:11+02:00</updated>
-    <id>http://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules</id>
+    <id>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-wz814rCkbHY/UC1JmXEpcyI/AAAAAAAAAoA/6YjiYTg7fzw/s1600/couteaux.png" alt="left-small" /></p>
 
 <p>Lorsqu'un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d'approches :</p>
@@ -175,9 +175,9 @@ projet11                  scm : branches/projet1/projet11
   
   <entry>
     <title type="html"><![CDATA[Présentation sur les problématiques liées à une architecture distribuée]]></title>
-    <link href="http://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html"/>
+    <link href="https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html"/>
     <updated>2011-09-23T23:17:00+02:00</updated>
-    <id>http://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune</id>
+    <id>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune</id>
     <content type="html"><![CDATA[<p>Ci-dessous se trouve une présentation que j'ai donné sur les problématiques liées aux architectures distribuées. Pour information, c'est un retour d'expérience d'une mission qui date un peu puisque c'était en 2007 mais les préconisations restent identiques à ce jour.</p>
 
 <p>Enjoy et n'hésitez pas à commenter ;&ndash;)</p>
@@ -193,9 +193,9 @@ View more <a href="http://www.slideshare.net/" target="_blank">presentations</a>
   
   <entry>
     <title type="html"><![CDATA[Orchestration ou Routage?]]></title>
-    <link href="http://blog.jetoile.fr/2010/04/orchestration-ou-routage.html"/>
+    <link href="https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html"/>
     <updated>2010-04-07T11:55:20+02:00</updated>
-    <id>http://blog.jetoile.fr/2010/04/orchestration-ou-routage</id>
+    <id>https://blog.jetoile.fr/2010/04/orchestration-ou-routage</id>
     <content type="html"><![CDATA[<p><img src="http://petals.ow2.org/img/petals_logo.png" alt="left-small" /></p>
 
 <p>Orchestration ou routage? Telle est la question qui se pose souvent&hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s'agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?</p>
@@ -208,9 +208,9 @@ View more <a href="http://www.slideshare.net/" target="_blank">presentations</a>
   
   <entry>
     <title type="html"><![CDATA[Spring Integration vs. Apache Camel]]></title>
-    <link href="http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
+    <link href="https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
     <updated>2010-03-15T23:29:48+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
+    <id>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/S56PashF4SI/AAAAAAAAAJA/OVagPG4D-g0/s320/apache_spring.png" alt="left-small" />
 Lors d'un <a href="/2009/12/eip-quest-ce-que-cest.html">post précédent</a>, j'avais parlé des <a href="/blog/2009/12/13/eip-quest-ce-que-cest/">EIPs</a> (<strong>Enterprise Integration Patterns</strong>) en expliquant qu'il s'agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.</p>
 

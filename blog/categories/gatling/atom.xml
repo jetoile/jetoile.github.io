@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: gatling | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/gatling/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/gatling/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Test de charge : mode d'emploi]]></title>
-    <link href="http://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html"/>
+    <link href="https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html"/>
     <updated>2012-10-17T13:29:39+02:00</updated>
-    <id>http://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi</id>
+    <id>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-8b4S0NQnPtk/UH2hoKTgkcI/AAAAAAAAAoc/iY1PXGjWPcA/s1600/_charge01.png" alt="left-small" /></p>
 
 <p>Au cours de la vie d'un projet, il est courant d'avoir recours à des tests de charge.</p>

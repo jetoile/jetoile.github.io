@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: rdd | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/rdd/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/rdd/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[RDD : qu'est ce que c'est]]></title>
-    <link href="http://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html"/>
+    <link href="https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html"/>
     <updated>2014-05-12T09:21:35+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest</id>
+    <id>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest</id>
     <content type="html"><![CDATA[<p><img src="/images/rdd/spark.png" alt="left-small" /></p>
 
 <p><a href="http://spark.apache.org/">Spark</a> est un framework qui a de plus en plus le vent en poupe et le fait qu'il ait été <a href="https://blogs.apache.org/foundation/entry/the_apache_software_foundation_announces50">promu</a> en <em>top-level project</em> par la fondation Apache qu'il a rejoint récemment (en juin 2013) montre bien de l'intérêt qu'il succite (cela est d'aileurs confirmé par son intégration avec des solutions comme celles de <a href="http://www.datastax.com/">DataStax</a> (cf. <a href="http://databricks.com/blog/2014/05/08/Databricks-and-Datastax.html">ici</a>) ou <a href="http://www.mapr.com/">mapR</a> (cf. <a href="http://www.mapr.com/products/apache-spark">ici</a>).</p>

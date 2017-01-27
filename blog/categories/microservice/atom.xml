@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: microservice | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/microservice/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/microservice/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Template de projets REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/10/template-de-projets-rest.html"/>
     <updated>2015-10-07T17:33:08+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
+    <id>https://blog.jetoile.fr/2015/10/template-de-projets-rest</id>
     <content type="html"><![CDATA[<p><img src="/images/template_rest.png" alt="left-small" />
 Il y a déjà un long moment, j'avais posté une série d'article expliquant comment il était possible de faire des web service de type REST de manière simple via <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">RestEasy-Netty</a> ou via <a href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html">Undertow</a>.</p>
 
@@ -82,9 +82,9 @@ Il y a déjà un long moment, j'avais posté une série d'article expliquant com
   
   <entry>
     <title type="html"><![CDATA[Undertow pour booster vos services REST]]></title>
-    <link href="http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
+    <link href="https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html"/>
     <updated>2015-06-23T14:51:56+02:00</updated>
-    <id>http://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
+    <id>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest</id>
     <content type="html"><![CDATA[<p><img src="/images/undertow.png" alt="left-small" />
 Il y a quelques temps, j'avais fait une série d'articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
 

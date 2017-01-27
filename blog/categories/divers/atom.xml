@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: divers | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/divers/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/divers/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Changement du flux RSS]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/changement-flux-rss.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/changement-flux-rss.html"/>
     <updated>2014-03-31T18:54:22+02:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/changement-flux-rss</id>
+    <id>https://blog.jetoile.fr/2014/03/changement-flux-rss</id>
     <content type="html"><![CDATA[<p><img src="/images/rss_jetoile.png" alt="left-small" /></p>
 
 <p>Comme certain ont pu le constater, le <em>look &amp; feel</em> du blog a évolué et j'espère qu'il vous plait.</p>
@@ -47,9 +47,9 @@
   
   <entry>
     <title type="html"><![CDATA[Changement de look et d'hébergeur]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html"/>
     <updated>2014-03-28T10:00:03+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur</id>
+    <id>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur</id>
     <content type="html"><![CDATA[<p><img src="http://blog.jetoile.fr/images/octopress/img_octopress_blogger.png" alt="left-small" /></p>
 
 <p>Cet article n'a rien à voir avec Java et il est plus à titre informatif.</p>
@@ -111,9 +111,9 @@
   
   <entry>
     <title type="html"><![CDATA[Livereload et Linux ou comment rédiger du html simplement]]></title>
-    <link href="http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
+    <link href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
     <updated>2014-03-20T11:24:11+01:00</updated>
-    <id>http://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
+    <id>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
     <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
 
 <p>Cet article n'a rien à voir avec le monde Java.</p>
@@ -422,9 +422,9 @@ open: {
   
   <entry>
     <title type="html"><![CDATA[Indépendance, me voici ;-)]]></title>
-    <link href="http://blog.jetoile.fr/2012/11/independance-me-voici.html"/>
+    <link href="https://blog.jetoile.fr/2012/11/independance-me-voici.html"/>
     <updated>2012-11-06T13:13:17+01:00</updated>
-    <id>http://blog.jetoile.fr/2012/11/independance-me-voici</id>
+    <id>https://blog.jetoile.fr/2012/11/independance-me-voici</id>
     <content type="html"><![CDATA[<p><img src="http://1.bp.blogspot.com/-Hdf2BxkGaxI/UIhxMEkSw-I/AAAAAAAAAtQ/9u2dsAYvbL4/s1600/independance.png" alt="left-small" /></p>
 
 <p>Une fois n'est pas coutume (quoique&hellip;)&hellip; cet article ne sert à rien&hellip; mais a juste pour objectif d'annoncer que je quitte la société de service que j'ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l'indépendance&hellip;</p>
@@ -443,9 +443,9 @@ open: {
   
   <entry>
     <title type="html"><![CDATA[Resign Patterns : les nouveaux patterns]]></title>
-    <link href="http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
+    <link href="https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html"/>
     <updated>2011-12-02T23:04:54+01:00</updated>
-    <id>http://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
+    <id>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-mP_z1e0Qo6M/TtiCRYS_PVI/AAAAAAAAAgQ/Dntolyd6oUg/s1600/Fail.png" title="Crédit photo : http://www.flickr.com/photos/esthervargasc/6010520395/" alt="left-small" /></p>
 
 <p>Cet article est une traduction &ldquo;libre&rdquo; de l'excellent papier de <a href="mitework@yercompany.com">Michael Duell</a> qui se nomme <a href="http://www.lsd.ic.unicamp.br/~oliva/fun/prog/resign-patterns">&ldquo;Resign Patterns&rdquo; Ailments of Unsuitable Project-Disoriented Software</a>.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jbi | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jbi/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jbi/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Spring Integration vs. Apache Camel]]></title>
-    <link href="http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
+    <link href="https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html"/>
     <updated>2010-03-15T23:29:48+01:00</updated>
-    <id>http://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
+    <id>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/S56PashF4SI/AAAAAAAAAJA/OVagPG4D-g0/s320/apache_spring.png" alt="left-small" />
 Lors d'un <a href="/2009/12/eip-quest-ce-que-cest.html">post précédent</a>, j'avais parlé des <a href="/blog/2009/12/13/eip-quest-ce-que-cest/">EIPs</a> (<strong>Enterprise Integration Patterns</strong>) en expliquant qu'il s'agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.</p>
 
@@ -183,9 +183,9 @@ simple&hellip;</li>
   
   <entry>
     <title type="html"><![CDATA[JBI : Qu'est ce que c'est?]]></title>
-    <link href="http://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html"/>
+    <link href="https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html"/>
     <updated>2009-12-07T09:58:58+01:00</updated>
-    <id>http://blog.jetoile.fr/2009/12/jbi-une-solution-enterree</id>
+    <id>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/SyioXBC9u0I/AAAAAAAAAII/DM5NReY1mJ4/s200/jbi.png" alt="left" />
 Voilà mon premier article. Il a pour objectif de présenter JBI (<em>Java Business Service</em>) aussi connue sous le doux nom de JSR 208 (<em>Java Specification Release</em>).</p>
 

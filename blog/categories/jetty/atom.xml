@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jetty | Jetoile]]></title>
-  <link href="http://blog.jetoile.fr/blog/categories/jetty/atom.xml" rel="self"/>
-  <link href="http://blog.jetoile.fr/"/>
-  <updated>2016-11-28T17:02:06+01:00</updated>
-  <id>http://blog.jetoile.fr/</id>
+  <link href="https://blog.jetoile.fr/blog/categories/jetty/atom.xml" rel="self"/>
+  <link href="https://blog.jetoile.fr/"/>
+  <updated>2017-01-27T13:35:31+01:00</updated>
+  <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Démarrer une webapp en mode embedded avec Maven]]></title>
-    <link href="http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
+    <link href="https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html"/>
     <updated>2013-03-06T15:26:29+01:00</updated>
-    <id>http://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
+    <id>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded</id>
     <content type="html"><![CDATA[<p><img src="http://4.bp.blogspot.com/-2c2Ie9Tla54/UTaEjXrNaiI/AAAAAAAAA20/MWhTcyyJvMg/s1600/image.png" alt="left-small" /></p>
 
 <p>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu'il doit disposer de tests, qu'ils soient unitaire, d'intégration, fonctionnel ou d'acceptance.</p>
@@ -428,9 +428,9 @@
   
   <entry>
     <title type="html"><![CDATA[Jetty, Maven et JMX]]></title>
-    <link href="http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html"/>
+    <link href="https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html"/>
     <updated>2011-09-26T23:19:12+02:00</updated>
-    <id>http://blog.jetoile.fr/2011/09/jetty-maven-et-jmx</id>
+    <id>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx</id>
     <content type="html"><![CDATA[<p><img src="http://2.bp.blogspot.com/-bGP4Fnvfp1s/TnEtqz-UNkI/AAAAAAAAAa4/KBXNM8QXHKc/s1600/logoArticle.png" alt="left-small" /></p>
 
 <p>Vous avez peut être remarqué que ces derniers temps, j'étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&hellip; Maven et de JMX.</p>

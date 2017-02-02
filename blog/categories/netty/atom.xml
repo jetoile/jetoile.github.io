@@ -4,7 +4,7 @@
   <title><![CDATA[Category: netty | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/netty/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-02-02T16:17:51+01:00</updated>
+  <updated>2017-02-02T16:20:58+01:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -1389,7 +1389,7 @@ import static org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1;</p>
  * This class is {@link org.jboss.netty.channel.ChannelHandler.Sharable}.
  *
  * @author The Netty Project
- * @author Andy Taylor (<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#97;&#x6e;&#x64;&#121;&#x2e;&#x74;&#x61;&#x79;&#108;&#111;&#x72;&#64;&#x6a;&#98;&#111;&#115;&#115;&#46;&#111;&#x72;&#103;">&#x61;&#110;&#x64;&#x79;&#46;&#116;&#x61;&#x79;&#108;&#111;&#x72;&#x40;&#x6a;&#x62;&#x6f;&#115;&#x73;&#46;&#111;&#x72;&#x67;</a>)
+ * @author Andy Taylor (<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x61;&#x6e;&#100;&#x79;&#46;&#116;&#97;&#x79;&#108;&#x6f;&#x72;&#64;&#106;&#98;&#x6f;&#x73;&#x73;&#x2e;&#x6f;&#x72;&#103;">&#97;&#x6e;&#x64;&#121;&#46;&#116;&#97;&#x79;&#108;&#x6f;&#x72;&#64;&#x6a;&#98;&#111;&#115;&#115;&#46;&#111;&#x72;&#x67;</a>)
  * @author Trustin Lee
  * @author Norman Maurer
  * @version $Rev: 2368 $, $Date: 2010-10-18 17:19:03 +0900 (Mon, 18 Oct 2010) $

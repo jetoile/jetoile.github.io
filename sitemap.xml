@@ -332,7 +332,11 @@
     </url>
     <url>
         <loc>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html</loc>
-        <lastmod>2016-11-28T17:01:52+01:00</lastmod>
+        <lastmod>2017-07-11T10:04:51+02:00</lastmod>
+    </url>
+    <url>
+        <loc>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html</loc>
+        <lastmod>2017-07-11T16:34:06+02:00</lastmod>
     </url>
     <url>
         <loc>https://blog.jetoile.fr/a-propos/</loc>
@@ -348,7 +352,7 @@
     </url>
     <url>
         <loc>https://blog.jetoile.fr/posts/</loc>
-        <lastmod>2016-11-28T17:01:52+01:00</lastmod>
+        <lastmod>2017-07-11T16:34:06+02:00</lastmod>
     </url>
     <url>
         <loc>https://blog.jetoile.fr/blogotheque/</loc>
@@ -356,10 +360,10 @@
     </url>
     <url>
         <loc>https://blog.jetoile.fr/</loc>
-        <lastmod>2016-11-28T17:01:52+01:00</lastmod>
+        <lastmod>2017-07-11T16:34:06+02:00</lastmod>
     </url>
     <url>
         <loc>https://blog.jetoile.fr/blog/archives/</loc>
-        <lastmod>2016-11-28T17:01:52+01:00</lastmod>
+        <lastmod>2017-07-11T16:34:06+02:00</lastmod>
     </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-02-06T17:56:03+01:00</updated>
+  <updated>2017-07-11T16:34:19+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,676 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Des Tests D'intégration Avec Elasticsearch]]></title>
+    <link href="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html"/>
+    <updated>2017-07-11T10:05:51+02:00</updated>
+    <id>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/logo-elastic.png" alt="left-small" /> La version 5.0.0-alpha4 a signé la fin du support du mode embedded d&#8217;Elasticsearch.</p>
+
+<p>Cela a été annoncé <a href="https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported">là</a> et la classe <code>NodeBuilder</code> permettant de démarrer un noeud programmatiquement a été supprimée.</p>
+
+<p>Cependant, même si cela est raison de l&#8217;arrêt du support de ce mode est compréhensible, cela pose le problème des tests d&#8217;intégration puisqu&#8217;il n&#8217;est plus possible de démarrer un Elasticsearch pendant la phase de test.</p>
+
+<p>Oui, Elastic propose officiellement une <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">alternative</a> via l&#8217;utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&hellip;</p>
+
+<p>Cet article va tenter de dresser un panorama non exhaustif de ce que j&#8217;ai pu trouver d&#8217;intéressant pour permettre de réaliser des tests d&#8217;intégration avec Elasticsearch.</p>
+
+<!--more-->
+
+
+<p>Parmi les solutions intéressantes et simples que j&#8217;ai trouvés pour faire des tests d&#8217;intégration, il y a surtout 2 projets que j&#8217;ai retenus.</p>
+
+<h1>Plugin maven permettant de télécharger, installer et démarrer Elasticsearch</h1>
+
+<p>Le premier se trouve être celui de <a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">alexcojocaru</a>.</p>
+
+<p>Il s&#8217;agit d&#8217;un plugin maven s&#8217;appuyant sur <a href="https://github.com/apache/maven-resolver">maven-resolver</a> qui permet sur les phases de pré-intégration et post-intégration de démarrer et d&#8217;arrêter Elasticsearch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.github.alexcojocaru<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>elasticsearch-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>5.7<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;clusterName&gt;</span>elasticsearch<span class="nt">&lt;/clusterName&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;transportPort&gt;</span>9300<span class="nt">&lt;/transportPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;httpPort&gt;</span>9200<span class="nt">&lt;/httpPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;autoCreateIndex&gt;</span>true<span class="nt">&lt;/autoCreateIndex&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>runforked<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Exemple</h2>
+
+<p>Code java de test :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transportClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">TransportClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PreBuiltTransportClient</span><span class="o">(</span><span class="n">Settings</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addTransportAddress</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketTransportAddress</span><span class="o">(</span><span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">),</span> <span class="mi">9300</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">ObjectMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sample</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="mf">0.33</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">jsonString</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">sample</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">IndexResponse</span> <span class="n">ir</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareIndex</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">).</span><span class="na">setSource</span><span class="o">(</span><span class="n">jsonString</span><span class="o">).</span><span class="na">setId</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">admin</span><span class="o">().</span><span class="na">indices</span><span class="o">().</span><span class="na">prepareRefresh</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">ir</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">GetResponse</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareGet</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">gr</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">gr</span><span class="o">.</span><span class="na">getSourceAsString</span><span class="o">(),</span> <span class="s">&quot;{\&quot;value\&quot;:\&quot;value\&quot;,\&quot;size\&quot;:0.33,\&quot;price\&quot;:3.0}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">restClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JSONException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">RestClient</span> <span class="n">restClient</span> <span class="o">=</span> <span class="n">RestClient</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span>
+</span><span class='line'>                <span class="k">new</span> <span class="nf">HttpHost</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9200</span><span class="o">,</span> <span class="s">&quot;http&quot;</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NStringEntity</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;{\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;user\&quot; : \&quot;kimchy\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;post_date\&quot; : \&quot;2009-11-15T14:12:12\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;message\&quot; : \&quot;trying out Elasticsearch\&quot;\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;}&quot;</span><span class="o">,</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">indexResponse</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;PUT&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;/twitter/tweet/1&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">emptyMap</span><span class="o">(),</span>
+</span><span class='line'>                <span class="n">entity</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/_search&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSONObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONObject</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">nbResult</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getJSONObject</span><span class="o">(</span><span class="s">&quot;hits&quot;</span><span class="o">).</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;total&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">nbResult</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">restClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@EqualsAndHashCode</span>
+</span><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@AllArgsConstructor</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">size</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">price</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dépendence maven (façon gradle) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+</span><span class='line'>    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+</span><span class='line'>    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+</span><span class='line'>    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+</span><span class='line'>    testCompile group: 'junit', name: 'junit', version:'4.11'
+</span><span class='line'>    compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+</span><span class='line'>       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+</span><span class='line'>       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+</span><span class='line'>       Please review and delete this closure when resolved. */
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Plugins maven utilisés :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.github.alexcojocaru<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>elasticsearch-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>5.7<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;clusterName&gt;</span>elasticsearch<span class="nt">&lt;/clusterName&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;transportPort&gt;</span>9300<span class="nt">&lt;/transportPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;httpPort&gt;</span>9200<span class="nt">&lt;/httpPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;autoCreateIndex&gt;</span>true<span class="nt">&lt;/autoCreateIndex&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>runforked<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Téléchargement, installation et démarrage d&#8217;Elasticsearch</h1>
+
+<p>Le deuxième projet est celui d&#8217;<a href="https://github.com/allegro/embedded-elasticsearch">Allegro Tech</a>.</p>
+
+<p>Contrairement à la solution précédente, ce projet permet de manière programmatique de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
+
+<p>En outre, l&#8217;avantage de cette solution est qu&#8217;il n&#8217;est pas nécessaire de configurer la partie test d&#8217;intégration dans maven. Ainsi, utiliser un autre outils de build est possible.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">final</span> <span class="n">embeddedElastic</span> <span class="o">=</span> <span class="n">EmbeddedElastic</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withElasticVersion</span><span class="o">(</span><span class="s">&quot;5.4.3&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">TRANSPORT_TCP_PORT</span><span class="o">,</span> <span class="mi">9300</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">CLUSTER_NAME</span><span class="o">,</span> <span class="s">&quot;elasticsearch&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withPlugin</span><span class="o">(</span><span class="s">&quot;analysis-stempel&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withIndex</span><span class="o">(</span><span class="s">&quot;cars&quot;</span><span class="o">,</span> <span class="n">IndexSettings</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="s">&quot;car&quot;</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;car-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">())</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withIndex</span><span class="o">(</span><span class="s">&quot;books&quot;</span><span class="o">,</span> <span class="n">IndexSettings</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="n">PAPER_BOOK_INDEX_TYPE</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;paper-book-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="s">&quot;audio_book&quot;</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;audio-book-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withSettings</span><span class="o">(</span><span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;elastic-settings.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">())</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">start</span><span class="o">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Exemple</h1>
+
+<p>Code java :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">EmbeddedElastic</span> <span class="n">elasticsearchCluster</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">elasticsearchCluster</span> <span class="o">=</span> <span class="n">EmbeddedElastic</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withElasticVersion</span><span class="o">(</span><span class="s">&quot;5.4.3&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">TRANSPORT_TCP_PORT</span><span class="o">,</span> <span class="mi">9300</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">HTTP_PORT</span><span class="o">,</span> <span class="mi">9200</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">CLUSTER_NAME</span><span class="o">,</span> <span class="s">&quot;elasticsearch&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="s">&quot;network.host&quot;</span><span class="o">,</span> <span class="s">&quot;localhost&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withCleanInstallationDirectoryOnStop</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@AfterClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">teardown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">elasticsearchCluster</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transportClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">TransportClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PreBuiltTransportClient</span><span class="o">(</span><span class="n">Settings</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addTransportAddress</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketTransportAddress</span><span class="o">(</span><span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">),</span> <span class="mi">9300</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">ObjectMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sample</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="mf">0.33</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">jsonString</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">sample</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">IndexResponse</span> <span class="n">ir</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareIndex</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">).</span><span class="na">setSource</span><span class="o">(</span><span class="n">jsonString</span><span class="o">).</span><span class="na">setId</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">admin</span><span class="o">().</span><span class="na">indices</span><span class="o">().</span><span class="na">prepareRefresh</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">ir</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">GetResponse</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareGet</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">gr</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">gr</span><span class="o">.</span><span class="na">getSourceAsString</span><span class="o">(),</span> <span class="s">&quot;{\&quot;value\&quot;:\&quot;value\&quot;,\&quot;size\&quot;:0.33,\&quot;price\&quot;:3.0}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">restClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JSONException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">RestClient</span> <span class="n">restClient</span> <span class="o">=</span> <span class="n">RestClient</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span>
+</span><span class='line'>                <span class="k">new</span> <span class="nf">HttpHost</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9200</span><span class="o">,</span> <span class="s">&quot;http&quot;</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NStringEntity</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;{\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;user\&quot; : \&quot;kimchy\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;post_date\&quot; : \&quot;2009-11-15T14:12:12\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;message\&quot; : \&quot;trying out Elasticsearch\&quot;\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;}&quot;</span><span class="o">,</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">indexResponse</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;PUT&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;/twitter/tweet/1&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">emptyMap</span><span class="o">(),</span>
+</span><span class='line'>                <span class="n">entity</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/_search&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSONObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONObject</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">nbResult</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getJSONObject</span><span class="o">(</span><span class="s">&quot;hits&quot;</span><span class="o">).</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;total&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">nbResult</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">restClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@EqualsAndHashCode</span>
+</span><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@AllArgsConstructor</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">size</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">price</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dépendence maven (façon gradle) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+</span><span class='line'>    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+</span><span class='line'>    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+</span><span class='line'>    testCompile group: 'pl.allegro.tech', name: 'embedded-elasticsearch', version:'2.2.0'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+</span><span class='line'>    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+</span><span class='line'>    testCompile group: 'junit', name: 'junit', version:'4.11'
+</span><span class='line'>    compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+</span><span class='line'>       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+</span><span class='line'>       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+</span><span class='line'>       Please review and delete this closure when resolved. */
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, on a pu voir deux solutions qui permettent de faire des tests d&#8217;intégration avec Elasticsearch.</p>
+
+<p>Personnellement, j&#8217;ai une préférence pour la deuxième solution qui me permet d&#8217;avoir la main sur la récupération et installation d&#8217;Elasticsearch.</p>
+
+<p>Pour aller plus loin, quelques liens en vrac.</p>
+
+<ul>
+<li><a href="http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/">http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html</a></li>
+<li><a href="https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html">https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html</a></li>
+<li><a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">https://github.com/alexcojocaru/elasticsearch-maven-plugin</a></li>
+<li><a href="https://github.com/allegro/embedded-elasticsearch">https://github.com/allegro/embedded-elasticsearch</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sqoop Et Parquet : Mode D'emploi]]></title>
@@ -6622,523 +7292,6 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était 
 <p>Et le tout de manière simple et efficace pour une solution véloce et légère!</p>
 
 <p>Pour faire encore plus simple, <a href="http://projectlombok.org/">Lombok</a> aurait pu être utilisé mais, de mémoire, en test de Java 8, une incompatibilité est apparue&hellip; à creuser donc pour cette partie&hellip; ;&ndash;)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jolokia : Le Piment Qui Vous Veut Du Bien]]></title>
-    <link href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html"/>
-    <updated>2014-03-04T00:30:40+01:00</updated>
-    <id>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien</id>
-    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png" alt="left-small" /></p>
-
-<p> Dans des articles précédents, je m&#8217;étais déjà exprimé sur le fait que je trouvais qu&#8217;il était important de monitorer son application (qu&#8217;il s&#8217;agisse d&#8217;une application web, d&#8217;un batch ou d&#8217;une application standalone) (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">ici</a>). J&#8217;avais même creusé un peu la spécification JMX (cf. <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">là</a>).</p>
-
-<p>Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&#8217;ai découvert récemment (merci Romain ;&ndash;) ) mais qui existe depuis un moment (la version 1.0.0 est apparue en octobre 2011 sur le repo Maven central et le premier commit apparaissant sur Github date de Juillet 2010) : cet outils est <strong>Jolokia</strong>.</p>
-
-<p>Comme à mon habitude, pour présenter cet outils, je m&#8217;appuierai sur la document officielle dans sa version courante, à savoir la 1.2.0.</p>
-
-<p>Cependant, je ne ferai pas un plagiat exhaustif de la documentation qui est très complète (et surtout, je n&#8217;ai pas envie de me traduire les 92 pages de cette dernière&hellip; ;&ndash;) ) mais j&#8217;essaierai de faire un focus sur les points que je trouve les plus intéressants (à savoir les principes ainsi que le mode agent JVM (cf. plus tard) ).</p>
-
-<!-- more -->
-
-
-<h1>Principes et concepts</h1>
-
-<h2>Jolokia&hellip; pour quoi faire?</h2>
-
-<p>Dans le monde Java, il existe un standard pour faire de l&#8217;administration/supervision : il s&#8217;agit de JMX (Java Management eXtension). Il est inclus depuis le JDK 1.5.</p>
-
-<p>Cependant, JMX est malheureusement un des parents pauvres de Java : souvent méconnu ou mal utilisé, il est aussi très orienté vers le monde Java (et cela, même s&#8217;il existe la <a href="https://jcp.org/en/jsr/detail?id=160">JSR 160 &ndash; Java Management eXtension Remote API</a>).</p>
-
-<p>C&#8217;est la raison d&#8217;être de Jolokia qui offre une approche agent (qui cohabite avec la JSR 160) tout en offrant une interopérabilité via HTTP au moyen de JSON pour la partie <em>payload</em>. Cela lui permet d&#8217;exposer les couches d&#8217;administration/supervision JMX des applicatifs Java via une protocole interopérable de tous.</p>
-
-<h2>Architecture</h2>
-
-<p>L&#8217;architecture de Jolokia diffère de celle de la JSR 160. En effet, la JSR 160 permet à un client d&#8217;invoquer de manière transparente un MBean qu&#8217;il soit dans un <strong>MBeanServer</strong> local ou distant.</p>
-
-<p>Cependant, même si cela est intéressant, c&#8217;est également une approche dangereuse puisque cela masque la partie transport qui peut entraîner un <em>overhead</em> mais cela expose aussi le modèle des objets qui transitent.</p>
-
-<p>En effet, il existe une adhérence implicite au protocole RMI (qui est d&#8217;ailleurs le protocole par défaut des connecteurs JMX) pour la partie mécanisme de sérialisation des objets. C&#8217;est ce dernier point qui pose un problème d&#8217;interopérabilité avec tout programme extérieur à une JVM.</p>
-
-<p>Ainsi, Jolokia, en offrant une approche différente via HTTP/JSon, permet de réconcilier ces différents mondes. Pour ce faire, il propose 2 modes :</p>
-
-<ul>
-<li>un mode agent,</li>
-<li>un mode proxy.</li>
-</ul>
-
-
-<h3>Le mode agent</h3>
-
-<p>Dans ce mode, Jolokia se présente comme un agent qui expose un protocole au format JSON via HTTP et qui permet de servir de bridge vers les MBeans JMX locaux. Cela se passe donc en dehors du scope de la JSR 160.</p>
-
-<p>Ainsi, il est possible d&#8217;exporter ce protocole de différentes manières dont la plus courante est via un conteneur de Servlet (qu&#8217;il soit légé ou pas).</p>
-
-<p>Cependant, il existe d&#8217;autres possibilités comme des agents spécialisés qui peuvent utiliser un service HTTP OSGI ou qui peuvent embarquer un serveur Jetty.</p>
-
-<p>Il est à noter que l&#8217;agent utilise le serveur HTTP embarqué dans toutes les JVM 6 d&#8217;Oracle et qu&#8217;il peut donc s&#8217;attacher dynamiquement à toutes les processus Java.</p>
-
-<p><img src="http://2.bp.blogspot.com/-TnigS1cXxaI/UxTNwI9jtzI/AAAAAAAABPM/q0rHjKSMmq4/s1600/jolokia-agent.png" alt="medium" /></p>
-
-<h3>Le mode proxy</h3>
-
-<p>Ce mode peut être utilisé lorsqu&#8217;il n&#8217;est pas possible de déployer un agent Jolokia sur la plateforme cible. Pour ce mode, le seul prérequis est l&#8217;accès au serveur cible via une connexion à travers de la JSR 160. Cela peut être le cas si l&#8217;application ne peut pas être modifiée ou si l&#8217;application expose déjà ses MBeans via la JSR 160.</p>
-
-<p>Ce mode nécessite un conteneur de Servlet dans lequel sera déployée l&#8217;application web <code>jolokia.war</code> qui a, à sa charge, de &ldquo;<em>proxyfier</em>&rdquo; et qui, par défaut, supporte à la fois le mode agent et le mode proxy.</p>
-
-<p>Ainsi, dans ce mode, un client enverra une requête Jolokia avec une section supplémentaire spécifiant la cible qui doit être atteinte. Toutes les information de routage est donc contenu dans la requête elle-même de manière à ce que le proxy puisse agir sans configuration spécifique.</p>
-
-<p><img src="http://2.bp.blogspot.com/-wf_ReDc9AKk/UxTN2msI-BI/AAAAAAAABPU/neUmwiePEs0/s1600/jolokia-proxy.png" alt="medium" /></p>
-
-<h2>Les agents</h2>
-
-<p>Jolokia propose une approche orientée agent qui doit être, soit déployé sur la cible (<strong>mode agent</strong>), soit sur un serveur proxy (<strong>mode proxy</strong>).</p>
-
-<p>Pour ces deux modes, il existe 4 types d&#8217;agent :</p>
-
-<ul>
-<li><strong>WAR agent</strong> : cet agent est packagé sous forme de WAR.</li>
-<li><strong>OSGI agent</strong> : cet agent au format OSGI (bundle) vient sous 2 formes : un agent minimal qui dispose d&#8217;une dépendance sur un OSGI <em>HTTService</em> qui doit être démarré et un agent &ldquo;tout en un&rdquo; qui embarque une implémentation de <em>HTTPService</em>.</li>
-<li><strong>Mule agent</strong> : cet agent s&#8217;intègre à Mule et fourni une API d&#8217;adminitration/supervision dans lequel un agent jolokia dédié est intégré. Il inclut un serveur Jetty embarqué.</li>
-<li><strong>JVM agent</strong> : Depuis la version 1.6 du JDK d&#8217;Oracle, la JVM embarque un serveur HTTP légé. En utilisant ce dernier, Jolokia expose ses fonctionnalité. Cependant, cet agent peut être un peu lent en raison du fait que le serveur HTTP embarqué dans la JVM ne soit pas optimisé pour les performances.</li>
-</ul>
-
-
-<p>Les deux types d&#8217;agent qui seront un peu plus détaillés dans cet article sont les types WAR agent et JVM agent.</p>
-
-<h2>WAR agent</h2>
-
-<p>Le type WAR agent se présente comme une application web standard (au format WAR). La configuration se fait alors via l&#8217;élément <code>init-param</code> du web.xml.</p>
-
-<p>Un autre moyen consiste à utiliser le context (dans le cas de Tomcat) qui permet de déporter la configuration en dehors du WAR. Ainsi, par exemple avec Tomcat, avec le context de l&#8217;application web se trouvant dans <code>$TOMCAT_HOME/conf/Catalina/localhost</code>, on peut avoir par exemple :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Context&gt;</span>
-</span><span class='line'><span class="nt">&lt;Parameter</span> <span class="na">name=</span><span class="s">&quot;maxDepth&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'><span class="nt">&lt;/Context&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Au niveau paramétrage, je vous laisse aller voir la document officielle ;&ndash;).</p>
-
-<p>Du point de vue sécurité, il est possible de bénéficier de la sécurité du conteneur de Servlet via le <code>web.xml</code>.</p>
-
-<p>Une autre manière de faire consite à intégrer Jolokia comme Servlet dans son application web. Pour ce faire, il suffit de tirer la bonne dépendance et de préciser le Servlet de Jolokia de manière classique via les éléments <code>servlet</code> et <code>servlet-mapping</code> du <code>web.xml</code> de l&#8217;application.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>org.jolokia<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>jolokia-core<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;version&gt;</span>${jolokia.version}<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Comme il est possible de déployer de multiples WAR agents Jolokia sur une même JVM, puisque des MBeans spécifiques Jolokia sont déployé dans le <strong>PlatformMBeansServer</strong>, il faut préciser la valeur de l&#8217;élément mbeanQualifier dans les paramètres d&#8217;init.</p>
-
-<h2>JVM agent</h2>
-
-<p>Ce type d&#8217;agent Jolokia que j&#8217;ai testé IRL est très simple à utiliser et permet d&#8217;attacher un agent à une JVM afin qu&#8217;elle expose à la mode REST ses couches d&#8217;administration et de supervision.</p>
-
-<p>Il est possible de :</p>
-
-<ul>
-<li><em>bootstrapper</em> l&#8217;agent JVM au démarrage de la JVM en lui fournissant le jar adéquate ainsi que les options qui vont bien :</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -javaagent:agent.jar<span class="o">=</span><span class="nv">port</span><span class="o">=</span>7777,host<span class="o">=</span>localhost
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><em>bootstrapper</em> l&#8217;agent JVM en lui fournissant directement une fichier de configuration :</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -javaagent:agent.jar<span class="o">=</span><span class="nv">config</span><span class="o">=</span><span class="nv">$FICHIER_CONFIG_JOLOKIA</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>où un exemple de fichier de configuration peut être trouvé dans jar de l&#8217;agent (au nom de <code>default-jolokia-agent.properties</code>).</p>
-
-<p>où <code>agent.jar</code> peut être téléchargé de <a href="http://www.jolokia.org/download.html">http://www.jolokia.org/download.html</a> (artifact : <strong>JVM-Agent</strong>).</p>
-
-<p>De la même manière, un agent Jolokia peut être attaché à une processus Java à la demande (un peu comme lorsque JConsole se connecte à un processus local). Pour ce faire, il suffit de lancer la commande suivante :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>java -jar agent.jar start &lt;PID&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Jolokia et la sécurité</h2>
-
-<p>Jolokia permet de configurer la sécurité assez finement. N&#8217;ayant pas tester, je ne m&#8217;attarderai pas trop sur le sujet.</p>
-
-<p>Cependant, il est intéressant de noter que Jolokia permet de filtrer l&#8217;accès des clients par IP mais offre également un accès plus fin pour l&#8217;accès aux MBeans (<code>read</code>/<code>write</code>/<code>exec</code>/<code>list</code>/<code>search</code>/<code>version</code>).</p>
-
-<p>Point également important, Jolokia supporte la spécification W3C pour le Cross-Origin Resource Sharing (CORS) qui permet d&#8217;utiliser des outils comme <a href="http://hawt.io/">Hawt.io</a> (mais nous y reviendront plus tard&hellip;).</p>
-
-<h2>Le protocole Jolokia</h2>
-
-<p>Jolokia utilise un protocole JSON sur HTTP. La communication est basé sur le paradigme requête/réponse où chaque requête fournit une réponse.</p>
-
-<p>Les requêtes peuvent être envoyées de deux manières :</p>
-
-<ul>
-<li>soit avec une requête HTTP GET (dans ce cas, les paramètres sont encodés dans l&#8217;URL),</li>
-<li>soit avec une requête HTTP POST où la requête est incluse dans le corps de la requête au format JSON.</li>
-</ul>
-
-
-<p>Les réponses retournées par l&#8217;agent sont, quant à elles, toujours envoyées en JSON.</p>
-
-<p>De plus, les requêtes au format HTTP GET peuvent prendre deux formes :</p>
-
-<ul>
-<li>utiliser un format REST (ex : <a href="http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage">http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage</a>)</li>
-<li>utiliser un format où la requête est donnée par un paramètre <strong>p=</strong> (ex : <a href="http://localhost:8080/jolokia?p=/read/jboss.jmx:alias=jmx%2Frmi%2FRMIAdaptor/State">http://localhost:8080/jolokia?p=/read/jboss.jmx:alias=jmx%2Frmi%2FRMIAdaptor/State</a>)</li>
-</ul>
-
-
-<p>A noter que Jolokia utilise le caractère &ldquo;!&rdquo; comme caractère d&#8217;échappement.</p>
-
-<p>Plutôt que de longs discours, quelques exemples issus de la documentation aideront à comprendre&hellip;</p>
-
-<p>Pour lire la valeur du MBean dont l&#8217;objectName est <strong>java.lang:type=Memory/HeapMemoryUsage</strong>, les requêtes suivantes sont équivalentes :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -XGET <span class="s2">&quot;http://127.0.0.1:8778/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<br/>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -XGET <span class="s2">&quot;http://127.0.0.1:8778/jolokia/?p=/read/java.lang:type=Memory/HeapMemoryUsage/used&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<br/>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -XPOST -d <span class="s1">&#39;{&quot;type&quot; : &quot;read&quot;, &quot;mbean&quot; : &quot;java.lang:type=Memory&quot;, &quot;attribute&quot; : &quot;HeapMemoryUsage&quot;, &quot;path&quot; : &quot;used&quot; }&#39;</span> http://127.0.0.1:8778/jolokia/
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>soit en format lisible :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;read&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;mbean&quot;</span><span class="o">:</span> <span class="s2">&quot;java.lang:type=Memory&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;attribute&quot;</span><span class="o">:</span> <span class="s2">&quot;HeapMemoryUsage&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;used&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La réponse obtenue est de la forme :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;timestamp&quot;</span><span class="o">:</span> <span class="mi">1393865787</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;request&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;mbean&quot;</span><span class="o">:</span> <span class="s2">&quot;java.lang:type=Memory&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;used&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;attribute&quot;</span><span class="o">:</span> <span class="s2">&quot;HeapMemoryUsage&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;read&quot;</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="s2">&quot;value&quot;</span><span class="o">:</span> <span class="mi">162037504</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour montrer le coté structuré de la réponse, à une requête de type :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>http://127.0.0.1:8778/jolokia/read/java.lang:type<span class="o">=</span>Memory
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>on obtient :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;timestamp&quot;</span><span class="o">:</span> <span class="mi">1393866039</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;status&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;request&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;mbean&quot;</span><span class="o">:</span> <span class="s2">&quot;java.lang:type=Memory&quot;</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;read&quot;</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="s2">&quot;value&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;Verbose&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;ObjectPendingFinalizationCount&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;NonHeapMemoryUsage&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;max&quot;</span><span class="o">:</span> <span class="mi">329252864</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;committed&quot;</span><span class="o">:</span> <span class="mi">218951680</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;init&quot;</span><span class="o">:</span> <span class="mi">19136512</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;used&quot;</span><span class="o">:</span> <span class="mi">139774968</span>
-</span><span class='line'>        <span class="p">},</span>
-</span><span class='line'>        <span class="s2">&quot;HeapMemoryUsage&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;max&quot;</span><span class="o">:</span> <span class="mi">518979584</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;committed&quot;</span><span class="o">:</span> <span class="mi">518979584</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;init&quot;</span><span class="o">:</span> <span class="mi">134217728</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;used&quot;</span><span class="o">:</span> <span class="mi">179096552</span>
-</span><span class='line'>        <span class="p">},</span>
-</span><span class='line'>        <span class="s2">&quot;ObjectName&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;objectName&quot;</span><span class="o">:</span> <span class="s2">&quot;java.lang:type=Memory&quot;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> Concernant les opérations possibles (dans l&#8217;exemple précédent, il s&#8217;agissait d&#8217;une lecture), il existe :</p>
-
-<ul>
-<li><strong>read</strong> avec le format GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base-url&gt;/read/&lt;mbean name&gt;/&lt;attribute name&gt;/&lt;inner path&gt;</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used">http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used</a>)</p>
-
-<ul>
-<li><strong>write</strong> avec le foramt GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base url&gt;/write/&lt;mbean name&gt;/&lt;attribute name&gt;/&lt;value&gt;/&lt;inner path&gt;</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/write/java.lang:type=Memory/Verbose/true">http://localhost:8080/jolokia/write/java.lang:type=Memory/Verbose/true</a>)</p>
-
-<ul>
-<li><strong>exec</strong> avec le format GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base url&gt;/exec/&lt;mbean name&gt;/&lt;operation name&gt;/&lt;arg1&gt;/&lt;arg2&gt;/....</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/exec/java.lang:type=Memory/gc">http://localhost:8080/jolokia/exec/java.lang:type=Memory/gc</a>)</p>
-
-<ul>
-<li><strong>search</strong> avec le format GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base-url&gt;/search/&lt;pattern&gt;</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/search/*:j2eeType=J2EEServer,*">http://localhost:8080/jolokia/search/*:j2eeType=J2EEServer,*</a>)</p>
-
-<ul>
-<li><strong>list</strong> avec le format GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base-url&gt;/list/&lt;inner path&gt;</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/list/java.lang/type=Memory/attr">http://localhost:8080/jolokia/list/java.lang/type=Memory/attr</a>)</p>
-
-<ul>
-<li><strong>version</strong> qui permet d&#8217;avoir la version du protocole utilisé ainsi qu&#8217;un ensemble de paramètre avec le format GET suivant :</li>
-</ul>
-
-
-<p><code>&lt;base-url&gt;/version</code></p>
-
-<p>(ex : <a href="http://localhost:8080/jolokia/version">http://localhost:8080/jolokia/version</a>)</p>
-
-<p>Enfin, si le mode proxy est utilisé, seul le mode POST peut être utilisé et doit, alors, avoir le format suivant :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;read&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;mbean&quot;</span> <span class="o">:</span> <span class="s2">&quot;java.lang:type=Memory&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;attribute&quot;</span> <span class="o">:</span> <span class="s2">&quot;HeapMemoryUsage&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;target&quot;</span> <span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>         <span class="s2">&quot;url&quot;</span> <span class="o">:</span> <span class="s2">&quot;service:jmx:rmi:///jndi/rmi://targethost:9999/jmxrmi&quot;</span><span class="p">,</span>
-</span><span class='line'>         <span class="s2">&quot;user&quot;</span> <span class="o">:</span> <span class="s2">&quot;jolokia&quot;</span><span class="p">,</span>
-</span><span class='line'>         <span class="s2">&quot;password&quot;</span> <span class="o">:</span> <span class="s2">&quot;s!cr!t&quot;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Je ne rentrerai pas plus en détaille sur cette partie là qui est beaucoup plus exhaustive dans la documentation officielle (comment les objets sont sérialisés, le mapping complet des MXBeans, la découverte des agents ou les différentes versions du protocole Jolokia &ndash; actuellement la version 7.1 &ndash; ) et si cela est nécessaire, je conseille d&#8217;aller directement se référer à la documentation.</p>
-
-<h1>Autres features</h1>
-
-<p>En plus des fonctionnalités présentées précédemment, Jolokia offre les fonctionnalités suivantes :</p>
-
-<ul>
-<li>exposition de son propre MBean,</li>
-<li>différents clients (javascript, plugin cubism, java, Jmx4Perl),</li>
-<li>une API de programmation pour exposer sont MBeanServer,</li>
-<li>un JSonMBean,</li>
-<li>une integration Spring,</li>
-</ul>
-
-
-<p>Pour l&#8217;intégration avec Spring, cela se fait via l&#8217;import Maven suivant :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>org.jolokia<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>jolokia-spring<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;version&gt;</span>1.2.0<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>et le contexte Spring suivant :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
-</span><span class='line'>       <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
-</span><span class='line'>       <span class="na">xmlns:context=</span><span class="s">&quot;http://www.springframework.org/schema/context&quot;</span>
-</span><span class='line'>       <span class="na">xmlns:jolokia=</span><span class="s">&quot;http://www.jolokia.org/jolokia-spring/schema/config&quot;</span>
-</span><span class='line'>       <span class="na">xsi:schemaLocation=</span><span class="s">&quot;</span>
-</span><span class='line'><span class="s">       http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd</span>
-</span><span class='line'><span class="s">       http://www.jolokia.org/jolokia-spring/schema/config  http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd</span>
-</span><span class='line'><span class="s">       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;jolokia:agent</span> <span class="na">lookupConfig=</span><span class="s">&quot;true&quot;</span> <span class="na">systemPropertiesMode=</span><span class="s">&quot;never&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;jolokia:config</span>
-</span><span class='line'>                <span class="na">autoStart=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'>                <span class="na">host=</span><span class="s">&quot;${jolokia.host}&quot;</span>
-</span><span class='line'>                <span class="na">port=</span><span class="s">&quot;${jolokia.port}&quot;</span>
-</span><span class='line'>                <span class="na">user=</span><span class="s">&quot;${jolokia.user}&quot;</span>
-</span><span class='line'>                <span class="na">password=</span><span class="s">&quot;${jolokia.password}&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/jolokia:agent&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;mbeanServer&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.jmx.support.MBeanServerFactoryBean&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;locateExistingServerIfPossible&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/bean&gt;</span>
-</span><span class='line'><span class="nt">&lt;/beans&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Conclusion</h1>
-
-<p>Dans cet article, une présentation succincte a été faite de Jolokia. J&#8217;espère qu&#8217;elle vous aura plu ;&ndash;)&hellip;</p>
-
-<p>Il s&#8217;agit d&#8217;un outils simple, pluggable très facilement à n&#8217;importe quelle application (une intégration à Cassandra s&#8217;est fait en 5 minutes).</p>
-
-<p>Cette présentation était surtout axé concepts et principes afin de bien comprendre ce que peut apporter cet outils.</p>
-
-<p>Cependant, un des gros avantage de Jolokia est un point qui n&#8217;a pas été abordé dans cet article : il s&#8217;agit de son intégration à <a href="http://hawt.io/">Hawt.io</a>. Cet outils ayant déjà fait le sujet d&#8217;article sur le blog de Zenika, je vous invite à y jeter un oeil :</p>
-
-<ul>
-<li><a href="http://blog.zenika.com/index.php?post/2014/01/07/HawtIO-la-console-web-polyvalente">HawtIO, la console web polyvalente</a></li>
-<li><a href="http://blog.zenika.com/index.php?post/2014/01/14/HawtIO-ecrire-un-plugin">HawtIO, écrire un plugin</a></li>
-</ul>
-
-
-<p>Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d&#8217;énormes avantages comme, par exemple, accèder aux informations de n&#8217;importe quelle application qui, généralement, n&#8217;est pas accessible pour des raisons de sécurité (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-et-firewall.html">ici</a>).</p>
-
-<p>Bien sûr, il existe d&#8217;autres solutions comme l&#8217;utilisation de <a href="http://www.crashub.org/">CraSH</a> mais exposer ses MBeans via JSON over HTTP est tellement simple et peut surtout être exploité simplement par les équipes de production ;&ndash;) .</p>
-
-<h1>Pour aller plus loin&hellip;</h1>
-
-<ul>
-<li>Site de Jolokia : <a href="http://www.jolokia.org/">http://www.jolokia.org/</a></li>
-<li>Site de documentation de Jolokia : <a href="http://www.jolokia.org/reference/html/index.html">http://www.jolokia.org/reference/html/index.html</a></li>
-<li>Site d&#8217;Hawt.io : <a href="http://hawt.io/">http://hawt.io/</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

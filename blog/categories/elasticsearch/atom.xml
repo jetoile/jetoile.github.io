@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: elasticsearch | Jetoile]]></title>
+  <title><![CDATA[Category: Elasticsearch | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/elasticsearch/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-02-06T17:56:03+01:00</updated>
+  <updated>2017-07-11T16:34:19+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -14,34 +14,402 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud]]></title>
-    <link href="https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html"/>
-    <updated>2012-05-22T11:37:00+02:00</updated>
-    <id>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de</id>
-    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-8SMhk0l30ig/T7q7LWlkl_I/AAAAAAAAAms/aULfavNiMHg/s1600/Cadre-Devoxx-.png" alt="left-small" />
-Pour ceux qui l'aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de <a href="http://www.devoxx.fr/">Devoxx France</a>.</p>
+    <title type="html"><![CDATA[Des tests d'intégration avec Elasticsearch]]></title>
+    <link href="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html"/>
+    <updated>2017-07-11T10:05:51+02:00</updated>
+    <id>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch</id>
+    <content type="html"><![CDATA[<p><img src="/images/logo-elastic.png" alt="left-small" /> La version 5.0.0-alpha4 a signé la fin du support du mode embedded d'Elasticsearch.</p>
 
-<p>L'annonce avait été faite pendant la dernière édition de <a href="http://www.devoxx.com/">Devoxx &ldquo;l'originale&rdquo;</a> à Anvers en Belgique qui fêtait pour l'occasion ses 10 ans.</p>
+<p>Cela a été annoncé <a href="https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported">là</a> et la classe <code>NodeBuilder</code> permettant de démarrer un noeud programmatiquement a été supprimée.</p>
 
-<p>Ayant eu l'opportunité d'y assister (chose que je conseille vivement à tous les développeurs), j'ai écrit un petit compte rendu d'une des moultes conférences qui m'ont marquées aussi bien par sa qualité scénique que par son contenu.</p>
+<p>Cependant, même si cela est raison de l'arrêt du support de ce mode est compréhensible, cela pose le problème des tests d'intégration puisqu'il n'est plus possible de démarrer un Elasticsearch pendant la phase de test.</p>
 
-<p><img src="http://3.bp.blogspot.com/-gL1h9W4sgik/T7q85-4STJI/AAAAAAAAAm0/0LaSMChBQvY/s1600/logo.png" alt="center" /></p>
+<p>Oui, Elastic propose officiellement une <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">alternative</a> via l'utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&hellip;</p>
 
-<p>Cette conférence était une présentation d'<a href="http://www.elasticsearch.org/">ElasticSearch</a> faite par <a href="http://dev.david.pilato.fr/">David Pilato</a> (<a href="http://twitter.com/#!/dadoonet">@dadoonet</a>) qui a, alors, abordé les points suivants :</p>
+<p>Cet article va tenter de dresser un panorama non exhaustif de ce que j'ai pu trouver d'intéressant pour permettre de réaliser des tests d'intégration avec Elasticsearch.</p>
+
+<!--more-->
+
+
+<p>Parmi les solutions intéressantes et simples que j'ai trouvés pour faire des tests d'intégration, il y a surtout 2 projets que j'ai retenus.</p>
+
+<h1>Plugin maven permettant de télécharger, installer et démarrer Elasticsearch</h1>
+
+<p>Le premier se trouve être celui de <a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">alexcojocaru</a>.</p>
+
+<p>Il s'agit d'un plugin maven s'appuyant sur <a href="https://github.com/apache/maven-resolver">maven-resolver</a> qui permet sur les phases de pré-intégration et post-intégration de démarrer et d'arrêter Elasticsearch.</p>
+
+<p>```xml
+<plugin></p>
+
+<pre><code>&lt;groupId&gt;com.github.alexcojocaru&lt;/groupId&gt;
+&lt;artifactId&gt;elasticsearch-maven-plugin&lt;/artifactId&gt;
+&lt;version&gt;5.7&lt;/version&gt;
+&lt;configuration&gt;
+    &lt;clusterName&gt;elasticsearch&lt;/clusterName&gt;
+    &lt;transportPort&gt;9300&lt;/transportPort&gt;
+    &lt;httpPort&gt;9200&lt;/httpPort&gt;
+    &lt;autoCreateIndex&gt;true&lt;/autoCreateIndex&gt;
+&lt;/configuration&gt;
+&lt;executions&gt;
+    &lt;execution&gt;
+        &lt;id&gt;start-elasticsearch&lt;/id&gt;
+        &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+        &lt;goals&gt;
+            &lt;goal&gt;runforked&lt;/goal&gt;
+        &lt;/goals&gt;
+    &lt;/execution&gt;
+    &lt;execution&gt;
+        &lt;id&gt;stop-elasticsearch&lt;/id&gt;
+        &lt;phase&gt;post-integration-test&lt;/phase&gt;
+        &lt;goals&gt;
+            &lt;goal&gt;stop&lt;/goal&gt;
+        &lt;/goals&gt;
+    &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p></plugin>
+```</p>
+
+<h2>Exemple</h2>
+
+<p>Code java de test :
+```java
+public class ElasticsearchIntegrationTest {</p>
+
+<pre><code>@Test
+public void transportClient_should_success() throws IOException, InterruptedException {
+    TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
+            .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    Sample sample = new Sample("value", 0.33, 3);
+
+    String jsonString = mapper.writeValueAsString(sample);
+
+    // indexing document
+    IndexResponse ir = client.prepareIndex("test_index", "type").setSource(jsonString).setId("1").execute().actionGet();
+    client.admin().indices().prepareRefresh("test_index").execute().actionGet();
+
+    assertNotNull(ir);
+
+    GetResponse gr = client.prepareGet("test_index", "type", "1").execute().actionGet();
+
+    assertNotNull(gr);
+    assertEquals(gr.getSourceAsString(), "{\"value\":\"value\",\"size\":0.33,\"price\":3.0}");
+}
+
+@Test
+public void restClient_should_success() throws IOException, JSONException {
+
+    RestClient restClient = RestClient.builder(
+            new HttpHost("localhost", 9200, "http")).build();
+
+    org.elasticsearch.client.Response response = restClient.performRequest("GET", "/",
+            Collections.singletonMap("pretty", "true"));
+    System.out.println(EntityUtils.toString(response.getEntity()));
+
+    // indexing document
+    HttpEntity entity = new NStringEntity(
+            "{\n" +
+                    "    \"user\" : \"kimchy\",\n" +
+                    "    \"post_date\" : \"2009-11-15T14:12:12\",\n" +
+                    "    \"message\" : \"trying out Elasticsearch\"\n" +
+                    "}", ContentType.APPLICATION_JSON);
+
+    org.elasticsearch.client.Response indexResponse = restClient.performRequest(
+            "PUT",
+            "/twitter/tweet/1",
+            Collections.&lt;String, String&gt;emptyMap(),
+            entity);
+
+    response = restClient.performRequest("GET", "/_search",
+            Collections.singletonMap("pretty", "true"));
+
+    String result = EntityUtils.toString(response.getEntity());
+    System.out.println(result);
+    JSONObject obj = new JSONObject(result);
+    int nbResult = obj.getJSONObject("hits").getInt("total");
+    assertThat(nbResult).isEqualTo(1);
+
+    restClient.close();
+}
+</code></pre>
+
+<p>}</p>
+
+<p>@EqualsAndHashCode
+@Data
+@AllArgsConstructor
+class Sample implements Serializable {</p>
+
+<pre><code>private String value;
+private double size;
+private double price;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Dépendence maven (façon gradle) :
+```plain
+dependencies {</p>
+
+<pre><code>compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+testCompile group: 'junit', name: 'junit', version:'4.11'
+compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+   /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+   This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+   Please review and delete this closure when resolved. */
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Plugins maven utilisés :
+```xml
+<plugin></p>
+
+<pre><code>&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+&lt;configuration&gt;
+    &lt;excludes&gt;
+        &lt;exclude&gt;**/*IntegrationTest.java&lt;/exclude&gt;
+    &lt;/excludes&gt;
+&lt;/configuration&gt;
+&lt;executions&gt;
+    &lt;execution&gt;
+        &lt;id&gt;integration-test&lt;/id&gt;
+        &lt;goals&gt;
+            &lt;goal&gt;test&lt;/goal&gt;
+        &lt;/goals&gt;
+        &lt;phase&gt;integration-test&lt;/phase&gt;
+        &lt;configuration&gt;
+            &lt;excludes&gt;
+                &lt;exclude&gt;none&lt;/exclude&gt;
+            &lt;/excludes&gt;
+            &lt;includes&gt;
+                &lt;include&gt;**/*IntegrationTest.java&lt;/include&gt;
+            &lt;/includes&gt;
+        &lt;/configuration&gt;
+    &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p></plugin></p>
+
+<p><plugin></p>
+
+<pre><code>&lt;groupId&gt;com.github.alexcojocaru&lt;/groupId&gt;
+&lt;artifactId&gt;elasticsearch-maven-plugin&lt;/artifactId&gt;
+&lt;version&gt;5.7&lt;/version&gt;
+&lt;configuration&gt;
+    &lt;clusterName&gt;elasticsearch&lt;/clusterName&gt;
+    &lt;transportPort&gt;9300&lt;/transportPort&gt;
+    &lt;httpPort&gt;9200&lt;/httpPort&gt;
+    &lt;autoCreateIndex&gt;true&lt;/autoCreateIndex&gt;
+&lt;/configuration&gt;
+&lt;executions&gt;
+    &lt;execution&gt;
+        &lt;id&gt;start-elasticsearch&lt;/id&gt;
+        &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+        &lt;goals&gt;
+            &lt;goal&gt;runforked&lt;/goal&gt;
+        &lt;/goals&gt;
+    &lt;/execution&gt;
+    &lt;execution&gt;
+        &lt;id&gt;stop-elasticsearch&lt;/id&gt;
+        &lt;phase&gt;post-integration-test&lt;/phase&gt;
+        &lt;goals&gt;
+            &lt;goal&gt;stop&lt;/goal&gt;
+        &lt;/goals&gt;
+    &lt;/execution&gt;
+&lt;/executions&gt;
+</code></pre>
+
+<p></plugin>
+```</p>
+
+<h1>Téléchargement, installation et démarrage d'Elasticsearch</h1>
+
+<p>Le deuxième projet est celui d'<a href="https://github.com/allegro/embedded-elasticsearch">Allegro Tech</a>.</p>
+
+<p>Contrairement à la solution précédente, ce projet permet de manière programmatique de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
+
+<p>En outre, l'avantage de cette solution est qu'il n'est pas nécessaire de configurer la partie test d'intégration dans maven. Ainsi, utiliser un autre outils de build est possible.</p>
+
+<p>```java
+final embeddedElastic = EmbeddedElastic.builder()</p>
+
+<pre><code>.withElasticVersion("5.4.3")
+.withSetting(PopularProperties.TRANSPORT_TCP_PORT, 9300)
+.withSetting(PopularProperties.CLUSTER_NAME, "elasticsearch")
+.withPlugin("analysis-stempel")
+.withIndex("cars", IndexSettings.builder()
+    .withType("car", getSystemResourceAsStream("car-mapping.json"))
+    .build())
+.withIndex("books", IndexSettings.builder()
+    .withType(PAPER_BOOK_INDEX_TYPE, getSystemResourceAsStream("paper-book-mapping.json"))
+    .withType("audio_book", getSystemResourceAsStream("audio-book-mapping.json"))
+    .withSettings(getSystemResourceAsStream("elastic-settings.json"))
+    .build())
+.build()
+.start()
+</code></pre>
+
+<p>```</p>
+
+<h1>Exemple</h1>
+
+<p>Code java :
+```java
+public class ElasticsearchTest {</p>
+
+<pre><code>private static EmbeddedElastic elasticsearchCluster;
+
+@BeforeClass
+public static void setup() throws IOException, InterruptedException {
+    elasticsearchCluster = EmbeddedElastic.builder()
+            .withElasticVersion("5.4.3")
+            .withSetting(PopularProperties.TRANSPORT_TCP_PORT, 9300)
+            .withSetting(PopularProperties.HTTP_PORT, 9200)
+            .withSetting(PopularProperties.CLUSTER_NAME, "elasticsearch")
+            .withSetting("network.host", "localhost")
+            .withCleanInstallationDirectoryOnStop(true)
+            .build()
+            .start();
+}
+
+@AfterClass
+public static void teardown() throws IOException, InterruptedException {
+    elasticsearchCluster.stop();
+}
+
+@Test
+public void transportClient_should_success() throws IOException, InterruptedException {
+    TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
+            .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    Sample sample = new Sample("value", 0.33, 3);
+
+    String jsonString = mapper.writeValueAsString(sample);
+
+    // indexing document
+    IndexResponse ir = client.prepareIndex("test_index", "type").setSource(jsonString).setId("1").execute().actionGet();
+    client.admin().indices().prepareRefresh("test_index").execute().actionGet();
+
+    assertNotNull(ir);
+
+    GetResponse gr = client.prepareGet("test_index", "type", "1").execute().actionGet();
+
+    assertNotNull(gr);
+    assertEquals(gr.getSourceAsString(), "{\"value\":\"value\",\"size\":0.33,\"price\":3.0}");
+}
+
+@Test
+public void restClient_should_success() throws IOException, JSONException {
+
+    RestClient restClient = RestClient.builder(
+            new HttpHost("localhost", 9200, "http")).build();
+
+    org.elasticsearch.client.Response response = restClient.performRequest("GET", "/",
+            Collections.singletonMap("pretty", "true"));
+    System.out.println(EntityUtils.toString(response.getEntity()));
+
+    // indexing document
+    HttpEntity entity = new NStringEntity(
+            "{\n" +
+                    "    \"user\" : \"kimchy\",\n" +
+                    "    \"post_date\" : \"2009-11-15T14:12:12\",\n" +
+                    "    \"message\" : \"trying out Elasticsearch\"\n" +
+                    "}", ContentType.APPLICATION_JSON);
+
+    org.elasticsearch.client.Response indexResponse = restClient.performRequest(
+            "PUT",
+            "/twitter/tweet/1",
+            Collections.&lt;String, String&gt;emptyMap(),
+            entity);
+
+    response = restClient.performRequest("GET", "/_search",
+            Collections.singletonMap("pretty", "true"));
+
+    String result = EntityUtils.toString(response.getEntity());
+    System.out.println(result);
+    JSONObject obj = new JSONObject(result);
+    int nbResult = obj.getJSONObject("hits").getInt("total");
+    assertThat(nbResult).isEqualTo(1);
+
+    restClient.close();
+}
+</code></pre>
+
+<p>}</p>
+
+<p>@EqualsAndHashCode
+@Data
+@AllArgsConstructor
+class Sample implements Serializable {</p>
+
+<pre><code>private String value;
+private double size;
+private double price;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Dépendence maven (façon gradle) :
+```plain
+dependencies {</p>
+
+<pre><code>compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+testCompile group: 'pl.allegro.tech', name: 'embedded-elasticsearch', version:'2.2.0'
+testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+testCompile group: 'junit', name: 'junit', version:'4.11'
+compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+   /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+   This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+   Please review and delete this closure when resolved. */
+}
+</code></pre>
+
+<p>```</p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, on a pu voir deux solutions qui permettent de faire des tests d'intégration avec Elasticsearch.</p>
+
+<p>Personnellement, j'ai une préférence pour la deuxième solution qui me permet d'avoir la main sur la récupération et installation d'Elasticsearch.</p>
+
+<p>Pour aller plus loin, quelques liens en vrac.</p>
 
 <ul>
-<li>Définition d’un moteur de recherche</li>
-<li>Concepts d’ElasticSearch</li>
-<li>Utilisation d’ElasticSearch</li>
-<li>Architecture d’ElasticSearch</li>
+<li><a href="http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/">http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html</a></li>
+<li><a href="https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html">https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html</a></li>
+<li><a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">https://github.com/alexcojocaru/elasticsearch-maven-plugin</a></li>
+<li><a href="https://github.com/allegro/embedded-elasticsearch">https://github.com/allegro/embedded-elasticsearch</a></li>
 </ul>
 
-
-<p>Ce petit compte rendu a été écrit pour le compte du site <a href="http://www.developpez.com/">developpez.com</a> et peut se trouver <a href="http://soat.developpez.com/articles/elasticsearch/">ici</a></p>
-
-<p>Merci à Developpez.com et aux différents relecteurs!</p>
-
-<p>Bonne lecture ;&ndash;)</p>
 ]]></content>
   </entry>
   

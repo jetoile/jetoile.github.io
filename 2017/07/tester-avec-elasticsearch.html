@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+
+<script type="text/javascript">
+    var host = "blog.jetoile.fr";
+    if ((host == window.location.host) && (window.location.protocol != "https:"))
+        window.location.protocol = "https";
+</script>
+
+  <meta charset="utf-8">
+  <title>Des Tests D'intégration Avec Elasticsearch - Jetoile</title>
+  <meta name="author" content="Khanh Maudoux">
+
+  <meta content='blog sur Java jee' name='description'/>
+  <meta content='jee, java, cloud, nosql' name='keywords'/>
+  <meta content='index, follow' name='robots'/>
+  <link href='url' rel='canonical'/>
+
+  
+  <meta name="description" content="Des Tests D'intégration Avec Elasticsearch July 11, 2017 La version 5.0.0-alpha4 a signé la fin du support du mode embedded d&#8217;Elasticsearch. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html">
+  <link href="/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jetoile" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+
+  <script src="/javascripts/monthly_archive.js"></script>
+  <!-- font-family: 'Knewave', cursive; -->
+<link href='http://fonts.googleapis.com/css?family=Knewave' rel='stylesheet' type='text/css'>
+<!-- font-family: 'Cantata One', serif; -->
+<link href='http://fonts.googleapis.com/css?family=Cantata+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11955429-1']);
+    _gaq.push(['_trackPageview']);
+    _gaq.push(['_setDomainName','github.io']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body>
+    <a href="/" class="home-icon">
+      <img src="/images/home.png"/>
+    </a>
+
+    <article role="article" class="full-single-article">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Des Tests D'intégration Avec Elasticsearch</h1>
+        <div class="meta">
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2017-07-11T10:05:51+02:00" pubdate data-updated="true">July 11, 2017</time>  
+        </div>
+        <p><img src="/images/logo-elastic.png" alt="left-small" /> La version 5.0.0-alpha4 a signé la fin du support du mode embedded d&#8217;Elasticsearch.</p>
+
+<p>Cela a été annoncé <a href="https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported">là</a> et la classe <code>NodeBuilder</code> permettant de démarrer un noeud programmatiquement a été supprimée.</p>
+
+<p>Cependant, même si cela est raison de l&#8217;arrêt du support de ce mode est compréhensible, cela pose le problème des tests d&#8217;intégration puisqu&#8217;il n&#8217;est plus possible de démarrer un Elasticsearch pendant la phase de test.</p>
+
+<p>Oui, Elastic propose officiellement une <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">alternative</a> via l&#8217;utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&hellip;</p>
+
+<p>Cet article va tenter de dresser un panorama non exhaustif de ce que j&#8217;ai pu trouver d&#8217;intéressant pour permettre de réaliser des tests d&#8217;intégration avec Elasticsearch.</p>
+
+<!--more-->
+
+
+<p>Parmi les solutions intéressantes et simples que j&#8217;ai trouvés pour faire des tests d&#8217;intégration, il y a surtout 2 projets que j&#8217;ai retenus.</p>
+
+<h1>Plugin maven permettant de télécharger, installer et démarrer Elasticsearch</h1>
+
+<p>Le premier se trouve être celui de <a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">alexcojocaru</a>.</p>
+
+<p>Il s&#8217;agit d&#8217;un plugin maven s&#8217;appuyant sur <a href="https://github.com/apache/maven-resolver">maven-resolver</a> qui permet sur les phases de pré-intégration et post-intégration de démarrer et d&#8217;arrêter Elasticsearch.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.github.alexcojocaru<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>elasticsearch-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>5.7<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;clusterName&gt;</span>elasticsearch<span class="nt">&lt;/clusterName&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;transportPort&gt;</span>9300<span class="nt">&lt;/transportPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;httpPort&gt;</span>9200<span class="nt">&lt;/httpPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;autoCreateIndex&gt;</span>true<span class="nt">&lt;/autoCreateIndex&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>runforked<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Exemple</h2>
+
+<p>Code java de test :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transportClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">TransportClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PreBuiltTransportClient</span><span class="o">(</span><span class="n">Settings</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addTransportAddress</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketTransportAddress</span><span class="o">(</span><span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">),</span> <span class="mi">9300</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">ObjectMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sample</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="mf">0.33</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">jsonString</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">sample</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">IndexResponse</span> <span class="n">ir</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareIndex</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">).</span><span class="na">setSource</span><span class="o">(</span><span class="n">jsonString</span><span class="o">).</span><span class="na">setId</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">admin</span><span class="o">().</span><span class="na">indices</span><span class="o">().</span><span class="na">prepareRefresh</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">ir</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">GetResponse</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareGet</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">gr</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">gr</span><span class="o">.</span><span class="na">getSourceAsString</span><span class="o">(),</span> <span class="s">&quot;{\&quot;value\&quot;:\&quot;value\&quot;,\&quot;size\&quot;:0.33,\&quot;price\&quot;:3.0}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">restClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JSONException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">RestClient</span> <span class="n">restClient</span> <span class="o">=</span> <span class="n">RestClient</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span>
+</span><span class='line'>                <span class="k">new</span> <span class="nf">HttpHost</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9200</span><span class="o">,</span> <span class="s">&quot;http&quot;</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NStringEntity</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;{\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;user\&quot; : \&quot;kimchy\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;post_date\&quot; : \&quot;2009-11-15T14:12:12\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;message\&quot; : \&quot;trying out Elasticsearch\&quot;\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;}&quot;</span><span class="o">,</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">indexResponse</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;PUT&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;/twitter/tweet/1&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">emptyMap</span><span class="o">(),</span>
+</span><span class='line'>                <span class="n">entity</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/_search&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSONObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONObject</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">nbResult</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getJSONObject</span><span class="o">(</span><span class="s">&quot;hits&quot;</span><span class="o">).</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;total&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">nbResult</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">restClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@EqualsAndHashCode</span>
+</span><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@AllArgsConstructor</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">size</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">price</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dépendence maven (façon gradle) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+</span><span class='line'>    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+</span><span class='line'>    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+</span><span class='line'>    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+</span><span class='line'>    testCompile group: 'junit', name: 'junit', version:'4.11'
+</span><span class='line'>    compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+</span><span class='line'>       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+</span><span class='line'>       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+</span><span class='line'>       Please review and delete this closure when resolved. */
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Plugins maven utilisés :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>maven-surefire-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;exclude&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>integration-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>none<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;include&gt;</span>**/*IntegrationTest.java<span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>com.github.alexcojocaru<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>elasticsearch-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>5.7<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;clusterName&gt;</span>elasticsearch<span class="nt">&lt;/clusterName&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;transportPort&gt;</span>9300<span class="nt">&lt;/transportPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;httpPort&gt;</span>9200<span class="nt">&lt;/httpPort&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;autoCreateIndex&gt;</span>true<span class="nt">&lt;/autoCreateIndex&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>runforked<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop-elasticsearch<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;goal&gt;</span>stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Téléchargement, installation et démarrage d&#8217;Elasticsearch</h1>
+
+<p>Le deuxième projet est celui d&#8217;<a href="https://github.com/allegro/embedded-elasticsearch">Allegro Tech</a>.</p>
+
+<p>Contrairement à la solution précédente, ce projet permet de manière programmatique de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
+
+<p>En outre, l&#8217;avantage de cette solution est qu&#8217;il n&#8217;est pas nécessaire de configurer la partie test d&#8217;intégration dans maven. Ainsi, utiliser un autre outils de build est possible.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">final</span> <span class="n">embeddedElastic</span> <span class="o">=</span> <span class="n">EmbeddedElastic</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withElasticVersion</span><span class="o">(</span><span class="s">&quot;5.4.3&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">TRANSPORT_TCP_PORT</span><span class="o">,</span> <span class="mi">9300</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">CLUSTER_NAME</span><span class="o">,</span> <span class="s">&quot;elasticsearch&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withPlugin</span><span class="o">(</span><span class="s">&quot;analysis-stempel&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withIndex</span><span class="o">(</span><span class="s">&quot;cars&quot;</span><span class="o">,</span> <span class="n">IndexSettings</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="s">&quot;car&quot;</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;car-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">())</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">withIndex</span><span class="o">(</span><span class="s">&quot;books&quot;</span><span class="o">,</span> <span class="n">IndexSettings</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="n">PAPER_BOOK_INDEX_TYPE</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;paper-book-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="s">&quot;audio_book&quot;</span><span class="o">,</span> <span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;audio-book-mapping.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">withSettings</span><span class="o">(</span><span class="n">getSystemResourceAsStream</span><span class="o">(</span><span class="s">&quot;elastic-settings.json&quot;</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">())</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">start</span><span class="o">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Exemple</h1>
+
+<p>Code java :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="n">EmbeddedElastic</span> <span class="n">elasticsearchCluster</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@BeforeClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">elasticsearchCluster</span> <span class="o">=</span> <span class="n">EmbeddedElastic</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withElasticVersion</span><span class="o">(</span><span class="s">&quot;5.4.3&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">TRANSPORT_TCP_PORT</span><span class="o">,</span> <span class="mi">9300</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">HTTP_PORT</span><span class="o">,</span> <span class="mi">9200</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="n">PopularProperties</span><span class="o">.</span><span class="na">CLUSTER_NAME</span><span class="o">,</span> <span class="s">&quot;elasticsearch&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withSetting</span><span class="o">(</span><span class="s">&quot;network.host&quot;</span><span class="o">,</span> <span class="s">&quot;localhost&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withCleanInstallationDirectoryOnStop</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@AfterClass</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">teardown</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">elasticsearchCluster</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transportClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">TransportClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PreBuiltTransportClient</span><span class="o">(</span><span class="n">Settings</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addTransportAddress</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketTransportAddress</span><span class="o">(</span><span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">),</span> <span class="mi">9300</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">ObjectMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Sample</span> <span class="n">sample</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sample</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="mf">0.33</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">jsonString</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">writeValueAsString</span><span class="o">(</span><span class="n">sample</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">IndexResponse</span> <span class="n">ir</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareIndex</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">).</span><span class="na">setSource</span><span class="o">(</span><span class="n">jsonString</span><span class="o">).</span><span class="na">setId</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">client</span><span class="o">.</span><span class="na">admin</span><span class="o">().</span><span class="na">indices</span><span class="o">().</span><span class="na">prepareRefresh</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">ir</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">GetResponse</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">prepareGet</span><span class="o">(</span><span class="s">&quot;test_index&quot;</span><span class="o">,</span> <span class="s">&quot;type&quot;</span><span class="o">,</span> <span class="s">&quot;1&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">().</span><span class="na">actionGet</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertNotNull</span><span class="o">(</span><span class="n">gr</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">gr</span><span class="o">.</span><span class="na">getSourceAsString</span><span class="o">(),</span> <span class="s">&quot;{\&quot;value\&quot;:\&quot;value\&quot;,\&quot;size\&quot;:0.33,\&quot;price\&quot;:3.0}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">restClient_should_success</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">JSONException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">RestClient</span> <span class="n">restClient</span> <span class="o">=</span> <span class="n">RestClient</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span>
+</span><span class='line'>                <span class="k">new</span> <span class="nf">HttpHost</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9200</span><span class="o">,</span> <span class="s">&quot;http&quot;</span><span class="o">)).</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">()));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// indexing document</span>
+</span><span class='line'>        <span class="n">HttpEntity</span> <span class="n">entity</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NStringEntity</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;{\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;user\&quot; : \&quot;kimchy\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;post_date\&quot; : \&quot;2009-11-15T14:12:12\&quot;,\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;    \&quot;message\&quot; : \&quot;trying out Elasticsearch\&quot;\n&quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;}&quot;</span><span class="o">,</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">org</span><span class="o">.</span><span class="na">elasticsearch</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">Response</span> <span class="n">indexResponse</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span>
+</span><span class='line'>                <span class="s">&quot;PUT&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="s">&quot;/twitter/tweet/1&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">emptyMap</span><span class="o">(),</span>
+</span><span class='line'>                <span class="n">entity</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">response</span> <span class="o">=</span> <span class="n">restClient</span><span class="o">.</span><span class="na">performRequest</span><span class="o">(</span><span class="s">&quot;GET&quot;</span><span class="o">,</span> <span class="s">&quot;/_search&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">Collections</span><span class="o">.</span><span class="na">singletonMap</span><span class="o">(</span><span class="s">&quot;pretty&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">EntityUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">response</span><span class="o">.</span><span class="na">getEntity</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSONObject</span> <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONObject</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">nbResult</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getJSONObject</span><span class="o">(</span><span class="s">&quot;hits&quot;</span><span class="o">).</span><span class="na">getInt</span><span class="o">(</span><span class="s">&quot;total&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">nbResult</span><span class="o">).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">restClient</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@EqualsAndHashCode</span>
+</span><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@AllArgsConstructor</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Sample</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">size</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">double</span> <span class="n">price</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dépendence maven (façon gradle) :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version:'2.7'
+</span><span class='line'>    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.12'
+</span><span class='line'>    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+</span><span class='line'>    testCompile group: 'pl.allegro.tech', name: 'embedded-elasticsearch', version:'2.2.0'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'transport', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'org.elasticsearch.client', name: 'rest', version:'5.4.3'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.1'
+</span><span class='line'>    testCompile group: 'org.codehaus.jettison', name: 'jettison', version:'1.3.8'
+</span><span class='line'>    testCompile group: 'org.assertj', name: 'assertj-core', version:'3.8.0'
+</span><span class='line'>    testCompile group: 'junit', name: 'junit', version:'4.11'
+</span><span class='line'>    compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
+</span><span class='line'>       /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+</span><span class='line'>       This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+</span><span class='line'>       Please review and delete this closure when resolved. */
+</span><span class='line'>    }</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h1>Conclusion</h1>
+
+<p>En conclusion, on a pu voir deux solutions qui permettent de faire des tests d&#8217;intégration avec Elasticsearch.</p>
+
+<p>Personnellement, j&#8217;ai une préférence pour la deuxième solution qui me permet d&#8217;avoir la main sur la récupération et installation d&#8217;Elasticsearch.</p>
+
+<p>Pour aller plus loin, quelques liens en vrac.</p>
+
+<ul>
+<li><a href="http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/">http://david.pilato.fr/blog/2016/10/18/elasticsearch-real-integration-tests-updated-for-ga/</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html</a></li>
+<li><a href="https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html">https://gquintana.github.io/2016/11/30/Testing-a-Java-and-Elasticsearch-50-application.html</a></li>
+<li><a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">https://github.com/alexcojocaru/elasticsearch-maven-plugin</a></li>
+<li><a href="https://github.com/allegro/embedded-elasticsearch">https://github.com/allegro/embedded-elasticsearch</a></li>
+</ul>
+
+
+
+<footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Khanh Maudoux</span></span>
+
+      </p>
+      <p class="meta">
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+<time datetime="2017-07-11T10:05:51+02:00" pubdate data-updated="true">July 11, 2017</time> in 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/elasticsearch/'>Elasticsearch</a>, <a class='category' href='/blog/categories/test/'>Test</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html" data-via="jetoile" data-counturl="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+</footer>
+
+<!--
+<section>
+<h1>Comments</h1>
+<script>
+var idcomments_acct = '1a2a89d3b135fb1f774e938fd286d920';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+
+</section>
+-->
+
+
+  <section>
+    <h1>Comments</h1>
+
+    <!--
+<div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'jetoile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+-->
+
+<div id="disqus_thread"></div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jetoile';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html';
+        var disqus_url = 'https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </section>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</article>
+
+<hr class="divider-short"/>
+
+<div class="archive-link">
+  <div class="container">
+    <div class="row">
+      <a class="pull-center" href="/" title="Home">Home</a>
+    </div>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        
+          <a class="pull-left" href="/2016/11/sqoop-et-parquet-mode-demploi.html" title="Previous Post: Sqoop et Parquet : Mode d'emploi">&laquo; Previous: Sqoop et Parquet : Mode d'emploi</a>
+        
+
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'fr'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+    <footer id="footer" class="her-row">
+  <div class="container">
+    <div class="row">
+      <div id='footer-shadow'></div>
+<!--//please give me a respect for keep these credits line -->
+<div class='credits'>
+<div align='center'>
+
+<table style="border:none;border-spacing: 20px;border-collapse: separate;">
+<tr style="border:none">
+<td style="border:none">
+<a href="http://twitter.com/jetoile" class="twitter-follow-button" data-show-count="false" data-lang="fr">Follow @jetoile</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+</td>
+<td style="border:none">
+<a href="https://plus.google.com/u/0/114765959876500830478/posts?prsrc=3" style="text-decoration: none; color: #333;"><div style="display: inline-block;"><span style="float: left; font: bold 13px/16px arial,sans-serif; margin-right: 4px; margin-top: 7px;">khanh</span><span style="float: left; font: 13px/16px arial,sans-serif; margin-right: 11px; margin-top: 7px;">on</span><div style="float: left;"><img src="/images/gplus-32.png" width="32" height="32" style="border: 0;"/></div><div style="clear: both"></div></div></a>
+</td>
+<td style="border:none">
+<a href="http://fr.linkedin.com/pub/khanh-tuong-maudoux/19/92b/11b"><img src="/images/btn_profile_bluetxt_8
+0x15_fr_FR.png" width="80" height="15" border="0" alt="Voir le profil de Khanh Tuong Maudoux sur LinkedIn" /></a>
+</td>
+</tr>
+</table>
+
+
+<img alt='Jetoile' height='50' src='/images/logoJetoile_v51.png' style='border-width:0; vertical-align: middle' width='180'/>
+<p>&#169; 2011 <a href='http://blog.jetoile.fr/'>Je toile ou j* au choix...</a> - Khanh Maudoux</p>
+<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a> Cette œuvre de <a href='http://blog.jetoile.fr' property='cc:attributionName' rel='cc:attributionURL' xmlns:cc='http://creativecommons.org/ns#'>http://blog.jetoile.fr</a> est mise à disposition selon les termes de la <a href='http://creativecommons.org/licenses/by/4.0/' rel='license'>licence Creative Commons Attribution 4.0 International</a>.
+<!--img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/2.0/fr/88x31.png' style='border-width:0; vertical-align: middle;'/> <small>Sauf mention contraire, le contenu de ce blog est mis à disposition selon les termes de la licence <a href='http://creativecommons.org/licenses/by/2.0/fr/'>Creative Commons Attribution 2.0 License</a>.</small-->
+<br/>
+<small>Powered by <a href="http://octopress.org">Octopress</a><br/>
+</small>
+</div>
+</div>
+
+
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>

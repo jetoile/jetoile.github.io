@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/test/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-11T16:34:19+02:00</updated>
+  <updated>2017-07-11T22:16:03+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -22,7 +22,7 @@
 
 <p>Cela a été annoncé <a href="https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported">là</a> et la classe <code>NodeBuilder</code> permettant de démarrer un noeud programmatiquement a été supprimée.</p>
 
-<p>Cependant, même si cela est raison de l'arrêt du support de ce mode est compréhensible, cela pose le problème des tests d'intégration puisqu'il n'est plus possible de démarrer un Elasticsearch pendant la phase de test.</p>
+<p>Cependant, même si la raison de l'arrêt du support de ce mode est compréhensible, cela pose le problème des tests d'intégration puisqu'il n'est plus possible de démarrer un Elasticsearch pendant la phase de test.</p>
 
 <p>Oui, Elastic propose officiellement une <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">alternative</a> via l'utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&hellip;</p>
 
@@ -244,7 +244,7 @@ compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.6') {
 
 <p>Le deuxième projet est celui d'<a href="https://github.com/allegro/embedded-elasticsearch">Allegro Tech</a>.</p>
 
-<p>Contrairement à la solution précédente, ce projet permet de manière programmatique de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
+<p>Contrairement à la solution précédente, ce projet permet programmatiquement de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
 
 <p>En outre, l'avantage de cette solution est qu'il n'est pas nécessaire de configurer la partie test d'intégration dans maven. Ainsi, utiliser un autre outils de build est possible.</p>
 

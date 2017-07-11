@@ -11,7 +11,7 @@ categories:
 
 Cela a été annoncé [là](https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported) et la classe `NodeBuilder` permettant de démarrer un noeud programmatiquement a été supprimée.
 
-Cependant, même si cela est raison de l'arrêt du support de ce mode est compréhensible, cela pose le problème des tests d'intégration puisqu'il n'est plus possible de démarrer un Elasticsearch pendant la phase de test.
+Cependant, même si la raison de l'arrêt du support de ce mode est compréhensible, cela pose le problème des tests d'intégration puisqu'il n'est plus possible de démarrer un Elasticsearch pendant la phase de test.
 
 Oui, Elastic propose officiellement une [alternative](https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html) via l'utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche...
 
@@ -217,7 +217,7 @@ Plugins maven utilisés :
 
 Le deuxième projet est celui d'[Allegro Tech](https://github.com/allegro/embedded-elasticsearch).
 
-Contrairement à la solution précédente, ce projet permet de manière programmatique de télécharger, installer et démarrer/arrêter Elasticsearch.
+Contrairement à la solution précédente, ce projet permet programmatiquement de télécharger, installer et démarrer/arrêter Elasticsearch.
 
 En outre, l'avantage de cette solution est qu'il n'est pas nécessaire de configurer la partie test d'intégration dans maven. Ainsi, utiliser un autre outils de build est possible.
 

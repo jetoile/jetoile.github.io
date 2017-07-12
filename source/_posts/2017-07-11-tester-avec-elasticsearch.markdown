@@ -7,7 +7,7 @@ categories:
 - Elasticsearch
 - Test
 ---
-![left-small](/images/logo-elastic.png) La version 5.0.0-alpha4 a signé la fin du support du mode embedded d'Elasticsearch.
+![elasticsearch logo](https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg?q=540) La version 5.0.0-alpha4 a signé la fin du support du mode embedded d'Elasticsearch.
 
 Cela a été annoncé [là](https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported) et la classe `NodeBuilder` permettant de démarrer un noeud programmatiquement a été supprimée.
 

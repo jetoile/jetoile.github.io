@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/test/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-11T22:16:03+02:00</updated>
+  <updated>2017-07-12T08:31:08+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -18,7 +18,7 @@
     <link href="https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html"/>
     <updated>2017-07-11T10:05:51+02:00</updated>
     <id>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch</id>
-    <content type="html"><![CDATA[<p><img src="/images/logo-elastic.png" alt="left-small" /> La version 5.0.0-alpha4 a signé la fin du support du mode embedded d'Elasticsearch.</p>
+    <content type="html"><![CDATA[<p><img src="https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg?q=540" alt="elasticsearch logo" /> La version 5.0.0-alpha4 a signé la fin du support du mode embedded d'Elasticsearch.</p>
 
 <p>Cela a été annoncé <a href="https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported">là</a> et la classe <code>NodeBuilder</code> permettant de démarrer un noeud programmatiquement a été supprimée.</p>
 

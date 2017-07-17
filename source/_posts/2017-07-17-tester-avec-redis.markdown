@@ -180,6 +180,19 @@ public class RedisInstaller {
 }
 ```
 
+Avec le fichier ant `build.xml` suivant :
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="make" default="init" basedir=".">
+
+    <target name="init">
+        <echo message="Redis compilation is starting" />
+        <exec command="make" dir="${redisDirectory}" />
+        <echo message="Redis compilation finished"/>
+    </target>
+</project>
+```
+
 Ainsi, en wrappant l'appel dans un builder, il devient facile d'invoquer l'installeur.
 ```java
 import lombok.Builder;

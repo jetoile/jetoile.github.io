@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/test/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-17T12:24:17+02:00</updated>
+  <updated>2017-07-17T12:27:59+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -191,6 +191,21 @@ private void applyRedisPermissionRights() throws IOException {
 </code></pre>
 
 <p>}
+```</p>
+
+<p>Avec le fichier ant <code>build.xml</code> suivant :
+```xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;ISO-8859-1&rdquo;?>
+<project name="make" default="init" basedir="."></p>
+
+<pre><code>&lt;target name="init"&gt;
+    &lt;echo message="Redis compilation is starting" /&gt;
+    &lt;exec command="make" dir="${redisDirectory}" /&gt;
+    &lt;echo message="Redis compilation finished"/&gt;
+&lt;/target&gt;
+</code></pre>
+
+<p></project>
 ```</p>
 
 <p>Ainsi, en wrappant l'appel dans un builder, il devient facile d'invoquer l'installeur.

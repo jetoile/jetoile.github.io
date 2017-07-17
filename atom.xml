@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-17T12:24:17+02:00</updated>
+  <updated>2017-07-17T12:27:59+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -347,6 +347,29 @@
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Avec le fichier ant <code>build.xml</code> suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;project</span> <span class="na">name=</span><span class="s">&quot;make&quot;</span> <span class="na">default=</span><span class="s">&quot;init&quot;</span> <span class="na">basedir=</span><span class="s">&quot;.&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;init&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;echo</span> <span class="na">message=</span><span class="s">&quot;Redis compilation is starting&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exec</span> <span class="na">command=</span><span class="s">&quot;make&quot;</span> <span class="na">dir=</span><span class="s">&quot;${redisDirectory}&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;echo</span> <span class="na">message=</span><span class="s">&quot;Redis compilation finished&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/target&gt;</span>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

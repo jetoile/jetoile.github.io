@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/test/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-17T12:27:59+02:00</updated>
+  <updated>2017-07-21T12:49:24+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,275 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Des tests d'intégration avec Cassandra]]></title>
+    <link href="https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html"/>
+    <updated>2017-07-21T10:22:37+02:00</updated>
+    <id>https://blog.jetoile.fr/2017/07/tester-avec-cassandra</id>
+    <content type="html"><![CDATA[<p><img src="/images/1200px-Cassandra_logo.svg.png" alt="left-small" /> Parce que je suis parti sur ma lancée des articles <em>des tests d'intégration avec &hellip;</em>, à la demande de <a href="https://twitter.com/doanduyhai">Duyhai</a>, voilà que je me retrouve à faire un article pour Apache Cassandra&hellip; ;)</p>
+
+<p>Plus sérieusement, faire des tests d'intégration avec Apache Cassandra est beaucoup plus simple qu'avec Redis ou Elasticsearch mais il existe cependant 2 projets qui simplifient énormément les tests d'intégration avec Cassandra :</p>
+
+<ul>
+<li><a href="https://github.com/jsevellec/cassandra-unit">cassandra-unit</a> créé par <a href="https://github.com/jsevellec">Jérémy Sevellec</a></li>
+<li><a href="https://github.com/doanduyhai/Achilles">achille</a> créé par <a href="https://twitter.com/doanduyhai">Duyhai Doan</a></li>
+</ul>
+
+
+<p>Ce petit article résume comment utiliser ces 2 solutions.</p>
+
+<!-- more -->
+
+
+<h1>Classe de test</h1>
+
+<p>La classe utilisée comme exemple dans les 2 cas est la suivante :</p>
+
+<p>```java
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import lombok.AllArgsConstructor;
+import lombok.Data;</p>
+
+<p>import java.util.List;
+import java.util.stream.Collectors;</p>
+
+<p>public class UserDao {</p>
+
+<pre><code>private Cluster cluster;
+private Session session;
+
+public UserDao(String localhost, int port) {
+    cluster = Cluster.builder()
+            .addContactPoints(localhost)
+            .withPort(port)
+            .build();
+
+    session = cluster.connect();
+}
+
+public List&lt;User&gt; getUsers() {
+    ResultSet execute = session.execute("select * from test.user");
+
+    List&lt;Row&gt; res = execute.all();
+
+    return res.stream().map(r -&gt; new User(r.getString("lastName"), r.getString("firstName"))).collect(Collectors.toList());
+}
+</code></pre>
+
+<p>}</p>
+
+<p>@Data
+@AllArgsConstructor
+class User {</p>
+
+<pre><code>private String lastName;
+private String firstName;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Au niveau dépendance, elles sont les suivantes :
+```plain
+dependencies {</p>
+
+<pre><code>compile group: 'com.datastax.cassandra', name: 'cassandra-driver-core', version:'3.3.0'
+compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.18') 
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Rien de bien compliqué mais il s'agit d'un cas d'exemple ultra simple&hellip; ;)</p>
+
+<h1>Cassandra-Unit</h1>
+
+<p>Pour utiliser Cassandra-Unit, il suffit de déclarer sa dépendance en scope de test:
+```xml
+<dependency></p>
+
+<pre><code>&lt;groupId&gt;org.cassandraunit&lt;/groupId&gt;
+&lt;artifactId&gt;cassandra-unit&lt;/artifactId&gt;
+&lt;version&gt;3.1.3.2&lt;/version&gt;
+&lt;scope&gt;test&lt;/scope&gt;
+</code></pre>
+
+<p></dependency>
+```</p>
+
+<p>La classe de test ressemble alors à :
+```java
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+import org.apache.thrift.transport.TTransportException;
+import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;</p>
+
+<p>import java.io.IOException;
+import java.util.List;</p>
+
+<p>import static org.junit.Assert.assertEquals;</p>
+
+<p>public class UserDaoIntegrationTest {</p>
+
+<pre><code>private Session session;
+private Cluster cluster;
+
+@Before
+public void setUp() throws InterruptedException, IOException, TTransportException {
+    EmbeddedCassandraServerHelper.startEmbeddedCassandra("cassandra-sample.yaml");
+
+    cluster = Cluster.builder()
+            .addContactPoints("localhost")
+            .withPort(9000)
+            .build();
+
+    session = cluster.connect();
+
+    session.execute("create KEYSPACE test WITH replication = {'class': 'SimpleStrategy' , 'replication_factor': '1' }");
+    session.execute("CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))");
+}
+
+@After
+public void teardown() {
+    session.close();
+    EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
+}
+
+
+@Test
+public void user_should_be_returned() {
+    session.execute("insert into test.user(lastName, firstName) values('lastName1', 'firstName1')");
+
+    UserDao cassandraJob = new UserDao("localhost", 9000);
+
+    List&lt;User&gt; users = cassandraJob.getUsers();
+
+    assertEquals(users.size(), 1);
+    assertEquals(users.get(0).getFirstName(), "firstName1");
+    assertEquals(users.get(0).getLastName(), "lastName1");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>A noter que le fichier <code>cassandra-sample.yaml</code> correspond au fichier de configuration par défaut de cassandra avec les spécificités suivantes :
+```yaml
+native_transport_port: 9000
+data_file_directories:</p>
+
+<pre><code>- target/embeddedCassandra/data
+</code></pre>
+
+<p>commitlog_directory: target/embeddedCassandra/commitlog
+hints_directory: target/embeddedCassandra/hints
+cdc_raw_directory: target/embeddedCassandra/cdc_raw
+saved_caches_directory: target/embeddedCassandra/saved_caches</p>
+
+<h1>multithreaded_compaction: false</h1>
+
+<h1>memtable_flush_queue_size: 4</h1>
+
+<h1>compaction_preheat_key_cache: true</h1>
+
+<h1>in_memory_compaction_limit_in_mb: 64</h1>
+
+<p>```</p>
+
+<p>A noter également que Cassandra-Unit propose également des loader permettant d'initialiser les données dans le cluster ainsi que d'autres facilités d'utilisation telles que des Rules ou un support de Spring. Pour avoir plus d'informations, je vous invite à aller voir la documentation.</p>
+
+<h1>Achille-Embedded</h1>
+
+<p>Pour utiliser Achille-embedded, il suffit de déclarer sa dépendance en scope de test:
+```xml
+<dependency></p>
+
+<pre><code>&lt;groupId&gt;info.archinnov&lt;/groupId&gt;
+&lt;artifactId&gt;achilles-embedded&lt;/artifactId&gt;
+&lt;version&gt;5.2.1&lt;/version&gt;
+&lt;scope&gt;test&lt;/scope&gt;
+</code></pre>
+
+<p></dependency>
+```</p>
+
+<p>La classe de test ressemble alors à :
+```java
+import com.datastax.driver.core.Session;
+import info.archinnov.achilles.embedded.CassandraEmbeddedServerBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;</p>
+
+<p>import java.util.List;</p>
+
+<p>import static org.junit.Assert.assertEquals;</p>
+
+<p>public class UserDaoIntegrationTest {</p>
+
+<pre><code>private Session session;
+
+@Before
+public void setUp() {
+    session = CassandraEmbeddedServerBuilder.builder()
+            .withCQLPort(9000)
+            .withClusterName("Test Cluster")
+            .cleanDataFilesAtStartup(true)
+            .buildNativeSession();
+
+    session.execute("create KEYSPACE test WITH replication = {'class': 'SimpleStrategy' , 'replication_factor': '1' }");
+    session.execute("CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))");
+}
+
+@After
+public void teardown() {
+    session.close();
+}
+
+
+@Test
+public void user_should_be_returned() {
+    session.execute("insert into test.user(lastName, firstName) values('lastName1', 'firstName1')");
+
+    UserDao cassandraJob = new UserDao("localhost", 9000);
+
+    List&lt;User&gt; users = cassandraJob.getUsers();
+
+    assertEquals(users.size(), 1);
+    assertEquals(users.get(0).getFirstName(), "firstName1");
+    assertEquals(users.get(0).getLastName(), "lastName1");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>A noter également qu'Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d'informations, je vous invite à aller voir les différents tests du projet.</p>
+
+<h1>Conclusion</h1>
+
+<p>On a donc vu dans ce rapide article comment il était possible de faire des tests d'intégration avec Cassandra.</p>
+
+<p>A noter que le code montré dans cet article est extrêmement simple mais je voulais juste montrer un rapide cas d'usage, du coup, pas grand chose à ajouter puisque les exemples parlent d'eux-même ;) .</p>
+
+<p>Concernant le choix de l'un ou de l'autre, j'avoue avoir une préférence pour Achille-Embedded car il permet plus simplement d'avoir la main sur la configuration et ne pas avoir à maintenir un fichier de configuration en plus.</p>
+
+<p>A noter qu'Achille-Embedded a été utilisé dans <a href="https://github.com/jetoile/hadoop-unit">Hadoop-Unit</a> et qu'il est possible d'utiliser Cassandra en test d'intégration des manière suivantes ( #autopromo ;) ) :</p>
+
+<ul>
+<li>En utilisant le démarrage de <a href="https://github.com/jetoile/hadoop-unit/blob/master/hadoop-unit-cassandra/src/test/java/fr/jetoile/hadoopunit/component/CassandraBootstrapTest.java">manière programmatique</a></li>
+<li>En utilisant le plugin maven en <a href="https://github.com/jetoile/hadoop-unit/blob/master/sample/spark-streaming-cassandra">phase de pré-integration</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Des tests d'intégration avec Redis]]></title>

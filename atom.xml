@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-07-17T12:27:59+02:00</updated>
+  <updated>2017-07-21T12:49:24+02:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,422 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Des Tests D'intégration Avec Cassandra]]></title>
+    <link href="https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html"/>
+    <updated>2017-07-21T10:22:37+02:00</updated>
+    <id>https://blog.jetoile.fr/2017/07/tester-avec-cassandra</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/1200px-Cassandra_logo.svg.png" alt="left-small" /> Parce que je suis parti sur ma lancée des articles <em>des tests d&#8217;intégration avec &hellip;</em>, à la demande de <a href="https://twitter.com/doanduyhai">Duyhai</a>, voilà que je me retrouve à faire un article pour Apache Cassandra&hellip; ;)</p>
+
+<p>Plus sérieusement, faire des tests d&#8217;intégration avec Apache Cassandra est beaucoup plus simple qu&#8217;avec Redis ou Elasticsearch mais il existe cependant 2 projets qui simplifient énormément les tests d&#8217;intégration avec Cassandra :</p>
+
+<ul>
+<li><a href="https://github.com/jsevellec/cassandra-unit">cassandra-unit</a> créé par <a href="https://github.com/jsevellec">Jérémy Sevellec</a></li>
+<li><a href="https://github.com/doanduyhai/Achilles">achille</a> créé par <a href="https://twitter.com/doanduyhai">Duyhai Doan</a></li>
+</ul>
+
+
+<p>Ce petit article résume comment utiliser ces 2 solutions.</p>
+
+<!-- more -->
+
+
+<h1>Classe de test</h1>
+
+<p>La classe utilisée comme exemple dans les 2 cas est la suivante :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Cluster</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.ResultSet</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Row</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Session</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">lombok.AllArgsConstructor</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">lombok.Data</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.stream.Collectors</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDao</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Cluster</span> <span class="n">cluster</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Session</span> <span class="n">session</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">UserDao</span><span class="o">(</span><span class="n">String</span> <span class="n">localhost</span><span class="o">,</span> <span class="kt">int</span> <span class="n">port</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addContactPoints</span><span class="o">(</span><span class="n">localhost</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withPort</span><span class="o">(</span><span class="n">port</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">session</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="na">connect</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="nf">getUsers</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">ResultSet</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;select * from test.user&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&gt;</span> <span class="n">res</span> <span class="o">=</span> <span class="n">execute</span><span class="o">.</span><span class="na">all</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">r</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">User</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;lastName&quot;</span><span class="o">),</span> <span class="n">r</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">))).</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@AllArgsConstructor</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Au niveau dépendance, elles sont les suivantes :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dependencies {
+</span><span class='line'>    compile group: 'com.datastax.cassandra', name: 'cassandra-driver-core', version:'3.3.0'
+</span><span class='line'>    compile(group: 'org.projectlombok', name: 'lombok', version:'1.16.18') 
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Rien de bien compliqué mais il s&#8217;agit d&#8217;un cas d&#8217;exemple ultra simple&hellip; ;)</p>
+
+<h1>Cassandra-Unit</h1>
+
+<p>Pour utiliser Cassandra-Unit, il suffit de déclarer sa dépendance en scope de test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>org.cassandraunit<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>cassandra-unit<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>3.1.3.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La classe de test ressemble alors à :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Cluster</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Session</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.thrift.transport.TTransportException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.cassandraunit.utils.EmbeddedCassandraServerHelper</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.After</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.Before</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDaoIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Session</span> <span class="n">session</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Cluster</span> <span class="n">cluster</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Before</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">TTransportException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">EmbeddedCassandraServerHelper</span><span class="o">.</span><span class="na">startEmbeddedCassandra</span><span class="o">(</span><span class="s">&quot;cassandra-sample.yaml&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">addContactPoints</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withPort</span><span class="o">(</span><span class="mi">9000</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">session</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="na">connect</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@After</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">teardown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">EmbeddedCassandraServerHelper</span><span class="o">.</span><span class="na">stopEmbeddedCassandra</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">user_should_be_returned</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">UserDao</span> <span class="n">cassandraJob</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserDao</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9000</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">cassandraJob</span><span class="o">.</span><span class="na">getUsers</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">size</span><span class="o">(),</span> <span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getFirstName</span><span class="o">(),</span> <span class="s">&quot;firstName1&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getLastName</span><span class="o">(),</span> <span class="s">&quot;lastName1&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter que le fichier <code>cassandra-sample.yaml</code> correspond au fichier de configuration par défaut de cassandra avec les spécificités suivantes :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">native_transport_port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">9000</span>
+</span><span class='line'><span class="l-Scalar-Plain">data_file_directories</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">target/embeddedCassandra/data</span>
+</span><span class='line'><span class="l-Scalar-Plain">commitlog_directory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">target/embeddedCassandra/commitlog</span>
+</span><span class='line'><span class="l-Scalar-Plain">hints_directory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">target/embeddedCassandra/hints</span>
+</span><span class='line'><span class="l-Scalar-Plain">cdc_raw_directory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">target/embeddedCassandra/cdc_raw</span>
+</span><span class='line'><span class="l-Scalar-Plain">saved_caches_directory</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">target/embeddedCassandra/saved_caches</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#multithreaded_compaction: false</span>
+</span><span class='line'><span class="c1">#memtable_flush_queue_size: 4</span>
+</span><span class='line'><span class="c1">#compaction_preheat_key_cache: true</span>
+</span><span class='line'><span class="c1">#in_memory_compaction_limit_in_mb: 64</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter également que Cassandra-Unit propose également des loader permettant d&#8217;initialiser les données dans le cluster ainsi que d&#8217;autres facilités d&#8217;utilisation telles que des Rules ou un support de Spring. Pour avoir plus d&#8217;informations, je vous invite à aller voir la documentation.</p>
+
+<h1>Achille-Embedded</h1>
+
+<p>Pour utiliser Achille-embedded, il suffit de déclarer sa dépendance en scope de test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;groupId&gt;</span>info.archinnov<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;artifactId&gt;</span>achilles-embedded<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;version&gt;</span>5.2.1<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>La classe de test ressemble alors à :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">com.datastax.driver.core.Session</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">info.archinnov.achilles.embedded.CassandraEmbeddedServerBuilder</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.After</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.Before</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDaoIntegrationTest</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">Session</span> <span class="n">session</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Before</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">session</span> <span class="o">=</span> <span class="n">CassandraEmbeddedServerBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withCQLPort</span><span class="o">(</span><span class="mi">9000</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">withClusterName</span><span class="o">(</span><span class="s">&quot;Test Cluster&quot;</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">cleanDataFilesAtStartup</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">buildNativeSession</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@After</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">teardown</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">user_should_be_returned</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">session</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">UserDao</span> <span class="n">cassandraJob</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserDao</span><span class="o">(</span><span class="s">&quot;localhost&quot;</span><span class="o">,</span> <span class="mi">9000</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">cassandraJob</span><span class="o">.</span><span class="na">getUsers</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">size</span><span class="o">(),</span> <span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getFirstName</span><span class="o">(),</span> <span class="s">&quot;firstName1&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertEquals</span><span class="o">(</span><span class="n">users</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getLastName</span><span class="o">(),</span> <span class="s">&quot;lastName1&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A noter également qu&#8217;Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d&#8217;informations, je vous invite à aller voir les différents tests du projet.</p>
+
+<h1>Conclusion</h1>
+
+<p>On a donc vu dans ce rapide article comment il était possible de faire des tests d&#8217;intégration avec Cassandra.</p>
+
+<p>A noter que le code montré dans cet article est extrêmement simple mais je voulais juste montrer un rapide cas d&#8217;usage, du coup, pas grand chose à ajouter puisque les exemples parlent d&#8217;eux-même ;) .</p>
+
+<p>Concernant le choix de l&#8217;un ou de l&#8217;autre, j&#8217;avoue avoir une préférence pour Achille-Embedded car il permet plus simplement d&#8217;avoir la main sur la configuration et ne pas avoir à maintenir un fichier de configuration en plus.</p>
+
+<p>A noter qu&#8217;Achille-Embedded a été utilisé dans <a href="https://github.com/jetoile/hadoop-unit">Hadoop-Unit</a> et qu&#8217;il est possible d&#8217;utiliser Cassandra en test d&#8217;intégration des manière suivantes ( #autopromo ;) ) :</p>
+
+<ul>
+<li>En utilisant le démarrage de <a href="https://github.com/jetoile/hadoop-unit/blob/master/hadoop-unit-cassandra/src/test/java/fr/jetoile/hadoopunit/component/CassandraBootstrapTest.java">manière programmatique</a></li>
+<li>En utilisant le plugin maven en <a href="https://github.com/jetoile/hadoop-unit/blob/master/sample/spark-streaming-cassandra">phase de pré-integration</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Des Tests D'intégration Avec Redis]]></title>
@@ -6193,458 +6609,6 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
 <li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JAXRS, Netty 4, Jackon 2... Les Mêmes Mais en Mieux...]]></title>
-    <link href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html"/>
-    <updated>2014-03-17T08:43:12+01:00</updated>
-    <id>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais</id>
-    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-Vzol1CndcjY/Uxib17Rlf2I/AAAAAAAABQI/Qi4u0DWe2s4/s1600/resteasy_jolokia_metrics.png" alt="left-small" /></p>
-
-<p>Pour faire suite à mon <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a> qui montrait comment il était possible de construire une <em>stack</em> légère basée sur Resteasy-Netty3, Jackson, <a href="http://www.jolokia.org/">Jolokia</a> et <a href="https://helloreverb.com/developers/swagger">Swagger</a>, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.</p>
-
-<p>Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&#8217;être exhaustif, cela permet de faire le tour complet&hellip; ;&ndash;)</p>
-
-<p>En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</p>
-
-<ul>
-<li>les dépendances,</li>
-<li>l&#8217;intégration de Resteasy-netty4,</li>
-<li>l&#8217;intégration du JacksonConfig (changement d&#8217;API coté Jackson),</li>
-<li>le support de JodaTime dans Jackson 2,</li>
-<li>et le support du CORS dans Resteasy-Netty4.</li>
-</ul>
-
-
-<p>C&#8217;est donc ces différents points qui seront abordés dans cet article.</p>
-
-<p>Le code se trouve sur github sur la branche <a href="https://github.com/jetoile/resteasy-netty-sample/tree/netty4">netty4</a>.</p>
-
-<!-- more -->
-
-
-<h1>Les Dépendances</h1>
-
-<p>Les dépendances utilisées sont les suivantes (au format gradle) :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>compile group: &#39;io.netty&#39;, name: &#39;netty-all&#39;, version:&#39;4.0.17.Final&#39;
-</span><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
-</span><span class='line'>compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-jvm&#39;, version:&#39;1.1.2&#39;
-</span><span class='line'>compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.0&#39;
-</span><span class='line'>compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
-</span><span class='line'>compile group: &#39;javax.servlet&#39;, name: &#39;servlet-api&#39;, version:&#39;2.5&#39;
-</span><span class='line'>compile group: &#39;com.codahale.metrics&#39;, name: &#39;metrics-core&#39;, version:&#39;3.0.1&#39;
-</span><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-netty4&#39;, version:&#39;3.0.6.Final&#39;
-</span><span class='line'>compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson2-provider&#39;, version:&#39;3.0.6.Final&#39;
-</span><span class='line'>compile group: &#39;com.fasterxml.jackson.datatype&#39;, name: &#39;jackson-datatype-joda&#39;, version:&#39;2.3.2&#39;
-</span><span class='line'>compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.9&#39;
-</span><span class='line'>compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
-</span><span class='line'>compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
-</span><span class='line'>compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&#39;
-</span><span class='line'>compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) {exclude(module: &#39;jsr305&#39;)}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On peut y constater depuis la version précédente que netty est passé en version <strong>4.0.17.Final</strong> mais également c&#8217;est maintenant l&#8217;artefact <strong>resteasy-netty4</strong> qui est utilisé plutôt que <strong>resteasy-netty</strong>. De la même manière, c&#8217;est maintenant l&#8217;artefact <strong>resteasy-jackson2-provider</strong> plutôt que <strong>resteasy-jackson-provider</strong>.</p>
-
-<p>En outre l&#8217;artefact <strong>jackson-datatype-joda</strong> a été ajouté (nous y reviendrons ultérieurement).</p>
-
-<h1>Intégration de Resteasy-netty4</h1>
-
-<p>Afin de remplacer Resteasy-netty 3 par Resteasy-Netty4, il suffit de modifier les dépendances et de supprimer le hack fait précédemment concernant le CORS (ie. la classe <code>RequestHandler</code>) qui est incompatible avec cette nouvelle version.</p>
-
-<p>Une fois cela fait, le programme devrait être de nouveau fonctionnel sans avoir à modifier quoique ce soit (modulo Swagger-UI mais nous y reviendrons ultérieurement.)</p>
-
-<h1>Intégration de Jackson 2</h1>
-
-<p>Comme il a été vu précédemment, c&#8217;est maintenant la version de Jackson 2 qui est utilisé plutôt que la 1.</p>
-
-<p>Aussi, il est nécessaire de modifier les packages de Jackson importés : cela n&#8217;est à faire que dans la classe <code>JacksonConfig</code>.</p>
-
-<p>Certaines des API ayant également évoluées, la classe <code>JacksonConfig</code> devient :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JacksonConfig</span> <span class="kd">implements</span> <span class="n">ContextResolver</span><span class="o">&lt;</span><span class="n">ObjectMapper</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">ObjectMapper</span> <span class="n">objectMapper</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">JacksonConfig</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">objectMapper</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">SerializationFeature</span><span class="o">.</span><span class="na">WRITE_DATES_AS_TIMESTAMPS</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">objectMapper</span><span class="o">.</span><span class="na">setSerializationInclusion</span><span class="o">(</span><span class="n">JsonInclude</span><span class="o">.</span><span class="na">Include</span><span class="o">.</span><span class="na">NON_NULL</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">ObjectMapper</span> <span class="nf">getContext</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">objectType</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">objectMapper</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Support de JodaTime dans Jackson 2</h1>
-
-<p>On a vu dans le paragraphe précédent comment il fallait modifier notre code pour utiliser Jackson 2 à la place de Jackson 1.</p>
-
-<p>Cependant, lors d&#8217;un :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>curl -XGET http://localhost:8081/sample/say/hello
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On obtient :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;message&quot;</span><span class="o">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;time&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="s2">&quot;era&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;dayOfMonth&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;dayOfWeek&quot;</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;dayOfYear&quot;</span><span class="o">:</span> <span class="mi">65</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;weekyear&quot;</span><span class="o">:</span> <span class="mi">2014</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;weekOfWeekyear&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;monthOfYear&quot;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;yearOfEra&quot;</span><span class="o">:</span> <span class="mi">2014</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;yearOfCentury&quot;</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;centuryOfEra&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;millisOfSecond&quot;</span><span class="o">:</span> <span class="mi">173</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;millisOfDay&quot;</span><span class="o">:</span> <span class="mi">53370173</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;secondOfMinute&quot;</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;secondOfDay&quot;</span><span class="o">:</span> <span class="mi">53370</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;minuteOfHour&quot;</span><span class="o">:</span> <span class="mi">49</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;minuteOfDay&quot;</span><span class="o">:</span> <span class="mi">889</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;hourOfDay&quot;</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;year&quot;</span><span class="o">:</span> <span class="mi">2014</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;zone&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;fixed&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>            <span class="s2">&quot;uncachedZone&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>                <span class="s2">&quot;cachable&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>                <span class="s2">&quot;fixed&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;Europe/Paris&quot;</span>
-</span><span class='line'>            <span class="p">},</span>
-</span><span class='line'>            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;Europe/Paris&quot;</span>
-</span><span class='line'>        <span class="p">},</span>
-</span><span class='line'>        <span class="s2">&quot;millis&quot;</span><span class="o">:</span> <span class="mi">1394113770173</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;chronology&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>            <span class="s2">&quot;zone&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>                <span class="s2">&quot;fixed&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>                <span class="s2">&quot;uncachedZone&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>                    <span class="s2">&quot;cachable&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>                    <span class="s2">&quot;fixed&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>                    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;Europe/Paris&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;Europe/Paris&quot;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">},</span>
-</span><span class='line'>        <span class="s2">&quot;afterNow&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;beforeNow&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>        <span class="s2">&quot;equalNow&quot;</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pour corriger cela, il suffit d&#8217;importer la dépendance <strong>&lsquo;com.fasterxml.jackson.datatype&rsquo;, name: &lsquo;jackson-datatype-joda&rsquo;</strong> et d&#8217;ajouter à l&#8217;<code>objectMapper</code> le module <code>JodaModule</code> :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectMapper</span><span class="o">();</span>
-</span><span class='line'><span class="n">objectMapper</span><span class="o">.</span><span class="na">registerModule</span><span class="o">(</span><span class="k">new</span> <span class="n">JodaModule</span><span class="o">());</span>
-</span><span class='line'><span class="n">objectMapper</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="n">SerializationFeature</span><span class="o">.</span><span class="na">WRITE_DATES_AS_TIMESTAMPS</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ainsi, on obtient bien :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;message&quot;</span><span class="o">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;time&quot;</span><span class="o">:</span> <span class="s2">&quot;2014-03-06T13:53:38.714Z&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Support du CORS dans Resteasy-Netty4</h1>
-
-<p>Précédemment, avec Resteast-netty 3, nous avions remarqué un problème de CORS avec Swagger-UI.
-Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&#8217;était pas très propre&hellip;</p>
-
-<p>Malheureusement, Resteasy-netty4 n&#8217;offre pas, non plus, de manière simple pour surmonter ce problème. Heureusement, en fouillant un peu sur internet, un <a href="http://stackoverflow.com/questions/18857546/implement-cross-origin-resource-sharing-cors-on-resteasy-netty-server">article</a> propose de rajouter un <code>ChannelInboundHandler</code> au <em>pipeline</em> Netty.</p>
-
-<p>Cependant, je n&#8217;ai pas trouvé de moyen simple de le faire mis à part la surcharge de la méthode&hellip;</p>
-
-<p>Le code obtenu est donc le suivant :</p>
-
-<p>La classe <code>ChannedInboundHandler</code> :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CorsHeadersChannelHandler</span> <span class="kd">extends</span> <span class="n">SimpleChannelInboundHandler</span><span class="o">&lt;</span><span class="n">NettyHttpRequest</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">channelRead0</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">NettyHttpRequest</span> <span class="n">request</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">request</span><span class="o">.</span><span class="na">getResponse</span><span class="o">().</span><span class="na">getOutputHeaders</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Access-Control-Allow-Origin&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">request</span><span class="o">.</span><span class="na">getResponse</span><span class="o">().</span><span class="na">getOutputHeaders</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Access-Control-Allow-Methods&quot;</span><span class="o">,</span> <span class="s">&quot;GET,POST,PUT,DELETE,OPTIONS&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">request</span><span class="o">.</span><span class="na">getResponse</span><span class="o">().</span><span class="na">getOutputHeaders</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;Access-Control-Allow-Headers&quot;</span><span class="o">,</span> <span class="s">&quot;X-Requested-With, Content-Type, Content-Length&quot;</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">ctx</span><span class="o">.</span><span class="na">fireChannelRead</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>La surcharge de la méthode <code>start()</code> pour ajouter le <em>handler</em> au pipeline Netty (désolé pour le nom&hellip;) :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyNettyJaxrsServer</span> <span class="kd">extends</span> <span class="n">NettyJaxrsServer</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">EventLoopGroup</span> <span class="n">eventLoopGroup</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">EventLoopGroup</span> <span class="n">eventExecutor</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">ioWorkerCount</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">executorThreadCount</span> <span class="o">=</span> <span class="mi">16</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">SSLContext</span> <span class="n">sslContext</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">maxRequestSize</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">10</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">backlog</span> <span class="o">=</span> <span class="mi">128</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setSSLContext</span><span class="o">(</span><span class="n">SSLContext</span> <span class="n">sslContext</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">sslContext</span> <span class="o">=</span> <span class="n">sslContext</span><span class="o">;</span> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setIoWorkerCount</span><span class="o">(</span><span class="kt">int</span> <span class="n">ioWorkerCount</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">ioWorkerCount</span> <span class="o">=</span> <span class="n">ioWorkerCount</span><span class="o">;</span> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setExecutorThreadCount</span><span class="o">(</span><span class="kt">int</span> <span class="n">executorThreadCount</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">executorThreadCount</span> <span class="o">=</span>  <span class="n">executorThreadCount</span><span class="o">;</span> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMaxRequestSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">maxRequestSize</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">maxRequestSize</span>  <span class="o">=</span> <span class="n">maxRequestSize</span><span class="o">;</span> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setBacklog</span><span class="o">(</span><span class="kt">int</span> <span class="n">backlog</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">backlog</span> <span class="o">=</span> <span class="n">backlog</span><span class="o">;</span> <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">eventLoopGroup</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NioEventLoopGroup</span><span class="o">(</span><span class="n">ioWorkerCount</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">eventExecutor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NioEventLoopGroup</span><span class="o">(</span><span class="n">executorThreadCount</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">deployment</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
-</span><span class='line'>        <span class="kd">final</span> <span class="n">RequestDispatcher</span> <span class="n">dispatcher</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RequestDispatcher</span><span class="o">((</span><span class="n">SynchronousDispatcher</span><span class="o">)</span><span class="n">deployment</span><span class="o">.</span><span class="na">getDispatcher</span><span class="o">(),</span> <span class="n">deployment</span><span class="o">.</span><span class="na">getProviderFactory</span><span class="o">(),</span> <span class="n">domain</span><span class="o">);</span>
-</span><span class='line'>        <span class="c1">// Configure the server.</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">sslContext</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">bootstrap</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">eventLoopGroup</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">channel</span><span class="o">(</span><span class="n">NioServerSocketChannel</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">childHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">ChannelInitializer</span><span class="o">&lt;</span><span class="n">SocketChannel</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>                        <span class="nd">@Override</span>
-</span><span class='line'>                        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initChannel</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">ch</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpRequestDecoder</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpObjectAggregator</span><span class="o">(</span><span class="n">maxRequestSize</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpResponseEncoder</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RestEasyHttpRequestDecoder</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">.</span><span class="na">getDispatcher</span><span class="o">(),</span> <span class="n">root</span><span class="o">,</span> <span class="n">RestEasyHttpRequestDecoder</span><span class="o">.</span><span class="na">Protocol</span><span class="o">.</span><span class="na">HTTP</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">CorsHeadersChannelHandler</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RestEasyHttpResponseEncoder</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="n">eventExecutor</span><span class="o">,</span> <span class="k">new</span> <span class="n">RequestHandler</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">));</span>
-</span><span class='line'>                        <span class="o">}</span>
-</span><span class='line'>                    <span class="o">})</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_BACKLOG</span><span class="o">,</span> <span class="n">backlog</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_KEEPALIVE</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>            <span class="kd">final</span> <span class="n">SSLEngine</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">sslContext</span><span class="o">.</span><span class="na">createSSLEngine</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">engine</span><span class="o">.</span><span class="na">setUseClientMode</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">bootstrap</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">eventLoopGroup</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">channel</span><span class="o">(</span><span class="n">NioServerSocketChannel</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">childHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">ChannelInitializer</span><span class="o">&lt;</span><span class="n">SocketChannel</span><span class="o">&gt;()</span> <span class="o">{</span>
-</span><span class='line'>                        <span class="nd">@Override</span>
-</span><span class='line'>                        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">initChannel</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">ch</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addFirst</span><span class="o">(</span><span class="k">new</span> <span class="n">SslHandler</span><span class="o">(</span><span class="n">engine</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpRequestDecoder</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpObjectAggregator</span><span class="o">(</span><span class="n">maxRequestSize</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">HttpResponseEncoder</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RestEasyHttpRequestDecoder</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">.</span><span class="na">getDispatcher</span><span class="o">(),</span> <span class="n">root</span><span class="o">,</span> <span class="n">RestEasyHttpRequestDecoder</span><span class="o">.</span><span class="na">Protocol</span><span class="o">.</span><span class="na">HTTPS</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">CorsHeadersChannelHandler</span><span class="o">());</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RestEasyHttpResponseEncoder</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">));</span>
-</span><span class='line'>                            <span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="n">eventExecutor</span><span class="o">,</span> <span class="k">new</span> <span class="n">RequestHandler</span><span class="o">(</span><span class="n">dispatcher</span><span class="o">));</span>
-</span><span class='line'>                        <span class="o">}</span>
-</span><span class='line'>                    <span class="o">})</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">option</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_BACKLOG</span><span class="o">,</span> <span class="n">backlog</span><span class="o">)</span>
-</span><span class='line'>                    <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_KEEPALIVE</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="n">bootstrap</span><span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="n">port</span><span class="o">).</span><span class="na">syncUninterruptibly</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On y observe le rajout du <em>handler</em> :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ch</span><span class="o">.</span><span class="na">pipeline</span><span class="o">().</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">CorsHeadersChannelHandler</span><span class="o">());</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Enfin, l&#8217;initialisation du serveur Resteasy-netty :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">MyNettyJaxrsServer</span> <span class="n">netty</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyNettyJaxrsServer</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Conclusion</h1>
-
-<p>On a vu, dans cet article, comment il était possible d&#8217;intégrer JAX-RS avec Netty 4 à l&#8217;aide de Resteasy tout en ayant une intégration de Jackson 2.</p>
-
-<p>On a également montré qu&#8217;il était possible d&#8217;y intégrer très simplement Swagger et Jolokia.</p>
 ]]></content>
   </entry>
   

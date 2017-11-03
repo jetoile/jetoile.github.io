@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-11-03T20:13:18+01:00</updated>
+  <updated>2017-11-03T20:15:31+01:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -1511,7 +1511,7 @@
 
 <p>En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.</p>
 
-<p>Enfin, les 2 autres avantages non négligeables est que :</p>
+<p>Enfin, les 2 autres avantages non négligeables sont que :</p>
 
 <ul>
 <li>le livrable est versionné dans le <em>repository manager</em> (tel que Nexus ou Archiva)</li>

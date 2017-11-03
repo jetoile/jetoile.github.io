@@ -832,7 +832,7 @@ Alors, oui, l'approche est peut être un peu simpliste et naïve mais elle a au 
 
 En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.
 
-Enfin, les 2 autres avantages non négligeables est que :
+Enfin, les 2 autres avantages non négligeables sont que :
 
 * le livrable est versionné dans le _repository manager_ (tel que Nexus ou Archiva)
 * une chaine CI classique (tel que Jenkins) peut s'occuper du déploiement au besoin

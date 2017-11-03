@@ -832,6 +832,11 @@ Alors, oui, l'approche est peut être un peu simpliste et naïve mais elle a au 
 
 En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.
 
+Enfin, les 2 autres avantages non négligeables est que :
+
+* le livrable est versionné dans le _repository manager_ (tel que Nexus ou Archiva)
+* une chaine CI classique (tel que Jenkins) peut s'occuper du déploiement au besoin
+
 > A noter que le code se trouve dans le [github ci-joint](https://github.com/jetoile/bigdata-sample-parent) et qu'il a été mis, pour des questions de simplicité, dans un seul repository (cela explique qu'on ait un pom parent qui ne fait que déclarer les modules fils mais que ces derniers ne le référencent pas).
 
 > A noter également qu'un archetype permettant de générer la structure du projet sample est présent (__bigdata-archetype__).

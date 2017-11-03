@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-11-02T23:29:10+01:00</updated>
+  <updated>2017-11-03T19:56:15+01:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -12,6 +12,1510 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Packaging, Test Et Livraison Pour Hadoop : Mode D'emploi]]></title>
+    <link href="https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html"/>
+    <updated>2017-11-03T16:16:05+01:00</updated>
+    <id>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi</id>
+    <content type="html"><![CDATA[<p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small" /> Hadoop et son écosystème est un monde complexe où beaucoup de nos paradigmes de développeur Java / JavaEE (EE4J?) sont chamboulés.</p>
+
+<p>D&#8217;une part les technologies utilisées diffèrent mais, en plus, d&#8217;autres questions telles que l&#8217;architecture, les tests (unitaires, intégrations, &hellip;), la gestion des logs (debug, audit, pki, &hellip;), les procédures de livraison, la gestion de la configuration de l&#8217;application, etc. viennent s&#8217;y ajouter.</p>
+
+<p>Cet article va montrer comment il est possible de concilier simplement les tests d&#8217;intégration mais aussi le déploiement afin de tendre vers la philosophie de <em>continuous deployment</em>.</p>
+
+<p>Une solution sera proposée et, même si elle est discutable et peut paraitre naïve, elle montrera comment il peut être simple de concilier ces deux points.</p>
+
+<p>Concernant les technologies utilisées, la solution proposée utilisera :</p>
+
+<ul>
+<li>Spark 2.2.0</li>
+<li>Oozie</li>
+<li>Knox</li>
+<li>ElasticSearch 5.6.3</li>
+<li>Hive</li>
+<li>Scala 2.11 pour le langage mais Java pourrait également être utilisé</li>
+<li>Maven 3.5.0 pour la partie de <em>build</em></li>
+</ul>
+
+
+<p>Bien sûr, il est facilement possible d&#8217;ajouter d&#8217;autres technologies comme HBase, Sqoop, Hive (avec exécution de hql) ou autre.</p>
+
+<p>A noter qu&#8217;il sera utilisé les composants Hortonworks (HDP 2.6.2) et c&#8217;est pourquoi toute la partie exécution des jobs se fera au travers d&#8217;Oozie qui est, le plus souvent quand on utilise une distribution du marché, la solution par défaut.</p>
+
+<p>Ainsi il sera traité les points suivants :</p>
+
+<ul>
+<li>Description du cas d&#8217;usage et implémentation</li>
+<li>Anatomie d&#8217;un livrable</li>
+<li>Mise en oeuvre</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>Description du cas d&#8217;usage et implémentation</h1>
+
+<p>L&#8217;exemple qui sera utilisée par la suite est simple mais il ne s&#8217;agit que d&#8217;un prétexte.</p>
+
+<p>Il s&#8217;agira de lire des donnnées au format orc, de les indexer dans ElasticSearch et de créer une table Hive dessus. Le tout avec un job Spark.</p>
+
+<p>Ainsi, le code est le suivant :</p>
+
+<p><code>Classe Main</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">object</span> <span class="n">Main</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lazy</span> <span class="n">val</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">.</span><span class="na">getName</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">def</span> <span class="nf">logArguments</span><span class="o">(</span><span class="nl">reader:</span> <span class="n">String</span><span class="o">,</span> <span class="nl">configPath:</span> <span class="n">String</span><span class="o">,</span> <span class="nl">persister:</span> <span class="n">String</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">def</span> <span class="nf">parseArgs</span><span class="o">(</span><span class="nl">args:</span> <span class="n">Array</span><span class="o">[</span><span class="n">String</span><span class="o">]):</span> <span class="o">(</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">val</span> <span class="n">jCommander</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JCommander</span><span class="o">(</span><span class="n">CommandLineArgs</span><span class="o">,</span> <span class="n">args</span><span class="o">.</span><span class="na">toArray</span><span class="o">:</span> <span class="n">_</span><span class="o">*)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">CommandLineArgs</span><span class="o">.</span><span class="na">help</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">jCommander</span><span class="o">.</span><span class="na">usage</span><span class="o">()</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="o">(</span><span class="n">CommandLineArgs</span><span class="o">.</span><span class="na">inputPath</span><span class="o">,</span> <span class="n">CommandLineArgs</span><span class="o">.</span><span class="na">index</span><span class="o">,</span> <span class="n">CommandLineArgs</span><span class="o">.</span><span class="na">docType</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">def</span> <span class="nf">main</span><span class="o">(</span><span class="nl">args:</span> <span class="n">Array</span><span class="o">[</span><span class="n">String</span><span class="o">]):</span> <span class="n">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">val</span> <span class="n">sparkSession</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="na">builder</span><span class="o">.</span><span class="na">appName</span><span class="o">(</span><span class="s">&quot;simpleApp&quot;</span><span class="o">).</span><span class="na">config</span><span class="o">(</span><span class="s">&quot;es.index.auto.create&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">).</span><span class="na">enableHiveSupport</span><span class="o">.</span><span class="na">getOrCreate</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">val</span> <span class="o">(</span><span class="n">inputPath</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> <span class="n">docType</span><span class="o">)</span> <span class="o">=</span> <span class="n">parseArgs</span><span class="o">(</span><span class="n">args</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">val</span> <span class="n">job</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleJob</span><span class="o">(</span><span class="n">sparkSession</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">val</span> <span class="n">dataFrame</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">inputPath</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">dataFrame</span><span class="o">.</span><span class="na">cache</span><span class="o">()</span>
+</span><span class='line'>    <span class="n">job</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">dataFrame</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> <span class="n">docType</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">job</span><span class="o">.</span><span class="na">createExternalTable</span><span class="o">(</span><span class="n">dataFrame</span><span class="o">,</span> <span class="s">&quot;tmp&quot;</span><span class="o">,</span> <span class="n">inputPath</span> <span class="o">+</span> <span class="s">&quot;/tmp&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>Classe SimpleJob</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">SimpleJob</span><span class="o">(</span><span class="n">sc</span><span class="k">:</span> <span class="kt">SparkSession</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">sparkSession</span> <span class="k">=</span> <span class="n">sc</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">read</span><span class="o">(</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">DataFrame</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">sparkSession</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;orc&quot;</span><span class="o">).</span><span class="n">load</span><span class="o">(</span><span class="n">path</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">write</span><span class="o">(</span><span class="n">dataFrame</span><span class="k">:</span> <span class="kt">DataFrame</span><span class="o">,</span> <span class="n">index</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">docType</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">import</span> <span class="nn">sparkSession.implicits._</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">rdd</span> <span class="k">=</span> <span class="n">dataFrame</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">FooData</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">getAs</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">),</span> <span class="n">t</span><span class="o">.</span><span class="n">getAs</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">)))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">import</span> <span class="nn">org.elasticsearch.spark._</span>
+</span><span class='line'>    <span class="n">rdd</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">saveToEs</span><span class="o">(</span><span class="n">index</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">docType</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">createExternalTable</span><span class="o">(</span><span class="n">dataframe</span><span class="k">:</span> <span class="kt">DataFrame</span><span class="o">,</span> <span class="n">hiveTableName</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">location</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">dataframe</span><span class="o">.</span><span class="n">registerTempTable</span><span class="o">(</span><span class="s">&quot;my_temp_table&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">sparkSession</span><span class="o">.</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;CREATE EXTERNAL TABLE &quot;</span> <span class="o">+</span> <span class="n">hiveTableName</span> <span class="o">+</span> <span class="s">&quot; (id STRING, value STRING) STORED AS ORC LOCATION &#39;&quot;</span> <span class="o">+</span> <span class="n">location</span> <span class="o">+</span> <span class="s">&quot;&#39;&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">sparkSession</span><span class="o">.</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;INSERT INTO &quot;</span> <span class="o">+</span> <span class="n">hiveTableName</span> <span class="o">+</span> <span class="s">&quot; SELECT * from my_temp_table&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="n">shutdown</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">sparkSession</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">sparkSession</span><span class="o">.</span><span class="n">stop</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>On notera que la création de la session Spark a été dissociée du job afin de permettre la réalisation de tests d&#8217;intégration.</p></blockquote>
+
+<p>Afin de réaliser des tests d&#8217;intégration, <a href="https://github.com/jetoile/hadoop-unit">Hadoop Unit</a> est utilisé avec le mode plugin maven en mode embedded.</p>
+
+<p>Ainsi les tests d&#8217;intégrations donnent cela:
+<code>Classe SimpleJobIntegrationTest</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+</pre></td><td class='code'><pre><code class='scala'><span class='line'><span class="k">class</span> <span class="nc">SimpleJobIntegrationTest</span> <span class="k">extends</span> <span class="nc">FeatureSpec</span> <span class="k">with</span> <span class="nc">BeforeAndAfterAll</span> <span class="k">with</span> <span class="nc">BeforeAndAfter</span> <span class="k">with</span> <span class="nc">GivenWhenThen</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">var</span> <span class="n">configuration</span><span class="k">:</span> <span class="kt">Configuration</span> <span class="o">=</span> <span class="k">_</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">inputCsvPath</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;/input/csv&quot;</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">inputOrcPath</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;/input/orc&quot;</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">index</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;test_index&quot;</span>
+</span><span class='line'>  <span class="k">val</span> <span class="n">docType</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
+</span><span class='line'>  <span class="k">var</span> <span class="nc">DROP_TABLES</span><span class="k">:</span> <span class="kt">Operation</span> <span class="o">=</span> <span class="k">_</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">override</span> <span class="k">protected</span> <span class="k">def</span> <span class="n">beforeAll</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class='line'>    <span class="nc">HadoopUtils</span><span class="o">.</span><span class="nc">INSTANCE</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">configuration</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PropertiesConfiguration</span><span class="o">(</span><span class="nc">HadoopUnitConfig</span><span class="o">.</span><span class="nc">DEFAULT_PROPS_FILE</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nc">DROP_TABLES</span> <span class="k">=</span> <span class="n">sequenceOf</span><span class="o">(</span><span class="n">sql</span><span class="o">(</span><span class="s">&quot;DROP TABLE IF EXISTS default.toto&quot;</span><span class="o">));</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">before</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">val</span> <span class="n">fileSystem</span> <span class="k">=</span> <span class="nc">HdfsUtils</span><span class="o">.</span><span class="nc">INSTANCE</span><span class="o">.</span><span class="n">getFileSystem</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="s">&quot;hdfs://&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">val</span> <span class="n">created</span> <span class="k">=</span> <span class="n">fileSystem</span><span class="o">.</span><span class="n">mkdirs</span><span class="o">(</span><span class="k">new</span> <span class="nc">Path</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputCsvPath</span><span class="o">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">fileSystem</span><span class="o">.</span><span class="n">copyFromLocalFile</span><span class="o">(</span><span class="k">new</span> <span class="nc">Path</span><span class="o">(</span><span class="nc">SimpleJobIntegrationTest</span><span class="o">.</span><span class="k">this</span><span class="o">.</span><span class="n">getClass</span><span class="o">.</span><span class="n">getClassLoader</span><span class="o">.</span><span class="n">getResource</span><span class="o">(</span><span class="s">&quot;simplefile.csv&quot;</span><span class="o">).</span><span class="n">toURI</span><span class="o">),</span> <span class="k">new</span> <span class="nc">Path</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputCsvPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.csv&quot;</span><span class="o">))</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">val</span> <span class="n">sparkSession</span> <span class="k">=</span> <span class="nc">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">).</span><span class="n">master</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">).</span><span class="n">enableHiveSupport</span><span class="o">.</span><span class="n">getOrCreate</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">val</span> <span class="n">dataFrame</span> <span class="k">=</span> <span class="n">sparkSession</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">&quot;com.databricks.spark.csv&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;header&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;delimiter&quot;</span><span class="o">,</span> <span class="s">&quot;,&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">load</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputCsvPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.csv&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">dataFrame</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">&quot;orc.compress&quot;</span><span class="o">,</span> <span class="s">&quot;ZLIB&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">mode</span><span class="o">(</span><span class="nc">SaveMode</span><span class="o">.</span><span class="nc">Append</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">orc</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputOrcPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.orc&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">sparkSession</span><span class="o">.</span><span class="n">stop</span><span class="o">()</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">after</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nc">HiveSetup</span><span class="o">(</span><span class="nc">HiveConnectionUtils</span><span class="o">.</span><span class="nc">INSTANCE</span><span class="o">.</span><span class="n">getDestination</span><span class="o">,</span> <span class="n">sequenceOf</span><span class="o">(</span><span class="nc">DROP_TABLES</span><span class="o">)).</span><span class="n">launch</span><span class="o">()</span>
+</span><span class='line'>    <span class="nc">HdfsUtils</span><span class="o">.</span><span class="nc">INSTANCE</span><span class="o">.</span><span class="n">getFileSystem</span><span class="o">().</span><span class="n">delete</span><span class="o">(</span><span class="k">new</span> <span class="nc">Path</span><span class="o">(</span><span class="s">&quot;/input&quot;</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">feature</span><span class="o">(</span><span class="s">&quot;simple test&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">scenario</span><span class="o">(</span><span class="s">&quot;read data&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Given</span><span class="o">(</span><span class="s">&quot;a local spark conf&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">sparkSession</span> <span class="k">=</span> <span class="nc">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">).</span><span class="n">master</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">).</span><span class="n">enableHiveSupport</span><span class="o">.</span><span class="n">getOrCreate</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">And</span><span class="o">(</span><span class="s">&quot;my job&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">job</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SimpleJob</span><span class="o">(</span><span class="n">sparkSession</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">When</span><span class="o">(</span><span class="s">&quot;I read an orc&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="s">&quot;hdfs://&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">dataFrame</span> <span class="k">=</span> <span class="n">job</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputOrcPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.orc&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Then</span><span class="o">(</span><span class="s">&quot;I have the right schema&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">assertThat</span><span class="o">(</span><span class="n">dataFrame</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">fieldNames</span><span class="o">).</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="s">&quot;value&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">job</span><span class="o">.</span><span class="n">shutdown</span><span class="o">()</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">scenario</span><span class="o">(</span><span class="s">&quot;write into es&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Given</span><span class="o">(</span><span class="s">&quot;a local spark conf&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">sparkSession</span> <span class="k">=</span> <span class="nc">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">master</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">config</span><span class="o">(</span><span class="s">&quot;spark.driver.allowMultipleContexts&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">config</span><span class="o">(</span><span class="s">&quot;es.index.auto.create&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">config</span><span class="o">(</span><span class="s">&quot;es.nodes&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">ELASTICSEARCH_IP_KEY</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">config</span><span class="o">(</span><span class="s">&quot;es.port&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">ELASTICSEARCH_HTTP_PORT_KEY</span><span class="o">))</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">config</span><span class="o">(</span><span class="s">&quot;es.nodes.wan.only&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">enableHiveSupport</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">getOrCreate</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">And</span><span class="o">(</span><span class="s">&quot;my job&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">job</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SimpleJob</span><span class="o">(</span><span class="n">sparkSession</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">When</span><span class="o">(</span><span class="s">&quot;I read an orc&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="s">&quot;hdfs://&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">dataFrame</span> <span class="k">=</span> <span class="n">job</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputOrcPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.orc&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">And</span><span class="o">(</span><span class="s">&quot;I call write method&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">job</span><span class="o">.</span><span class="n">write</span><span class="o">(</span><span class="n">dataFrame</span><span class="o">,</span> <span class="n">index</span><span class="o">,</span> <span class="n">docType</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">job</span><span class="o">.</span><span class="n">shutdown</span><span class="o">()</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Then</span><span class="o">(</span><span class="s">&quot;data is indexed into ES&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">client</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">PreBuiltTransportClient</span><span class="o">(</span><span class="nc">Settings</span><span class="o">.</span><span class="nc">EMPTY</span><span class="o">).</span><span class="n">addTransportAddress</span><span class="o">(</span><span class="k">new</span> <span class="nc">InetSocketTransportAddress</span><span class="o">(</span><span class="nc">InetAddress</span><span class="o">.</span><span class="n">getByName</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">ELASTICSEARCH_IP_KEY</span><span class="o">)),</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="nc">ELASTICSEARCH_TCP_PORT_KEY</span><span class="o">)))</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">prepareRefresh</span><span class="o">(</span><span class="n">index</span><span class="o">).</span><span class="n">execute</span><span class="o">.</span><span class="n">actionGet</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">val</span> <span class="n">response</span> <span class="k">=</span> <span class="n">client</span><span class="o">.</span><span class="n">prepareSearch</span><span class="o">(</span><span class="n">index</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">setTypes</span><span class="o">(</span><span class="n">docType</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">setSize</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="n">setQuery</span><span class="o">(</span><span class="nc">QueryBuilders</span><span class="o">.</span><span class="n">queryStringQuery</span><span class="o">(</span><span class="s">&quot;*&quot;</span><span class="o">)).</span><span class="n">get</span><span class="o">().</span><span class="n">getHits</span><span class="o">().</span><span class="n">getTotalHits</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">assertThat</span><span class="o">(</span><span class="n">response</span><span class="o">).</span><span class="n">isEqualTo</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">scenario</span><span class="o">(</span><span class="s">&quot;create external table&quot;</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Given</span><span class="o">(</span><span class="s">&quot;a local spark conf&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">sparkSession</span> <span class="k">=</span> <span class="nc">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">).</span><span class="n">master</span><span class="o">(</span><span class="s">&quot;local[*]&quot;</span><span class="o">).</span><span class="n">enableHiveSupport</span><span class="o">.</span><span class="n">getOrCreate</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">And</span><span class="o">(</span><span class="s">&quot;my job&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">job</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SimpleJob</span><span class="o">(</span><span class="n">sparkSession</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">When</span><span class="o">(</span><span class="s">&quot;I read an orc&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="s">&quot;hdfs://&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_HOST_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">configuration</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="nc">HDFS_NAMENODE_PORT_KEY</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">dataFrame</span> <span class="k">=</span> <span class="n">job</span><span class="o">.</span><span class="n">read</span><span class="o">(</span><span class="n">hdfsPath</span> <span class="o">+</span> <span class="n">inputOrcPath</span> <span class="o">+</span> <span class="s">&quot;/simplefile.orc&quot;</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">And</span><span class="o">(</span><span class="s">&quot;I call createExternalTable method&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">job</span><span class="o">.</span><span class="n">createExternalTable</span><span class="o">(</span><span class="n">dataFrame</span><span class="o">,</span> <span class="s">&quot;default.toto&quot;</span><span class="o">,</span> <span class="n">hdfsPath</span> <span class="o">+</span> <span class="s">&quot;input/titi&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">job</span><span class="o">.</span><span class="n">shutdown</span><span class="o">()</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nc">Then</span><span class="o">(</span><span class="s">&quot;my external table is created&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">stmt</span> <span class="k">=</span> <span class="nc">HiveConnectionUtils</span><span class="o">.</span><span class="nc">INSTANCE</span><span class="o">.</span><span class="n">getConnection</span><span class="o">.</span><span class="n">createStatement</span>
+</span><span class='line'>      <span class="k">val</span> <span class="n">resultSet</span> <span class="k">=</span> <span class="n">stmt</span><span class="o">.</span><span class="n">executeQuery</span><span class="o">(</span><span class="s">&quot;SELECT * FROM default.toto&quot;</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">while</span> <span class="o">(</span><span class="n">resultSet</span><span class="o">.</span><span class="n">next</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">id</span> <span class="k">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="n">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span><span class='line'>        <span class="k">val</span> <span class="n">value</span> <span class="k">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="n">getString</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">id</span><span class="o">).</span><span class="n">isNotNull</span>
+</span><span class='line'>        <span class="n">assertThat</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="n">isNotNull</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>On peut noter que la partie <em>before</em> charge un fichier csv dans hdfs et le transforme en orc avec un job Spark (un simple read/write). En effet, il est plus aisé de lire un csv qu&#8217;un fichier orc pour un être humain&hellip; ;)</p>
+
+<p>On peut également noter la suppression de la table Hive créée sur la partie <em>after</em> qui utilise DbSetup <em>wrappé</em> par Hadoop Unit.</p>
+
+<p>Enfin, on peut constater que les job Spark utilisés ici sont bien en mode <strong>local</strong>.</p></blockquote>
+
+<p>Afin de permettre le démarrage d&#8217;Hadoop Unit en phase de pré-integration test et son arrêt en phase de post-integration test, la configuration maven est la suivante :
+<code>pom.xml</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;profiles&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;id&gt;</span>windows<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;activation&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;os&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;family&gt;</span>windows<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/os&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/activation&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;suffix.test&gt;</span>&quot;(?<span class="ni">&amp;lt;</span>!Integration)(Test|Case|Suite|Spec)&quot;<span class="nt">&lt;/suffix.test&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;suffix.it&gt;</span>&quot;(?<span class="ni">&amp;lt;</span>=Integration)(Test|Case|Suite|Spec)&quot;<span class="nt">&lt;/suffix.it&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;profile&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;id&gt;</span>default<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;activation&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;activeByDefault&gt;</span>true<span class="nt">&lt;/activeByDefault&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/activation&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;suffix.test&gt;</span>(?<span class="ni">&amp;lt;</span>!Integration)(Test|Case|Suite|Spec)<span class="nt">&lt;/suffix.test&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;suffix.it&gt;</span>(?<span class="ni">&amp;lt;</span>=Integration)(Test|Case|Suite|Spec)<span class="nt">&lt;/suffix.it&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/profile&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/profiles&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.scalatest<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>scalatest-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>${scalatest.maven.plugin.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>IntegrationTest<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;suffixes&gt;</span>${suffix.it}<span class="nt">&lt;/suffixes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>UnitTest<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>test<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;suffixes&gt;</span>${suffix.test}<span class="nt">&lt;/suffixes&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>${hadoop-unit.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>start<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>embedded-start<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>stop<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>embedded-stop<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>post-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;components&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;componentArtifact</span> <span class="na">implementation=</span><span class="s">&quot;fr.jetoile.hadoopunit.ComponentArtifact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;componentName&gt;</span>HDFS<span class="nt">&lt;/componentName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hdfs:${hadoop-unit.version}<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/componentArtifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;componentArtifact</span> <span class="na">implementation=</span><span class="s">&quot;fr.jetoile.hadoopunit.ComponentArtifact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;componentName&gt;</span>ZOOKEEPER<span class="nt">&lt;/componentName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-zookeeper:${hadoop-unit.version}<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/componentArtifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;componentArtifact</span> <span class="na">implementation=</span><span class="s">&quot;fr.jetoile.hadoopunit.ComponentArtifact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;componentName&gt;</span>HIVEMETA<span class="nt">&lt;/componentName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/componentArtifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;componentArtifact</span> <span class="na">implementation=</span><span class="s">&quot;fr.jetoile.hadoopunit.ComponentArtifact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;componentName&gt;</span>HIVESERVER2<span class="nt">&lt;/componentName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/componentArtifact&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;componentArtifact</span> <span class="na">implementation=</span><span class="s">&quot;fr.jetoile.hadoopunit.ComponentArtifact&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;componentName&gt;</span>ELASTICSEARCH<span class="nt">&lt;/componentName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-elasticsearch:${hadoop-unit.version}<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;elasticsearch.version&gt;</span>${elasticsearch.version}<span class="nt">&lt;/elasticsearch.version&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;elasticsearch.download.url&gt;</span>
+</span><span class='line'>                  https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/${elasticsearch.version}/elasticsearch-${elasticsearch.version}.zip
+</span><span class='line'>                <span class="nt">&lt;/elasticsearch.download.url&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/componentArtifact&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/components&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>${maven-shade-plugin.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;filters&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;artifact&gt;</span>*:*<span class="nt">&lt;/artifact&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>META-INF/*.SF<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>META-INF/*.DSA<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;exclude&gt;</span>META-INF/*.RSA<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/filters&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;shadedClassifierName&gt;</span>uber<span class="nt">&lt;/shadedClassifierName&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;shadedArtifactAttached&gt;</span>false<span class="nt">&lt;/shadedArtifactAttached&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>On peut noter 3 choses dans ce <code>pom.xml</code> :</p>
+
+<ul>
+<li>la configuration de tous ce qui est post-fixé par Integration(Test|Case|Suite|Spec) dans le scope d&#8217;integration test. Cela permet de séparer les tests unitaires des tests d&#8217;intégration</li>
+<li>l&#8217;utilisation d&#8217;un <em>profile</em> afin de corriger un bug sous windows obligeant à <em>quoter</em> le suffixe lors de l&#8217;utilisation de scalatest</li>
+<li>l&#8217;utilisation du plugin shade afin de générer un <em>fat jar</em> ayant le nom de l&#8217;artéfact</li>
+</ul>
+
+
+<p>Ainsi, l&#8217;exécution de <code>mvn test</code> n&#8217;exécutera que les tests unitaires alors que les tests d&#8217;intégration seront exécutés dès la phase integration-test (par exemple avec <code>mvn install</code> ou <code>mvn verify</code>).</p></blockquote>
+
+<h1>Anatomie d&#8217;un livrable</h1>
+
+<p>Dans le paragraphe précédent, il a été montré comment il était possible de réaliser des tests d&#8217;intégrations sur un job Spark nécessitant la présence de Hdfs, du métastore Hive et d&#8217;ElasticSearch.</p>
+
+<p>Un <em>fat jar</em> a également été produit.</p>
+
+<p>Dans ce paragraphe, nous allons voir de quoi nous avons besoin pour permettre de le déployer sur le cluster.</p>
+
+<p>En fait, lorsqu&#8217;il est décidé de tout orchestrer via Oozie, il devient nécessaire de pousser les jars (ou les scripts) dans un répertoire Hdfs donné mais également le workflow oozie (et éventuellement son/ses coordinateur(s)). Il est alors possible de <em>submitter</em> le workflow (ou le coordinateur) au travers du serveur Oozie en lui précisant un fichier <code>job.properties</code>.</p>
+
+<p>Ainsi, dans notre cas, le livrable sera constitué de :</p>
+
+<ul>
+<li>un jar (job Spark)</li>
+<li>un workflow.xml référençant le jar dans un répertoire Hdfs</li>
+<li>un coordinateur référençant le workflow dans un répertoire Hdfs</li>
+<li>un job.properties permettant d&#8217;exécuter le coordinateur</li>
+<li>un job.properties permettant d&#8217;exécuter le workflow (parce qu&#8217;on ne sait jamais si le job doit être exécuté manuellement)</li>
+</ul>
+
+
+<p>De plus, si il existe différent environnement (ie. developpement, recette ou production), il est préférable de variabiliser les choses spécifiques aux environnements (ex: répertoire Hdfs, nom de database Hive, nom d&#8217;index ElasticSearch, &hellip;)</p>
+
+<p>Ainsi, il peut être imaginé le format suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>├── dist
+</span><span class='line'>│   ├── lib
+</span><span class='line'>│   │   └── bigdata-sample-job-1.0-SNAPSHOT.jar
+</span><span class='line'>│   └── oozie
+</span><span class='line'>│       ├── coordinator
+</span><span class='line'>│       │   └── sample
+</span><span class='line'>│       │       └── coordinator.xml
+</span><span class='line'>│       ├── run
+</span><span class='line'>│       │   ├── coordinator
+</span><span class='line'>│       │   │   └── sample
+</span><span class='line'>│       │   │       └── job.properties
+</span><span class='line'>│       │   └── workflow
+</span><span class='line'>│       │       └── sample
+</span><span class='line'>│       │           └── job.properties
+</span><span class='line'>│       └── workflow
+</span><span class='line'>│           └── sample
+</span><span class='line'>│               └── workflow.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>où le <code>workflow.xml</code> pourrait être le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;workflow-app</span> <span class="na">name=</span><span class="s">&quot;sample&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;uri:oozie:workflow:0.5&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;global&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;property&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;name&gt;</span>mapred.job.queue.name<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;value&gt;</span>queue<span class="nt">&lt;/value&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/property&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/global&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;start</span> <span class="na">to=</span><span class="s">&quot;start&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;kill</span> <span class="na">name=</span><span class="s">&quot;kill&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;message&gt;</span>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]<span class="nt">&lt;/message&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/kill&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;start&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;spark</span> <span class="na">xmlns=</span><span class="s">&quot;uri:oozie:spark-action:0.2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;job-tracker&gt;</span>${jobTracker}<span class="nt">&lt;/job-tracker&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;name-node&gt;</span>${nameNode}<span class="nt">&lt;/name-node&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;master&gt;</span>yarn<span class="nt">&lt;/master&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;mode&gt;</span>cluster<span class="nt">&lt;/mode&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;name&gt;</span>sampleSpark<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;class&gt;</span>fr.jetoile.hadoop.sample.Main<span class="nt">&lt;/class&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;jar&gt;</span>${nameNode}//user/myuser/projects/share/lib/bigdata-sample-job-1.0-SNAPSHOT.jar<span class="nt">&lt;/jar&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>-p<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>hdfs://namenode/mypath<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>-i<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>sampleIndex<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>-d<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;arg&gt;</span>sampleDoc<span class="nt">&lt;/arg&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/spark&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ok</span> <span class="na">to=</span><span class="s">&quot;End&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;error</span> <span class="na">to=</span><span class="s">&quot;kill&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/action&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;end</span> <span class="na">name=</span><span class="s">&quot;End&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/workflow-app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>et le <code>job.properties</code> servant à l&#8217;exécuter :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>oozie.use.system.libpath<span class="o">=</span>True
+</span><span class='line'><span class="nv">send_email</span><span class="o">=</span>False
+</span><span class='line'><span class="nv">dryrun</span><span class="o">=</span>False
+</span><span class='line'><span class="nv">security_enabled</span><span class="o">=</span>False
+</span><span class='line'><span class="nv">nameNode</span><span class="o">=</span>hdfs://namenode
+</span><span class='line'><span class="nv">jobTracker</span><span class="o">=</span>jobtracker:8050
+</span><span class='line'>oozie.wf.application.path<span class="o">=</span>hdfs://namenode/user/myuser/projects/oozie/workflow/sample/
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Par contre, savoir ce qui doit être déployé sur Hdfs est intéressant mais il faut ensuite réaliser le déploiement en lui même.</p>
+
+<p>Ainsi, dans notre exemple, il faut :</p>
+
+<ul>
+<li>copier le fat jar dans le répertoire Hdfs <code>/user/myuser/projects/share/lib/</code> au travers de Knox (l&#8217;accès WebHdfs ou le client Hdfs n&#8217;étant souvent pas accessible pour des raisons de sécurité)</li>
+<li>copier le workflow.xml dans le répertoire Hdfs <code>/user/myuser/projects/oozie/workflow/sample</code> au travers de Knox (l&#8217;accès WebHdfs ou le client Hdfs n&#8217;étant souvent pas accessible pour des raisons de sécurité)</li>
+<li>exécuter le <code>workflow.xml</code> via la submission du fichier <code>job.properties</code> au Server Oozie au travers de Knox (l&#8217;accès au client Oozie ou à l&#8217;API Rest de Oozie n&#8217;étant souvent pas accessible pour des raisons de sécurité)</li>
+</ul>
+
+
+<p>Bien sûr, il est possible d&#8217;exécuter une suite de <code>curl</code> afin de permettre cela. Cependant, cela peut vite s&#8217;avérer réberbatif et, surtout, source d&#8217;erreur&hellip;</p>
+
+<blockquote><p>Pour rappel, par exemple, la copie d&#8217;un fichier sur Hdfs au travers de WebHdfs ou Knox se fait au travers 2 appels http (un premier PUT avec l&#8217;option CREATE qui renvoie dans le header une <em>location</em> ainsi qu&#8217;un code retour 307 puis un second PUT avec le fichier à l&#8217;url retournée dans le header <em>location</em> de l&#8217;appel précédent).</p></blockquote>
+
+<p>Ainsi, il peut être intéressant de regarder le composant <strong>gateway shell</strong> fournit par Knox et qui offre la possibilité d&#8217;écrire un script Groovy (ou un programme Java/Scala) permettant de piloter ces opérations de manière un peu plus <em>lisible</em> (une copie de fichier sur Hdfs devient <code>Hdfs.put(session).file(&lt;fichier&gt;).to(&lt;path hdfs&gt;).now</code>).</p>
+
+<blockquote><p>Il devient alors possible de fournir un ensemble de méthodes statiques utilisables, par exemple, par un script groovy où serait décrit la procédure de déploiement. Ces méthodes statiques pourraient alors faire un ensemble de vérification (comme, par exemple, vérifier qu&#8217;il n&#8217;existe pas déjà les fichiers dans Hdfs et faire un renommage dans le cas contraire)</p></blockquote>
+
+<p>Ce script de déploiement pourrait être le suivant :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">deployOnHdfs</span><span class="o">(</span><span class="s2">&quot;dist/lib&quot;</span><span class="o">,</span> <span class="s2">&quot;/user/myuser/projects/share/lib/&quot;</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="n">options</span><span class="o">)</span>
+</span><span class='line'><span class="n">deployOnHdfs</span><span class="o">(</span><span class="s2">&quot;dist/oozie&quot;</span><span class="o">,</span> <span class="s2">&quot;/user/myuser/projects/oozie/&quot;</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="n">options</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">runOozieJobs</span><span class="o">(</span><span class="s2">&quot;dist/oozie/run/workflow/sample/job.properties&quot;</span><span class="o">,</span> <span class="n">config</span><span class="o">,</span> <span class="n">options</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//deleteOnHdfs(&quot;/user/myuser/projects/share/lib&quot;, config, options)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//def w = checkOozieCoordinatorStatus(config, options, &quot;status=RUNNING&quot;)</span>
+</span><span class='line'><span class="c1">//killOrExitCoordinators(&quot;SAMPLE COORD&quot;, w, options, config)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ainsi, il a été défini ce qu&#8217;était un livrable qui est donc constitué de :</p>
+
+<ul>
+<li>un jar</li>
+<li>un ensemble de fichiers oozie</li>
+<li>un script de déploiement indiquant quoi copier où et ce qu&#8217;il doit exécuter.</li>
+</ul>
+
+
+<blockquote><p>A noter que Knox propose la même API que WebHdfs et que Oozie. Il est donc possible, au besoin, d&#8217;attaquer directement WebHdfs et le serveur Oozie (pour rappel, le client Oozie ne fait qu&#8217;invoquer des <em>endpoints</em> Rest).</p></blockquote>
+
+<h1>Mise en oeuvre</h1>
+
+<p>Afin de mettre en oeuvre ce qui a été décrit dans les paragraphes précédents mais aussi de rendre réutilisable et un peu plus industrialisable les choses, il est possible de découper les choses en 3 repositories :</p>
+
+<ul>
+<li>un repository (<strong>parent</strong>) ne contenant que la configuration maven qui sera hérité par les projets (versions des archetypes configurées en <em>dependencyManagement</em>, configuration des plugins (scala en l&#8217;occurence et séparation tests unitaires/tests d&#8217;intégrations), &hellip;)</li>
+<li>un repository (<strong>commons</strong>) contenant 2 modules maven :
+
+<ul>
+<li>un module (<strong>commons-conf</strong>) contenant la configuration globale (namenode, resource manager, knox, hivemetastore, &hellip;) du cluster hadoop par environnement (developpement, recette, production)</li>
+<li>un module (<strong>commons-deploy</strong>) contenant les méthodes statiques groovy utilisées dans les scripts de déploiement</li>
+</ul>
+</li>
+<li>un repository (<strong>sample</strong>) qui contenant au moins 2 modules maven :
+
+<ul>
+<li>un module (<strong>sample-conf</strong>) contenant les configurations  spécifiques projet (configuration, workflow, coordinator, &hellip;) ainsi que les scripts de déploimenet permettant un déploiement sur le cluster</li>
+<li>un ou des module(s) (<strong>sample-job</strong>) contenant le code des jobs spark ou autre</li>
+</ul>
+</li>
+</ul>
+
+
+<p>De plus, afin de permettre d&#8217;exécuter le script de déploiment (écrit dans groovy dans notre cas), il faut proposer un script shell (type sh) qui appelle un programme Java encapsulant le moteur Groovy. En effet, il est rare que Groovy soit installé sur les différents environnements.</p>
+
+<p>La configuration Maven reste simple pour tous les repositories si ce n&#8217;est pour la partie <strong>sample-conf</strong> qui a la responsabilité de construire le livrable.</p>
+
+<p>Pour ce faire, ce module doit :</p>
+
+<ul>
+<li>dépendre de <strong>commons-deploy</strong> afin de permettre au script de déploiement d&#8217;avoir les méthodes statiques encapsulant la <strong>gateway shell</strong> de Knox</li>
+<li>récupérer <strong>commons-conf</strong>, dézipper le jar et mettre à disposition son contenu afin de pouvoir remplacer les variables des différents fichiers</li>
+<li>remplacer les variables des fichiers par les configurations spécifiques projet et global</li>
+<li>générer le script sh appelant la classe Java permettant d&#8217;exécuter le script groovy</li>
+<li>générer le livrable (au format tar.gz par exemple)</li>
+</ul>
+
+
+<p>Enfin, cerise sur le gateau, il peut également être utile de positionner les <strong>start_date</strong> des coordinateurs Oozie à la date de génération du livrable.</p>
+
+<p>Pour ce faire, une simple combinaison des bons plugins maven permet d&#8217;obtenir le résultat escompté :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;resources&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;resource&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;directory&gt;</span>src/main/resources<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;filtering&gt;</span>true<span class="nt">&lt;/filtering&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/resource&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/resources&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-dependency-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>unpack<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>generate-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>unpack<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;artifactItems&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;artifactItem&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;groupId&gt;</span>fr.jetoile.hadoop.sample<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;artifactId&gt;</span>bigdata-commons-conf<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;type&gt;</span>jar<span class="nt">&lt;/type&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;overWrite&gt;</span>false<span class="nt">&lt;/overWrite&gt;</span>
+</span><span class='line'>                  <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/global-conf<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/artifactItem&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/artifactItems&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.codehaus.gmaven<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>groovy-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.codehaus.groovy<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>groovy-all<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${groovy-all.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-resources-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>dev-resources<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>process-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>resources<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/dev<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;filters&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${basedir}/src/main/filters/dev/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${project.build.directory}/global-conf/dev/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/filters&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>prod-resources<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>process-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>resources<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/prod<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;filters&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${basedir}/src/main/filters/prd/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${project.build.directory}/global-conf/prd/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/filters&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>test-resources<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>process-resources<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>resources<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/test<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;filters&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${basedir}/src/main/filters/test/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;filter&gt;</span>${project.build.directory}/global-conf/test/conf.properties<span class="nt">&lt;/filter&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/filters&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>appassembler-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.10<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>assemble<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;configurationDirectory&gt;</span>conf<span class="nt">&lt;/configurationDirectory&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;programs&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;program&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;mainClass&gt;</span>Main<span class="nt">&lt;/mainClass&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;name&gt;</span>main<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/program&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/programs&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;repositoryLayout&gt;</span>flat<span class="nt">&lt;/repositoryLayout&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;binFileExtensions&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;unix&gt;</span>.sh<span class="nt">&lt;/unix&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/binFileExtensions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>deploy-dev<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;descriptors&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-dev.xml<span class="nt">&lt;/descriptor&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/descriptors&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>deploy-prd<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;descriptors&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-prd.xml<span class="nt">&lt;/descriptor&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/descriptors&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;id&gt;</span>deploy-test<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;descriptors&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-test.xml<span class="nt">&lt;/descriptor&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;/descriptors&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>buildnumber-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;version&gt;</span>1.4<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;executions&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;execution&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;phase&gt;</span>validate<span class="nt">&lt;/phase&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;goals&gt;</span>
+</span><span class='line'>              <span class="nt">&lt;goal&gt;</span>create-timestamp<span class="nt">&lt;/goal&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/goals&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/execution&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/executions&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;timestampFormat&gt;</span>yyyy-MM-dd&#39;T&#39;HH:mmZ<span class="nt">&lt;/timestampFormat&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;timestampPropertyName&gt;</span>build.date<span class="nt">&lt;/timestampPropertyName&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>A noter la configuration du plugin <em>buildnumber-maven-plugin</em> afin d&#8217;avoir la valeur de <strong>start_date</strong> au format attendu par Oozie.</p>
+
+<p>A noter l&#8217;utilisation du plugin <em>appassembler-maven-plugin</em> permettant la génération du script shell et qui permet de gérer, entre autre, automatiquement la récupération des dépendances nécessaires à l&#8217;exécution de la classe Java.</p></blockquote>
+
+<p>Afin de permettre la génération tar.gz du livrable, un assembly maven est utilisable :</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;assembly</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&quot;</span>
+</span><span class='line'>          <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>          <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;id&gt;</span>deploy-dev<span class="nt">&lt;/id&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;formats&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;format&gt;</span>tar.gz<span class="nt">&lt;/format&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/formats&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;fileSets&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;fileSet&gt;</span>
+</span><span class='line'>      <span class="c">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>${project.build.outputDirectory}/dev/<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;outputDirectory&gt;</span>/dist/<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;excludes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exclude&gt;</span>deploy.properties<span class="nt">&lt;/exclude&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/excludes&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;lineEnding&gt;</span>unix<span class="nt">&lt;/lineEnding&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;fileSet&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directory&gt;</span>${project.build.directory}/appassembler<span class="nt">&lt;/directory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;outputDirectory&gt;</span>/<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;fileMode&gt;</span>750<span class="nt">&lt;/fileMode&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;directoryMode&gt;</span>750<span class="nt">&lt;/directoryMode&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/fileSet&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/fileSets&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;dependencySets&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependencySet&gt;</span>
+</span><span class='line'>      <span class="c">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;outputDirectory&gt;</span>/dist/lib/<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;includes&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;include&gt;</span>
+</span><span class='line'>          fr.jetoile.hadoop.sample:bigdata-sample-job
+</span><span class='line'>        <span class="nt">&lt;/include&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/includes&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;useProjectArtifact&gt;</span>false<span class="nt">&lt;/useProjectArtifact&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;unpack&gt;</span>false<span class="nt">&lt;/unpack&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependencySet&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependencySets&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;files&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;file&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;source&gt;</span>src/main/groovy/deploy.groovy<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;outputDirectory&gt;</span>bin<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/file&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;file&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;source&gt;</span>${project.build.directory}/classes/dev/deploy.properties<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;outputDirectory&gt;</span>/<span class="nt">&lt;/outputDirectory&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/file&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/files&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/assembly&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>A noter que, afin de récupérer le jar contenant le job Spark, la dépendance a été mis en scopte <em>provided</em>. En effet, le plugin <em>appassembler-maven-plugin</em> prend tout ce qu&#8217;il trouve en scope compile et aurait embarqué, par défaut, le jar du job entrainant des conflits de classpath.</p></blockquote>
+
+<h1>Conclusion</h1>
+
+<p>On a vu dans cet article comme il était simple de tester son code et de définir et construire un livrable juste en structurant son code et en utilisant quelques bons plugin maven.</p>
+
+<p>Bien sûr, si cela est faisable en Maven, il est tout à fait possible d&#8217;utiliser un autre outils de build pour le faire.</p>
+
+<p>Alors, oui, l&#8217;approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d&#8217;exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l&#8217;écosystème Hadoop.</p>
+
+<p>En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.</p>
+
+<blockquote><p>A noter que le code se trouve dans le <a href="https://github.com/jetoile/bigdata-sample-parent">github ci-joint</a> et qu&#8217;il a été mis, pour des questions de simplicité, dans un seul repository (cela explique qu&#8217;on ait un pom parent qui ne fait que déclarer les modules fils mais que ces derniers ne le référencent pas).</p>
+
+<p>A noter également qu&#8217;un archetype permettant de générer la structure du projet sample est présent (<strong>bigdata-archetype</strong>).</p></blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Des Tests D'intégration Avec Cassandra]]></title>
@@ -6177,438 +7681,6 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
 <p>Ainsi, on peut bénéficier du meilleur des deux mondes.</p>
 
 <p>Bien sûr, on peut se poser la question de l&#8217;intérêt de brancher quelques choses de véloce (Netty) avec un framework succeptible d&#8217;entrainer un Overhead (spring integration) et qui serait, alors, le point de contension. La question est légitime mais je n&#8217;y répondrai pas&hellip; ;&ndash;) (pour bien faire, il faudrait faire un benchmark).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Livereload Et Linux Ou Comment Rédiger Du Html Simplement]]></title>
-    <link href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html"/>
-    <updated>2014-03-20T11:24:11+01:00</updated>
-    <id>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger</id>
-    <content type="html"><![CDATA[<p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small" /></p>
-
-<p>Cet article n&#8217;a rien à voir avec le monde Java.</p>
-
-<p>Il s&#8217;agit plus d&#8217;un petit tutoriel surtout destiné&hellip; à moi-même&hellip; ;&ndash;)</p>
-
-<p>En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&#8217;avoir une idée de l&#8217;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&#8217;énerver.</p>
-
-<p>Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l&#8217;utiliser.</p>
-
-<p>Cependant, j&#8217;avoue avoir subi un échec cuisant (je suis sous un environnement linux et je tiens à préciser que je ne suis pas des plus à l&#8217;aise avec le monde nodejs ou ruby &ndash; ceci explique aussi cela&hellip; ;&ndash;) ) et cela malgré avoir mes multiples tentatives (à coup de gem install) et recherche sur mon ami Google (enfin, quand on n&#8217;est pas doué, on n&#8217;est pas doué&hellip; :&lsquo;( )</p>
-
-<p>Du coup, j&#8217;ai pris l&#8217;option :</p>
-
-<blockquote><p>&ldquo;J&#8217;appelle un ami&rdquo;</p></blockquote>
-
-<p>Dans mon cas, je remercie <a href="https://twitter.com/hcapitaine">Harold</a> pour son aide.</p>
-
-<p>Il m&#8217;a conseillé de me jeter un oeil sur <a href="http://gruntjs.com/">Grunt</a> qui gérait nativement livereload (bon, pour ma défense, je n&#8217;avais pas prévu de partir sur Grunt&hellip; ;&ndash;) ).</p>
-
-<p>Cet article présentera donc comment j&#8217;ai réussi à faire fonctionner le bouzin avec, en prime, la possibilité d&#8217;utiliser Markdown.</p>
-
-<p>Concernant l&#8217;environnement, il s&#8217;agit d&#8217;Ubuntu 13.10 (sur Mac, je ne doute pas que cela aurait été plus simple mais bon&hellip;)</p>
-
-<p>[NDLR : encore une fois, je précise que je ne suis pas du tout expert dans ce domaine, il est donc inutile de me poser des questions. Par contre, toutes propositions d&#8217;amélioration est la bienvenue ;&ndash;)]</p>
-
-<p>A titre informatifs, les fichiers se trouvent sur <a href="https://github.com/jetoile/livereload-grunt">Github</a>.</p>
-
-<!-- more -->
-
-
-<h1>Installation de nodejs, de npm et de grunt</h1>
-
-<p>Dans un premier temps, il convient d&#8217;installer tout le strict minimum afin de permettre à Grunt de fonctionner.</p>
-
-<p>Installation de NodeJS :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install nodejs
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Installation de Npm :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install npm
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Installation de Grunt (de manière global au système) :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo npm install -g grunt-cli
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Installer le <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">plugin</a> livereload sur Chrome ou Firefox.</p>
-
-<p>Dans le cas de Chrome, pensez à modifier sa configuration pour qu&#8217;il autorise l&#8217;accès aux URLs de fichiers.
-<img src="http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png" alt="medium" /></p>
-
-<h1>Configuration de Grunt</h1>
-
-<p>Par la suite, toutes les opérations seront effectué dans le répertoire <code>$HOME/tmp</code>.</p>
-
-<p>Une fois tous les logiciels installés, il ne reste qu&#8217;à créer les fichiers nécessaires au bon fonctionnement de Grunt :</p>
-
-<ul>
-<li><code>package.json</code> qui permet de télécharger les modules et de les installer localement dans répertoire courant (un peu comme la rubrique dependencies de Maven),</li>
-<li><code>gruntfile.js</code> qui permet de configurer les différents modules précédemment installés par la commande npm install (un peu comme la rubrique build/plugins de Maven).</li>
-</ul>
-
-
-<p><code>$HOME/tmp/package.json</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;yo&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{},</span>
-</span><span class='line'>  <span class="s2">&quot;devDependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;grunt&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.4.1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;matchdep&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.1.2&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-express&quot;</span><span class="o">:</span> <span class="s2">&quot;~1.0.0-beta2&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-contrib-watch&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-open&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.2.1&quot;</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=0.8.0&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il convient maintenant de lancer le téléchargement et l&#8217;installation des modules en exécutant la commande suivante :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ne reste plus qu&#8217;à configurer les modules via le fichier Gruntfile.js.</p>
-
-<p><code>$HOME/tmp/Gruntfile.js</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// Load Grunt tasks declared in the package.json file</span>
-</span><span class='line'>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;matchdep&#39;</span><span class="p">).</span><span class="nx">filterDev</span><span class="p">(</span><span class="s1">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// grunt-express will serve the files from the folders listed in `bases` on specified `port` and `hostname`</span>
-</span><span class='line'>    <span class="nx">express</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">hostname</span><span class="o">:</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">bases</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;html&#39;</span><span class="p">],</span> <span class="c1">// Replace with the directory you want the files served from</span>
-</span><span class='line'>                              <span class="c1">// Make sure you don&#39;t use `.` or `..` in the path as Express</span>
-</span><span class='line'>                              <span class="c1">// is likely to return 403 Forbidden responses if you do</span>
-</span><span class='line'>                              <span class="c1">// http://stackoverflow.com/questions/14594121/express-res-sendfile-throwing-forbidden-error</span>
-</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// grunt-watch will monitor the projects files</span>
-</span><span class='line'>    <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="s1">&#39;*.html&#39;</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// grunt-open will open your browser at the project&#39;s URL</span>
-</span><span class='line'>    <span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// Creates the `server` task</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s1">&#39;express&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;open&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;watch&#39;</span>
-</span><span class='line'>  <span class="p">]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Cette configuration est fonctionnelle avec l&#8217;arborescence suivante :</p>
-
-<p><img src="http://4.bp.blogspot.com/-yzXs78VTiFw/Uxnor5jGo_I/AAAAAAAABQY/01_s7DCQHT4/s1600/arbo01.png" alt="center" /></p>
-
-<p>Dans cette dernière et avec cette configuration, tous les fichiers du répertoire <code>html</code> avec l&#8217;extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire <code>html</code> (par exemple html/sample.html) et de lancer la commande :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>grunt
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Le navigateur par défaut s&#8217;ouvrira alors avec l&#8217;url : <a href="http://localhost:9000/.">http://localhost:9000/.</a> Il suffit d&#8217;y ajouter la page voulu (dans notre exemple <a href="http://localhost:9000/sample.html">http://localhost:9000/sample.html</a>) et d&#8217;activer le plugin <code>livereload</code>.</p>
-
-<p><img src="http://1.bp.blogspot.com/-edBGc5pdGLg/UxnpKGFtjsI/AAAAAAAABQw/E6maHZkgGcs/s1600/icon_livereload.png" alt="center" /></p>
-
-<p>Il ne reste plus qu&#8217;à modifier le fichier html et lors de sa sauvegarde, la page sera automatiquement mis à jour dans le navigateur!</p>
-
-<p>Si l&#8217;erreur suivante apparait :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/usr/bin/env: node: Aucun fichier ou dossier de ce <span class="nb">type</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Il faut installer <code>nodejs-legacy</code> (cf. <a href="https://github.com/volojs/volo/issues/154">ici</a>)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo apt-get install nodejs-legacy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h1>Configuration de Grunt pour l&#8217;intégration de Markdown</h1>
-
-<p>L&#8217;intégration de Markdown se fait de la même manière que précédemment.</p>
-
-<p>Les fichiers <code>package.json</code> et <code>Gruntfile.js</code> se voient juste ajouter le module <code>grunt-markdown</code>.</p>
-
-<p><code>package.json</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;yo&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{},</span>
-</span><span class='line'>  <span class="s2">&quot;devDependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;grunt&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.4.1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;matchdep&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.1.2&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-express&quot;</span><span class="o">:</span> <span class="s2">&quot;~1.0.0-beta2&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-contrib-watch&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-open&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.2.1&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;grunt-markdown&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.5.0&quot;</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=0.8.0&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Gruntfile.js</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">odule</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;matchdep&#39;</span><span class="p">).</span><span class="nx">filterDev</span><span class="p">(</span><span class="s1">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="nx">markdown</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="p">[</span>
-</span><span class='line'>          <span class="p">{</span>
-</span><span class='line'>            <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;*.md&#39;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;html/&#39;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">ext</span><span class="o">:</span> <span class="s1">&#39;.html&#39;</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>        <span class="p">]</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">express</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">port</span><span class="o">:</span> <span class="mi">9000</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">hostname</span><span class="o">:</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">bases</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;html&#39;</span><span class="p">],</span>
-</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;*.md&#39;</span><span class="p">,</span><span class="s1">&#39;*.html&#39;</span><span class="p">],</span>
-</span><span class='line'>        <span class="nx">tasks</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;markdown&#39;</span><span class="p">],</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">livereload</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">open</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">path</span><span class="o">:</span> <span class="s1">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span>
-</span><span class='line'>    <span class="s1">&#39;markdown&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;express&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;open&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s1">&#39;watch&#39;</span>
-</span><span class='line'>  <span class="p">]);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Suite à la modification de ces fichiers (attention à penser de faire un <code>npm install</code> après modification du fichier <code>package.json</code>), il est alors possible d&#8217;écrire son document en Markdown.</p>
-
-<p>L&#8217;arborescence à respecter par rapport à la configuration est la suivante :
-<img src="http://2.bp.blogspot.com/-kgC6a8jRwG8/Uxno29Sr9EI/AAAAAAAABQg/lf3W_rnDAvU/s1600/arbo02.png" alt="center" /></p>
-
-<p>Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.</p>
-
-<h1>Conclusion</h1>
-
-<p>Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d&#8217;un fichier HTML ou Markdown n&#8217;est pas si compliquée une fois que l&#8217;on a tous les fichiers et les bons modules configurés.</p>
-
-<p>D&#8217;ailleurs, cet article est le premier écrit en Markdown (quand je disais que ce n&#8217;était pas ma tasse de thé&hellip;).</p>
-
-<p>En espérant qu&#8217;il pourra être utile à d&#8217;autres lecteurs et en m&#8217;excusant par avance si des informations sont approximatives&hellip;</p>
-
-<h1>Pour aller plus loin&hellip;</h1>
-
-<ul>
-<li><a href="http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/">http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/</a></li>
-<li><a href="http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/">http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/</a></li>
-<li><a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-</a></li>
-<li><a href="http://blog.roddet.com/2013/12/nantesjs-gruntjs/">http://blog.roddet.com/2013/12/nantesjs-gruntjs/</a></li>
-<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

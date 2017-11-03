@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Test | Jetoile]]></title>
   <link href="https://blog.jetoile.fr/blog/categories/test/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-11-03T19:56:15+01:00</updated>
+  <updated>2017-11-03T20:13:18+01:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -932,6 +932,14 @@ deployOnHdfs(&ldquo;dist/oozie&rdquo;, &ldquo;/user/myuser/projects/oozie/&rdquo
 <p>Alors, oui, l'approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d'exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l'écosystème Hadoop.</p>
 
 <p>En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.</p>
+
+<p>Enfin, les 2 autres avantages non négligeables est que :</p>
+
+<ul>
+<li>le livrable est versionné dans le <em>repository manager</em> (tel que Nexus ou Archiva)</li>
+<li>une chaine CI classique (tel que Jenkins) peut s'occuper du déploiement au besoin</li>
+</ul>
+
 
 <blockquote><p>A noter que le code se trouve dans le <a href="https://github.com/jetoile/bigdata-sample-parent">github ci-joint</a> et qu'il a été mis, pour des questions de simplicité, dans un seul repository (cela explique qu'on ait un pom parent qui ne fait que déclarer les modules fils mais que ces derniers ne le référencent pas).</p>
 

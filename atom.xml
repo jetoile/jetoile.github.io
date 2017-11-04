@@ -4,7 +4,7 @@
   <title><![CDATA[Jetoile]]></title>
   <link href="https://blog.jetoile.fr/atom.xml" rel="self"/>
   <link href="https://blog.jetoile.fr/"/>
-  <updated>2017-11-03T20:15:31+01:00</updated>
+  <updated>2017-11-04T09:21:22+01:00</updated>
   <id>https://blog.jetoile.fr/</id>
   <author>
     <name><![CDATA[Khanh Maudoux]]></name>
@@ -1507,7 +1507,7 @@
 
 <p>Bien sûr, si cela est faisable en Maven, il est tout à fait possible d&#8217;utiliser un autre outils de build pour le faire.</p>
 
-<p>Alors, oui, l&#8217;approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d&#8217;exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l&#8217;écosystème Hadoop.</p>
+<p>Alors, oui, l&#8217;approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d&#8217;exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l&#8217;écosystème Hadoop et cela est, à mon avis, bien plus viable que des équipes qui passent leur temps à cliquer dans Hue pour tester, ou pire, mettre en <em>production</em> leurs développements&hellip;.</p>
 
 <p>En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.</p>
 

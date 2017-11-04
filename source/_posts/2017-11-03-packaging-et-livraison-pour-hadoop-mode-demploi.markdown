@@ -828,7 +828,7 @@ On a vu dans cet article comme il était simple de tester son code et de défini
 
 Bien sûr, si cela est faisable en Maven, il est tout à fait possible d'utiliser un autre outils de build pour le faire. 
 
-Alors, oui, l'approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d'exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l'écosystème Hadoop.
+Alors, oui, l'approche est peut être un peu simpliste et naïve mais elle a au moins le mérite d'exister et de proposer à moindre coût quelque chose de facilement généralisable au sein des différents projets/équipes réalisant des développements dans l'écosystème Hadoop et cela est, à mon avis, bien plus viable que des équipes qui passent leur temps à cliquer dans Hue pour tester, ou pire, mettre en _production_ leurs développements....
 
 En outre, le script de déploiement peut également être utilisé pour tester rapidement son code sur le cluster de développement.
 

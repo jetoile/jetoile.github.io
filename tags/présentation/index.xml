@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 12 Jun 2014 08:28:38 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/pr%C3%A9sentation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Breizhcamp 2014 - Présentations en ligne</title>
-      <link>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne/</link>
+      <link>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html/</link>
       <pubDate>Thu, 12 Jun 2014 08:28:38 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne/</guid>
+      <guid>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html/</guid>
       <description>Pour ceux qui auraient manqué l&amp;rsquo;information, le BreizhCamp s&amp;rsquo;est déroulé en mai dernier et j&amp;rsquo;y avais la chance d&amp;rsquo;y présenter un talk sur un retour d&amp;rsquo;expérience concernant le passage à l&amp;rsquo;échelle d&amp;rsquo;un SI afin de lui permettre de supporter 4 millions d&amp;rsquo;utilisateurs.
 Le synopsis était le suivant :
  De 20 000 à 4 millions d&amp;rsquo;utilisateurs
@@ -22,20 +22,20 @@ Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de 
     
     <item>
       <title>Breizhcamp 2014</title>
-      <link>https://blog.jetoile.fr/2014/05/breizhcamp-2014/</link>
+      <link>https://blog.jetoile.fr/2014/05/breizhcamp-2014.html/</link>
       <pubDate>Sat, 24 May 2014 20:00:24 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/05/breizhcamp-2014/</guid>
+      <guid>https://blog.jetoile.fr/2014/05/breizhcamp-2014.html/</guid>
       <description>Encore un an de plus pour le breizhCamp qui vient de fêter sa quatrième année.
 Pour ceux qui ne seraient pas encore au courant de ce qu&amp;rsquo;est le breizhCamp, il s&amp;rsquo;agit d&amp;rsquo;une conférence technique qui se veut être un mix de technologies (même s&amp;rsquo;il faut bien reconnaitre que Java y est majoritairement représentée&amp;hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#39;ISTIC.</description>
     </item>
     
     <item>
       <title>BreizhCamp 2013</title>
-      <link>https://blog.jetoile.fr/2013/06/breizhcamp-2013/</link>
+      <link>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html/</link>
       <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/06/breizhcamp-2013/</guid>
+      <guid>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html/</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, le BreizhCamp dans sa version 2013 a actuellement lieu.
 Etant un grand amoureux de la Bretagne, je ne pouvais manquer le cru de cette année&amp;hellip;
 En outre, j&amp;rsquo;ai eu la chance d&amp;rsquo;y présenter un Tools In Action d&#39;1/2 heure sur le sujet des tests d&amp;rsquo;acceptance et plus précisément sur la façon dont il est possible d&amp;rsquo;intégrer Cucumber JVM, Selenium et FluentLenium.
@@ -44,10 +44,10 @@ Les slides sont dès à présent disponibles :</description>
     
     <item>
       <title>Présentation sur les problématiques liées à une architecture distribuée</title>
-      <link>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html/</link>
       <pubDate>Fri, 23 Sep 2011 22:17:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html/</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur les problématiques liées aux architectures distribuées. Pour information, c&amp;rsquo;est un retour d&amp;rsquo;expérience d&amp;rsquo;une mission qui date un peu puisque c&amp;rsquo;était en 2007 mais les préconisations restent identiques à ce jour.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Introduction sur les problématiques d&#39;une architecture distribuée  View more presentations from jetoile  </description>
@@ -55,10 +55,10 @@ Introduction sur les problématiques d&#39;une architecture distribuée  View mo
     
     <item>
       <title>Présentation sur un retour d&#39;expérience pour la mise en oeuvre de Maven 2</title>
-      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</link>
       <pubDate>Fri, 23 Sep 2011 22:14:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>

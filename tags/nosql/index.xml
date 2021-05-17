@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 22 May 2012 10:37:00 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/nosql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</title>
-      <link>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</link>
+      <link>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html/</link>
       <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</guid>
+      <guid>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html/</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de Devoxx France.
 L&amp;rsquo;annonce avait été faite pendant la dernière édition de Devoxx &amp;ldquo;l&amp;rsquo;originale&amp;rdquo; à Anvers en Belgique qui fêtait pour l&amp;rsquo;occasion ses 10 ans.
 Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille vivement à tous les développeurs), j&amp;rsquo;ai écrit un petit compte rendu d&amp;rsquo;une des moultes conférences qui m&amp;rsquo;ont marquées aussi bien par sa qualité scénique que par son contenu.</description>
@@ -21,10 +21,10 @@ Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille
     
     <item>
       <title>Petits retours sur Cassandra</title>
-      <link>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra/</link>
+      <link>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html/</link>
       <pubDate>Tue, 13 Mar 2012 10:19:01 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra/</guid>
+      <guid>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html/</guid>
       <description>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&amp;rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&amp;rsquo;ai aimé et ce que je n&amp;rsquo;ai pas aimé sur Apache Cassandra.
 Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle sur le produit et que je ne m&amp;rsquo;appuierai donc que sur sa documentation officielle en version 1.</description>
     </item>

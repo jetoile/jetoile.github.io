@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JMX et Firewall &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JMX et Firewall</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 May 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/S-HXgq4HI7I/AAAAAAAAAJ4/LzJKs3wTNZM/s200/jmx4.png" alt="left-small">
+Cet article fait suite à mon <a href="https://blog.jetoile.fr/2010-05-05-jmx-ou-comment-administrer-et.html">post précédent</a> qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu&rsquo;à la fin ;-), avait pour objectif de rappeler en quoi JMX (<em>Java Management eXtension</em>) pouvait être une bonne réponse aux problématiques de supervision et d&rsquo;administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall. Cette problématique est indiquée sur le site de Sun/Oracle mais je vais, ici, faire un résumer de la méthode à suivre.</p>
+<!-- more -->
+<p>En effet, supposions que nous ayons l&rsquo;architecture suivante :
+<img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/S-vg1m-cF6I/AAAAAAAAAKI/glTWe7EakaA/s1600/Firewall2.png" alt="center" title="licence : Creative Commons Attribution-Share Alike"></p>
+<p>En fait, dans ce cas, le client sur lequel la jConsole, jVisualVM ou autre est lancée, ne verra pas le serveur JMX, et cela, même en précisant le port.
+En effet, le connecteur JMX RMI ouvre deux ports :</p>
+<ul>
+<li>un pour le RMI Registry (et qui est configurable avec l&rsquo;option <code>com.sun.management.jmxremote.port</code>)</li>
+<li>et un autre utilisé pour exporter les objets utilisés par la connexion JMX RMI.</li>
+</ul>
+<p>Cependant, ce dernier port est, par défaut, alloué de manière dynamique et aléatoirement (puisqu&rsquo;il n&rsquo;est pas nécessaire de connaitre ce port pour se connecter à l&rsquo;agent JMX).</p>
+<p>C&rsquo;est cela qui pose problème lorsque l&rsquo;on tente de se connecter à un serveur JMX se trouvant derrière un firewall puisqu&rsquo;il n&rsquo;est, alors, pas possible de demander l&rsquo;ouverture d&rsquo;un port que l&rsquo;on ne connait pas&hellip;</p>
+<p>Aussi, la seule possibilité pour résoudre ce problème est de passer par la déclaration de son JMXServiceURL pour spécifier le port permettant d&rsquo;exporter les objets utilisés par le connexion JMX RMI. Cependant, ce JMXServiceURL ne peut pas être modifié dans l&rsquo;agent JMX utilisé par défaut&hellip;</p>
+<p>Heureusement, il est possible de définir programmatiquement son propre agent JMX.</p>
+<p>En fonction de l&rsquo;usage, deux choix sont possibles :</p>
+<ul>
+<li>définir son agent JMX au sein de l&rsquo;application</li>
+<li>utiliser un agent JVM pour définir son propre agent JMX</li>
+</ul>
+<p>Il est à noter que l&rsquo;implémentation présentée ici ne prend pas en compte la problématique de sécurité (et en particulier SSL) où deux ports différents doivent être utilisés. En outre, il sera supposé que le RMI Registry sera démarré dans l&rsquo;application.</p>
+<h1 id="1ère-méthode">1ère méthode</h1>
+<p>Ainsi, si vous avez la main sur la méthode <code>main</code> sur l&rsquo;application, il suffit de rajouter le code qui va bien, à savoir :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> example<span style="color:#f92672">;</span>
+ 
+<span style="color:#f92672">import</span> java.lang.management.ManagementFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.rmi.registry.LocateRegistry<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.HashMap<span style="color:#f92672">;</span>
+ 
+<span style="color:#f92672">import</span> javax.management.MBeanServer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.remote.JMXConnectorServer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.remote.JMXConnectorServerFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.remote.JMXServiceURL<span style="color:#f92672">;</span>
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyApp</span> <span style="color:#f92672">{</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> port1 <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;example.rmi.agent.port&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;3000&#34;</span><span style="color:#f92672">));</span>
+  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Create RMI registry on port &#34;</span><span style="color:#f92672">+</span>port1<span style="color:#f92672">);</span>
+  LocateRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">createRegistry</span><span style="color:#f92672">(</span>port1<span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// Retrieve the PlatformMBeanServer.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Get the platform&#39;s MBean server&#34;</span><span style="color:#f92672">);</span>
+  MBeanServer mbs <span style="color:#f92672">=</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlatformMBeanServer</span><span style="color:#f92672">();</span>
+ 
+  <span style="color:#75715e">// Environment map.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Initialize the environment map&#34;</span><span style="color:#f92672">);</span>
+  HashMap env <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>
+ 
+  <span style="color:#75715e">// Create an RMI connector server.
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// As specified in the JMXServiceURL the RMIServer stub will
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// be registered in the RMI registry running in the local
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// host on port 3000 with the name &#34;jmxrmi&#34;. This is the same
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// name the out-of-the-box management agent uses to register 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// the RMIServer stub too.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Create an RMI connector server&#34;</span><span style="color:#f92672">);</span>
+  JMXServiceURL url <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JMXServiceURL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;service:jmx:rmi://localhost:&#34;</span> <span style="color:#f92672">+</span> port1 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/jndi/rmi://localhost:&#34;</span> <span style="color:#f92672">+</span> port1 <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/jmxrmi&#34;</span><span style="color:#f92672">);</span>
+  JMXConnectorServer cs <span style="color:#f92672">=</span> JMXConnectorServerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newJMXConnectorServer</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> env<span style="color:#f92672">,</span> mbs<span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// Start the RMI connector server.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Start the RMI connector server&#34;</span><span style="color:#f92672">);</span>
+  cs<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Pour tester ce code, exécuter le code suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -Dexample.rmi.agent.port<span style="color:#f92672">=</span><span style="color:#ae81ff">3010</span> -classpath . example.MyApp
+</code></pre></div><p>puis lancer une jconsole et renseigner le champ <code>Remote Process</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">service:jmx:rmi://localhost:3010/jndi/rmi://localhost:3010/jmxrmi
+</code></pre></div><h1 id="2ième-méthode">2ième méthode</h1>
+<p>Par contre, la solution précédente n&rsquo;est parfois pas applicable car le code de l&rsquo;application à exécuter peut ne pas être disponible ou car récupérer ses sources, les modifiés et recompiler la dite application (par exemple, si c&rsquo;est un conteneur de Servlet que vous voulez administrer&hellip;) peut être un peu problématique (je ne suis pas sûr que l&rsquo;équipe de production soit enchantée d&rsquo;utiliser une version modifiée d&rsquo;Apache Tomcat&hellip;).</p>
+<p>Aussi, dans ce cas, il est possible de déclarer son propre agent à enregistrer dans la JVM (en définissant la méthode <code>premain</code> et en renseignant l&rsquo;attribut <code>Premain-Class</code> du fichier <code>MANIFEST.MF</code>) qui se chargera de définir et de lancer l&rsquo;agent JMX (une sorte de wrapper). Cependant, dans ce cas, l&rsquo;agent JMX lancé par l&rsquo;agent java ne sera pas arrêté par l&rsquo;envoie du signal de fin de l&rsquo;application. Il convient alors de lancer un Thread chargé de scrupter le processus de l&rsquo;agentJMX.</p>
+<p>Ci-dessous un exemple de l&rsquo;agent JVM :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*
+</span><span style="color:#75715e">* CustomAgent.java
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* Copyright 2007 Sun Microsystems, Inc.  All Rights Reserved.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* Redistribution and use in source and binary forms, with or
+</span><span style="color:#75715e">* without modification, are permitted provided that the
+</span><span style="color:#75715e">* following conditions are met:
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* - Redistributions of source code must retain the above 
+</span><span style="color:#75715e">*   copyright notice, this list of conditions and the 
+</span><span style="color:#75715e">*   following disclaimer.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* - Redistributions in binary form must reproduce the above 
+</span><span style="color:#75715e">*   copyright notice, this list of conditions and the following
+</span><span style="color:#75715e">*   disclaimer in the documentation and/or other materials
+</span><span style="color:#75715e">*   provided with the distribution.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* - Neither the name of Sun Microsystems nor the names of its
+</span><span style="color:#75715e">*   contributors may be used to endorse or promote products 
+</span><span style="color:#75715e">*   derived from this software without specific prior written
+</span><span style="color:#75715e">*   permission.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
+</span><span style="color:#75715e">* CONTRIBUTORS &#34;AS IS&#34; AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+</span><span style="color:#75715e">* INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+</span><span style="color:#75715e">* MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+</span><span style="color:#75715e">* DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+</span><span style="color:#75715e">* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+</span><span style="color:#75715e">* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+</span><span style="color:#75715e">* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+</span><span style="color:#75715e">* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+</span><span style="color:#75715e">* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+</span><span style="color:#75715e">* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+</span><span style="color:#75715e">* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+</span><span style="color:#75715e">* OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+</span><span style="color:#75715e">* POSSIBILITY OF SUCH DAMAGE.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* Created on Jul 25, 2007, 11:42:49 AM
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">*/</span>
+ 
+<span style="color:#f92672">package</span> example.rmi.agent<span style="color:#f92672">;</span>
+ 
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.lang.management.ManagementFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.net.InetAddress<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.rmi.registry.LocateRegistry<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.HashMap<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.MBeanServer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.remote.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.management.remote.rmi.*<span style="color:#f92672">;</span>
+ 
+<span style="color:#75715e">/**
+</span><span style="color:#75715e">* This CustomAgent will start an RMI COnnector Server using 
+</span><span style="color:#75715e">* only port &#34;example.rmi.agent.port&#34;.
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* @author dfuchs
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomAgent</span> <span style="color:#f92672">{</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CleanThread</span> <span style="color:#66d9ef">extends</span> Thread <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JMXConnectorServer cs<span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CleanThread</span><span style="color:#f92672">(</span>JMXConnectorServer cs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;JMX Agent Cleaner&#34;</span><span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cs</span> <span style="color:#f92672">=</span> cs<span style="color:#f92672">;</span>
+   setDaemon<span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">boolean</span> loop <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>loop<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">final</span> Thread<span style="color:#f92672">[]</span> all <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">[</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">activeCount</span><span style="color:#f92672">()+</span>100<span style="color:#f92672">];</span>
+     <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">enumerate</span><span style="color:#f92672">(</span>all<span style="color:#f92672">);</span>
+     loop <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+     <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span>0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> count<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">final</span> Thread t <span style="color:#f92672">=</span> all<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
+      <span style="color:#75715e">// daemon: skip it.
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">isDaemon</span><span style="color:#f92672">())</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// RMI Reaper: skip it.
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">startsWith</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;RMI Reaper&#34;</span><span style="color:#f92672">))</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">startsWith</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;DestroyJavaVM&#34;</span><span style="color:#f92672">))</span> <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+      <span style="color:#75715e">// Non daemon, non RMI Reaper: join it, break the for
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">// loop, continue in the while loop (loop=true)
+</span><span style="color:#75715e"></span>      loop <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+       System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Waiting on &#34;</span><span style="color:#f92672">+</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()+</span>
+         <span style="color:#e6db74">&#34; [id=&#34;</span><span style="color:#f92672">+</span>t<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">);</span>
+       t<span style="color:#f92672">.</span><span style="color:#a6e22e">join</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+       ex<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+      <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+     <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// We went through a whole for-loop without finding any 
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// thread to join. We can close cs.
+</span><span style="color:#75715e"></span>   <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    ex<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+     <span style="color:#75715e">// if we reach here it means the only non-daemon threads
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">// that remain are reaper threads - or that we got an
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">// unexpected exception/error.
+</span><span style="color:#75715e"></span>     cs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     ex<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+ 
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">CustomAgent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">premain</span><span style="color:#f92672">(</span>String agentArgs<span style="color:#f92672">)</span> 
+ <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// Start an RMI registry on port specified by 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// example.rmi.agent.port (default 3000).
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;example.rmi.agent.port&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;3000&#34;</span><span style="color:#f92672">));</span>
+  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Create RMI registry on port &#34;</span><span style="color:#f92672">+</span>port<span style="color:#f92672">);</span>
+  LocateRegistry<span style="color:#f92672">.</span><span style="color:#a6e22e">createRegistry</span><span style="color:#f92672">(</span>port<span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// Retrieve the PlatformMBeanServer.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Get the platform&#39;s MBean server&#34;</span><span style="color:#f92672">);</span>
+  MBeanServer mbs <span style="color:#f92672">=</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlatformMBeanServer</span><span style="color:#f92672">();</span>
+ 
+  <span style="color:#75715e">// Environment map.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Initialize the environment map&#34;</span><span style="color:#f92672">);</span>
+  HashMap env <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>
+ 
+  <span style="color:#75715e">// Create an RMI connector server.
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// As specified in the JMXServiceURL the RMIServer stub will 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// be registered in the RMI registry running in the local 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// host on port 3000 with the name &#34;jmxrmi&#34;. This is the 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// same name the out-of-the-box management agent uses to 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// register the RMIServer stub too.
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// The port specified in &#34;service:jmx:rmi://&#34;+hostname+&#34;:&#34;+port
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// is the second port, where RMI connection objects will be 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// exported. Here we use the same port as that we choose   
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// for the RMI registry. The port for the RMI registry is  
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// specifiedin the second part of the URL, in 
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// &#34;rmi://&#34;+hostname+&#34;:&#34;+port
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Create an RMI connector server&#34;</span><span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">final</span> String hostname <span style="color:#f92672">=</span> InetAddress<span style="color:#f92672">.</span><span style="color:#a6e22e">getLocalHost</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getHostName</span><span style="color:#f92672">();</span>
+  JMXServiceURL url <span style="color:#f92672">=</span>
+   <span style="color:#66d9ef">new</span> JMXServiceURL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;service:jmx:rmi://&#34;</span><span style="color:#f92672">+</span>hostname<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+(</span>port<span style="color:#f92672">)+</span><span style="color:#e6db74">&#34;/jndi/rmi://&#34;</span><span style="color:#f92672">+</span>hostname<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span>port<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;/jmxrmi&#34;</span><span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// Now create the server from the JMXServiceURL
+</span><span style="color:#75715e"></span>  JMXConnectorServer cs <span style="color:#f92672">=</span> JMXConnectorServerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newJMXConnectorServer</span><span style="color:#f92672">(</span>url<span style="color:#f92672">,</span> env<span style="color:#f92672">,</span> mbs<span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// Start the RMI connector server.
+</span><span style="color:#75715e"></span>  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Start the RMI connector server on port &#34;</span><span style="color:#f92672">+</span>port<span style="color:#f92672">);</span>
+  cs<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+  System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Server started at: &#34;</span><span style="color:#f92672">+</span>cs<span style="color:#f92672">.</span><span style="color:#a6e22e">getAddress</span><span style="color:#f92672">());</span>
+ 
+  <span style="color:#75715e">// Start the CleanThread.
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">final</span> Thread clean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CleanThread<span style="color:#f92672">(</span>cs<span style="color:#f92672">);</span>
+  clean<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Pour créer l&rsquo;agent, il est possible d&rsquo;utiliser le script <em>ant</em> suivant qui renseigne de manière adéquate le fichier <code>MANIFEST</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;build-agent-jar&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;customAgent&#34;</span><span style="color:#f92672">&gt;</span>
+ 
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;src&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;build&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">location=</span><span style="color:#e6db74">&#34;dist&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dist&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dist.agent.jar&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;customAgent.jar&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+ 
+  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build}&#34;</span><span style="color:#f92672">&gt;&lt;/mkdir&gt;</span>
+    <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${dist}&#34;</span><span style="color:#f92672">&gt;&lt;/mkdir&gt;</span>
+  <span style="color:#f92672">&lt;/target&gt;</span>
+ 
+  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">description=</span><span style="color:#e6db74">&#34;clean&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;clean&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${build}&#34;</span><span style="color:#f92672">&gt;&lt;/delete&gt;</span>
+    <span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${dist}&#34;</span><span style="color:#f92672">&gt;&lt;/delete&gt;</span>
+  <span style="color:#f92672">&lt;/target&gt;</span>
+ 
+  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;init&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${build}&#34;</span> <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${src}&#34;</span><span style="color:#f92672">&gt;&lt;/javac&gt;</span>
+  <span style="color:#f92672">&lt;/target&gt;</span>
+       
+  <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;clean,compile&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;build-agent-jar&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;${build}&#34;</span> <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;${dist}/${dist.agent.jar}&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;manifest&gt;</span>
+        <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Premain-Class&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;example.rmi.agent.CustomAgent&#34;</span><span style="color:#f92672">&gt;&lt;/attribute&gt;</span>
+      <span style="color:#f92672">&lt;/manifest&gt;</span>
+    <span style="color:#f92672">&lt;/jar&gt;</span>
+  <span style="color:#f92672">&lt;/target&gt;</span>
+<span style="color:#f92672">&lt;/project&gt;</span>
+</code></pre></div><p>Pour tester ce code, ajouter le jar <code>customAgent.jar</code> au classpath de l&rsquo;application et exécuter la commande suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -Dexample.rmi.agent.port<span style="color:#f92672">=</span><span style="color:#ae81ff">3010</span> -javaagent:customAgent.jar -classpath customAgent.jar example.MyApp2
+
+</code></pre></div><p>Le dernier point à prendre en compte est le fait que pour rendre visible le serveur RMI, il peut être nécessaire de préciser le nom du serveur avec l&rsquo;option <code>java.rmi.server.hostname</code>. Aussi, si le serveur RMI utilisé est embarqué dans votre conteneur de servlet ou autre, il peut s&rsquo;avérer utile de le préciser lors du lancement de la JVM.</p>
+<p>Par exemple, dans le cas d&rsquo;Apache Tomcat, il est possible d&rsquo;ajouter l&rsquo;option Java suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$JAVA_OPTS<span style="color:#e6db74"> -javaagent:</span><span style="color:#e6db74">${</span>CATALINA_HOME<span style="color:#e6db74">}</span><span style="color:#e6db74">/lib/customAgent.jar -Djava.rmi.server.hostname=192.168.1.105&#34;</span>
+</code></pre></div><p>Enfin, il est à noter que je ne suis pas expert JMX (je m&rsquo;excuse donc pour les quelques petites approximations qu&rsquo;il pourrait y avoir)&hellip;</p>
+<p>Pour plus d&rsquo;informations, je conseillerai, en vrac, les liens suivants :</p>
+<ul>
+<li>Blogs de Daniel Fuchs : <a href="http://blogs.sun.com/jmxetc/entry/troubleshooting_connection_problems_in_jconsole">http://blogs.sun.com/jmxetc/entry/troubleshooting_connection_problems_in_jconsole</a></li>
+<li>Blogs de Daniel Fuchs : <a href="http://blogs.sun.com/jmxetc/entry/connecting_through_firewall_using_jmx">http://blogs.sun.com/jmxetc/entry/connecting_through_firewall_using_jmx</a></li>
+<li>Page d&rsquo;Oracle de documentation sur JMX : <a href="http://java.sun.com/javase/6/docs/technotes/guides/management/agent.html">http://java.sun.com/javase/6/docs/technotes/guides/management/agent.html</a></li>
+<li>Blog de Oleg Zhurakousky : <a href="http://olegz.wordpress.com/2009/03/23/jmx-connectivity-through-the-firewall/">http://olegz.wordpress.com/2009/03/23/jmx-connectivity-through-the-firewall/</a></li>
+<li>Documentation sur MX4J : <a href="http://mx4j.sourceforge.net/docs/ch03.html#N10324">http://mx4j.sourceforge.net/docs/ch03.html#N10324</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f05%2fjmx-et-firewall.html%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html/">JMX ou comment administrer et superviser son système...</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html/">RTFM ou de l&#39;importance de savoir lire une documentation</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JMX pour les nuls... - Les concepts - Partie 1 &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JMX pour les nuls... - Les concepts - Partie 1</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>27 Oct 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left">
+Comme promis lors de mon <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">article précédent</a> (et pour éviter de vous faire languir ;-) ) la première partie de cette série d&rsquo;article sur JMX!</p>
+<!-- more -->
+<h1 id="table-des-matières">Table des matières</h1>
+<ul>
+<li>JMX, qu&rsquo;est ce que c&rsquo;est?
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite">Généralités</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture">Architecture JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation">Niveau instrumentation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent">Niveau agent</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue">Niveau service distribué</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant">Composants JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean">MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification">Modèle de notifications</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee">Classe de métadonnées de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur">Serveur de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service">Service d&rsquo;agents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spécifications
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">JMX Instrumentation</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean">MBean</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard">MBean Standard</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic">Dynamic MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification">Notification</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open">Open MBean</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model">Model MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent">Agent JMX</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">Concepts</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName">ObjectName</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance">ObjectInstance</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute">Attribute et AttributeList</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception">Les Exceptions</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server">MBean Server</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic">Chargement dynamique des MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html">Les services JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring">Service Monitoring</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer">Service Timer</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation">Service Relation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite">Service Sécurité</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector">Les Connecteurs</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="jmx-quest-ce-que-cest">JMX, qu&rsquo;est ce que c&rsquo;est?</h1>
+<p><a name="generalite"></a></p>
+<h2 id="généralités">Généralités</h2>
+<p><em>Java Management eXtensions</em> (JMX) définit une architecture, un design pattern, une API et les services permettant de superviser et d’administrer une application au travers du langage Java.</p>
+<p>JMX permet, en effet :</p>
+<ul>
+<li>d’administrer et de superviser une application Java sans avoir à investir dans de couteux serveurs : l’architecture JMX repose sur un serveur d’objets de base qui peut être vu comme un agent de supervision et d’administration et qui peut fonctionner sur presque toutes les JVM.</li>
+<li>d’offrir une architecture de supervision et d’administration scalable : chaque agent JMX est un module indépendant pouvant se brancher à l’agent de supervision et d’administration de l’application à surveiller.</li>
+<li>de s’interfacer avec une autre solution de supervision et d’administration : les agents JMX peuvent être supervisés et administrés aux travers de différents protocoles (HTTP, SNMP, …) et l’API JMX permet de définir le sien.</li>
+<li>de s’intégrer avec les autres technologies Java présentes dans le système telles que JNDI, JDBC, JINI, SLP, …</li>
+</ul>
+<p><a name="architecture"></a></p>
+<h2 id="architecture-jmx">Architecture JMX</h2>
+<p>L’architecture JMX peut se décomposer en trois niveaux :</p>
+<ul>
+<li>le niveau instrumentation (<strong>instrumentation level</strong>),</li>
+<li>le niveau agent (<strong>agent level</strong>),</li>
+<li>et le niveau service distribué (<strong>distributed services level</strong>).</li>
+</ul>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TMdQmiH7InI/AAAAAAAAALY/rXNS-iCKg6A/s1600/jmx-01.png" alt="medium"></p>
+<p><a name="instrumentation"></a></p>
+<h3 id="niveau-instrumentation">Niveau instrumentation</h3>
+<p>Le niveau instrumentation spécifie comment implémenter des ressources administrable et supervisable par JMX ; une ressource pouvant être une application, une implémentation d’un service, un périphérique, ou autre tant qu’elle est développée en Java (ou qu’un wrapper existe) et qu’elle a été instrumentée pour être compatible JMX.</p>
+<p>L’instrumentation d’une ressource donnée est fournit par la présence d’un ou plusieurs Beans supervisables et administrables (ou MBeans pour <em>Managed Beans</em>) qui peuvent être de plusieurs sortes :</p>
+<ul>
+<li><strong>MBean standard</strong>,</li>
+<li><strong>MBean dynamique</strong>.</li>
+</ul>
+<p>Ainsi, l’instrumentation d’une ressource permet de la rendre administrable et supervisable au travers du niveau agent. Cela permet aux MBean de s’abstraire du niveau agent et ainsi que de les rendre plus simple et évolutifs.</p>
+<p><a name="agent"></a></p>
+<h3 id="niveau-agent">Niveau agent</h3>
+<p>Le niveau agent spécifie comment implémenter les agents qui permettent le contrôle direct des ressources et qui les rend administrable et supervisable d’une application de supervision et d’administration distante. Les agents se trouvent être généralement sur la même machine que les ressources qu’elles contrôlent mais cela n’est pas un pré-requis.</p>
+<p>Ce niveau s’appuie et utilise le niveau d’instrumentation pour définir des agents standards utilisés pour se superviser et s’administrer elle-même.</p>
+<p>L’<strong>agent JMX</strong> est constitué d’un serveur de MBeans (<strong>MBeanServer</strong>) et d’un ensemble de services permettant de manipuler les MBeans. En outre, le MBeanServer nécessite au moins un connecteur ou adaptateur.
+L’agent JMX peut être embarqué dans la machine virtuelle Java qui accueille les ressources JMX à administrer et superviser, ou peut être instancié dans un élément de médiation quand la ressource n’est pas une ressource Java.</p>
+<p>Enfin, l’agent JMX n’a pas besoin de connaitre les ressources qui doivent être administrées et supervisées.
+Le manageur accède donc au MBeans de l’agent et utilise les services fournis par ce dernier au travers un adaptateur de protocoles ou un connecteur. Celui permet à l’agent JMX d’être indépendant et faiblement couplé à l’application de management.</p>
+<p><a name="distribue"></a></p>
+<h3 id="niveau-service-distribué">Niveau service distribué</h3>
+<p>Le niveau service distribué spécifie comment implémenter l’interface d’administration et de supervision JMX. Ce niveau permet de définir les interfaces d’administration et de supervision et les composants qui exploitent les agents ou la hiérarchie d’agents JMX. Ces composants peuvent :</p>
+<ul>
+<li>fournir une interface d’administration et de supervision des applications via leurs agents JMX au travers d’un connecteur,</li>
+<li>exposer une vue d’administration et de supervision d’un agent JMX et de ses MBeans en associant leur signification sémantique avec un protocole haut niveau (comme HTML ou SNMP),
+diffuser les informations de supervision d’une plate-forme de supervision et d’administration à différents agents JMX,</li>
+<li>agréger et consolider les informations de supervision et d’administration en provenance de différents agents JMX dans une vue logique à destination de l’utilisateur final,</li>
+<li>gérer et sécuriser l’administration et la supervision du système.</li>
+</ul>
+<p>En fait, les composants d’administration et de supervision peuvent interagir les uns les autres au sein du réseau afin de fournir des fonctions d’administration et de supervision scalables et distribuées.</p>
+<p><a name="composant"></a></p>
+<h2 id="composants-jmx">Composants JMX</h2>
+<p>JMX s’appuie sur les composants et notions suivants :</p>
+<ul>
+<li><strong>MBeans</strong> (standard, dynamic, open et model)</li>
+<li><strong>Modèle de notifications</strong> (Notification Model)</li>
+<li><strong>Classe de métadonnées de MBeans</strong> (MBean metadata classes)</li>
+<li><strong>Serveur de MBeans</strong> (MBean Server)</li>
+<li><strong>Services d’agents</strong> (Agent Services)</li>
+</ul>
+<p><a name="mbean"></a></p>
+<h3 id="mbeans">MBeans</h3>
+<p>Un MBean est un objet Java qui implémente une interface spécifique et qui respecte un design pattern particulier. Cela permet de normaliser la représentation de l’interface des ressources à gérer dans le MBean. Cette dernière est composée de l’ensemble des informations et des méthodes nécessaires à l’administration et à la supervision de l’application.</p>
+<p>L’interface de gestion d’un MBean peut être composée :</p>
+<ul>
+<li>d’attributs dont les valeurs peuvent être accédées,</li>
+<li>d’opérations qui peuvent être invoquées,</li>
+<li>de notifications qui peuvent être émises,</li>
+<li>de constructeurs (au sens Java du terme)</li>
+</ul>
+<p>En fait, un MBean encapsule les attributs et les opérations au travers de leurs méthodes publiques : par exemple, un attribut en lecture-seule dans un MBean standard n’aura qu’un <em>getter</em> alors qu’un attribut accessible en lecture-écriture disposera d’un <em>getter</em> et d’un <em>setter</em>.</p>
+<p>Ainsi, n’importe quel objet qui implémentera un MBean et qui sera déclaré auprès de l’agent JMX pourra être géré.</p>
+<p>Les autres types de composants JMX comme les services d’agents sont des MBeans complètement instrumentés leur permettant de bénéficier de l’infrastructure JMX.</p>
+<p>La spécification JMX définit quatre types de MBean :</p>
+<ul>
+<li><strong>Standard MBean</strong> : c’est l’implémentation de MBean la plus simple. Elle fournit une représentation statique des ressources à gérer et à superviser. Son interface de gestion est décrite par le nom de ses méthodes.</li>
+<li><strong>Dynamic MBean</strong> : ce MBean doit implémenter une interface spécifique mais il expose ses interfaces de gestion de manière dynamique à l’exécution.</li>
+<li><strong>Open MBean</strong> : ce MBean est une extension du Dynamic MBean mais repose sur une représentation normée de ses types de données afin de permettre plus d’interopérabilité. Pour ce faire, il s’auto-décrit.</li>
+<li><strong>Model MBean</strong> : ce MBean est une extension du Dynamic MBean mais est complètement configurable et s’auto-décrit à l’exécution. Il est à noter qu’il fournit une classe générique de MBean qui définit son comportement par défaut qu’il est possible de redéfinir.</li>
+</ul>
+<p><a name="notification"></a></p>
+<h3 id="modèle-de-notifications">Modèle de notifications</h3>
+<p>JMX définit un modèle de notifications génériques qui se base sur le modèle d’événements Java. Les notifications peuvent être émises par une instance de MBean mais aussi par le serveur de MBean lui-même.</p>
+<p><a name="metadonnee"></a></p>
+<h3 id="classe-de-métadonnées-de-mbeans">Classe de métadonnées de MBeans</h3>
+<p>JMX définit comment les classes doivent décrire les interfaces de gestion des MBean. Ces dernières servent à construire la structure des informations à publier qui est utilisée par le serveur de MBeans. Ainsi, ces classes de métadonnées contiennent la structure qui décrit tout ce dont il a besoin : ses attributs, ses opérations, ses notifications et ses constructeurs mais aussi les caractéristiques de chacun de ces éléments comme la signature des méthodes ou le niveau d’accessibilité des attributs.</p>
+<p><a name="serveur"></a></p>
+<h3 id="serveur-de-mbeans">Serveur de MBeans</h3>
+<p>Le serveur de MBean peut être vu comme un registre des objets qui sont gérables au travers de l’agent. Ainsi, chaque objet enregistré dans le serveur de MBean est visible de l’application de gestion.</p>
+<p>Cependant, il n’expose jamais les objets directement mais seulement leurs interfaces même s’il fournit une interface standardisée d’accès aux MBeans présent dans la même JVM.</p>
+<p>Un MBean doit donc être enregistré de manière unique au sein du serveur de MBean et peut l’être par :</p>
+<ul>
+<li>un autre MBean,</li>
+<li>l’agent lui-même,</li>
+<li>une application de gestion distante au travers d’un service distribué.</li>
+</ul>
+<p>Les opérations alors disponibles sur un MBean sont :</p>
+<ul>
+<li>la découverte de l’interface de gestion du MBean,</li>
+<li>la lecture et l’écriture de la valeur des attributs,</li>
+<li>l’invocation des opérations offertes par l’interface de gestion du MBean,</li>
+<li>la récupération des notifications émises par le MBean.</li>
+</ul>
+<p>Pour permettre à un agent d’être accessible depuis une application extérieure, le MBean Server s’appuie sur les adaptateurs de protocoles et les connecteurs.</p>
+<p><a name="service"></a></p>
+<h3 id="service-dagents">Service d’agents</h3>
+<p>Les services d’agents sont les objets qui gèrent les différentes opérations de gestion des MBean enregistrés dans le serveur de MBeans.</p>
+<p>Ces services d’agents sont généralement eux-mêmes des MBeans et permettent ainsi au serveur de MBeans de les gérer.</p>
+<p>Par défaut, doivent être présents les services suivants :</p>
+<ul>
+<li><strong>Management Applet</strong> (m-let) qui permet le chargement dynamique de classes</li>
+<li><strong>Service Timers</strong> qui permet de déclencher des actions sur les MBeans de façon régulière</li>
+<li><strong>Service Relation</strong> qui permet d’associer des MBeans entre eux</li>
+<li><strong>Service Monitor</strong> qui permet de scruter certaines valeurs d’attribut afin de notifier d’autres objets lors d’un changement</li>
+</ul>
+<h1 id="le-mot-de-la-fin-de-cette-partie">Le mot de la fin de cette partie</h1>
+<p>Dans cet article, nous avons vu (ou revu) les concepts de bases de JMX. Dans les articles suivants, nous entrerons plus dans les entrailles des spécifications en nous calquant sur les spécifications JMX pour tenter d&rsquo;y voir un peu plus clair&hellip;</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f10%2fjmx-pour-les-nuls-les-concepts-partie-1.html%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html/">JMX pour les nuls... - Introduction</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html/">JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

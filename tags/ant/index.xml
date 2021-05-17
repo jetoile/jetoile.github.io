@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 05 Nov 2012 12:57:40 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/ant/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Précompiler ses jsp</title>
-      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</link>
+      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</link>
       <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</guid>
       <description>Parce qu&amp;rsquo;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&amp;rsquo;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</description>
     </item>

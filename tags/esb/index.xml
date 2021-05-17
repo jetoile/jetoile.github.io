@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 07 Apr 2010 10:55:20 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/esb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Orchestration ou Routage?</title>
-      <link>https://blog.jetoile.fr/2010/04/orchestration-ou-routage/</link>
+      <link>https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html/</link>
       <pubDate>Wed, 07 Apr 2010 10:55:20 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/04/orchestration-ou-routage/</guid>
+      <guid>https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html/</guid>
       <description>Orchestration ou routage? Telle est la question qui se pose souvent&amp;hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s&amp;rsquo;agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?
 PEtALS Link vient de mettre à disposition un livre blanc traitant du sujet en proposant différentes pistes pour choisir la solution d&amp;rsquo;implémentation.</description>
     </item>

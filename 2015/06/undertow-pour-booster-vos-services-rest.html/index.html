@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Undertow pour booster vos services REST &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Undertow pour booster vos services REST</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>23 Jun 2015</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/rest">rest</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/microservice">microservice</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jolokia">jolokia</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/maven">maven</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/metrics">metrics</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/performance">performance</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="https://blog.jetoile.fr/images/undertow.png" alt="left-small">
+Il y a quelques temps, j&rsquo;avais fait une série d&rsquo;articles sur <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">resteasy-netty</a> et <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html">resteasy-netty4</a>.</p>
+<p>Cette article repart du même besoin, à savoir disposer d&rsquo;une <em>stack</em> légère pour réaliser un service REST, mais en utilisant <a href="http://undertow.io/">Undertow</a> plutôt que Resteasy-Netty.</p>
+<!-- more -->
+<p>Au niveau des besoins, ils seront identiques ie. :</p>
+<ul>
+<li>utiliser JAX-RS,</li>
+<li>intégrer Swagger,</li>
+<li>intégrer Jolokia,</li>
+<li>générer un livrable autoporteur.</li>
+</ul>
+<p>RestEasy-Netty, même s&rsquo;il existe de nombreux points d&rsquo;entrée, demande quelques phases de <em>hack</em> (gestion du <em>crossover domain</em> par exemple) et dispose d&rsquo;un mécanisme un peu limité concernant la partie sécurité.</p>
+<p>En outre, l&rsquo;absence du mécanisme de Servlet reste un peu embêtant pour mettre en place certaines <em>features</em> comme le MDC ( <a href="http://logback.qos.ch/manual/mdc.html"><em>Mapped Diagnostic Context</em></a> ) bien pratique lorsque l&rsquo;on est dans une architecture type microservice.</p>
+<p>Le code complet est disponible <a href="https://github.com/jetoile/undertow-sample">ici</a>.</p>
+<h1 id="rappel-du-cahier-des-charges">Rappel du cahier des charges</h1>
+<p>Comme je l&rsquo;ai déjà indiqué dans les autres posts, l&rsquo;objectif est seulement de montrer comme il peut être simple d&rsquo;exposer un service REST à l&rsquo;aide d'<a href="http://undertow.io/">Undertow</a>. Pour ce faire, un simple service sera exposé et il consistera à répèter ce qu’on lui demande…</p>
+<p>Il répondra donc à une requête de type GET du type : http://localhost:8081/sample/say/<message></p>
+<p>Du coté de la réponse, elle aura la forme suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">message</span><span style="color:#f92672">&gt;</span>,
+    <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;2015-06-23T15:18:50.748&#34;</span>
+}
+</code></pre></div><h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<p>A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.11.Final&#39;
+    compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-jvm&#39;, version:&#39;1.3.1&#39;
+    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.12&#39;
+    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
+    compile group: &#39;javax.servlet&#39;, name: &#39;javax.servlet-api&#39;, version:&#39;3.1.0&#39;
+    compile group: &#39;io.dropwizard.metrics&#39;, name: &#39;metrics-core&#39;, version:&#39;3.1.2&#39;
+    compile group: &#39;io.undertow&#39;, name: &#39;undertow-core&#39;, version:&#39;1.2.8.Final&#39;
+    compile group: &#39;io.undertow&#39;, name: &#39;undertow-servlet&#39;, version:&#39;1.2.8.Final&#39;
+    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-undertow&#39;, version:&#39;3.0.11.Final&#39;
+    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson2-provider&#39;, version:&#39;3.0.11.Final&#39;
+    compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-core&#39;, version:&#39;2.5.4&#39;
+    compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-annotations&#39;, version:&#39;2.5.4&#39;
+    compile group: &#39;com.fasterxml.jackson.core&#39;, name: &#39;jackson-databind&#39;, version:&#39;2.5.4&#39;
+    compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.10&#39;
+    compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
+    compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
+    compile group: &#39;org.slf4j&#39;, name: &#39;slf4j-api&#39;, version:&#39;1.7.12&#39;
+    compile group: &#39;ch.qos.logback&#39;, name: &#39;logback-classic&#39;, version:&#39;1.1.3&#39;
+</code></pre></div><p>Concernant la version des différentes dépendances, on constate que ce n&rsquo;est pas swagger2 qui est utilisé en raison d&rsquo;une incapacité de ma part à l&rsquo;intégrer&hellip; :'(</p>
+<h1 id="implémentation-du-service-rest">Implémentation du service REST</h1>
+<p>Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial… et la classe ci-dessous fait humblement l’affaire :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Api</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">,</span>
+        description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;the sample api&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@RolesAllowed</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/say/{msg}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@ApiOperation</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;repeat the word&#34;</span><span style="color:#f92672">,</span>
+            notes <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;response the word&#34;</span><span style="color:#f92672">,</span>
+            response <span style="color:#f92672">=</span> DtoResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@ApiResponses</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#a6e22e">@ApiResponse</span><span style="color:#f92672">(</span>code <span style="color:#f92672">=</span> 500<span style="color:#f92672">,</span> message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Internal server error&#34;</span><span style="color:#f92672">)})</span>
+    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">sayHello</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;msg&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sample log&#34;</span><span style="color:#f92672">);</span>
+
+        <span style="color:#66d9ef">final</span> Timer timer <span style="color:#f92672">=</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">metricRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">timer</span><span style="color:#f92672">(</span>name<span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;say-service&#34;</span><span style="color:#f92672">));</span>
+        <span style="color:#66d9ef">final</span> Timer<span style="color:#f92672">.</span><span style="color:#a6e22e">Context</span> context <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span><span style="color:#a6e22e">time</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+
+            DtoResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DtoResponse<span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>LocalDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">());</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;internal error: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">status</span><span style="color:#f92672">(</span>Response<span style="color:#f92672">.</span><span style="color:#a6e22e">Status</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INTERNAL_SERVER_ERROR</span><span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>response<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>context <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Coté du DTO, il est le suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@XmlRootElement</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DtoResponse</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> String message<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> LocalDateTime time<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DtoResponse</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> message<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> LocalDateTime <span style="color:#a6e22e">getTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> time<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>LocalDateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On remarquera l&rsquo;utilisation de Java8 pour la gestion du temps plutôt que Joda-Time.</p>
+<p>En outre, concernant les annotations Swagger et l&rsquo;utilisation de metrics, nous y reviendrons plus tard.</p>
+<p>Concernant le message de log, de même, nous y reviendrons plus tard avec l&rsquo;intégration d&rsquo;un MDC pour les logs.</p>
+<h1 id="mise-en-oeuvre-avec-undertow">Mise en oeuvre avec Undertow</h1>
+<p>Mettre en place Resteasy avec Undertow est très simple, d’après la documnentation, il suffit de faire :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SimpleService simpleService <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleService<span style="color:#f92672">();</span>
+ResteasyDeployment deployment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResteasyDeployment<span style="color:#f92672">();</span>
+
+deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResources</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.&lt;</span>Object<span style="color:#f92672">&gt;</span>asList<span style="color:#f92672">(</span>simpleService<span style="color:#f92672">));</span>
+
+<span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;undertow.port&#34;</span><span style="color:#f92672">,</span> TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
+String host <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;undertow.host&#34;</span><span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getHost</span><span style="color:#f92672">()));</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;org.jboss.resteasy.port&#34;</span><span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;org.jboss.resteasy.host&#34;</span><span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getHost</span><span style="color:#f92672">());</span>
+
+UndertowJaxrsServer server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UndertowJaxrsServer<span style="color:#f92672">();</span>
+
+DeploymentInfo deploymentInfo <span style="color:#f92672">=</span> server<span style="color:#f92672">.</span><span style="color:#a6e22e">undertowDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeploymentName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">setContextPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">setClassLoader</span><span style="color:#f92672">(</span>Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">());</span>
+
+deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setProviderFactory</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ResteasyProviderFactory<span style="color:#f92672">());</span>
+server<span style="color:#f92672">.</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>deploymentInfo<span style="color:#f92672">);</span>
+server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span>Undertow<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addHttpListener</span><span style="color:#f92672">(</span>port<span style="color:#f92672">,</span> host<span style="color:#f92672">));</span>
+</code></pre></div><p>On y constate que pour ajouter un service, il suffit juste de déclarer la classe implémentant JAX-RS via la méthode <code>setResources()</code> sur l’instance de <em>ResteasyDeployment</em> fournit au serveur <em>UndertowJaxrsServer</em> :</p>
+<p>Et voilà! On dispose désormais d’un programme exécutable qui démarre un serveur REST basé sur Undertow.</p>
+<p>Par contre, il semble que le service ne rende pas vraiment ce que l&rsquo;on voulait :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl <span style="color:#e6db74">&#39;http://localhost:8081/sample/say/&lt;message&gt;&#39;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;&lt;message&gt;&#34;</span>,
+    <span style="color:#f92672">&#34;time&#34;</span>: {
+        <span style="color:#f92672">&#34;hour&#34;</span>: <span style="color:#ae81ff">15</span>,
+        <span style="color:#f92672">&#34;minute&#34;</span>: <span style="color:#ae81ff">55</span>,
+        <span style="color:#f92672">&#34;second&#34;</span>: <span style="color:#ae81ff">51</span>,
+        <span style="color:#f92672">&#34;nano&#34;</span>: <span style="color:#ae81ff">225000000</span>,
+        <span style="color:#f92672">&#34;year&#34;</span>: <span style="color:#ae81ff">2015</span>,
+        <span style="color:#f92672">&#34;month&#34;</span>: <span style="color:#e6db74">&#34;JUNE&#34;</span>,
+        <span style="color:#f92672">&#34;dayOfMonth&#34;</span>: <span style="color:#ae81ff">23</span>,
+        <span style="color:#f92672">&#34;dayOfWeek&#34;</span>: <span style="color:#e6db74">&#34;TUESDAY&#34;</span>,
+        <span style="color:#f92672">&#34;dayOfYear&#34;</span>: <span style="color:#ae81ff">174</span>,
+        <span style="color:#f92672">&#34;monthValue&#34;</span>: <span style="color:#ae81ff">6</span>,
+        <span style="color:#f92672">&#34;chronology&#34;</span>: {
+            <span style="color:#f92672">&#34;calendarType&#34;</span>: <span style="color:#e6db74">&#34;iso8601&#34;</span>,
+            <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;ISO&#34;</span>
+        }
+    }
+}
+</code></pre></div><p>Pas de souci, il suffit de préciser comment on souhaite que LocalDateTime soit sérialisé par Jackson :</p>
+<p>Ainsi, notre DTO devient :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+<span style="color:#a6e22e">@XmlRootElement</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DtoResponse</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> String message<span style="color:#f92672">;</span>
+    <span style="color:#a6e22e">@JsonSerialize</span><span style="color:#f92672">(</span>using <span style="color:#f92672">=</span> LocalDateTimeToStringSerializer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> LocalDateTime time<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DtoResponse</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> message<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> LocalDateTime <span style="color:#a6e22e">getTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> time<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>LocalDateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>où :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LocalDateTimeToStringSerializer</span> <span style="color:#66d9ef">extends</span> JsonSerializer<span style="color:#f92672">&lt;</span>LocalDateTime<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">serialize</span><span style="color:#f92672">(</span>LocalDateTime value<span style="color:#f92672">,</span> JsonGenerator jgen<span style="color:#f92672">,</span> SerializerProvider provider<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> JsonProcessingException <span style="color:#f92672">{</span>
+        jgen<span style="color:#f92672">.</span><span style="color:#a6e22e">writeObject</span><span style="color:#f92672">(</span>value<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>DateTimeFormatter<span style="color:#f92672">.</span><span style="color:#a6e22e">ISO_DATE_TIME</span><span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Après ces modifications, on obtient bien :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;message&#34;</span>:<span style="color:#e6db74">&#34;&lt;message&gt;&#34;</span>,<span style="color:#f92672">&#34;time&#34;</span>:<span style="color:#e6db74">&#34;2015-06-23T16:04:01.419&#34;</span>}
+</code></pre></div><h1 id="intégration-de-metrics">Intégration de Metrics</h1>
+<p>Concernant l&rsquo;intégration de Metrics, pas grand chose de nouveau et donc pas grand chose à dire ;-)</p>
+<p>Déclarer le registry :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">metricRegistry <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MetricRegistry<span style="color:#f92672">();</span>
+<span style="color:#66d9ef">final</span> JmxReporter reporter <span style="color:#f92672">=</span> JmxReporter<span style="color:#f92672">.</span><span style="color:#a6e22e">forRegistry</span><span style="color:#f92672">(</span>metricRegistry<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+reporter<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</code></pre></div><p>Et utiliser le dans vos classes :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Timer timer <span style="color:#f92672">=</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">metricRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">timer</span><span style="color:#f92672">(</span>name<span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;say-service&#34;</span><span style="color:#f92672">));</span>
+<span style="color:#66d9ef">final</span> Timer<span style="color:#f92672">.</span><span style="color:#a6e22e">Context</span> context <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span><span style="color:#a6e22e">time</span><span style="color:#f92672">();</span>
+<span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>context <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h1 id="intégration-de-la-sécurité">Intégration de la sécurité</h1>
+<p>Undertow permet une bien meilleur intégration de la sécurité que RestEasy-Netty. En effet, grâce au mécanisme de Servlet, il est possible de bénéficier de toute la puissance des conteneurs de Servlets.</p>
+<p>Du coté du serveur Undertow, il suffit donc de définir un <em>ServletIdentityManager</em> et de lui fournir un <em>LoginConfig</em> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+
+ServletIdentityManager identityManager <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServletIdentityManager<span style="color:#f92672">();</span>
+identityManager<span style="color:#f92672">.</span><span style="color:#a6e22e">addUser</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;khanh&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;khanh&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">);</span>
+
+deploymentInfo <span style="color:#f92672">=</span> deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">setIdentityManager</span><span style="color:#f92672">(</span>identityManager<span style="color:#f92672">).</span><span style="color:#a6e22e">setLoginConfig</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LoginConfig<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;BASIC&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Test Realm&#34;</span><span style="color:#f92672">));</span> 
+</code></pre></div><p>où :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ServletIdentityManager</span> <span style="color:#66d9ef">implements</span> IdentityManager <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Charset UTF_8 <span style="color:#f92672">=</span> Charset<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> UserAccount<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addUser</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String name<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> String password<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> String<span style="color:#f92672">...</span> roles<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        UserAccount user <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UserAccount<span style="color:#f92672">();</span>
+        user<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+        user<span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">.</span><span style="color:#a6e22e">toCharArray</span><span style="color:#f92672">();</span>
+        user<span style="color:#f92672">.</span><span style="color:#a6e22e">roles</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;&gt;(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>roles<span style="color:#f92672">));</span>
+        users<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>name<span style="color:#f92672">,</span> user<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Account <span style="color:#a6e22e">verify</span><span style="color:#f92672">(</span>Account account<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// Just re-use the existing account.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> account<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Account <span style="color:#a6e22e">verify</span><span style="color:#f92672">(</span>String id<span style="color:#f92672">,</span> Credential credential<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Account account <span style="color:#f92672">=</span> users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>id<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>account <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> verifyCredential<span style="color:#f92672">(</span>account<span style="color:#f92672">,</span> credential<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> account<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> Account <span style="color:#a6e22e">verify</span><span style="color:#f92672">(</span>Credential credential<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">verifyCredential</span><span style="color:#f92672">(</span>Account account<span style="color:#f92672">,</span> Credential credential<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// This approach should never be copied in a realm IdentityManager.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>account <span style="color:#66d9ef">instanceof</span> UserAccount<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>credential <span style="color:#66d9ef">instanceof</span> PasswordCredential<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> expectedPassword <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>UserAccount<span style="color:#f92672">)</span> account<span style="color:#f92672">).</span><span style="color:#a6e22e">password</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> suppliedPassword <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>PasswordCredential<span style="color:#f92672">)</span> credential<span style="color:#f92672">).</span><span style="color:#a6e22e">getPassword</span><span style="color:#f92672">();</span>
+
+                <span style="color:#66d9ef">return</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>expectedPassword<span style="color:#f92672">,</span> suppliedPassword<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>credential <span style="color:#66d9ef">instanceof</span> DigestCredential<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                DigestCredential digCred <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>DigestCredential<span style="color:#f92672">)</span> credential<span style="color:#f92672">;</span>
+                MessageDigest digest <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                    digest <span style="color:#f92672">=</span> digCred<span style="color:#f92672">.</span><span style="color:#a6e22e">getAlgorithm</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMessageDigest</span><span style="color:#f92672">();</span>
+
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>account<span style="color:#f92672">.</span><span style="color:#a6e22e">getPrincipal</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span>UTF_8<span style="color:#f92672">));</span>
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">((</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;:&#39;</span><span style="color:#f92672">);</span>
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>digCred<span style="color:#f92672">.</span><span style="color:#a6e22e">getRealm</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span>UTF_8<span style="color:#f92672">));</span>
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">((</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;:&#39;</span><span style="color:#f92672">);</span>
+                    <span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> expectedPassword <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>UserAccount<span style="color:#f92672">)</span> account<span style="color:#f92672">).</span><span style="color:#a6e22e">password</span><span style="color:#f92672">;</span>
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>expectedPassword<span style="color:#f92672">).</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(</span>UTF_8<span style="color:#f92672">));</span>
+
+                    <span style="color:#66d9ef">return</span> digCred<span style="color:#f92672">.</span><span style="color:#a6e22e">verifyHA1</span><span style="color:#f92672">(</span>HexConverter<span style="color:#f92672">.</span><span style="color:#a6e22e">convertToHexBytes</span><span style="color:#f92672">(</span>digest<span style="color:#f92672">.</span><span style="color:#a6e22e">digest</span><span style="color:#f92672">()));</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchAlgorithmException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Unsupported Algorithm&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+                <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                    digest<span style="color:#f92672">.</span><span style="color:#a6e22e">reset</span><span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserAccount</span> <span style="color:#66d9ef">implements</span> Account <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// In no way whatsoever should a class like this be considered a good idea for a real IdentityManager implementation,
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// this is for testing only.
+</span><span style="color:#75715e"></span>
+        String name<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">char</span><span style="color:#f92672">[]</span> password<span style="color:#f92672">;</span>
+        Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> roles<span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Principal principal <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Principal<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">};</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> Principal <span style="color:#a6e22e">getPrincipal</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> principal<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">public</span> Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getRoles</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> roles<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Il s&rsquo;agit ici d&rsquo;une Basic Authentification mais il est bien sûr possible d&rsquo;en mettre en place d&rsquo;autre.</p>
+<p>Coté autorisation, il est alors possible de bénéficier de l&rsquo;annotation <code>@RolesAllowed</code> de JAX-RS :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@RolesAllowed</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h1 id="intégration-dun-mdc">Intégration d&rsquo;un MDC</h1>
+<p>Concernant la mise en place d&rsquo;un MDC (<em>Mapped Diagnostic Context</em>), le fait de bénéficier du mécanisme de <em>Filter</em> des Servlets rend la chose beaucoup plus simple.</p>
+<p>En effet, une fois la couche sécurité branchée, il suffit de récupérer le <code>UserPrincipal</code> dans la requête et l&rsquo;enregistrer dans le MDC.</p>
+<p>La déclaration des Filters se fait de la manière suivante pour Undertow :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">FilterInfo mdcFilter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FilterInfo<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MDCFilter&#34;</span><span style="color:#f92672">,</span> MDCServletFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">addFilter</span><span style="color:#f92672">(</span>mdcFilter<span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">addFilterUrlMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MDCFilter&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">,</span> DispatcherType<span style="color:#f92672">.</span><span style="color:#a6e22e">REQUEST</span><span style="color:#f92672">);</span>
+
+FilterInfo mdcInsertingFilter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FilterInfo<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MDCInsertingServletFilter&#34;</span><span style="color:#f92672">,</span> MDCInsertingServletFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">addFilter</span><span style="color:#f92672">(</span>mdcInsertingFilter<span style="color:#f92672">);</span>
+deploymentInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">addFilterUrlMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;MDCInsertingServletFilter&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">,</span> DispatcherType<span style="color:#f92672">.</span><span style="color:#a6e22e">REQUEST</span><span style="color:#f92672">);</span>
+</code></pre></div><p>Avec le filter ci-dessous :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MDCServletFilter</span> <span style="color:#66d9ef">implements</span> Filter <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String USER_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">destroy</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>ServletRequest request<span style="color:#f92672">,</span> ServletResponse response<span style="color:#f92672">,</span>
+                         FilterChain chain<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">boolean</span> successfulRegistration <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+
+        HttpServletRequest req <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>HttpServletRequest<span style="color:#f92672">)</span> request<span style="color:#f92672">;</span>
+        Principal principal <span style="color:#f92672">=</span> req<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserPrincipal</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// Please note that we could have also used a cookie to
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// retrieve the user name
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>principal <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            String username <span style="color:#f92672">=</span> principal<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">();</span>
+            successfulRegistration <span style="color:#f92672">=</span> registerUsername<span style="color:#f92672">(</span>username<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            chain<span style="color:#f92672">.</span><span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> response<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>successfulRegistration<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                MDC<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>USER_KEY<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>FilterConfig arg0<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ServletException <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * Register the user in the MDC under USER_KEY.
+</span><span style="color:#75715e">     *
+</span><span style="color:#75715e">     * @param username
+</span><span style="color:#75715e">     * @return true id the user can be successfully registered
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">registerUsername</span><span style="color:#f92672">(</span>String username<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>username <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> username<span style="color:#f92672">.</span><span style="color:#a6e22e">trim</span><span style="color:#f92672">().</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            MDC<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>USER_KEY<span style="color:#f92672">,</span> username<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Ainsi, disposer d&rsquo;un MDC permet d&rsquo;ajouter automatiquement des informations dans les logs :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;configuration&gt;</span>
+    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;encoder&gt;</span>
+            <span style="color:#f92672">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %-5level %logger{36} %X{req.remoteHost} %X{req.requestURI} - C:%X{username} - %msg%n
+
+            <span style="color:#f92672">&lt;/pattern&gt;</span>
+        <span style="color:#f92672">&lt;/encoder&gt;</span>
+    <span style="color:#f92672">&lt;/appender&gt;</span>
+
+
+    <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;STDOUT&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/root&gt;</span>
+
+<span style="color:#f92672">&lt;/configuration&gt;</span>
+</code></pre></div><p>On obtient alors bien les logs voulues :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">17:15:11.466 INFO  f.j.sample.service.SimpleService 127.0.0.1 /sample/say/&lt;message&gt; - C:khanh - sample log
+</code></pre></div><h1 id="intégration-de-jolokia">Intégration de Jolokia</h1>
+<p>Coté Jolokia, pas grand chose à ajouter par rapport à ma série d&rsquo;article précédent&hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            JolokiaServerConfig config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JolokiaServerConfig<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;());</span>
+
+            JolokiaServer jolokiaServer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JolokiaServer<span style="color:#f92672">(</span>config<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+            jolokiaServer<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to start jolokia server&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h1 id="intégration-de-swagger">Intégration de Swagger</h1>
+<p>Concernant l&rsquo;intégration de Swagger, le fait de disposer des <em>Filter</em> de Servlet permet de n&rsquo;avoir pas à faire de <em>hack</em> immonde pour gérer le CORS (cf. <a href="http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html">article précédent</a>) : il suffit de déclarer un <em>Filter</em> dans Undertow qui a, en outre, la chance d&rsquo;exister :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">CorsFilter filter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CorsFilter<span style="color:#f92672">();</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">setAllowedMethods</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;GET,POST,PUT,DELETE,OPTIONS&#34;</span><span style="color:#f92672">);</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">setAllowedHeaders</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;X-Requested-With, Content-Type, Content-Length, Authorization&#34;</span><span style="color:#f92672">);</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">getAllowedOrigins</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">);</span>
+
+deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setProviderFactory</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ResteasyProviderFactory<span style="color:#f92672">());</span>
+deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">getProviderFactory</span><span style="color:#f92672">().</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>filter<span style="color:#f92672">);</span>
+</code></pre></div><p>Concernant la déclaration dans Undertow, pas grand chose à ajouter :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initSwagger</span><span style="color:#f92672">(</span>ResteasyDeployment deployment<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        BeanConfig swaggerConfig <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanConfig<span style="color:#f92672">();</span>
+        swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setVersion</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.version&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;1.0.0&#34;</span><span style="color:#f92672">));</span>
+        swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setBasePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://&#34;</span> <span style="color:#f92672">+</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.host&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.port&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;8081&#34;</span><span style="color:#f92672">));</span>
+        swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.title&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;jetoile sample app&#34;</span><span style="color:#f92672">));</span>
+        swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setScan</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+        swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fr.jetoile.sample.service&#34;</span><span style="color:#f92672">);</span>
+
+        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setProviderClasses</span><span style="color:#f92672">(</span>Lists<span style="color:#f92672">.</span><span style="color:#a6e22e">newArrayList</span><span style="color:#f92672">(</span>
+                <span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ResourceListingProvider&#34;</span><span style="color:#f92672">,</span>
+                <span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider&#34;</span><span style="color:#f92672">));</span>
+        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResourceClasses</span><span style="color:#f92672">(</span>Lists<span style="color:#f92672">.</span><span style="color:#a6e22e">newArrayList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON&#34;</span><span style="color:#f92672">));</span>
+        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+</code></pre></div><h1 id="branchement-des-plugins-maven-appassembler-et-assembly">Branchement des plugins Maven Appassembler et Assembly</h1>
+<p>Coté génération du livrable, encore une fois, pas grand chose à ajouter par rapport à mon précédent article : l&rsquo;utilisation des plugins assembly et appassembler est identique.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>On avait vu dans les articles précédents que RestEasy-Netty était une solution intéressante pour la simplicité de sa mise en oeuvre ainsi que pour le faible overhead.</p>
+<p>Cependant, certaines intégrations ressemblaient plus à du <em>hack</em> qu&rsquo;à une solution configurable.</p>
+<p>Undertow (enfin pour être plus précis RestEasy-Undertow) pour sa part offre la même simplicité que RestEasy-Netty mais il permet en plus de s&rsquo;intégrer avec beaucoup d&rsquo;autres choses et le fait de retrouver le mécanisme de <em>Filter</em> facilite énormément les choses (par exemple, je ne suis pas sûr que bénéficier du MDC avec RestEasy-Netty ait été aussi simple).</p>
+<p>Coté performance, je reviendrai dessus dans un autre article mais je peux déjà dire que la solution RestEasy-Undertow n&rsquo;a rien à envier à RestEasy-Netty.</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2015%2f06%2fundertow-pour-booster-vos-services-rest.html%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html/">Breizhcamp 2014 - Présentations en ligne</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2015/10/template-de-projets-rest.html/">Template de projets REST</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2015/10/template-de-projets-rest.html/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

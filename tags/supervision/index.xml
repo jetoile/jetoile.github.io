@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 07 Apr 2014 11:20:26 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/supervision/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Logstash : tour d&#39;horizon sur les stratégies de déploiement</title>
-      <link>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon/</link>
+      <link>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html/</link>
       <pubDate>Mon, 07 Apr 2014 11:20:26 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon/</guid>
+      <guid>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html/</guid>
       <description>Cet article fera un rapide tour d&amp;rsquo;horizon sur les différentes stratégies qui peuvent être utilisées pour Logstash.
 Pour ce faire, je m&amp;rsquo;appuierai sur le très bon livre officiel que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.
 Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</description>

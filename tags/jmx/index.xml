@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 23 Jun 2015 14:51:56 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jmx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Undertow pour booster vos services REST</title>
-      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</link>
+      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</link>
       <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</guid>
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
@@ -22,10 +22,10 @@ Au niveau des besoins, ils seront identiques ie. :
     
     <item>
       <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</link>
       <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</guid>
       <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
@@ -33,10 +33,10 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
     
     <item>
       <title>JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html/</link>
       <pubDate>Mon, 17 Mar 2014 08:43:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html/</guid>
       <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
 Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
 En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
@@ -44,58 +44,58 @@ En fait, les seuls points qui diffèrent, par rapport au code précédent, touch
     
     <item>
       <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</link>
       <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</guid>
       <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
     </item>
     
     <item>
       <title>Jolokia : le piment qui vous veut du bien </title>
-      <link>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</link>
+      <link>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html/</link>
       <pubDate>Tue, 04 Mar 2014 00:30:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html/</guid>
       <description>Dans des articles précédents, je m&amp;rsquo;étais déjà exprimé sur le fait que je trouvais qu&amp;rsquo;il était important de monitorer son application (qu&amp;rsquo;il s&amp;rsquo;agisse d&amp;rsquo;une application web, d&amp;rsquo;un batch ou d&amp;rsquo;une application standalone) (cf. ici). J&amp;rsquo;avais même creusé un peu la spécification JMX (cf. là).
 Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&amp;rsquo;ai découvert récemment (merci Romain ;-) ) mais qui existe depuis un moment (la version 1.</description>
     </item>
     
     <item>
       <title>Jetty, Maven et JMX</title>
-      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html/</link>
       <pubDate>Mon, 26 Sep 2011 22:19:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html/</guid>
       <description>Vous avez peut être remarqué que ces derniers temps, j&amp;rsquo;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&amp;hellip; Maven et de JMX.
 Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</description>
     </item>
     
     <item>
       <title>Pour les gouverner tous - partie 3/3</title>
-      <link>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/</link>
+      <link>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html/</link>
       <pubDate>Thu, 24 Feb 2011 18:49:13 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/</guid>
+      <guid>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html/</guid>
       <description>Cet article fait suite à mes précédents posts (ici et là) et à pour objectif d&amp;rsquo;intégrer la partie JMX à mon petit POC JGroups afin d&amp;rsquo;offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d&amp;rsquo;une application distribuée (ie. d&amp;rsquo;aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d&amp;rsquo;une application d&amp;rsquo;obtenir la valeur d&amp;rsquo;une donnée offerte par les autres instances.</description>
     </item>
     
     <item>
       <title>Pour les gouverner tous - partie 1/3</title>
-      <link>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/</link>
+      <link>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html/</link>
       <pubDate>Mon, 31 Jan 2011 18:37:27 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html/</guid>
       <description>Pour ceux qui l&amp;rsquo;auraient manqués (comment ça? Personne ne me suit&amp;hellip; :( ), j&amp;rsquo;ai annoncé dans un post précédent que j&amp;rsquo;avais ouvert un compte sur GitHub pour hoster du code. Bien sûr, il y avait une petite idée derrière&amp;hellip; ;-)
 En fait, l&amp;rsquo;idée est partie d&amp;rsquo;un constat assez simple : sur différent projet, à chaque fois que j&amp;rsquo;ai voulu mettre en place JMX, ce qui m&amp;rsquo;a toujours profondément attristé était de ne pas pouvoir regrouper l&amp;rsquo;ensemble des informations des MBeans à un même endroit, c&amp;rsquo;est-à-dire, qu&amp;rsquo;il me fallait me demander où se trouvait tel ou tel MBean dans mon système alors que j&amp;rsquo;aurais aimé pouvoir me connecter sur n&amp;rsquo;importe quelle instance de mon système et y trouver tous les MBeans présents dans mon système.</description>
     </item>
     
     <item>
       <title>Petites astuces avec JMX</title>
-      <link>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx.html/</link>
       <pubDate>Sun, 23 Jan 2011 18:27:07 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx.html/</guid>
       <description>Ce rapide article fournit un petit retour d&amp;rsquo;expérience de quelques galères que j&amp;rsquo;ai pu avoir avec JMX (Java Management eXtension), galères certes stupides mais qui pourront peut être servir à d&amp;rsquo;autres&amp;hellip; ;-)
 Seront donc abordés deux points :
  Erreur lors de l&amp;rsquo;arrêt de tomcat configuré avec JMX Impossibilité de se connecter à l&amp;rsquo;agent JMX  Message d&amp;rsquo;erreur lors de l&amp;rsquo;arrêt d&amp;rsquo;Apache Tomcat? Cas d&amp;rsquo;usage Les options permettant d&amp;rsquo;activer JMX sur la JVM ont été passées via la variable JAVA_OPTS ou autre (via le catalina.</description>
@@ -103,58 +103,58 @@ Seront donc abordés deux points :
     
     <item>
       <title>JMX pour les nuls... - Les connecteurs - Partie 8</title>
-      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html/</link>
       <pubDate>Mon, 20 Dec 2010 17:25:15 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html/</guid>
       <description>Ce huitième et dernier article sur JMX clôture cette petite série de posts sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base, partie 5 sur le MBeanServer, partie 6 sur le chargement dynamique des MBeans et partie 7 sur les services JMX). Il abordera succinctement la notion de connecteur.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les services JMX - Partie 7</title>
-      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html/</link>
       <pubDate>Mon, 13 Dec 2010 17:01:18 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html/</guid>
       <description>Ce septième et avant dernier article sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base, partie 5 sur le MBeanServer et partie 6 sur le chargement dynamique des MBeans) abordera les différents types de services JMX.
 Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se présente sous forme de services JMX (ie.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Chargement dynamique de MBeans - Partie 6</title>
-      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html/</link>
       <pubDate>Mon, 06 Dec 2010 16:40:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html/</guid>
       <description>Cet article toujours dans la lignée de ma petite série d&amp;rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base et partie 5 sur le MBeanServer) sera plus accès sur les capacités de chargement dynamique des MBeans. Cependant, il n&amp;rsquo;abordera que succinctement cette partie car il est nécessaire d&amp;rsquo;avoir une très bonne connaissance du fonctionnement du classloader et qu&amp;rsquo;un simple article ne saurait l&amp;rsquo;aborder comme il se doit.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Le MBean Server - Partie 5</title>
-      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html/</link>
       <pubDate>Mon, 29 Nov 2010 16:27:13 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html/</guid>
       <description>Cet article reste dans la lignée de ma petite série d&amp;rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX et partie 4 sur les classes de base) et portera sur le MBean Server.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les classes de base - Partie 4</title>
-      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html/</link>
       <pubDate>Sun, 21 Nov 2010 16:03:56 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html/</guid>
       <description>Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification et partie 3 sur les agents JMX) permettra de présenter les classes de bases de JMX c&amp;rsquo;est-à-dire les classes qui sont manipulées en interne par les API de JMX à savoir :
  ObjectName ObjectInstance Attribute AttributeList  Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les agents JMX - Partie 3</title>
-      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html/</link>
       <pubDate>Mon, 08 Nov 2010 15:50:22 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html/</guid>
       <description>Cette troisième partie sur JMX reste dans la continuité de la série d&amp;rsquo;article sur ce sujet (cf. introduction, partie 1 portant sur les généralités et partie 2 portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&amp;rsquo;est un agent JMX et à quoi il sert.
 Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
@@ -162,10 +162,10 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     
     <item>
       <title>JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2</title>
-      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html/</link>
       <pubDate>Wed, 03 Nov 2010 14:09:21 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html/</guid>
       <description>Mon précédent article portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.
 Ainsi, cette partie traitera des différents MBeans et du concept notification.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
@@ -173,38 +173,38 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralit�
     
     <item>
       <title>JMX pour les nuls... - Les concepts - Partie 1</title>
-      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/</link>
+      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html/</link>
       <pubDate>Wed, 27 Oct 2010 12:01:35 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/</guid>
+      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html/</guid>
       <description>Comme promis lors de mon article précédent (et pour éviter de vous faire languir ;-) ) la première partie de cette série d&amp;rsquo;article sur JMX!
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs    JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Introduction</title>
-      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction/</link>
+      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html/</link>
       <pubDate>Tue, 26 Oct 2010 11:52:53 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction/</guid>
+      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html/</guid>
       <description>Certains l&amp;rsquo;auront peut être remarqué mais cela fait un moment que je n&amp;rsquo;ai rien posté sur mon blog. En fait, j&amp;rsquo;ai été un peu occupé à faire quelque chose qui me tenait à coeur depuis un moment&amp;hellip; : la lecture complète des spécifications JMX (ouais, ça va, on s&amp;rsquo;amuse comme on veut/peut&amp;hellip; ;-) ). Du coup, je me suis dit que cela pouvait également intéresser d&amp;rsquo;autres personnes qui aurait pu être découragées par la version agrégée de la spécification (ie.</description>
     </item>
     
     <item>
       <title>JMX et Firewall</title>
-      <link>https://blog.jetoile.fr/2010/05/jmx-et-firewall/</link>
+      <link>https://blog.jetoile.fr/2010/05/jmx-et-firewall.html/</link>
       <pubDate>Thu, 13 May 2010 11:16:06 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/05/jmx-et-firewall/</guid>
+      <guid>https://blog.jetoile.fr/2010/05/jmx-et-firewall.html/</guid>
       <description>Cet article fait suite à mon post précédent qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu&amp;rsquo;à la fin ;-), avait pour objectif de rappeler en quoi JMX (Java Management eXtension) pouvait être une bonne réponse aux problématiques de supervision et d&amp;rsquo;administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall.</description>
     </item>
     
     <item>
       <title>JMX ou comment administrer et superviser son système...</title>
-      <link>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et/</link>
+      <link>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html/</link>
       <pubDate>Wed, 05 May 2010 11:07:07 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et/</guid>
+      <guid>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html/</guid>
       <description>Je n&amp;rsquo;ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu&amp;rsquo;il s&amp;rsquo;agit d&amp;rsquo;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &amp;ldquo;comment ça marche&amp;rdquo; ou je ne fournirai pas de tutoriaux. Il s&amp;rsquo;agit juste d&amp;rsquo;un petit coup de gueule parce que j&amp;rsquo;en ai marre d&amp;rsquo;entendre toujours les mêmes inepties sur JMX&amp;hellip;
 Bon, pourquoi JMX me direz-vous?</description>
     </item>

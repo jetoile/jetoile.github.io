@@ -10,10 +10,10 @@
     <lastBuildDate>Fri, 20 May 2011 19:50:24 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/nexus/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Les repositories Manager pour les nuls... focus sur Nexus</title>
-      <link>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls/</link>
+      <link>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html/</link>
       <pubDate>Fri, 20 May 2011 19:50:24 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls/</guid>
+      <guid>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html/</guid>
       <description>Cela fait un moment que je n&amp;rsquo;ai pas bloggé faute de temps mais également d&amp;rsquo;inspiration&amp;hellip; (ça c&amp;rsquo;est dit et ça, on s&amp;rsquo;en fout d&amp;rsquo;un coté ;-) ) Cet article parlera des repository manager. Rien de nouveau à l&amp;rsquo;horizon puisque la problématique et les solutions existent depuis un moment mais ayant dû en mettre un en place récemment et au vu de nombreuses questions que l&amp;rsquo;on m&amp;rsquo;a posées, je vais ici coucher sur &amp;ldquo;papier&amp;rdquo; ce qu&amp;rsquo;est un repository manager, c&amp;rsquo;est à dire quelques uns de ses concepts clés.</description>
     </item>
     

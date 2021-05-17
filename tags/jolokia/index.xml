@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 23 Jun 2015 14:51:56 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jolokia/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Undertow pour booster vos services REST</title>
-      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</link>
+      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</link>
       <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</guid>
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
@@ -22,10 +22,10 @@ Au niveau des besoins, ils seront identiques ie. :
     
     <item>
       <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</link>
       <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</guid>
       <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
@@ -33,10 +33,10 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
     
     <item>
       <title>JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html/</link>
       <pubDate>Mon, 17 Mar 2014 08:43:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html/</guid>
       <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
 Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
 En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
@@ -44,19 +44,19 @@ En fait, les seuls points qui diffèrent, par rapport au code précédent, touch
     
     <item>
       <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</link>
       <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</guid>
       <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
     </item>
     
     <item>
       <title>Jolokia : le piment qui vous veut du bien </title>
-      <link>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</link>
+      <link>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html/</link>
       <pubDate>Tue, 04 Mar 2014 00:30:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html/</guid>
       <description>Dans des articles précédents, je m&amp;rsquo;étais déjà exprimé sur le fait que je trouvais qu&amp;rsquo;il était important de monitorer son application (qu&amp;rsquo;il s&amp;rsquo;agisse d&amp;rsquo;une application web, d&amp;rsquo;un batch ou d&amp;rsquo;une application standalone) (cf. ici). J&amp;rsquo;avais même creusé un peu la spécification JMX (cf. là).
 Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&amp;rsquo;ai découvert récemment (merci Romain ;-) ) mais qui existe depuis un moment (la version 1.</description>
     </item>

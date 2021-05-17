@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 23 Jun 2015 14:51:56 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/maven/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Undertow pour booster vos services REST</title>
-      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</link>
+      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</link>
       <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</guid>
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
@@ -22,19 +22,19 @@ Au niveau des besoins, ils seront identiques ie. :
     
     <item>
       <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</link>
       <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</guid>
       <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
     </item>
     
     <item>
       <title>FluentLenium et Cucumber JVM... complément et precision</title>
-      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</link>
+      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html/</link>
       <pubDate>Thu, 11 Apr 2013 20:38:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html/</guid>
       <description>Dans mon article précédent, j&amp;rsquo;avais tenté d&amp;rsquo;expliquer comment il était possible d&amp;rsquo;intégrer les frameworks Cucumber JVM et Selenium au travers de FluentLenium.
 En effet, pour rappel, FluentLenium permettait d&amp;rsquo;abstraire Selenium en lui offrant une API plus fluent mais également en lui apportant nativement ce qu&amp;rsquo;il préconise, à savoir le Page Object Design Pattern.
 Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation de l&amp;rsquo;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&amp;rsquo;injection de Cucumber JVM.</description>
@@ -42,20 +42,20 @@ Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation d
     
     <item>
       <title>FluentLenium et Cucumber JVM sont sur un bateau...</title>
-      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</link>
+      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html/</link>
       <pubDate>Thu, 14 Mar 2013 16:39:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html/</guid>
       <description>Dans un article précédent, j&amp;rsquo;avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n&amp;rsquo;a pas été fait que pour l&amp;rsquo;exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d&amp;rsquo;acceptance en mode boite noire sur l&amp;rsquo;application.
 Pour faire les tests d&amp;rsquo;acceptance, le choix de Cucumber JVM a été fait afin de permettre l&amp;rsquo;expression de tests d&amp;rsquo;acceptance avec une sémantique utilisant le pattern Given/When/Then mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.</description>
     </item>
     
     <item>
       <title>Démarrer une webapp en mode embedded avec Maven</title>
-      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</link>
+      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html/</link>
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html/</guid>
       <description>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&amp;rsquo;il doit disposer de tests, qu&amp;rsquo;ils soient unitaire, d&amp;rsquo;intégration, fonctionnel ou d&amp;rsquo;acceptance.
 Pour adresser le problème des tests d&amp;rsquo;intégration, il est souvent utile de démarrer l&amp;rsquo;application cible de manière embedded.
 Cette article montrera comment il est possible de faire pour un contexte donné.</description>
@@ -63,40 +63,40 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
     
     <item>
       <title>Précompiler ses jsp</title>
-      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</link>
+      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</link>
       <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</guid>
       <description>Parce qu&amp;rsquo;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&amp;rsquo;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</description>
     </item>
     
     <item>
       <title>Découpage de projets : projet vs. modules</title>
-      <link>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules/</link>
+      <link>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html/</link>
       <pubDate>Tue, 28 Aug 2012 10:47:11 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules/</guid>
+      <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html/</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
  le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
       <title>Maven : créer une branche - Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi/</link>
+      <link>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html/</link>
       <pubDate>Mon, 13 Aug 2012 10:40:31 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi/</guid>
+      <guid>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html/</guid>
       <description>Il y a un moment déjà, j&amp;rsquo;avais fait un article sur le plugin release oh combien pratique dans notre utilisation de maven. J&amp;rsquo;y avais mentionné les 2 goals prepare et perform qui sont les plus connus et qui, pour rappel, permettent de :
  vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
     </item>
     
     <item>
       <title>Petit focus sur 2 plugins Maven</title>
-      <link>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven/</link>
+      <link>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html/</link>
       <pubDate>Tue, 28 Feb 2012 23:09:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven/</guid>
+      <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html/</guid>
       <description>Bon, ça fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; je n&amp;rsquo;ai pas foncièrement d&amp;rsquo;excuses si ce n&amp;rsquo;est que j&amp;rsquo;ai été pas mal occupé sur un projet sur lequel j&amp;rsquo;essaierai de faire un petit retour dans un futur proche&amp;hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&amp;rdquo; plugins maven que j&amp;rsquo;ai eu l&amp;rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
  Olivier Lamy (http://olamy.</description>
@@ -104,20 +104,20 @@ En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&am
     
     <item>
       <title>Jetty, Maven et JMX</title>
-      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html/</link>
       <pubDate>Mon, 26 Sep 2011 22:19:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html/</guid>
       <description>Vous avez peut être remarqué que ces derniers temps, j&amp;rsquo;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&amp;hellip; Maven et de JMX.
 Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</description>
     </item>
     
     <item>
       <title>Présentation sur un retour d&#39;expérience pour la mise en oeuvre de Maven 2</title>
-      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</link>
       <pubDate>Fri, 23 Sep 2011 22:14:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>
@@ -125,10 +125,10 @@ Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentat
     
     <item>
       <title>Maven pour les nuls... les archetypes</title>
-      <link>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes/</link>
+      <link>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html/</link>
       <pubDate>Sun, 05 Jun 2011 21:48:02 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes/</guid>
+      <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html/</guid>
       <description>Dans le cadre d&amp;rsquo;une problématique d&amp;rsquo;une usine logiciel, il peut s&amp;rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &amp;ldquo;bonnes&amp;rdquo; pratiques que doivent respecter l&amp;rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
  la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
@@ -136,38 +136,38 @@ Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cep
     
     <item>
       <title>Les repositories Manager pour les nuls... focus sur Nexus</title>
-      <link>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls/</link>
+      <link>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html/</link>
       <pubDate>Fri, 20 May 2011 19:50:24 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls/</guid>
+      <guid>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html/</guid>
       <description>Cela fait un moment que je n&amp;rsquo;ai pas bloggé faute de temps mais également d&amp;rsquo;inspiration&amp;hellip; (ça c&amp;rsquo;est dit et ça, on s&amp;rsquo;en fout d&amp;rsquo;un coté ;-) ) Cet article parlera des repository manager. Rien de nouveau à l&amp;rsquo;horizon puisque la problématique et les solutions existent depuis un moment mais ayant dû en mettre un en place récemment et au vu de nombreuses questions que l&amp;rsquo;on m&amp;rsquo;a posées, je vais ici coucher sur &amp;ldquo;papier&amp;rdquo; ce qu&amp;rsquo;est un repository manager, c&amp;rsquo;est à dire quelques uns de ses concepts clés.</description>
     </item>
     
     <item>
       <title>Le plugin release (un peu) démystifié</title>
-      <link>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie/</link>
+      <link>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html/</link>
       <pubDate>Thu, 01 Apr 2010 10:39:26 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie/</guid>
+      <guid>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html/</guid>
       <description>J&amp;rsquo;ai déjà longuement parlé de maven 2 dans des posts précédents (Petites astuces avec maven 2, De l&amp;rsquo;art du livrable et Retour sur la mise en œuvre d&amp;rsquo;un environnement de développement). Ici, je vais revenir sur le plugin release en version 2.0 en explicitant ce que font ses goals prepare et perform plus concrètement.
 En effet, il peut être utile de vouloir savoir quels sont les actions appelées et comment il est possible d&amp;rsquo;y ajouter son petit grain de sel&amp;hellip; ;-)</description>
     </item>
     
     <item>
       <title>JRebel ou comment accélérer le développement</title>
-      <link>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24/</link>
+      <link>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html/</link>
       <pubDate>Wed, 24 Feb 2010 23:19:33 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24/</guid>
+      <guid>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html/</guid>
       <description>Dans des posts précédents (ici et là), j&amp;rsquo;avais parlé d&amp;rsquo;une façon d&amp;rsquo;utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d&amp;rsquo;applications web avec Cargo. Cependant, afin d&amp;rsquo;optimiser le temps de développement, il est préférable, plutôt que d&amp;rsquo;avoir à redéployer l&amp;rsquo;application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n&amp;rsquo;avoir pas à le faire mais d&amp;rsquo;avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.</description>
     </item>
     
     <item>
       <title>De l&#39;art du livrable</title>
-      <link>https://blog.jetoile.fr/2010/02/de-l-du-livrable/</link>
+      <link>https://blog.jetoile.fr/2010/02/de-l-du-livrable.html/</link>
       <pubDate>Mon, 22 Feb 2010 21:08:47 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/02/de-l-du-livrable/</guid>
+      <guid>https://blog.jetoile.fr/2010/02/de-l-du-livrable.html/</guid>
       <description>Au cours de certaines missions, je suis arrivé à un constat qui était que le processus de génération d&amp;rsquo;un livrable était souvent délaissé au profit de l&amp;rsquo;effort de développement de l&amp;rsquo;application.
 C&amp;rsquo;est vrai qu&amp;rsquo;il peut être concevable qu&amp;rsquo;il ne s&amp;rsquo;agit que de la dernière étape d&amp;rsquo;un processus de développement, cependant, avec l&amp;rsquo;introduction de cycles courts (agilité, &amp;hellip;), pouvoir fournir rapidement un livrable de qualité au client est primordial.
 Dans un post précédent, j&amp;rsquo;avais parler de la façon dont j&amp;rsquo;avais en place maven dans un processus d&amp;rsquo;usine logicielle.</description>
@@ -175,10 +175,10 @@ Dans un post précédent, j&amp;rsquo;avais parler de la façon dont j&amp;rsquo
     
     <item>
       <title>Retour sur la mise en oeuvre d&#39;un environnement de développement</title>
-      <link>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</link>
+      <link>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html/</link>
       <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html/</guid>
       <description>Cet article présente la mise en œuvre que j&amp;rsquo;ai appliquée lors de la mise en place d&amp;rsquo;un environnement de développement devant s&amp;rsquo;interfacer, dans une démarche pseudo-agile, avec des outils d&amp;rsquo;intégration continue.
 Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&amp;rsquo;ai tenté de répondre à ces problématiques que ce soit d&amp;rsquo;un point de vue méthodologique que d&amp;rsquo;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&amp;rsquo;est aussi pour cela que j&amp;rsquo;ai créé ce blog (afin de faire partager mon expérience et d&amp;rsquo;avoir un retour) ;-)</description>
     </item>

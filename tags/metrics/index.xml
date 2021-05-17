@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 23 Jun 2015 14:51:56 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/metrics/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Undertow pour booster vos services REST</title>
-      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</link>
+      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</link>
       <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</guid>
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
@@ -22,10 +22,10 @@ Au niveau des besoins, ils seront identiques ie. :
     
     <item>
       <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</link>
       <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</guid>
       <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
@@ -33,10 +33,10 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
     
     <item>
       <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</link>
       <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</guid>
       <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
     </item>
     

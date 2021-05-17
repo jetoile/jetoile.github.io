@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Sooner is better &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Sooner is better</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>14 Jun 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://farm3.static.flickr.com/2089/2172462686_56d3373111.jpg" alt="left-small"></p>
+<p>Bon, voilà, cela fait un moment que je n&rsquo;ai pas bloggé&hellip; manque d&rsquo;inspiration peut être&hellip; manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard&hellip;</p>
+<p>Dans cet article, je voudrais revenir sur un point que j&rsquo;avais légèrement abordé dans ce <a href="https://blog.jetoile.fr/2010/02/de-l-du-livrable.html">post</a> portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l&rsquo;importance de s&rsquo;intégrer aux processus de compilation et de livraison au plus tôt&hellip; en fait, pour être plus précis, je n&rsquo;avais pas vraiment abordé cette problématique mais cela vient du même constat&hellip; ;-)</p>
+<!-- more -->
+<p>En effet, j&rsquo;ai parfois pu constater que certaines équipes ou personnes avaient tendance à reculer jusqu&rsquo;au dernier moment (1 ou 2 jours -si ce n&rsquo;est quelques heures- avant la livraison de leur partie dans le projet ou l&rsquo;application cible) l&rsquo;intégration de leur code dans le référentiel (terme que j&rsquo;utiliserai, ici, au sens large et incluant le SCM, le build et le processus de livraison) et que, le plus souvent, ce projet n&rsquo;avait pas été pensé pour être livré ou compatible avec la procédure de livraison mis en place (et utilisé) par les autres projets du référentiel.</p>
+<p>Pour moi, il s&rsquo;agit d&rsquo;une erreur!</p>
+<p>Je vais donc lister un ensemble d&rsquo;idées reçues ou entendues à ce sujet et en dire ce que j&rsquo;en pense&hellip; :</p>
+<ul>
+<li><em>Le développeur peut se concentrer sur les fonctionnalités à développer</em> : Si ses fonctionnalités ne peuvent être intégrées au livrable, cela met en péril la totalité de l&rsquo;équipe et est, donc, source de retard qui seront, généralement, totalement incompris par vos manageurs.</li>
+<li><em>Il faut livrer au plus vite car la fonctionnalité était demandée pour hier</em> : De même que pour le point précédent, si la fonctionnalité ne marche QUE sur le poste du développeur, elle ne pourra être exploitable en production. En outre, si l&rsquo;équipe de production est incapable de déployer sur l&rsquo;environnement cible simplement, si un fait technique (Rapport d&rsquo;anomalie ou demande d&rsquo;évolution) apparait (qui peut assurer que son code est bugs-free&hellip;? ;-) ), alors il faudra refaire le travail de déploiement et de configuration manuellement (et qui dit manuellement dit aussi facteur humain et donc soucis&hellip;). Et puis, entre nous, je trouverai ça assez drôle d&rsquo;être obligé de lancer eclipse sur une machine de production&hellip; ;-)</li>
+<li><em>Ce n&rsquo;est pas le travail du développeur</em> : Cela fait aussi parti de son travail que de penser aux problématiques transverses : il se doit de prendre en compte les problématiques transverses et non d&rsquo;être passif et d&rsquo;attendre les spécifications pour coder sans se poser de questions.</li>
+<li><em>Il y a une équipe (personne?) dédiée pour faire ce boulot et intégrer le code à l&rsquo;existant</em> : Une équipe est peut être dédiée à cette tache, mais qui est le plus au courant des subtilités de comment faire fonctionner le code (présence de fichier de configuration, de variables systèmes, de pré-requis, &hellip;) si ce n&rsquo;est le développeur lui-même? De toute façon, le développeur devra re-tester le code intégrer dans le référentiel, donc autant que ce soit lui qui le fasse.</li>
+</ul>
+<p>De plus, à ces points, j&rsquo;aimerais ajouter les suivants :</p>
+<ul>
+<li>Savoir son code intégré au référentiel dès le début permet de ne plus avoir cette épée au dessus de sa tête et donc de se concentrer pleinement jusqu&rsquo;au bout à sa fonctionnalité : la variable du comment livrer ou intégrer est écartée et cela engendre moins de stress. Le code peut également être repris par quelqu&rsquo;un d&rsquo;autre rapidement et donc, un coup de main pourra être demandé en cas de besoin sans passer par la phase du &ldquo;je te file le code sur une clé USB et je t&rsquo;explique comment configurer ton environnement pour compiler et lancer le projet&rdquo; ;-)</li>
+<li>Intégrer son code dans le référentiel permet généralement de se poser la question des dépendances nécessaires au projet et, cela peut mettre en avant des problèmes structurels (dépendances cycliques, besoin de factoriser un module, &hellip;)</li>
+<li>L&rsquo;intégration continue, si elle est mise en place sur le projet, ne peut prendre en compte un projet qui n&rsquo;est pas dans le SCM. De même, elle ne pourra pas non plus construire (et tester) la fonctionnalité si elle n&rsquo;est pas capable de la builder&hellip; cqfd&hellip;</li>
+</ul>
+<p>Voilà!</p>
+<p>J&rsquo;espère avoir réussi à expliquer pourquoi je pensais qu&rsquo;il était important de s&rsquo;intégrer au plus vite à un référentiel projet. C&rsquo;est le travail de tous et cela ne doit surtout pas être pris par dessus la jambe.
+Pour conclure, j&rsquo;ai envie de dire que reculer pour mieux sauter peut parfois faire beaucoup plus mal quand l&rsquo;on se prend le saut de cheval dans la figure (cf. les cours de gym) ;-)</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f06%2fsooner-is-better.html%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html/">RTFM ou de l&#39;importance de savoir lire une documentation</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html/">NoSQL au Paris JUG</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

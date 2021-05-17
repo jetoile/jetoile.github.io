@@ -10,10 +10,10 @@
     <lastBuildDate>Fri, 03 Nov 2017 16:16:05 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/hadoop/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Packaging, test et livraison pour Hadoop : Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi/</link>
+      <link>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/</link>
       <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi/</guid>
+      <guid>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/</guid>
       <description>Hadoop et son écosystème est un monde complexe où beaucoup de nos paradigmes de développeur Java / JavaEE (EE4J?) sont chamboulés.
 D&amp;rsquo;une part les technologies utilisées diffèrent mais, en plus, d&amp;rsquo;autres questions telles que l&amp;rsquo;architecture, les tests (unitaires, intégrations, &amp;hellip;), la gestion des logs (debug, audit, pki, &amp;hellip;), les procédures de livraison, la gestion de la configuration de l&amp;rsquo;application, etc. viennent s&amp;rsquo;y ajouter.
 Cet article va montrer comment il est possible de concilier simplement les tests d&amp;rsquo;intégration mais aussi le déploiement afin de tendre vers la philosophie de continuous deployment.</description>
@@ -21,10 +21,10 @@ Cet article va montrer comment il est possible de concilier simplement les tests
     
     <item>
       <title>Sqoop et Parquet : Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi/</link>
+      <link>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html/</link>
       <pubDate>Mon, 28 Nov 2016 11:15:19 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi/</guid>
+      <guid>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://blog.jetoile.fr/images/apache_Sqoop_logo.png&#34; alt=&#34;left-small&#34;&gt; Dans le monde du &lt;em&gt;BigData&lt;/em&gt; (en l&amp;rsquo;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&amp;rsquo;une base de données dans son Datalake.&lt;/p&gt;
 &lt;p&gt;Pour ce faire, &lt;a href=&#34;http://sqoop.apache.org/&#34;&gt;Apache Sqoop&lt;/a&gt; est une des alternatives pour le faire (peut être pas la meilleure mais bon&amp;hellip;).&lt;/p&gt;
 &lt;p&gt;En effet, Sqoop permet d&amp;rsquo;importer (et exporter également) les données d&amp;rsquo;une base de données dans :&lt;/p&gt;
@@ -40,10 +40,10 @@ Cet article va montrer comment il est possible de concilier simplement les tests
     
     <item>
       <title>Hadoop Unit 1.3</title>
-      <link>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3/</link>
+      <link>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html/</link>
       <pubDate>Mon, 16 May 2016 14:20:51 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3/</guid>
+      <guid>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html/</guid>
       <description>Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&amp;rsquo;avais posté précédemment sur un composant au doux nom d&amp;rsquo;Hadoop-Unit.
 J&amp;rsquo;ai le plaisir de vous annoncer qu&amp;rsquo;il a été releasé en version 1.3 et qu&amp;rsquo;il est également disponible sur maven central.
 Il intègre dans sa nouvelle version :
@@ -52,10 +52,10 @@ Il intègre dans sa nouvelle version :
     
     <item>
       <title>Hadoop Unit</title>
-      <link>https://blog.jetoile.fr/2016/04/hadoop-unit/</link>
+      <link>https://blog.jetoile.fr/2016/04/hadoop-unit.html/</link>
       <pubDate>Sat, 16 Apr 2016 18:16:01 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2016/04/hadoop-unit/</guid>
+      <guid>https://blog.jetoile.fr/2016/04/hadoop-unit.html/</guid>
       <description>Dans mon dernier post, j&amp;rsquo;avais parlé d&amp;rsquo;une surcouche que j&amp;rsquo;avais développé afin de faciliter l&amp;rsquo;utilisation de quelques-uns des composants de l&amp;rsquo;écosystème Hadoop, à savoir :
  Hdfs, Zookeeper, HiveMetastore, Hiveserver2, SolR, SolRCloud, Oozie, Kafka, HBase, MongoDB [New \o/ ], et Cassandra [New \o/ ].  Il s&amp;rsquo;appelait alors Hadoop-Bootstrap mais il s&amp;rsquo;agissait aussi d&amp;rsquo;une première version qui a, bien sûr, évolué.
 Cet article présentera donc quels ont été les améliorations qui ont été apportées.</description>
@@ -63,10 +63,10 @@ Cet article présentera donc quels ont été les améliorations qui ont été ap
     
     <item>
       <title>Hadoop ecosysteme bootstrap</title>
-      <link>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap/</link>
+      <link>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html/</link>
       <pubDate>Mon, 18 Jan 2016 10:00:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap/</guid>
+      <guid>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html/</guid>
       <description>Comme je l&amp;rsquo;ai déjà dit dans un article précédent, la force d&amp;rsquo;Hadoop n&amp;rsquo;est plus dans Hadoop en lui-même mais plutôt dans son écosystème.
 Du coup, même lorsqu&amp;rsquo;on développe avec Spark, il est courant de vouloir s&amp;rsquo;interfacer avec le métastore de Hive ou encore avec SolR si l&amp;rsquo;objectif est de vouloir indexer dans ce dernier.
 Parfois encore, l&amp;rsquo;objectif est de lire ou d&amp;rsquo;écrire de Kafka via Spark (ou en Spark Streaming).</description>
@@ -74,10 +74,10 @@ Parfois encore, l&amp;rsquo;objectif est de lire ou d&amp;rsquo;écrire de Kafka
     
     <item>
       <title>Hadoop et son écosystème</title>
-      <link>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme/</link>
+      <link>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html/</link>
       <pubDate>Fri, 09 Oct 2015 14:53:03 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme/</guid>
+      <guid>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html/</guid>
       <description>Avec l&amp;rsquo;arrivé de Apache Spark, Hadoop est souvent vu comme désuet et legacy. Il est vrai que le monde BigData est en perpétuelle évolution et qu&amp;rsquo;un produit peut être déprécié en quelques mois.
 Cependant, restreindre le terme Hadoop aux seuls technologies MapReduce, HDFS et YARN est, pour moi, une erreur.
 Déjà parce que ces technologies peuvent être décorrélées et ensuite car, souvent, la très grande majorité des nouvelles technologies issues du monde BigData s&amp;rsquo;appuient sur les couches existantes et s&amp;rsquo;intègrent avec ces dernières.</description>

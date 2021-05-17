@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 10 Apr 2014 14:15:44 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/batch/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lecture et traitement de fichiers : comment faire simple?</title>
-      <link>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple/</link>
+      <link>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html/</link>
       <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple/</guid>
+      <guid>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html/</guid>
       <description>De nombreuses applications ou systèmes d&amp;rsquo;informations nécessitent le chargement de données issues de fichiers.
 Bien souvent, cet import est exécuté par batch, mais il peut aussi être intéressant de faire cet import au fil de l&amp;rsquo;eau.
 En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&amp;rsquo;il n&amp;rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&amp;rsquo;est à dire avec, au minimum, le temps de traitement d&amp;rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code.</description>

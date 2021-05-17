@@ -25,7 +25,7 @@ C'est ce qui sera détaillé dans cet article : à savoir une sorte de mini reto
 
 <!--more-->
 
-#Cas d'usage
+# Cas d'usage
 
 Techniquement, voilà ce qui est souhaité concernant l'import des données dans hdfs : 
 
@@ -41,21 +41,21 @@ Enfin, afin de permettre la parallélisation du traitement, plusieurs _mappers_ 
 
 Aussi, il a été décidé d'ingérer la table partition par partition en précisant la partition à chaque fois avec l'option ```--query``` (à noter que l'option ```--where``` aurait pu suffire mais que cela n'a pas été testé).
 
-#Mise en oeuvre
+# Mise en oeuvre
 
 Afin de mettre en oeuvre notre cas d'usage, plusieurs expérimentations on été effectuées.
 
 Dans ce chapitre, il sera expliqué ce qui a pu être constaté ainsi que les _workaround_ qui ont été trouvées lorsqu'un soucis se présentait.
 
-##Import au format parquet ou avro
+## Import au format parquet ou avro
 
 En fait, lorsque la commande ```sqoop import``` est utilisée avec les options ```--as-avrodatafile``` ou ```--as-parquetfile```, les données récupérées sont toutes de type string. Aussi, il est nécessaire de préciser le type de chaque colonne avec l'option ```--map-column-java```. Pour trouver le typage de chaque colonne, une simple requête jdbc a été effectuée afin de trouver les colonnes et leurs types.
 
-##Import incrémental
+## Import incrémental
 
 Le mode incrémental ne supportant pas le format avro, il a donc été écarté et l'import s'est fait au format parquet.
 
-##Parallélisation de l'import
+## Parallélisation de l'import
 
 En fait, le fait de préciser la requête d'import avec sqoop 1.4.6 en mode parquet est buggé...
 En effet, il existe 2 _issues_ qui traitent de ce problème :
@@ -67,7 +67,7 @@ Après avoir appliqué les 2 patchs et recompilé Sqoop (avec un joli ```ant pac
 
 Heureusement, une montée de version de kite directement dans le lib de sqoop permet de faire fonctionner l'import (ie. remplacer ```kite-data-core-1.0.0.jar``` par ```kite-data-core-1.1.0.jar```, ```kite-data-hive-1.0.0.jar``` par ```kite-data-hive-1.1.0.jar```, ```kite-data-mapreduce-1.0.0.jar``` par ```kite-data-mapreduce-1.1.0.jar``` et ``````kite-hadoop-compatibility-1.0.0.jar``` par ```kite-hadoop-compatibility-1.1.0.jar```).
 
-#Conclusion
+# Conclusion
 
 Ce mini retour d'expérience sur l'utilisation de Sqoop (dans sa version 1.4.6) a permis de voir qu'il était tout à fait possible d'importer des données d'une base de données dans hdfs au format parquet.
 

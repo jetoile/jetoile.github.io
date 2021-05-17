@@ -42,7 +42,7 @@ Après exécution de la commande Tab :
 Entraînant, bien sûr, une erreur lors de son exécution :
 ![center](http://1.bp.blogspot.com/-qdZH3XNVpns/TfOFJ5O3xYI/AAAAAAAAAXw/2ueSn_2rZ9s/s1600/ubuntu05.png)
 
-#Correctif
+# Correctif
 
 Du coup, après une ou deux recherche sur mon ami google, je suis tombé sur le [bug suivant](https://bugs.launchpad.net/ubuntu/+source/bash-completion/+bug/769866).
 

@@ -35,9 +35,9 @@ A noter également que l'article précédent aurait pu être modifié mais qu'en
 
 <!-- more -->
 
-#Cas de tests pour un site simple
+# Cas de tests pour un site simple
 
-##Présentation et proposition d'implémentation
+## Présentation et proposition d'implémentation
 
 Ce premier cas d'usage couvre le cas : "j'ai un site que je veux tester avec Cucumber JVM et l'ensemble des steps peut être réuni dans une seule et même classe."
 
@@ -124,7 +124,7 @@ Il est intéressant de remarquer la simplicité de la chose (et rien à voir ave
 
 A part cela, peu de choses à ajouter : le code parle de lui même...
 
-##Limites
+## Limites
 
 On vient de voir comme il était simple de faire cohabiter FluentLenium et Cucumber JVM.
 
@@ -142,9 +142,9 @@ Pas glop tout ça... :'(
 
 Ainsi, l'implémentation précédente fonctionne pour des cas "simples" mais si la partie test d’acceptante/intégration avait été plus complexe, alors cela aurait empêché la réutilisation et le découplage.
 
-#Cas de tests pour un site complet
+# Cas de tests pour un site complet
 
-##Présentation et proposition d'implémentation
+## Présentation et proposition d'implémentation
 
 Il a été vu dans le paragraphe précédent qu'il pouvait être utile de disposer de plusieurs classes disposant des implémentations des fixtures.
 Cependant, la question principale est de trouver comment il est possible de n'instancier qu'une seule fois par scénario le webDriver et de l'injecter dans des instances de pages propres au scénario.
@@ -414,7 +414,7 @@ class WebDriverLazyLoader {
 } 
 ```
 
-##Limites
+## Limites
 
 Comme on a pu le voir dans ce chapitre, il est aisé de partager les fixtures Cucumber JVM dans des classes différentes tout en bénéficiant de FluentLenium.
 
@@ -425,9 +425,9 @@ Bien sûr, chaque step pourrait boucler sur l'ensemble des navigateurs sur lesqu
 Le chapitre suivant tentera de répondre à cette problématique en proposant un moyen de "boucler" sur le scénario avec différents navigateurs. 
 
 
-#Cas de tests multi-navigateurs pour un site complet
+# Cas de tests multi-navigateurs pour un site complet
 
-##Présentation et proposition d'implémentation
+## Présentation et proposition d'implémentation
 
 Il a été vu dans le chapitre précédent comment il était possible d'exécuter des tests d'acceptances/intégration sur un navigateur donné.
 
@@ -457,7 +457,7 @@ Et... c'est tout!
 
 Le code n'a pas à être modifié : Cucumber JVM s'occupe de tout! ;-) 
 
-##Limites
+## Limites
 
 On a vu dans le paragraphe précédent comment il était possible d'exécuter facilement des tests d'acceptance/intégration en s'appuyant sur la notion de scénario outline offerte nativement par Cucumber JVM.
 
@@ -476,7 +476,7 @@ Peut être le fait de ne pas instancier le webDriver pour chaque scénario (opé
     | chrome    | webdriver.chrome.driver:/opt/chromedriver/chromedriver                |     
 ```
 
-#Conclusion
+# Conclusion
 
 Il a été présenté dans cet article comment il était possible d'implémenter l'intégration de Cucumber JVM et de Selenium à l'aide de FluentLenium.
 
@@ -533,7 +533,7 @@ Pour ce faire, le plugin maven Jetty (ou Tomcat au choix) a été utilisé et br
 
 Lors de l'exécution des tests en mode développement (ie. en les lançant comme un TU ou à l'aide du plugin Cucumber JVM via l'IDE), un profil n'exécutant pas le plugin failsafe mais uniquement le démarrage du jetty/tomcat embarqué a été utilisé.
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * article sur les limitations de Cucumber JVM pour le partage de données entre steps : http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/
 * page de fluentLenium : https://github.com/FluentLenium/FluentLenium

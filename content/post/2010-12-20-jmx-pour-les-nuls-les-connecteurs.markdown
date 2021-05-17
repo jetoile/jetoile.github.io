@@ -12,7 +12,7 @@ tags:
 Ce huitième et dernier article sur JMX clôture cette petite série de posts sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html), [partie 1](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html) portant sur les généralités, [partie 2](/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html) portant sur les différents MBeans et le concept de Notification, [partie 3](/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html) sur les agents JMX, [partie 4](/2010/11/jmx-pour-les-nuls-les-classes-de-base.html) sur les classes de base, [partie 5](/2010/11/jmx-pour-les-nuls-le-mbean-server.html) sur le MBeanServer, [partie 6](/2010/12/jmx-pour-les-nuls-chargement-dynamique.html) sur le chargement dynamique des MBeans et [partie 7](/2010/12/jmx-pour-les-nuls-les-services-jmx.html) sur les services JMX). Il abordera succinctement la notion de connecteur.
 
 <!-- more -->
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -51,7 +51,7 @@ Ce huitième et dernier article sur JMX clôture cette petite série de posts su
 
 
 <a name="connector"></a>
-#Les connecteurs
+# Les connecteurs
 
 La spécification JMX défnit la notion de connecteurs : un connecteur est attaché à l'API JMX d'un MBean Server et le rend accessible de clients Java distants, le connecteur client possèdant une interface similaire à celle du MBean Server.
 
@@ -231,5 +231,5 @@ Bien sûr, les APIs pour utiliser ces différentes technologies diffèrent cepen
 </td></tr>
 </tbody></table>
 
-#Le mot de la fin
+# Le mot de la fin
 Voilà, ce dernier article met fin à cette série. Si vous avez réussi à tenir jusque là et à tout lire, félicitation! Maintenant, vous devriez avoir (enfin, j'espère) une vision plus précise sur ce que contiennent les spécifications JMX. Bien sûr, cette série n'était qu'un condensée (qui vaut ce qu'il vaut) permettant de comprendre les concepts sans pour autant lire les 290 pages de spécification et ne se veut pas être suffisante pour tout maîtriser.

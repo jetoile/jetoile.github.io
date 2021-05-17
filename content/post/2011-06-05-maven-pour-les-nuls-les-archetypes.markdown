@@ -33,7 +33,7 @@ A noter qu'il n'y a rien de révolutionnaire dans cet article pour toutes les pe
 
 <!-- more -->
 
-#Méthodologie
+# Méthodologie
 Afin de créer un archetype, il existe plusieurs méthodes :
 
 * la première consiste à créer l'archetype directement, chose pas trop complexe mais qui demande d'être rodée à la chose,
@@ -43,7 +43,7 @@ Suite à cela, il convient d'installer (ou de déployer) notre archetype au sein
 
 Dans mon cas, j'utiliserai la deuxième méthode qui consiste donc à générer l'archetype à partir du projet maven que je souhaite avoir.
 
-#Création du projet de base
+# Création du projet de base
 
 Comme je l'ai dit précédemment, mes besoins sont purement personnels et mon projet devra répondre aux points suivants :
 
@@ -267,7 +267,7 @@ Son fichier assembly :
 </assembly>
 ```
 
-#Création de l'archetype
+# Création de l'archetype
 
 La création de l'archetype est simple puisqu'il suffit de lancer la commande suivante :
 ```bash
@@ -360,7 +360,7 @@ On constate qu'il y a deux points à noter dans cette structure d'archetype gén
 A cette étape, il est tout de suite possible d'installer l'archetype dans le repository maven (cf. Mise à disposition de l'archetype) et de l'invoquer (cf. Utilisation et résultat de l'archetype).
 A noter qu'ici, il peut être intéressant de supprimer le support des .project, .classpath et .settings si le template a été géré avec eclipse.
 
-#Transformation de l'archetype
+# Transformation de l'archetype
 
 Dans le cadre de mon petit use case, je n'ai pas beaucoup besoin de customiser mon archetype. En effet, je souhaite seulement pouvoir demander à l'utilisateur (en l'occurence moi ;-) ), quel sera le nom de ma classe à me générer.
 
@@ -401,11 +401,11 @@ className=MyClass
 ```
 Enfin, il est possible de figer la version de l'archetype en modifiant le pom du projet ainsi que son artifactId et son groupId. Dans mon cas, il restera identique.
 
-#Mise à disposition de l'archetype
+# Mise à disposition de l'archetype
 
 Une fois que l'archetype a été modifié pour répondre aux besoins, il n'y a plus qu'à exécuter la commande mvn install pour déployer l'archetype dans le repository local et la commande mvn deploy pour le déployer dans le repository partagé.
 
-#Utilisation et résultat de l'archetype
+# Utilisation et résultat de l'archetype
 
 Une fois l'archetype déployé dans le repository adéquate, il n'y a plus qu'à l'invoquer via la commande :
 ```bash
@@ -420,7 +420,7 @@ mvn archetype:generate \
 Ainsi, le résultat obtenu est le suivant :
 ![center](http://3.bp.blogspot.com/-IyLOW6pbUgw/TevFCch0TRI/AAAAAAAAAXU/-8aUatC2M5c/s1600/archetype04.png)
 
-#Conclusion
+# Conclusion
 
 Nous avons vu dans cet article qu'il était extrêmement simple de créer un archetype maven, action qui peut s'avérer très utile pour gagner du temps que ce soit pour des besoins personnels ou dans un cadre d'industrialisation du processus d'initialisation d'un projet dans une équipe.
 
@@ -477,7 +477,7 @@ Cependant, je n'ai pas invoqué ici le cas de projets multimodules mais le princ
 
 ![center](http://1.bp.blogspot.com/-VL7re_vr97E/TevFPbO9msI/AAAAAAAAAXY/tXBaVB_kG-0/s1600/archetype03.png)
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Apache Maven de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf

@@ -39,7 +39,7 @@ Cet article s'articulera donc en deux parties :
 
 PS : au passage, encore un grand merci aux organisateurs de l'atelier!
 
-#\{DEV,RUN\}@Cloud?... Kesako?
+# \{DEV,RUN\}@Cloud?... Kesako?
 
 CloudBees propose deux services DEV@Cloud et RUN@Cloud.
 
@@ -59,7 +59,7 @@ RUN@Cloud fournit, quant à lui, un ensemble d'outils permettant de simplifier l
 
 <u>PS</u> : vous aurez remarqué que, pour cette partie, je ne me suis pas trop foulé puisque je n'ai fait que reprendre les informations présentes sur le site... ;-)
 
-#C'est bien gentil tout ça et moi, ça m'apporte quoi?
+# C'est bien gentil tout ça et moi, ça m'apporte quoi?
 
 Comme vous avez pu le constater, DEV@Cloud et RUN@Cloud fournissent tout pleins de services.
 
@@ -84,7 +84,7 @@ Il est également possible d'effectuer un test de charge en s'appuyant sur le pl
 
 Concernant le comportement applicatif, l'intégration du service [Papertrail](https://papertrailapp.com/) offre la possibilité d'accéder aux logs de l'application mais permet également d'agréger les logs pour l'ensemble des instances et de les analyser. Ce dernier point est généralement manquant lors de la mise en place d'un environnement de test/validation/recette pour des questions d'infrastructure mais également de moyen. Aussi, disposer d'un tel service intégré avec l'offre RUN@Cloud dans un contexte de test (mais, bien sûr, pas uniquement) apporte un réel plus dans l'analyse des anomalies et du comportement de l'application.
 
-#Conclusion
+# Conclusion
 
 Vous l'aurez compris (enfin, je l'espère), les offres DEV@Cloud et RUN@Cloud de CloudBees m'ont vraiment fait bonne impression. Je n'ai fait qu'effleurer les possibilités offertes et je suis sûrement passé à coté de beaucoup de features mais je tenais tout de même à partager mon ressenti sur ces offres.
 

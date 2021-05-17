@@ -18,7 +18,7 @@ Dans un [post précédent](/2010/01/retour-sur-la-mise-en-uvre-d_04.html), j'ava
 Ce post présente donc plus précisément comment cela est possible avec maven (je ne reviendrai pas sur le pourquoi car cela me parait évident dans le sens où c'est ce que verra le client final et que, tout le monde le sait, la première impression est très souvent importante - un peu comme lorsque l'on offre un cadeau à quelqu'un, l'emballage à son importance même si, au final, le cadeau est pourri... ;-) - ).
 
 <!-- more --> 
- #Cahier des charges
+ # Cahier des charges
 L'application de référence sera une application simple de type J2SE (nommé foo) qui devra pouvoir s'exécuter de manière simple en exécutant par exemple un .bat ou un .sh.
 
 Le livrable devra contenir la javadoc de l'application ainsi que son code source.
@@ -34,13 +34,13 @@ Le livrable devra contenir :
 * dans le répertoire source, les sources de l'application sous forme de jar,
 * à la racine, le fichier README ainsi que les .bat et .sh nécessaires à l'exécution de l'application.
 
-#Mise en oeuvre
-##Methodologie
+# Mise en oeuvre
+## Methodologie
 Comme vous l'aurez compris, maven 2 sera notre outil pour gérer notre compilation, l'exécution des tests unitaires (qui ne doivent pas être oubliés), et production du livrable.
 
 Pour ce faire, notre application suivra les préconisations maven et le plugin assembly sera utilisé pour la phase de génération du livrable qui sera sous forme de zip. En outre, ce plugin sera associé à la phase maven d'installation de notre application.
 
-##Arborescence du projet
+## Arborescence du projet
 
 ```bash
 foo
@@ -59,7 +59,7 @@ foo
   |-- pom.xml
 ```
 
-##Fichier pom.xml
+## Fichier pom.xml
 ```xml
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
@@ -132,7 +132,7 @@ foo
 </project>
 ```
 
-##Fichier src.xml
+## Fichier src.xml
 ```xml
 <assembly>
  <formats>
@@ -184,7 +184,7 @@ foo
 </assembly>
 ```
 
-##Fichier launcher.bat et cp.bat
+## Fichier launcher.bat et cp.bat
 fichier cp.bat :
 ```bash
 set CP=%CP%;%1
@@ -197,7 +197,7 @@ call cp.bat %%i
 java -classpath %CP% monpackage.ClasseMain
 ```
 
-##Fichier launcher.sh
+## Fichier launcher.sh
 ```
 #!/bin/bash
 export TEST_HOME=.
@@ -208,7 +208,7 @@ done
 java -classpath ${TEST_CP}:lib monpackage.ClasseMain
 ```
 
-#Conclusion
+# Conclusion
 
 On a donc pu constater que la procédure de production d'un livrable est totalement intégrable avec maven 2 et qu'elle est extrêmement simple et peu consommatrice en temps une fois mise en place. 
 
@@ -216,7 +216,7 @@ En outre, cela permet de normaliser le livrable et d'être sûr de ne rien oubli
 
 Il est à noter que la problématique est identique avec d'autres outils (ant, graddle, easy-ant, ...) et qu'il est indispensable de prendre en compte cette phase de développement.
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf

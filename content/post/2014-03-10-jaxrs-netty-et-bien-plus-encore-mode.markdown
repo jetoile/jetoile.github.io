@@ -34,7 +34,7 @@ Le code se trouve sur Github [ici](https://github.com/jetoile/resteasy-netty-sam
 
 <!-- more -->
 
-#Besoin et conception
+# Besoin et conception
 
 Le besoin était d'offrir un ensemble de services REST qui devait être suffisamment véloce pour répondre au besoin de performance en terme de charge mais également en terme de temps de réponse.
 
@@ -71,7 +71,7 @@ Du coté de la réponse, elle aura la forme suivante :
 
 La date de la réponse sera ajoutée juste pour le "fun" ;-) 
 
-#Mise en oeuvre
+# Mise en oeuvre
 
 A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :
 ```text
@@ -92,7 +92,7 @@ compile group: 'joda-time', name: 'joda-time', version:'2.3'
 compile(group: 'com.google.guava', name: 'guava', version:'15.0') { exclude(module: 'jsr305') }
 ```
 
-##Implémentation du service REST
+## Implémentation du service REST
 
 Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial... et la classe ci-dessous fait humblement l'affaire :
 
@@ -143,7 +143,7 @@ public class DtoResponse {
 }
 ```
 
-##Mise en oeuvre de Resteasy-Netty 3
+## Mise en oeuvre de Resteasy-Netty 3
 
 Mettre en place Resteasy-Netty 3 est très simple, d'après la [documnentation](https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/pdf/resteasy-reference-guide-en-US.pdf), il suffit de faire :
 
@@ -222,7 +222,7 @@ Et voilà! On dispose désormais d'un programme exécutable qui démarre un serv
 
 Plutôt simple non? ;-)
 
-##Configuration de Jackson
+## Configuration de Jackson
 
 Avec le code précédent, si la commande suivante est exécutée :
  
@@ -288,7 +288,7 @@ Encore une fois, simple et efficace et le résultat obtenu est bien celui escomp
 
 A noter que l'_ancienne_ version de Jackson est utilisée ici car c'est celle qui est utilisé par défaut par Resteasy. Il aurait été possible de l'utiliser dans sa version plus récente mais j'avoue ne pas avoir fait l'exercice... (cf. [ici](https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/html/json.html#d4e1046))
 
-##Intégration de Metrics
+## Intégration de Metrics
 
 Afin de permettre une mesure des temps d'invocation de différentes opérations, la librairie [Metrics](http://metrics.codahale.com/) a été utilisée.
 
@@ -336,7 +336,7 @@ Une fois l'application démarrée et après 1 ou 2 appels, l'ObjectName apparait
 
 On constate encore une fois que la mise en place de Metrics n'a demandé aucun effort particulier.
 
-##Intégration de Jolokia
+## Intégration de Jolokia
 
 Une autre étape de notre périple consiste à activer Jolokia que j'ai déjà présenté dans un [article précédent](/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html).
 
@@ -426,7 +426,7 @@ nous permet bien d'obtenir la réponse attendue :
 
 A noter que les user/password ont été positionné car cela permet une connexion via [Hawt.io](http://hawt.io/). 
 
-##Intégration de Swagger
+## Intégration de Swagger
 
 [Swagger](https://helloreverb.com/developers/swagger) offre une manière très simple de documenter une API REST. En effet, en s'appuyant sur des annotations à mettre dans la classe de service, elle permet d'offrir une interface d'écrivant les API.
 
@@ -653,7 +653,7 @@ Voilà, après ce petit tour de passe passe, notre swagger-UI fonctionne comme u
 
 Au final, (presque?) simple non? ;-)
 
-##Branchement des plugins Maven Appassembler et Assembly
+## Branchement des plugins Maven Appassembler et Assembly
 
 Afin de générer une application utilisable _out of the box_, le plugin maven [appassembler](http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/) a été utilisé. Pour ceux qui ne saurait pas ce que c'est, je les invite à regarder soit la documentation officielle soit un article que j'avais fait [précédemment](/2012/02/petit-focus-sur-2-plugins-maven.html) (#autopromo ;-) ).
 
@@ -811,7 +811,7 @@ génère un livrable exploitable directement après sa décompression.
 
 Lors d'un `mvn release`, il sera également automatiquement uploadé sur le _Repository Manager_.
 
-#Conclusion
+# Conclusion
 
 En conclusion, je n'ai pas grand chose à ajouter si ce n'est que j'ai trouvé Resteasy-Netty simple à utiliser et qu'il a été aisé d'y ajouter tout ce qui était nécessaire à notre besoin.
 

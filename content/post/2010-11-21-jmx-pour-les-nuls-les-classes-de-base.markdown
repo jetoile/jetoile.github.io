@@ -17,7 +17,7 @@ Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-i
 
 <!-- more -->
 
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -56,7 +56,7 @@ Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-i
 
 
 <a name="objectName"></a>
-#ObjectName
+# ObjectName
 Un nom d'objet permet d'identifier un MBean dans le MBean Server de manière unique. L'application de supervision et d'administration utilise ce nom unique pour identifier le MBean cible.
 
 La classe `ObjectName` représente ce nom unique dans le MBean Server et est constitué :
@@ -107,13 +107,13 @@ Ainsi, pour l'exemple donné ci-dessus, il est possible d'avoir :
 * "*Domain:description=P*,*" renverra les mêmes résultats que la requête précédente.
 
 <a name="objectInstance"></a>
-#ObjectInstance
+# ObjectInstance
 
 La classe `ObjectInstance` permet de lier le nom d'un objet MBean à sa classe Java. C'est la seule description possible d'un MBean dans le MBean Server puisque l'accès à un MBean par sa référence n'est pas autorisé.
 
 ![center](http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk7jhfsxWI/AAAAAAAAAOE/izV9iyFNQmc/s1600/jmx40.png)
 <a name="attribute"></a>
-##Attribute et AttributeList
+## Attribute et AttributeList
 
 Les classes `Attribute` et `AttributeList` représente les attributs et leurs valeurs d'un MBean. Elles contiennent le nom des attributs sous forme de chaîne de caractères et leurs valeurs sous forme d'objet de type `ObjectInstance`.
 ![center](http://4.bp.blogspot.com/_XLL8sJPQ97g/TOk722T85fI/AAAAAAAAAOI/HTXxjiZt06o/s1600/jmx41.png)
@@ -121,13 +121,13 @@ Les classes `Attribute` et `AttributeList` représente les attributs et leurs va
 ![center](http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk8Go3ihYI/AAAAAAAAAOM/kE0Z7RzO6NQ/s1600/jmx42.png)
 
 <a name="exception"></a>
-##Les exceptions
+## Les exceptions
 JMX propose un ensemble d'exceptions qui peuvent principalement être levées par le MBean Server ou les services de l'agent JMX qui effectuent les opérations sur le MBean lorsque le code de ce dernier lève une exception.
 
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TOk89656tOI/AAAAAAAAAOU/mGlxu_K6NJo/s1600/jmx73.png)
 ![medium](http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk8v-NM4II/AAAAAAAAAOQ/m7Edr965FKk/s1600/jmx72.png)
 
 
-#Le mot de la fin de cette partie
+# Le mot de la fin de cette partie
 
 Nous avons vu dans cette partie les objets de base manipulés par JMX. Dans les parties suivantes, nous verrons plus précisément la notion de MBean Server.

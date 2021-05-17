@@ -35,7 +35,7 @@ A titre informatifs, les fichiers se trouvent sur [Github](https://github.com/je
 
 <!-- more -->
 
-#Installation de nodejs, de npm et de grunt
+# Installation de nodejs, de npm et de grunt
 
 Dans un premier temps, il convient d'installer tout le strict minimum afin de permettre à Grunt de fonctionner.
 
@@ -59,7 +59,7 @@ Installer le [plugin](http://feedback.livereload.com/knowledgebase/articles/8624
 Dans le cas de Chrome, pensez à modifier sa configuration pour qu'il autorise l'accès aux URLs de fichiers.
 ![medium](http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png)
 
-#Configuration de Grunt
+# Configuration de Grunt
 
 Par la suite, toutes les opérations seront effectué dans le répertoire `$HOME/tmp`.
 
@@ -174,7 +174,7 @@ sudo apt-get install nodejs-legacy
 ```
 
 
-#Configuration de Grunt pour l'intégration de Markdown
+# Configuration de Grunt pour l'intégration de Markdown
 
 L'intégration de Markdown se fait de la même manière que précédemment.
 
@@ -265,7 +265,7 @@ L'arborescence à respecter par rapport à la configuration est la suivante :
 
 Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.
 
-#Conclusion
+# Conclusion
 
 Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d'un fichier HTML ou Markdown n'est pas si compliquée une fois que l'on a tous les fichiers et les bons modules configurés.
 
@@ -273,7 +273,7 @@ D'ailleurs, cet article est le premier écrit en Markdown (quand je disais que c
 
 En espérant qu'il pourra être utile à d'autres lecteurs et en m'excusant par avance si des informations sont approximatives...
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/
 * http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/

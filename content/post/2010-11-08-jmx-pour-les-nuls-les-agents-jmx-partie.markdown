@@ -14,7 +14,7 @@ Les articles qui feront suite préciseront les concepts manipulés par un agent 
 
 <!-- more -->
 
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -53,7 +53,7 @@ Les articles qui feront suite préciseront les concepts manipulés par un agent 
 
 
 <a name="agent"></a>
-#Agent JMX
+# Agent JMX
 
 Un agent JMX est une entité de management qui s’exécute sur une machine virtuelle Java et qui permet de faire la liaison entre les MBean et l’application de management. Un agent JMX est composé d’un MBean server, d’un ensemble de MBean représentant les ressources à administrer et superviser, d’un ensemble minimal de services d’agent qui se présentent sous forme de MBean et d’au moins un adaptateur de protocol ou connecteur.
 

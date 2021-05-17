@@ -27,7 +27,7 @@ Je m'explique... sans vouloir être plus royaliste que le roi, il convient de re
 
 Il est à noter que le test de charge n'a pas pour vocation intrinsèque la recherche d'un Hotspot dans l'application même si la méthode d'injection peut être identique. En effet, les outils nécessaires à la détection de point chaud peuvent génèrer un overhead qui fausse les résultats obtenus. Ce point est donc, même si souvent proche de la théorie des tests de charge, transverse avec, entre autre, la mise en place de sondes, l'activation de logs, l'utilisation d'un profiler ou la surveillance du traffic réseau et des serveurs (IO, CPU, RAM, collision des trames, ...).
 
-#Test de charge, oui, mais lequel?...
+# Test de charge, oui, mais lequel?...
 
 Lorsque l'on parle de test de charge, il convient de se poser la question de ce que l'on veut tester. Il en existe 3 types :
 
@@ -35,7 +35,7 @@ Lorsque l'on parle de test de charge, il convient de se poser la question de ce 
 * Test de surcharge.
 * Test de robustesse.
 
-#Test de tenue en charge
+# Test de tenue en charge
 
 Ce type de test a pour objectif de valider la capacité de traitement du SUT qui peut alors être vu comme une boite noire.
 
@@ -45,7 +45,7 @@ Lorsque le SUT aura atteint sa capacité maximale, son fonctionnement se verra d
 
 Ce type de test doit être constitué de tirs se chiffrant en minute ou dizaine de minutes.
 
-#Test de surcharge
+# Test de surcharge
 
 Ce type de test a pour objectif de vérifier le comportement du SUT après avoir subi une charge supérieure à ce qu'il est capable d'absorber, charge qui aura été déterminé par le test de tenue en charge.
 
@@ -53,13 +53,13 @@ En effet, alors qu'il est connu que les performances du SUT seront dégradées l
 
 Le but de ce test n'est donc pas de collecter les métriques pendant le test de surcharge mais après.
 
-#Test de robustesse
+# Test de robustesse
 
 Ce type de test a pour objectif de valider le comportement du SUT après une longue activité. En effet, un système qui se veut un minimum bien conçu doit être capable d'avoir un _uptime_ se chiffrant en mois et non en heure. Cependant, il est courant de voir des contentions mémoires se produire après une longue activité du système qui peuvent être liés à un phénomène de résonance produite par un évènement particulier.
 
 Pour ce faire, le test de robustesse doit être exécuté pendant plusieurs heures à une charge admissible maximale (qui aura été déterminé par le test de tenue en charge).
 
-#Que mesurer et comment
+# Que mesurer et comment
 
 Nous avons vu dans un premier paragraphe qu'il existait différents types de test charge. Cependant, l'accent a été également mis sur les métriques récoltées, et c'est ce que tentera de traiter cette partie, à savoir ce qu'on entend par métrique et comment elles doivent être récoltées.
 
@@ -69,7 +69,7 @@ Comme nous l'avons mentionné précédemment, le but premier d'une campagne de t
 
 On constate sur cet exemple un point d'inflexion aux alentours de 150 utilisateurs virtuels qui est représentatif de la congestion du SUT.
 
-#Extraction des métriques utiles
+# Extraction des métriques utiles
 
 En fait, chaque point du tracé doit être la conclusion d'un test de charge pour un nombre d'utilisateur virtuel donné.
 
@@ -121,13 +121,13 @@ Une fois la régression linéaire estimée, il est alors possible de placer des 
 
 Bien sûr, la méthode d'élagage est également à appliquer aux résultats obtenus au sein d'un tir de test de charge et, de même, il convient d'utiliser la médiane afin d'avoir les meilleurs résultats possibles (ça aurait été trop simple sinon... ;-) ).
 
-#Comment injecter
+# Comment injecter
 
 Nous avons vu dans les paragraphes précédents les différents types de test de charge ainsi que la théorie qu'il fallait appliquer lors de la récupération des métriques. 
 
 Dans ce paragraphe, nous allons voir comment il convient de configurer son plan de test (ie. la configuration de l'exécution des scénarii).
 
-##Injecter avec les bons injecteurs
+## Injecter avec les bons injecteurs
 
 Lors d'une injection de charge, il est important (si ce n'est indispensable) de s'assurer que les injecteurs ne sont pas surchargés.
 En effet, dans la majorité des outils capable d'injecter de la charge, un thread est créé par utilisateur virtuel (chose qui n'est pas le cas avec Gatling).
@@ -150,7 +150,7 @@ Pour faire simple, c'est au système d'injection de gouverner l'ensemble des inj
 
 En outre, en plus des considération de surcharge potentielle des injecteurs, il peut être intéressant de distribuer les injecteurs afin de simuler des utilisateurs virtuels venant de différentes machines clientes (c'est aussi l'un des points qui doit être pris en compte lors de la variabilisation du scénario injecté).
 
-#Injecter avec le bon profil de charge
+# Injecter avec le bon profil de charge
 
 Le profil de charge permet au système d'injection de gérer un ensemble d'utilisateurs virtuels qui exécutent en boucle le scénario.
 
@@ -166,7 +166,7 @@ La rampe doit être choisie en fonction de la durée du test d'injection mais é
 
 Le palier est, quant à lui, réellement représentatif de ce qui doit être validé par le SUT et c'est durant cette période que devra se faire l'analyse des métriques obtenues. De plus, l'enchainement des scénarii pour les utilisateurs virtuels doit se faire suivant une loi aléatoire afin que la charge puisse s'exprimer comme une valeur moyenne de débit. De plus, ce coté aléatoire permettra d'être au plus proche des actions des utilisateurs réels.
 
-#Conclusion
+# Conclusion
 
 Cet article n'avait pas pour objectif d'expliquer toute la théorie qui se cachait derrière les tests de charge (qui est oh combien compliqué... et qui s'appuie, entre autre, sur la théorie des files d'attente mais aussi sur de nombreuses notions statistiques) mais juste d'effleurer les notions primodiales qui se cachent derrières et qui, à mon humble avis, devraient être prises en considération (quitte à en élaguer sciemment certaines).
 
@@ -176,7 +176,7 @@ Enfin, pour finir, je dirai qu'une campagne de test de charge devrait toujours �
 
 [__update__] ah oui, j'oubliais... il coule de sens qu'un test de charge doit pouvoir être reproduit à l'identique afin de pouvoir comparer les dégradations ou amélioration des performances entre deux moments d'où l'importance de maîtriser son scénario d'injection et de faire cela de manière un minimum industriel...
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 Parce que je suis tombé sur cette [ressource](http://home.nordnet.fr/~ericleleu/cours/nfe210/Tests_V10.00.pdf) en écrivant cet article, je le mets ;-)
 

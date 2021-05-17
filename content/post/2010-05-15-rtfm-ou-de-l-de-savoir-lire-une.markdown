@@ -16,7 +16,7 @@ Bien sur, le monde Open Source n'est pas le seul où doit s'appliquer ce princip
 
 Je vais donc raconter mon anecdote (stupide, j'en conviens donc soyez indulgent avec moi)...
 <!-- more -->
-#Contexte
+# Contexte
 Alors que j'étais tranquillement en train de farfouiller dans le code source du projet sur lequel je travaille, je tombe sur le code suivant (j'ai élagué le contrôle de la taille de mon tableau pour éviter d'alourdir les exemples...) :
 ```java
 public static String[] troncateString(String[] input) {
@@ -73,10 +73,10 @@ En plus, première ligne... je n'avais pas lu le fixed-size... :( Voilà, conclu
 
 [__update__ : un collègue m'a fait remarqué que je n'avais pas été très précis quant au pourquoi du comment j'avais eu cette erreur... : le fait que la classe interne `ArrayList` de `Arrays` n'implémente pas la méthode `remove()` implique que c'est l'implémentation de la méthode `remove()` de `AbstractList` qui est utilisée. Cette méthode lançant un `UnsupportedOperationException`, c'est donc ce qui remonte. Ce choix ayant été fait en raison de la volonté de renvoyer un ArrayList de taille fixe et donc de ne pas implémenter cette méthode.]
 
-#Conclusion
+# Conclusion
 
 Lisez la documentation lorsqu'un problème se présente. Si vous ne le faites pas, et si vous "osez" poser la question sur un forum sans recherche préalable, ne vous vexez pas si comme toute réponse vous obtenez un jolie RTFM... En outre, le risque pour vous est de vous faire "griller" sur le forum où plus personne ne daignera vous répondre. De même, quoi de plus énervant quand un collègue vous pose une question alors qu'un simple coup de google aurait pu le renseigner et, en plus, si cela vous a fait perdre votre idée alors que vous veniez de trouver la solution du siècle! ;-)
-#Epilogue
+# Epilogue
 
 Ci-joint le code que j'aurai dû utiliser :
 

@@ -32,7 +32,7 @@ En outre, l'absence du mécanisme de Servlet reste un peu embêtant pour mettre 
 
 Le code complet est disponible [ici](https://github.com/jetoile/undertow-sample).
 
-#Rappel du cahier des charges
+# Rappel du cahier des charges
 Comme je l'ai déjà indiqué dans les autres posts, l'objectif est seulement de montrer comme il peut être simple d'exposer un service REST à l'aide d'[Undertow](http://undertow.io/). Pour ce faire, un simple service sera exposé et il consistera à répèter ce qu’on lui demande…
 
 Il répondra donc à une requête de type GET du type : http://localhost:8081/sample/say/<message>
@@ -45,7 +45,7 @@ Du coté de la réponse, elle aura la forme suivante :
 }
 ```
 
-#Mise en oeuvre
+# Mise en oeuvre
 A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :
 ```text
     compile group: 'org.jboss.resteasy', name: 'jaxrs-api', version:'3.0.11.Final'
@@ -70,7 +70,7 @@ A titre informatif, les versions des différentes librairies qui sont utilisés 
 
 Concernant la version des différentes dépendances, on constate que ce n'est pas swagger2 qui est utilisé en raison d'une incapacité de ma part à l'intégrer... :'(
 
-#Implémentation du service REST
+# Implémentation du service REST
 Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial… et la classe ci-dessous fait humblement l’affaire :
 ```java
 @Api(value = "/sample",
@@ -146,7 +146,7 @@ En outre, concernant les annotations Swagger et l'utilisation de metrics, nous y
 
 Concernant le message de log, de même, nous y reviendrons plus tard avec l'intégration d'un MDC pour les logs.
 
-#Mise en oeuvre avec Undertow
+# Mise en oeuvre avec Undertow
 
 Mettre en place Resteasy avec Undertow est très simple, d’après la documnentation, il suffit de faire :
 ```java
@@ -253,7 +253,7 @@ Après ces modifications, on obtient bien :
 {"message":"<message>","time":"2015-06-23T16:04:01.419"}
 ```
 
-#Intégration de Metrics
+# Intégration de Metrics
 
 Concernant l'intégration de Metrics, pas grand chose de nouveau et donc pas grand chose à dire ;-)
 
@@ -276,7 +276,7 @@ try {
 ```
 
 
-#Intégration de la sécurité
+# Intégration de la sécurité
 Undertow permet une bien meilleur intégration de la sécurité que RestEasy-Netty. En effet, grâce au mécanisme de Servlet, il est possible de bénéficier de toute la puissance des conteneurs de Servlets.
 
 Du coté du serveur Undertow, il suffit donc de définir un _ServletIdentityManager_ et de lui fournir un _LoginConfig_ :
@@ -396,7 +396,7 @@ public class SimpleService {
 }
 ```
 
-#Intégration d'un MDC
+# Intégration d'un MDC
 Concernant la mise en place d'un MDC (_Mapped Diagnostic Context_), le fait de bénéficier du mécanisme de _Filter_ des Servlets rend la chose beaucoup plus simple. 
 
 En effet, une fois la couche sécurité branchée, il suffit de récupérer le ```UserPrincipal``` dans la requête et l'enregistrer dans le MDC.
@@ -488,7 +488,7 @@ On obtient alors bien les logs voulues :
 17:15:11.466 INFO  f.j.sample.service.SimpleService 127.0.0.1 /sample/say/<message> - C:khanh - sample log
 ```
 
-#Intégration de Jolokia
+# Intégration de Jolokia
 Coté Jolokia, pas grand chose à ajouter par rapport à ma série d'article précédent...
 ```java
 try {
@@ -501,7 +501,7 @@ try {
 }
 ```
 
-#Intégration de Swagger
+# Intégration de Swagger
 Concernant l'intégration de Swagger, le fait de disposer des _Filter_ de Servlet permet de n'avoir pas à faire de _hack_ immonde pour gérer le CORS (cf. [article précédent](http://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html)) : il suffit de déclarer un _Filter_ dans Undertow qui a, en outre, la chance d'exister :
 ```java
 CorsFilter filter = new CorsFilter();
@@ -532,11 +532,11 @@ Concernant la déclaration dans Undertow, pas grand chose à ajouter :
     }
 ```
 
-#Branchement des plugins Maven Appassembler et Assembly
+# Branchement des plugins Maven Appassembler et Assembly
 
 Coté génération du livrable, encore une fois, pas grand chose à ajouter par rapport à mon précédent article : l'utilisation des plugins assembly et appassembler est identique.
 
-#Conclusion
+# Conclusion
 
 On avait vu dans les articles précédents que RestEasy-Netty était une solution intéressante pour la simplicité de sa mise en oeuvre ainsi que pour le faible overhead.
 

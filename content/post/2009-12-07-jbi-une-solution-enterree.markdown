@@ -13,7 +13,7 @@ tags:
 ![left](http://4.bp.blogspot.com/_XLL8sJPQ97g/SyioXBC9u0I/AAAAAAAAAII/DM5NReY1mJ4/s200/jbi.png)
 Voilà mon premier article. Il a pour objectif de présenter JBI (_Java Business Service_) aussi connue sous le doux nom de JSR 208 (_Java Specification Release_).
 
-#Pourquoi un article sur JBI?
+# Pourquoi un article sur JBI?
 Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j'aime bien cette spécification et je trouve qu'elle a du potentiel et qu'elle est sous exploitée.
 
 Bien sûr, me direz-vous, en tant qu'utilisateur d'un PEtALS ou ServiceMix, pourquoi devrais-je comprendre la technologie sous-jacente? Eh bien, c'est une affaire de goût : si vous préférez utiliser un produit comme une boite noire, passer votre chemin. Par contre, si vous voulez comprendre ce qui se passe à l'intérieur, j'espère que cet article pourra répondre à vos attentes.
@@ -26,7 +26,7 @@ Cependant, ne seront pas abordés, ici, les mécanismes utilisés en son sein ai
 
 Il est à noter que dans cet article j'utiliserai souvent le terme de composant (peut être à mauvais escient) au lieu du terme service. Il s'agit d'un abus de langage lié au fait que j'ai tenté d'être le plus clair possible et que en évitant d'aborder trop de notions afin d'éviter de vous perdre ;-).
 <!-- more -->
-#JBI : Qu'est ce que c'est?
+# JBI : Qu'est ce que c'est?
 
 JBI (_Java Business Integration_) est définie dans sa première version par la JSR (_Java Specification Release_) 208. Elle a pour objectif de proposer une solution d'intégration de composants métiers et définie une norme pour l'assemblage des moyens d'intégration de composants.
 
@@ -43,15 +43,15 @@ JBI s'appuie sur des technologies web comme les WSDL (_Web Service Description L
 
 Si je devais définir JBI en une phrase, je dirais qu'il s'agit d'une spécification visant à définir un conteneur de conteneurs pour offrir une solution normalisée pour l'intégration de composants métiers. Les conteneurs étant des composants qui hébergent les services que nous verront plus tard.
 
-#Concepts
+# Concepts
 
 Cette partie tentera d'expliquer ses concepts qui, je pense, sont nécessaires pour comprendre son fonctionnement et utiliser une solution basée sur JBI. 
 
-##Fonctionnement général
+## Fonctionnement général
 
 Un environnement JBI expose des services qui interagisent entre eux via un échange asynchrone de message au format XML. Cela permet un couplage faible entre les services. De plus, afin de découpler encore plus l'échange de messages, c'est l'environnement qui est chargé de les router. En fait, les services sont hébergés au sein de composants, mais c'est l'objet des paragraphes suivants... ;-)
 
-##Notion de composants JBI
+## Notion de composants JBI
 
 JBI définit deux types de composants :
 
@@ -85,7 +85,7 @@ Afin de clarifier la notion de composant (SE ou BC), voici une liste de composan
 
 Un composant JBI se présente sous forme de fichier zippé et doit être installé dans l'environnement JBI (en fait, dans ce fichier zip, des informations contenues dans le fichier jbi.xml se trouvant dans le répertoire META-INF spécifie le composant -cycle de vie & co. -).
 
-##Notion de Service Unit et Service Endpoint
+## Notion de Service Unit et Service Endpoint
 Les composants JBI (SE ou BC) offrent un comportement général et leur utilisation est spécifique au besoin : par exemple, la réception de Messages JMS ne se fait pas toujours sur la même Destination et cela doit être configurable. De même, un fichier XML est considéré comme valide via son schéma XSD. Aussi il est nécessaire de configurer ces composants. C'est pour cette raison qu'ils peuvent être vus comme des conteneurs. Cette étape où à un composant générique (comme un BC File System) est associé sa spécificité (dire au BC File System qu'il doit scruter un répertoire particulier) est appelée configuration du composant. C'est suite à sa configuration qu'un composant expose un service en tant que tel.
 
 De plus, il ne faut pas oublier que le but premier de JBI est d'offrir des possibilités d'assemblage : l'environnement JBI offre un certain nombre de "meta-services" au reste du monde qui est un assemblage d'autres services qui sont hébergés en son sein ou non. Pour ce faire, une notion de services fournisseurs (provider) et de services consommateurs (consumer) a été introduite :
@@ -101,12 +101,12 @@ Cependant, une autre question peut se poser : comment sont accessibles les compo
 
 Plus concrètement, un SU se présente sous forme d'un fichier zippé et doit être déployé sur un composant JBI (en fait, dans ce fichier zip doit se trouver un fichier jbi.xml dans le répertoire META-INF qui précise s'il est fournisseur -et dans ce cas, son endoint- ou s'il est consommateur -et dans ce cas, le ou les endpoint avec le(s)quel il interagit-). Les autres informations nécessaires à la configuration du service doivent également être présentent dans le SU : un SU permet donc de configurer un composant (SE ou BC) afin de lui fournir une logique de fournisseur ou de consommateur ainsi que son ServiceEndpoint associé. Il permet également de fournir d’autres informations au composant comme le répertoire d’écoute (dans le cas d’un BC consommateur) ou d’écriture (dans le cas d’un BC fournisseur) pour le BC transfert de fichiers (BC permettant de scruter un répertoire pour lire les fichiers qui y sont déposés ou permettant d’écrire dans ce répertoire).
 
-#Notion de Service Assembly
+# Notion de Service Assembly
 Dans les paragraphes précédents, ont été introduit les notions de componsants JBI, de services (au sens JBI) et de ServiceEndpoint : il a été vu qu'un composant doit être configuré par un SU qui lui offre la notion de service via la déclaration (entre autres) de ses endpoint.
 
 En fait, pour déployer un SU dans l’environnement JBI, il faut utiliser un SA (_Service Assembly_) dans lequel est indiqué quel(s) SU(s) configure(nt) un composant donné. Ce SA contient également les SU (un SU ne peut être déployé directement et doit l'être au travers d'un SA).
 
-#Notion de Normalized Message Router
+# Notion de Normalized Message Router
 En introduction, il a été dit que c'était l'environnement JBI qui avait à sa charge l'émission des messages transitant entre services. En fait, c'est le routeur de messages normalisés (_Normalized Message Router_) qui reçoit les messages échangés et qui les redirige vers leurs destinataires respectifs. C'est lui qui permet de découpler les fournisseurs de service et les consommateurs de service.
 
 En outre, il est essentiel de noter que dans les spécifications il est dit que quand un message échangé est routé par le fournisseur de service, il doit toujours être renvoyé au composant initiateur de l’échange : 
@@ -127,7 +127,7 @@ De plus, en fonction du type de messages, le Normalized Message Router (NMR) off
 
 Ainsi, pour résumer, on peut dire que le NMR joue le rôle de médiateur dans l'environnement JBI (en fait, dans l’environnement JBI, les messages sont normalisés et encapsulés par les composants dans un MessageExchange (ME) contenant des propriétés (metadata) afin d’être envoyés d’un composant à un autre. Les BCs et SEs interagissent avec le routeur de messages normalisés via un DeliveryChannel qui est bidirectionnel. En outre, il est possible d’associer des pièces jointes aux MEs).
 
-##Message Exchange Patterns (MEP)
+## Message Exchange Patterns (MEP)
 Un JBI Provider permet d'émettre et de recevoir des messages (ME) entre les divers services qu'il héberge au travers de composants. En fait, ces transmissions de messages suivent certains patterns qui sont définis au nombre de 4 (en fait, ce nombre n'est pas imposé et chaque JBI Provider est libre d'un offrir plus) :
 
 * In-Only
@@ -148,7 +148,7 @@ Un JBI Provider permet d'émettre et de recevoir des messages (ME) entre les div
 
 En fait, ce pattern d'échange (Message Exchange Pattern - MEP- ) est positionné par le composant émetteur (ou plutôt, pour être plus précis, par sa configuration et donc le SU), et c'est au composant recevant le message de préciser les patterns qu'il supporte et comment il les supporte (par exemple, un BC JMS en mode fournisseur ne fournit pas de réponse s'il ne fait qu'émettre. Aussi, les MEPs qu'il supporte ne peuvent être que In-Only ou Robust In-Only).
 
-#Cycle de vie des composants, SU et SA
+# Cycle de vie des composants, SU et SA
 Jusque là, les chapitres précédents ont traité les notions et concepts apportés par les spécifications JBI. Parmi ces notions, nous avons vu qu'il existait réellement trois "objets" manipulables : les composants JBI, les SUs et les SAs.
 
 En fait, ces trois "objets" disposent de leur propre cycle de vie :
@@ -171,17 +171,17 @@ Il en est de même pour SU. Cependant, étant contenu dans un SA, il suit, en fa
 
 La procédure consistant à installer un composant JBI dans l'environnement s'appelle installation, alors que la procédure consistant à déployer un SU dans un composant (au travers d'un SA) s'appelle déploiement.
 
-##Features
+## Features
 Dans les précédents paragraphes, nous avons survolé les notions utilisées par JBI. Cependant, les spécifications JBI apportent également des précisions sur les points suivants :
 * JMX (_Java Management eXtension_) : un JBI Provider doit fournir une interface (au sens Java du terme) JMX d'administration
 * Ant : un JBI Provider doit offrir des targets Ant pour gérer le cycle de vie des composants (installation/déploiement, démarrage, arrêt, désinstallation/undeployment)
 * Shared Library : ce composant non abordé précédemment est une sorte de bundle contenant des librairies accessible de tout l'environnement JBI. Il dispose de son propre cycle de vie (installation, désinstallation) et permet, pour simplifier, un mécanisme de chargement/déchargement dynamique de librairie au sein de l'environnement.
 
-#Avis sur JBI
+# Avis sur JBI
 Ce paragraphe fait un retour de mon humble avis sur JBI. Je n'aborderai pas ici ses implémentations comme PEtALS, ServiceMix ou OpenESB puisque de très bon articles existent déjà et qu'ils couvrent bien mieux que je ne saurai le faire leurs prises en main et la description de leurs spécificités.
 
-##Points faibles
-###EIP Provider
+## Points faibles
+### EIP Provider
 Dans les spécifications, une phrase doit vraiment marquer le lecteur :
 >"When a message exchange is routed from the service provider, it MUST always be sent to the component that originated the exchange. Subsequent sending of the exchange from the consumer to provider MUST always send the exchange to the provider endpoint selected during the initial send of the exchange" - JBI_Spec
 
@@ -199,13 +199,13 @@ En outre, les solutions offertes par les JBI Provider peuvent manquer de maturit
 
 Bien sûr, un moteur SCA, BPEL ou BPMN pourrait répondre à ce besoin mais ils ne couvrent pas le même besoin (qui sont plus applicatifs que techniques) et cela sort du scope de JBI et donc de cet article.
 
-###Qui fait quoi?
+### Qui fait quoi?
 Les composants JBI sont tous spécifiques et doivent être compris par l'utilisateur. Cela peut, du coup, être un peu repoussant et demander une recherche de la documentation.
 
-###Portage des composants JBI d'un JBI Provider à l'autre
+### Portage des composants JBI d'un JBI Provider à l'autre
 Sur le papier les composants JBI doivent pouvoir être installés sur n'importe quel JBI Provider. En fait, cela n'est pas tout à fait exacte et pour en porter un, il faut parfois s'arracher les cheveux. En outre, il ne faut pas oublier qu'un composant JBI doit être configuré (via un SU) pour être utilisable, et généralement, le déploiement d'un SU sur un composant qu'on a réussi à installer (c'est déjà pas mal...) sur un JBI Provider tierce s'avère être également peu aisé...
 
-##Points forts
+## Points forts
 Le point fort de JBI est, de mon point de vue, qu'il offre un conteneur de conteneurs.
 
 En outre, il existe un grand nombre de ces conteneurs (au sens composants JBI du terme) offerts par les différents JBI Provider et généralement, ils peuvent suffire à répondre au besoin.
@@ -214,12 +214,12 @@ Si tel est le cas, une utilisation d'un JBI Provider s'avère simple (il suffit 
 
 En fait, dans ce cas, le plus gros du travail est la configuration des composants JBI et donc l'écriture d'un fichier XML.
 
-#Conclusion
+# Conclusion
 Suite à cet article, la question qui peut se poser est : Ai-je vraiment besoin de JBI ? En fait, j'aurai envie de dire que cela dépend du besoin. Si le besoin est la mise en place d'une grosse infrastructure qui doit être déployée sur plusieurs sites/noeuds, une implémentation JBI peut être un bon choix. Par contre, si les besoins sont plus des problématiques de médiation au sein d'un controlleur, alors un simple EIP Provider (tel que Apache Camel, Spring Integration ou Mule iBeans) suffit.
 
 En conclusion, je pense que pour pouvoir utiliser pleinement un ESB basé sur JBI, il est important d'avoir un minimum de connaissance de JBI et cela, même si les JBI Provider préfèrent communiquer plus sur ce que peut apporter leur produit que sur le comment (mais cela est normal au final... ).
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 * __SOA : le guide de l’architecte__ de X. Fourner-Morel, P. Grojean, G. Plouin et C. Rognon chez Dunod
 * __Enterprise Integration Patterns__ de G. Hohpe et B. Woolf chez Addisson Wesley 
 * Spécification de JBI : http://jcp.org/aboutJava/communityprocess/edr/jsr208/index.html 

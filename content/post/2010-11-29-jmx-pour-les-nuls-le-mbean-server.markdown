@@ -12,7 +12,7 @@ Cet article reste dans la lignée de ma petite série d'articles sur JMX (cf. [i
 
 <!-- more -->
 
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -51,7 +51,7 @@ Cet article reste dans la lignée de ma petite série d'articles sur JMX (cf. [i
 
 
 <a name="mbean_server"></a>
-#MBean Server
+# MBean Server
 
 Le MBean Server est un annuaire de MBeans se trouvant dans l'agent JMX. Il permet de fournir les services que manipulent les MBeans et toutes les opérations d'administration et de supervision, qui sont fournies par le MBean, le sont au travers de l'interface `MBeanServer` :
 

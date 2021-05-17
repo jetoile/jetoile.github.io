@@ -17,9 +17,9 @@ Seront donc abordés deux points :
 
 <!-- more -->
 
-#Message d'erreur lors de l'arrêt d'Apache Tomcat?
+# Message d'erreur lors de l'arrêt d'Apache Tomcat?
 
-##Cas d'usage
+## Cas d'usage
 Les options permettant d'activer JMX sur la JVM ont été passées via la variable `JAVA_OPTS` ou autre (via le catalina.sh par exemple).
 
 Le démarrage de Tomcat s'effectue sans problème mais lors de son arrêt, une erreur apparaît et tomcat refuse de s'arrêter c'est-à-dire que son processus tourne toujours en tâche de fond.
@@ -52,10 +52,10 @@ Erreur: Exception envoyée par l'agent : java.rmi.server.ExportException: Port a
         java.net.BindException: Address already in use
 ```
 
-##Explication
+## Explication
 En fait, cette erreur se produit lors de l'arrêt de Tomcat car le script `shutdown.sh` (ou `catalina.sh stop`) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l'on tente d'arrêter, cela échoue.
 
-##Proposition pour résoudre le problème
+## Proposition pour résoudre le problème
 
 * ~~Ne pas positionner les options pour activer JMX sur la variable système `JAVA_OPTS` au risque de ne pas pouvoir démarrer plusieurs processus Java.~~
 * ~~Si c'est le script catalina.sh qui positionne la variable `JAVA_OPTS`, ne pas la positionner dans tous les cas mais seulement dans le cas où l'argument start est passé au script.~~
@@ -63,9 +63,9 @@ En fait, cette erreur se produit lors de l'arrêt de Tomcat car le script `shutd
 * Utiliser la variable `CATALINA_OPTS` qui n'est utilisée que quand les options run et start sont passées"
 >CATALINA_OPTS   (Optional) Java runtime options used when the "start",  or "run" command is executed.
 
-#Problème de connexion?
+# Problème de connexion?
 
-##Cas d'usage
+## Cas d'usage
 
 Une jconsole ou une jvisualvm qui n'arrive pas à se connecter à un programme ou une connexion au connecteur d'un agent JMX qui échoue avec une exception.
 
@@ -91,7 +91,7 @@ Fenêtre d'erreur de jvisualvm : _"Data not available because JMX connection to 
 
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TTsroeTxKoI/AAAAAAAAAUI/0aUghCdjv0w/s1600/error01.png)
 
-##Analyse
+## Analyse
 
 Après de multiples tentatives pour comprendre, j'ai tenté un changement de jre pour voir si cela ne pouvait pas venir d'une anomalie (si j'avais un problème de connexion en mode hors-ligne, ce n'était pas pour rien puisque j'étais effectivement hors-ligne et, par conséquent, je devais me débrouiller par moi-même... ;-) ).
 
@@ -132,13 +132,13 @@ at sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:613) ~[na:1.6.0_
 ... 34 common frames omitted
 ```
 
-##Explication
+## Explication
 
 En fait, mon problème venait du fait que mon fichier hosts était incorrect (je vous avais prévenu que c'était une erreur stupide : n'importe qui aurait pensé à vérifier sa configuration réseau... ! ;-) ). 
 
 En effet, la couche logicielle gérant mes connexions réseaux sur mon ordinateur a tendance à ajouter dans mon fichier /etc/hosts mon adresse réseau. Cependant, lorsque je coupe mon wifi, mon ordinateur passe en mode hors-ligne sans modifier mon fichier hosts, ce qui corrompt ma configuration réseau.
 
-#Proposition pour résoudre le problème
+# Proposition pour résoudre le problème
 
 * Corriger son fichier hosts et vérifier sa configuration réseau
 

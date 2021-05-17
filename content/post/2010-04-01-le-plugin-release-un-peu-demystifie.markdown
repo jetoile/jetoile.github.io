@@ -15,7 +15,7 @@ Il est à noter que je ne reviendrai pas sur l'intérêt d'utiliser un tel plugi
 
 <!-- more -->
 
-#Plugin release? Quoiqu'il fait?
+# Plugin release? Quoiqu'il fait?
 Le principal intérêt du plugin release est de fournir un processus de livraison reproductible, maitrisé et auto-sufisant en permettant, entre autre, de :
 
 * vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM,
@@ -42,7 +42,7 @@ Pour se faire, il se décompose en 2 phases :
 
 Il est également à noter qu'il est possible de l'utiliser pour créer des branches à partir d'un tag donné mais que ce point ne sera pas traité dans cet article.
 
-#Et plus concrètement, comment qu'il marche?
+# Et plus concrètement, comment qu'il marche?
 En fait, le goal `prepare` du plugin release dispose d'une liste d'actions qui sont effectuées séquentiellement et où chaque action est associée à une classe se trouvant dans le package __org.apache.maven.shared.release.phase__ :
 
 * __check-poms__ qui appelle la classe `CheckPomPhase` qui vérifie que le pom déclare bien la balise &lt;developerConnection&gt;, que le repository est bien déclaré et qu'il existe bien au moins un module du projet qui est en version SNAPSHOT, 
@@ -70,7 +70,7 @@ Le goal `perform` dispose, quant à lui, de la liste d'actions suivantes :
 * __checkout-project-from-scm__ qui appelle la classe `CheckoutProjectFromScm` qui checkout le projet du SCM dans le répertoire checkout de target,
 * __run-perform-goals__ qui appelle la classe `RunPerformGoalsPhase` qui exécute le goal maven `deploy` pour déployer le projet dans le repository maven.
 
-#et sinon, comment qu'on l'utilise?
+# et sinon, comment qu'on l'utilise?
 On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut parfois être utile de redéfinir certaines de ses actions, soit en précisant le profile à utiliser lors de la phase de déploiement (si le plugin [assembly](http://maven.apache.org/plugins/maven-assembly-plugin/) est utilisé par exemple), soit si l'environnement où est effectué le livrable dispose d'une configuration folklorique (oui, oui, c'est possible... :( ).
 
 En fait, il est possible de préciser les goals à exécuter lors de l'action run-preparation-goal de la goal `prepare` (qui, pour rappel, exécute par défaut les goals `clean` et `verify`) en configurant le plugin release via la balise `<preparationGoals>` :
@@ -118,7 +118,7 @@ ou en le configurant dans le pom :
 </plugin>
 ```
 
-#Conclusion
+# Conclusion
 Vous l'aurez donc compris, le maven-release-plugin est vraiment un outil puissant qui effectue un certain nombre d'opérations prédéfinis et qui sont généralement faites manuellement par l'utilisateur... Ainsi, il permet de gagner beaucoup de temps.
 
 Attention toutefois à ne pas oublier ce qu'il fait. Cela évitera les petites surprises (enfin c'est le cas de tous les outils...) et permettra de le configurer aux petits oignons (par exemple, en utilisant les options disponibles ou un fichier de configuration pour éviter d'avoir un prompt de sa part)... ;-)
@@ -128,7 +128,7 @@ A noter que certains points n'ont pas été traités dans cet article puisque le
 * un rollback en cas, soit d'échec de génération, soit d'anomalies détectées dans le livrable,
 * la création de branches permettant ainsi de produire des correctifs sur une version déjà livrée.
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 * __Apache Maven__ de N. De Loof, A. Héritier chez Pearson
 * Better Builds with Maven : http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf
 * Maven. Definitive Guide : http://www.sonatype.com/products/maven/documentation/book-defguide

@@ -19,7 +19,7 @@ Même si je résumerai succinctement quelques-uns des concepts afin que cet arti
 
 <!-- more -->
 
-#Les concepts
+# Les concepts
 
 Logstash est écrit en JRuby et fonctionne dans une JVM. Son architecture est orientée messages et est très simple. Plutôt que de séparer le concepts d'agents et de serveurs, Logstash se présente comme  un simple agent qui est configuré pour combiner différentes fonctions avec d'autres composants open souce.
 
@@ -68,9 +68,9 @@ où :
 * `output` peut prendre en valeur des _plugins_ qui permettent de préciser où seront envoyés les événements (comme, par exemple, la sortie standard ou ElasticSearch).
 
 
-#Les différentes stratégies de déploiement possibles
+# Les différentes stratégies de déploiement possibles
 
-##Le mode de déploiement _classique_
+## Le mode de déploiement _classique_
 
 Dans l'architecture de déploiement _classique_, on retrouve la _stack_ préconisée qui est la suivante :
 
@@ -90,8 +90,8 @@ En fait, le __broker__ permet de servir de buffer entre les agents et le serveur
 
 On observe donc, dans cette configuration, que les agents Logstash présents sur les machines hôtes ne font que transmettre sans intelligence réelle au buffer les différents événements de log et qu'ils n'ont pas _vraiment_ de logique (ie. ils n'ont pas de section __filter__ mais juste les sections __input__ et __output__).
 
-##Le mode de déploiement sans agent
-###A la mode système
+## Le mode de déploiement sans agent
+### A la mode système
 Comme on a pu voir dans le paragraphe précédent, les machines hôtes disposent d'un agent Logstash complet. Cependant, ils n'ont pas vraiment de logique puisqu'ils ne font que transmettre les événements de logs au broker dont le rôle est de servir de buffer.
 
 Cependant, parfois, il peut être intéressant de ne pas à avoir besoin d'installer un agent Logstash sur les machines hôtes :
@@ -109,7 +109,7 @@ A titre informatif, il est possible d'utiliser un _Appender_ syslog dans log4j o
 
 ![center](/images/logstash/archi03.png)
 
-###A la mode agent
+### A la mode agent
 Dans le cas où ni un agent Logstash ni Syslog ne sont envisageables, il est possible d'utiliser [Logstash Forwarder](https://github.com/elasticsearch/logstash-forwarder) (anciennement Lumberjack).
 
 Il s'agit d'un client légé permettant d'envoyer des messages à Logstash en offrant un protocole maison intégrant de la sécurité (encryption SSL) ainsi que de la compression.
@@ -125,7 +125,7 @@ A noter que d'autres _shipper_ sont également disponibles tels que :
 * [Beaver](https://github.com/josegonzalez/beaver)
 * [Woodchuck](https://github.com/danryan/woodchuck)
 
-#Les filtres
+# Les filtres
 
 Logstash vient avec un système de filtre qu'il est possible de configurer via la section __filter__. 
 
@@ -143,7 +143,7 @@ Une autre manière de faire est d'exécuter le filtrage localement (ie. directem
 
 A l'inverse, si le filtrage est effectué sur le serveur central, cela permet de centraliser les filtres et permet donc une administration plus simple. Cependant, cela demande des ressources supplémentaires pour effectuer le filtrage sur un plus grand nombre d'événements.
 
-#La scalabilité et Logstash
+# La scalabilité et Logstash
 Une des grande force de Logstash est qu'il est possible de le composer avec différents composants : Logstash lui-même, Redis comme _broker_, ElasticSearch et bien d'autres éléments qu'il est possible de composer via la configuration de Logstash. 
 
 Ainsi, il est possible de jouer à plusieurs niveaux pour répondre à telles ou telles problématiques comme la perte de messages, le fait d'avoir un SPOF (_Single Point Of Failure_) ou d'avoir un point de contention dans le système.
@@ -159,7 +159,7 @@ Enfin, il est possible de rendre le serveur central Logstash robuste à la panne
 ![center](/images/logstash/archi05.png)
 
 
-#Conclusion
+# Conclusion
 
 En conclusion de cet article où je ne suis pas rentré dans les détails (mais ce n'est pas ce qui m'intéressait...), on peut constater qu'il existe moultes façons de configurer Logstash (et son écosystème) qui dépendent à chaque fois des besoins. 
 
@@ -167,7 +167,7 @@ Cela est rendu possible par l'architecture et la conception modulaire de Logstas
 
 Même si cela est évident, je trouvais utile de le marquer noir sur blanc dans un court article... ;-)
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * http://logstash.net/
 * http://www.logstashbook.com/

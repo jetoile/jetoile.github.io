@@ -25,7 +25,7 @@ Cet article parlera donc de la problématique d'import de fichiers dans une appl
 
 
 <!-- more -->
-#Solution à base de _batch_
+# Solution à base de _batch_
 
 Ecrire un batch permettant de traiter des fichiers peut sembler simple mais lorsque le nombre de ces derniers vient à augmenter ou lorsque la taille des fichiers est volumineux, il arrive souvent que des bugs apparaissent. En outre, il convient alors de gérer manuellement les logs ainsi que la partie supervision. 
 
@@ -92,7 +92,7 @@ Cependant, on perd un grand intérêt si, par fichier, il n'y a qu'une seule don
 
 Concernant la partie log, j'avoue ne pas avoir creuser, je ne dirai donc rien sur ce point...
 
-#Solution à base d'EIP
+# Solution à base d'EIP
 
 Dans le cas où la volonté serait de traiter les fichiers au fil de l'eau, Spring Batch n'est pas la solution la plus adaptée... 
 
@@ -144,7 +144,7 @@ Coté gestion des erreurs, Spring Integration permet de les gérer très simplem
 
 Cependant, avec Spring Integration, si le fichier est volumineux, il n'est plus possible de le traiter en _chunk_ et un risque de contention mémoire existe.
 
-#Solution à base d'EIP et de batch
+# Solution à base d'EIP et de batch
 
 On a vu dans les deux paragraphe précédent que Spring Integration était une très bonne solution pour traiter des fichiers au fil de l'eau alors que Spring Batch était plutôt orienté traitement par batch.
 
@@ -156,7 +156,7 @@ Cela engendre peut être un _overhead_ conséquent mais on est, au moins sûr, d
 
 ![large](/images/batch/archi_combo.png)
 
-#Conclusion
+# Conclusion
 
 On a vu dans cet article comment il pouvait être trivial de traiter l'import de fichiers sans avoir à gérer manuellement des pools de thread ou des logs d'audit. 
 
@@ -170,7 +170,7 @@ _ndlr_ : bon, j'admets que la partie qui a dû être la plus longue a sûrement 
 
 _ndlr_ : j'ai parlé, dans cet article, de Spring Integration pour la partie EIP mais il est tout aussi simple d'utiliser Apache Camel.
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 
 * __Spring Integration in Action__ de Mark Fisher, Jonas Partner, Marius Bogoevici et Iwein Fuld chez Manning

@@ -11,7 +11,7 @@ Comme promis lors de mon [article précédent](/2010/10/jmx-pour-les-nuls-introd
 
 <!-- more -->
 
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -49,10 +49,10 @@ Comme promis lors de mon [article précédent](/2010/10/jmx-pour-les-nuls-introd
 	* [Les Connecteurs](/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector)
 
 
-#JMX, qu'est ce que c'est?
+# JMX, qu'est ce que c'est?
 
 <a name="generalite"></a>
-##Généralités
+## Généralités
 _Java Management eXtensions_ (JMX) définit une architecture, un design pattern, une API et les services permettant de superviser et d’administrer une application au travers du langage Java.
 
 JMX permet, en effet :
@@ -63,7 +63,7 @@ JMX permet, en effet :
 * de s’intégrer avec les autres technologies Java présentes dans le système telles que JNDI, JDBC, JINI, SLP, …
 
 <a name="architecture"></a>
-##Architecture JMX
+## Architecture JMX
 L’architecture JMX peut se décomposer en trois niveaux :
 
 * le niveau instrumentation (__instrumentation level__),
@@ -73,7 +73,7 @@ L’architecture JMX peut se décomposer en trois niveaux :
 ![medium](http://3.bp.blogspot.com/_XLL8sJPQ97g/TMdQmiH7InI/AAAAAAAAALY/rXNS-iCKg6A/s1600/jmx-01.png)
 
 <a name="instrumentation"></a>
-###Niveau instrumentation
+### Niveau instrumentation
 Le niveau instrumentation spécifie comment implémenter des ressources administrable et supervisable par JMX ; une ressource pouvant être une application, une implémentation d’un service, un périphérique, ou autre tant qu’elle est développée en Java (ou qu’un wrapper existe) et qu’elle a été instrumentée pour être compatible JMX.
 
 L’instrumentation d’une ressource donnée est fournit par la présence d’un ou plusieurs Beans supervisables et administrables (ou MBeans pour _Managed Beans_) qui peuvent être de plusieurs sortes :
@@ -84,7 +84,7 @@ L’instrumentation d’une ressource donnée est fournit par la présence d’u
 Ainsi, l’instrumentation d’une ressource permet de la rendre administrable et supervisable au travers du niveau agent. Cela permet aux MBean de s’abstraire du niveau agent et ainsi que de les rendre plus simple et évolutifs. 
 
 <a name="agent"></a>
-###Niveau agent
+### Niveau agent
 
 Le niveau agent spécifie comment implémenter les agents qui permettent le contrôle direct des ressources et qui les rend administrable et supervisable d’une application de supervision et d’administration distante. Les agents se trouvent être généralement sur la même machine que les ressources qu’elles contrôlent mais cela n’est pas un pré-requis.
 
@@ -97,7 +97,7 @@ Enfin, l’agent JMX n’a pas besoin de connaitre les ressources qui doivent ê
 Le manageur accède donc au MBeans de l’agent et utilise les services fournis par ce dernier au travers un adaptateur de protocoles ou un connecteur. Celui permet à l’agent JMX d’être indépendant et faiblement couplé à l’application de management.
 
 <a name="distribue"></a>
-###Niveau service distribué
+### Niveau service distribué
 
 Le niveau service distribué spécifie comment implémenter l’interface d’administration et de supervision JMX. Ce niveau permet de définir les interfaces d’administration et de supervision et les composants qui exploitent les agents ou la hiérarchie d’agents JMX. Ces composants peuvent :
 
@@ -110,7 +110,7 @@ diffuser les informations de supervision d’une plate-forme de supervision et d
 En fait, les composants d’administration et de supervision peuvent interagir les uns les autres au sein du réseau afin de fournir des fonctions d’administration et de supervision scalables et distribuées.
 
 <a name="composant"></a>
-##Composants JMX
+## Composants JMX
 
 JMX s’appuie sur les composants et notions suivants :
 
@@ -121,7 +121,7 @@ JMX s’appuie sur les composants et notions suivants :
 * __Services d’agents__ (Agent Services)
 
 <a name="mbean"></a>
-###MBeans
+### MBeans
 
 Un MBean est un objet Java qui implémente une interface spécifique et qui respecte un design pattern particulier. Cela permet de normaliser la représentation de l’interface des ressources à gérer dans le MBean. Cette dernière est composée de l’ensemble des informations et des méthodes nécessaires à l’administration et à la supervision de l’application.
 
@@ -146,17 +146,17 @@ La spécification JMX définit quatre types de MBean :
 * __Model MBean__ : ce MBean est une extension du Dynamic MBean mais est complètement configurable et s’auto-décrit à l’exécution. Il est à noter qu’il fournit une classe générique de MBean qui définit son comportement par défaut qu’il est possible de redéfinir.
 
 <a name="notification"></a>
-###Modèle de notifications
+### Modèle de notifications
 
 JMX définit un modèle de notifications génériques qui se base sur le modèle d’événements Java. Les notifications peuvent être émises par une instance de MBean mais aussi par le serveur de MBean lui-même. 
 
 <a name="metadonnee"></a>
-###Classe de métadonnées de MBeans
+### Classe de métadonnées de MBeans
 
 JMX définit comment les classes doivent décrire les interfaces de gestion des MBean. Ces dernières servent à construire la structure des informations à publier qui est utilisée par le serveur de MBeans. Ainsi, ces classes de métadonnées contiennent la structure qui décrit tout ce dont il a besoin : ses attributs, ses opérations, ses notifications et ses constructeurs mais aussi les caractéristiques de chacun de ces éléments comme la signature des méthodes ou le niveau d’accessibilité des attributs.   
 
 <a name="serveur"></a>
-###Serveur de MBeans
+### Serveur de MBeans
 
 Le serveur de MBean peut être vu comme un registre des objets qui sont gérables au travers de l’agent. Ainsi, chaque objet enregistré dans le serveur de MBean est visible de l’application de gestion. 
 
@@ -178,7 +178,7 @@ Les opérations alors disponibles sur un MBean sont :
 Pour permettre à un agent d’être accessible depuis une application extérieure, le MBean Server s’appuie sur les adaptateurs de protocoles et les connecteurs.
 
 <a name="service"></a>
-###Service d’agents
+### Service d’agents
 
 Les services d’agents sont les objets qui gèrent les différentes opérations de gestion des MBean enregistrés dans le serveur de MBeans. 
 
@@ -191,6 +191,6 @@ Par défaut, doivent être présents les services suivants :
 * __Service Relation__ qui permet d’associer des MBeans entre eux
 * __Service Monitor__ qui permet de scruter certaines valeurs d’attribut afin de notifier d’autres objets lors d’un changement
 
-#Le mot de la fin de cette partie
+# Le mot de la fin de cette partie
 
 Dans cet article, nous avons vu (ou revu) les concepts de bases de JMX. Dans les articles suivants, nous entrerons plus dans les entrailles des spécifications en nous calquant sur les spécifications JMX pour tenter d'y voir un peu plus clair...

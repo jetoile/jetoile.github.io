@@ -19,9 +19,9 @@ Cependant, je ne ferai pas un plagiat exhaustif de la documentation qui est trè
 
 <!-- more -->
 
-#Principes et concepts
+# Principes et concepts
 
-##Jolokia... pour quoi faire?
+## Jolokia... pour quoi faire?
 
 Dans le monde Java, il existe un standard pour faire de l'administration/supervision : il s'agit de JMX (Java Management eXtension). Il est inclus depuis le JDK 1.5. 
 
@@ -29,7 +29,7 @@ Cependant, JMX est malheureusement un des parents pauvres de Java : souvent méc
 
 C'est la raison d'être de Jolokia qui offre une approche agent (qui cohabite avec la JSR 160) tout en offrant une interopérabilité via HTTP au moyen de JSON pour la partie _payload_. Cela lui permet d'exposer les couches d'administration/supervision JMX des applicatifs Java via une protocole interopérable de tous.
 
-##Architecture
+## Architecture
 
 L'architecture de Jolokia diffère de celle de la JSR 160. En effet, la JSR 160 permet à un client d'invoquer de manière transparente un MBean qu'il soit dans un __MBeanServer__ local ou distant.
 
@@ -42,7 +42,7 @@ Ainsi, Jolokia, en offrant une approche différente via HTTP/JSon, permet de ré
 * un mode agent,
 * un mode proxy.
 
-###Le mode agent
+### Le mode agent
 
 Dans ce mode, Jolokia se présente comme un agent qui expose un protocole au format JSON via HTTP et qui permet de servir de bridge vers les MBeans JMX locaux. Cela se passe donc en dehors du scope de la JSR 160.
 
@@ -54,7 +54,7 @@ Il est à noter que l'agent utilise le serveur HTTP embarqué dans toutes les JV
 
 ![medium](http://2.bp.blogspot.com/-TnigS1cXxaI/UxTNwI9jtzI/AAAAAAAABPM/q0rHjKSMmq4/s1600/jolokia-agent.png)
 
-###Le mode proxy
+### Le mode proxy
 
 Ce mode peut être utilisé lorsqu'il n'est pas possible de déployer un agent Jolokia sur la plateforme cible. Pour ce mode, le seul prérequis est l'accès au serveur cible via une connexion à travers de la JSR 160. Cela peut être le cas si l'application ne peut pas être modifiée ou si l'application expose déjà ses MBeans via la JSR 160.
 
@@ -64,7 +64,7 @@ Ainsi, dans ce mode, un client enverra une requête Jolokia avec une section sup
 
 ![medium](http://2.bp.blogspot.com/-wf_ReDc9AKk/UxTN2msI-BI/AAAAAAAABPU/neUmwiePEs0/s1600/jolokia-proxy.png)
 
-##Les agents
+## Les agents
 
 Jolokia propose une approche orientée agent qui doit être, soit déployé sur la cible (__mode agent__), soit sur un serveur proxy (__mode proxy__).
 
@@ -77,7 +77,7 @@ Pour ces deux modes, il existe 4 types d'agent :
 
 Les deux types d'agent qui seront un peu plus détaillés dans cet article sont les types WAR agent et JVM agent.
 
-##WAR agent
+## WAR agent
 
 Le type WAR agent se présente comme une application web standard (au format WAR). La configuration se fait alors via l'élément `init-param` du web.xml.
 
@@ -105,7 +105,7 @@ Une autre manière de faire consite à intégrer Jolokia comme Servlet dans son 
 
 Comme il est possible de déployer de multiples WAR agents Jolokia sur une même JVM, puisque des MBeans spécifiques Jolokia sont déployé dans le __PlatformMBeansServer__, il faut préciser la valeur de l'élément mbeanQualifier dans les paramètres d'init.
 
-##JVM agent
+## JVM agent
 
 Ce type d'agent Jolokia que j'ai testé IRL est très simple à utiliser et permet d'attacher un agent à une JVM afin qu'elle expose à la mode REST ses couches d'administration et de supervision.
 
@@ -133,7 +133,7 @@ De la même manière, un agent Jolokia peut être attaché à une processus Java
 java -jar agent.jar start <PID>
 ```
 
-##Jolokia et la sécurité
+## Jolokia et la sécurité
 
 Jolokia permet de configurer la sécurité assez finement. N'ayant pas tester, je ne m'attarderai pas trop sur le sujet. 
 
@@ -141,7 +141,7 @@ Cependant, il est intéressant de noter que Jolokia permet de filtrer l'accès d
 
 Point également important, Jolokia supporte la spécification W3C pour le Cross-Origin Resource Sharing (CORS) qui permet d'utiliser des outils comme [Hawt.io](http://hawt.io/) (mais nous y reviendront plus tard...).
 
-##Le protocole Jolokia
+## Le protocole Jolokia
 
 Jolokia utilise un protocole JSON sur HTTP. La communication est basé sur le paradigme requête/réponse où chaque requête fournit une réponse.
 
@@ -293,7 +293,7 @@ Enfin, si le mode proxy est utilisé, seul le mode POST peut être utilisé et d
 
 Je ne rentrerai pas plus en détaille sur cette partie là qui est beaucoup plus exhaustive dans la documentation officielle (comment les objets sont sérialisés, le mapping complet des MXBeans, la découverte des agents ou les différentes versions du protocole Jolokia - actuellement la version 7.1 - ) et si cela est nécessaire, je conseille d'aller directement se référer à la documentation.
 
-#Autres features
+# Autres features
 
 En plus des fonctionnalités présentées précédemment, Jolokia offre les fonctionnalités suivantes :
 
@@ -339,7 +339,7 @@ et le contexte Spring suivant :
 </beans>
 ```
 
-#Conclusion
+# Conclusion
 Dans cet article, une présentation succincte a été faite de Jolokia. J'espère qu'elle vous aura plu ;-)...
 
 Il s'agit d'un outils simple, pluggable très facilement à n'importe quelle application (une intégration à Cassandra s'est fait en 5 minutes).
@@ -356,7 +356,7 @@ Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d'
 
 Bien sûr, il existe d'autres solutions comme l'utilisation de [CraSH](http://www.crashub.org/) mais exposer ses MBeans via JSON over HTTP est tellement simple et peut surtout être exploité simplement par les équipes de production ;-) .
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Site de Jolokia : http://www.jolokia.org/
 * Site de documentation de Jolokia : http://www.jolokia.org/reference/html/index.html

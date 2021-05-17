@@ -21,7 +21,7 @@ Pour ceux qui sont coutumiés de ce blog, je ne changerai pas mes habitudes et j
 
 <!-- more -->
 
-#Introduction et concepts
+# Introduction et concepts
 
 Apache Cassandra est un système permettant de gérer une grande quantité de données de manière distribué. Ces dernières peuvent être structurées, semi structurées ou non.
 
@@ -33,7 +33,7 @@ Derrière ce jolie discour se cachent quelques termes qu'il est important de con
 * __Keyspace__ : c'est l'équivalent d'une database dans le monde des bases de données relationnel. A noter qu'il est possible d'avoir plusieurs Keyspaces sur un même serveur. 
 * __Une famille de colonnes__ : c'est l'objet principal de données et peut être assimilé à une table dans le monde des bases de données relationnel.
 
-#Architecture de Cassandra
+# Architecture de Cassandra
 
 Une instance Cassandra est un collection de noeuds indépendants qui sont configurés ensembles pour former un cluster.
 
@@ -53,7 +53,7 @@ En fait, ce mécanisme fonctionne sur le principe de _heartbeat_ soit de manièr
 
 Je ne décrirai pas plus précisément cette partie si ce n'est une petite précision. En fait, lorsqu'un noeud est déclaré comme inaccessible, les autres noeuds stockent messages susceptibles d'avoir été manqué par ce noeud. Cependant, il peut arriver qu'entre le moment où le noeud devient inaccessible et le moment où sa perte est détectée, un laps de temps s'écoule et qu'ainsi, les réplicas ne soient pas conservés. En outre, si le noeud vient à être indisponible pendant une période trop importante (par défaut, une heure), alors les messages ne sont plus stockés. C'est pour cette raison qu'il est conseillé d'exécuter régulièrement l'outils de réparation des données.
 
-#Partitionnement des données avec Cassandra
+# Partitionnement des données avec Cassandra
 
 Concernant cette partie, je ne m'étendrai pas dessus puisque la documentation est suffisante à elle-même.
 
@@ -69,7 +69,7 @@ Cependant, il est conseillé d'utiliser plutôt une clé deuxième clé d'indexa
 * Un _overhead_ accru pour l'administration du _load balancer_ dans le cluster : les administrateurs doivent calculer manuellement les plages de jetons afin de les répartir dans le cluster.
 * Répartition inégale de charge pour des familles de colonnes multiples.
 
-#La répartition dans Cassandra
+# La répartition dans Cassandra
 
 La réplication est le processus permettant de stocker des copies des données sur de multiples noeuds afin de permettre leur fiabilité et la tolérance à la panne. Quand un __keyspace__ est créé dans Cassandra, il lui est affecté la stratégie de distribution des réplicas, c'est à dire le nombre de réplicas et la manière dont ils sont répliqués dans le cluster. La stratégie de réplication repose sur la configuration du cluster snitch afin de déterminer la localisation physique des noeuds ainsi que leur proximité par rapport aux autres.
 
@@ -91,7 +91,7 @@ De plus, il est possible de configurer la manière dont les noeuds sont groupés
 
 Je n'en dirai pas plus pour cette partie mais plus d'informations sont accessibles dans la documentation officielle.
 
-#Cassandra du point de vue de l'application Client
+# Cassandra du point de vue de l'application Client
 
 Tous les noeuds de Cassandra sont égaux. Ainsi, une demande de lecture ou d'écrire peut interroger indifféremment n'importe quel noeud du cluster. Quand un client se connecte à un noeud et demande une opération d'écriture ou de lecture, le noeud courant sert de coordinateur du point de vue du client.
 
@@ -118,7 +118,7 @@ En outre, afin de s'assurer que tous les réplicas ont la version la plus récen
 
 ![medium](http://4.bp.blogspot.com/-uK_LgOrv6w8/T1jUQ2yvdDI/AAAAAAAAAkI/GQewQ8NmdTc/s1600/cassandra04.png "crédit photo: Cassandra")
 
-#Le modèle de données de Cassandra
+# Le modèle de données de Cassandra
 
 Le modèle de données de Cassandra s'appuie sur un schéma dynamique, avec un modèle de données orienté colonne.
 Cela signifie que, contrairement à une base de données relationelle, il n'est pas nécessaire de modéliser toutes les colonnes puisqu'une ligne n'a, potentiellement, pas le même ensemble de colonnes.
@@ -182,7 +182,7 @@ Plus précisément sur les validator, pour toutes les familles de colonnes, il e
 
 Concernant le _comparator_, il est à noter que, dans une ligne, les colonnes sont toujours stockées de manière ordonné par rapport au nom des colonnes. Le comparator précise le type de données pour le nom d'une colonne mais ne peut être modifié.
 
-#L'indexation dans Cassandra
+# L'indexation dans Cassandra
 
 Un index est une structure de données qui permet un accès rapide ainsi qu'une recherche de données par rapport à un ensemble de critères donnés.
 
@@ -194,9 +194,9 @@ Avec un partitionnement aléatoire des clés de lignes (qui est la configuration
 
 Cassandra propose également un index secondaire qui se fait sur la valeur des colonnes. Il permet d'effectuer des opérations disposant de prédicats d'égalité (par exemple,  èèwhere column x = value y`). Ainsi, les requêtes sur des valeurs indexées peuvent appliquer une sorte de filtres.
 
-#L'accès aux données dans Cassandra
+# L'accès aux données dans Cassandra
 
-##L'écriture
+## L'écriture
 
 Cassandra est optimisé pour permettre une écriture rapide et hautement disponible des données avec un débit élevé. Pour ce faire, les données sont écrites dans un premier temps dans un __journal de commit__ (pour s'assurer de la durabilité), puis dans une structure en mémoire appelé la __Memtable__. Une écriture est considérée comme ayant réussi si les deux actions précédentes ont réussis. Cela permet d'avoir peu d'entrée/sortie disque au moment de l'écriture. Ainsi, les données sont mises en mémoire et périodiquement écrite sur le disque dans une structure appelé une __SSTable__ (pour _Sorted String Table_). Les __Memtables__ et __SSTables__ sont maintenus par famille de colonnes : les __Memtables__ sont organisées de manière ordonné par clé de ligne et sont flushé dans les __SSTables__ séquentiellement.
 
@@ -219,13 +219,13 @@ Cassandra utilise les _timestamps_ pour déterminer la mise à jour la plus réc
 
 Du coté de la durabilité, toutes les écritures sur un réplica sont enregistrés à la fois en mémoire et dans le journal de commit avant que l'acquittement ne soit émis. Si un échec se produit avant l'écriture sur disque, alors le journal de commit est rejoué du début afin de récupérer les données qui n'ont pas encore été écrites.
 
-##L'insertion et la mise à jour
+## L'insertion et la mise à jour
 
 Plusieurs colonnes peuvent insérées en même temps. Ainsi, lorsque des colonnes sont insérées ou mise à jour dans une famille de colonnes, l'application cliente précise la clé de ligne pour identifier l'enregistrement à mettre à jour. La clé de la ligne peut donc être vu come une clé primaire puisqu'elle doit être unique pour chaque ligne dans une famille de colonnes données. Cependant, à la différence d'une clé primaire, il est possible d'insérer des données à une clé primaire déjà présente, mais dans ce cas, Cassandra répondra comme une mise à jour (si elle n'existe pas, elle sera créé).
 
 De plus, les colonnes sont écrasées si le _timestamp_ d'une autre version de colonne est plus récente. Il est, cependant, à noter que le timestamp est fourni par le client. Aussi, ces derniers doivent disposer d'une horloge synchronisée par NTP (_Network Time Protocol_).
 
-##La suppression
+## La suppression
 
 Lorsqu'une ligne ou une colonne est supprimé dans Cassandra, il est important de comprendre les points ci-dessous :
 
@@ -233,11 +233,11 @@ Lorsqu'une ligne ou une colonne est supprimé dans Cassandra, il est important d
 * une colonne supprimé peut réapparaitre si la routine de réparation de noeud n'est pas exécuté. En effet, marquer une colonne d'un tombstone implique qu'un réplica qui était dans un état non atteignable lors de la suppression ne recevra l'information que lorsqu'il sera de nouveau dans un état joignable. Cependant, si un noeud est injoignable plus longtemps que le temps configuré de conservation des tombstones, alors le noeud peut complètement manquer la suppression et répliquer les données supprimées lors de son retour dans le cluster. 
 * La clé de ligne pour une ligne supprimée apparait toujours dans la plage de résultats d'une requête. En effet, quand une ligne est supprimée dans Cassandra, ses colonnes correspondantes sont marquées par un __tombstone__. Ainsi, tant que les données marquées par un tombstone ne sont pas réellement supprimées par le processus de __compaction__, la ligne reste vide (ie. sans colonne associées).
 
-##La lecture
+## La lecture
 
 Pour rappel, lorsqu'une requête de lecture d'une ligne est reçue par un noeud, la ligne doit être combinée de toutes les __SSTables__ du noeud qui contiennent les colonnes de la ligne en question ainsi que de toutes les Memtables. Pour optimiser ce processus, Cassandra utilise une structure en mémoire appelée les __bloom filter__ : chaque __SSTable__ dispose d'un __bloom filter__ associé qui est utilisé pour vérifier s'il existe des données dans la ligne avant de faire une recherche (et ainsi de faire des entrées/sorties disque).
 
-#La consistance des données dans Cassandra
+# La consistance des données dans Cassandra
 
 Lorsqu'il est fait question de consistance dans Cassandra, cela s'applique à la façon dont est maintenue la cohérence des données et comment les lignes de données sont synchronisées entre tous les réplicas.
 
@@ -245,7 +245,7 @@ Cassandra étend le concept de cohérence éventuelle en offrant un consistance 
 
 Ainsi, pour toutes opérations de lecture ou d'écriture, l'application cliente peut décider du degrés de consistance que doit avoir la requête. En plus de cela, Cassandra dispose d'un mécanisme de réparation afin de s'assurer de la consistance des données entre les différents réplicas.
 
-##Consistance réglable pour les requêtes clientes
+## Consistance réglable pour les requêtes clientes
 
 Le niveau de consistance dans Cassandra peut être associé à n'importe quelle requête de lecture ou d'écriture. Cela permet aux développeurs de l'application de trouver le juste milieu entre le temps d'exécution de leurs requêtes et la consistance qu'ils souhaitent avoir sur les résultats obtenus.
 
@@ -285,7 +285,7 @@ A noter que si c'est la consistance qui est importante (c'est à dire que les do
 
 ![center](http://1.bp.blogspot.com/-19RglOrHOBI/T19Zlpb7TBI/AAAAAAAAAlI/Xa7Kqfi3dpY/s1600/cassandra14.png)
 
-#Conclusion
+# Conclusion
 
 Dans cet article, j'ai essayé de mettre en avant les points qui m'ont marqués (en bien ou en mal) (je tiens quand même à re-préciser que mon avis n'est que théorique et que je n'ai pas réellement utilisé le produit). 
 Ainsi au niveau des points positifs, j'ai aimé les choix techniques et les concepts (très enrichissants d'ailleurs... ;-) ).

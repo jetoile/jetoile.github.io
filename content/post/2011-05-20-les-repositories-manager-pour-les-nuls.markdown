@@ -18,7 +18,7 @@ Enfin, ici, j'utiliserai la même dénomination que le guide Nexus pour le terme
 
 <!-- more -->
 
-#Un repository Manager pour quoi faire?
+# Un repository Manager pour quoi faire?
 
 Ce paragraphe fournit une courte introduction sur les repository Manager, qui pour ceux qui en douteraient encore, permet de répondre à deux problématiques :
 
@@ -37,7 +37,7 @@ Enfin, un repository manager permet de fournir un repository partagé par tout o
 
 Dernier point qui peut avoir son importance, mais si l'organisation se retrouve coupé d'internet ou que les repositories publics maven sont indisponibles, cela n'impacte pas les développeurs (modulo le fait qu'ils n'aient pas besoin d'une dépendance ne se trouvant pas sur le repository manager) qui peuvent alors continuer à travailler et même à releaser leurs projets, et cela même s'ils disposent d'un repository local vierge.
 
-#Retour sur les types de repositories possibles
+# Retour sur les types de repositories possibles
 
 Cet article prenant ses racines dans la documentation officielle de Nexus, il est possible que certains types de repositories présentés ci-dessous ne soient pas offerts par d'autres implémentations. Cependant, les concepts sont similaires même si certaines subtilités peuvent être présentes dans d'autres solutions.
 
@@ -74,7 +74,7 @@ En outre, il est possible d'associer à un groupe des routes qui se comportent c
 
 ![center](http://2.bp.blogspot.com/-AxzBLRMUcQA/TdZAcBJX_oI/AAAAAAAAAWs/btqGC8lg5r8/s1600/nexus06.png)
 
-#Gestion des repositories dans le cas où plusieurs équipes accèdent au même repository Manager
+# Gestion des repositories dans le cas où plusieurs équipes accèdent au même repository Manager
 
 Ces recommandations s'appuient sur le chapitre 17 du guide sur Nexus.
 
@@ -94,7 +94,7 @@ Les façons les plus communes pour supporter différentes équipes est :
 <br/>
 ![medium](http://4.bp.blogspot.com/-pOaBDAUQ5v0/TdZBAv3nkrI/AAAAAAAAAW8/kpJampXGKe0/s1600/nexus10.png)
 
-#Trucs et astuces en vrac...
+# Trucs et astuces en vrac...
 
 Enfin, ce paragraphe liste en vrac un certain nombre de points qu'il peut être nécessaire de prendre en compte lors de la mise en oeuvre d'un repository Manager.
 
@@ -113,13 +113,13 @@ Ayant la flemme de commenter les différents points, je ne jetterai que les idé
 
 Enfin un point transverse, mais si la sécurité est mise en place sur les repositories et qu'elle utilise une authentification pour chaque utilisateur, il est possible de crypter les mots de passe plutôt que de les avoir en clair dans le fichier `settings.xml` (http://sonatype.com/books/maven-book/reference/appendix-settings-sect-encrypting-passwords.html et http://maven.apache.org/guides/mini/guide-encryption.html).
 
-#Conclusion
+# Conclusion
 
 Vous aurez compris (si vous avez lu juste qu'au bout cet article) que cet article correspond plus à un aide-mémoire qu'à une vrai explication de ce qu'est un repository Manager... ;-)
 
 Concernant les trucs et astuces, si vous en avez d'autre, je suis preneur et je me ferai un plaisir les intégrer dans la rubrique trucs et astuces ;-)
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Pdf de Sonatype sur Nexus : http://www.sonatype.com/repository-management-with-nexus-book.html
 * __Apache Maven__ de N. De Loof, A. Héritier chez Pearson

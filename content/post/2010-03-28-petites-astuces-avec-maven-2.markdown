@@ -10,7 +10,7 @@ footer: true
 Ce post aura pour principal objectif de répertorier un ensemble d'astuces et de pointeurs sur maven2 (cela m'évitant également de rechercher dans mes liens ;-) ). Ne voulant pas répéter ce qu'y a déjà été traité par d'autres sites ou blogs, je me contenterai seulement de faire des références.
 
 <!-- more -->
-#Descriptif des différentes phases
+# Descriptif des différentes phases
 
 Page du site de maven2 décrivant le cycle de vie d'un projet :
 http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
@@ -41,7 +41,7 @@ http://www.sonatype.com/books/mvnex-book/reference/figs/web/simple-project_lifec
 
 ![center](http://dgouyette.developpez.com/tutoriels/java/exposer-service-crud-restful-avec-jboss-resteasy/images/Image%201.png)
 
-#Liste de plugins maven 2 très utiles
+# Liste de plugins maven 2 très utiles
 
 Article du blog d'Octo Technologie sur une liste très utile de plugins maven2 :
 http://blog.octo.com/maven-mes-plugins-preferes/
@@ -150,7 +150,7 @@ exemple d'utilisation :
 ```bash
 mvn release:prepare release:perform
 ```
-#S'en sortir quand on ne comprend pas un plugin avec mvnDebug
+# S'en sortir quand on ne comprend pas un plugin avec mvnDebug
 Bon, quand on a besoin d'un plugin maven mais que la documentation vient à manquer ou que google n'est pas gentil (sic.), il reste toujours la solution de rentrer dans le code du plugin. Pour ce faire, maven, en plus des scripts mvn.bat ou mvn, vient également avec les scripts mvnDebug et mvnDebug.bat.
 
 Ces derniers scripts permettent de rentrer en remote debug dans votre exécution maven, permettant ainsi, après récupération du code source du plugin de suivre son déroulement en utilisant votre IDE préféré et en mettant vos points d'arrêt où bon vous semble.
@@ -160,7 +160,7 @@ Par défaut, mvnDebug attend que votre debugger soit branché pour continuer l'e
 MAVEN_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"
 ```
 Avec ça, plus d'excuse pour dire que l'on ne sait pas ce que fait un plugin! ;-)
-#Ne pas commiter les fichiers de travail de maven dans Subversion
+# Ne pas commiter les fichiers de travail de maven dans Subversion
 Article du blog d'Arnaud Héritier sur une petite astuce pour créer les .ignore :
 http://blog.aheritier.net/subversion-exclure-en-masse-les-fichiers-et-repertoires-generes-dun-projet-maven/
 

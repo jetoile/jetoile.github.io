@@ -31,7 +31,7 @@ Le code se trouve sur github sur la branche [netty4](https://github.com/jetoile/
 
 <!-- more -->
 
-#Les Dépendances
+# Les Dépendances
 
 Les dépendances utilisées sont les suivantes (au format gradle) :
 ```text
@@ -56,7 +56,7 @@ On peut y constater depuis la version précédente que netty est passé en versi
 
 En outre l'artefact __jackson-datatype-joda__ a été ajouté (nous y reviendrons ultérieurement).
 
-#Intégration de Resteasy-netty4
+# Intégration de Resteasy-netty4
 
 Afin de remplacer Resteasy-netty 3 par Resteasy-Netty4, il suffit de modifier les dépendances et de supprimer le hack fait précédemment concernant le CORS (ie. la classe `RequestHandler`) qui est incompatible avec cette nouvelle version.
 
@@ -86,7 +86,7 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
 }
 ```
 
-#Support de JodaTime dans Jackson 2
+# Support de JodaTime dans Jackson 2
 
 On a vu dans le paragraphe précédent comment il fallait modifier notre code pour utiliser Jackson 2 à la place de Jackson 1.
 
@@ -161,7 +161,7 @@ Ainsi, on obtient bien :
 }
 ```
 
-#Support du CORS dans Resteasy-Netty4
+# Support du CORS dans Resteasy-Netty4
 
 Précédemment, avec Resteast-netty 3, nous avions remarqué un problème de CORS avec Swagger-UI.
 Pour en venir à bout, un _hack_ avait été fait mais ce n'était pas très propre...
@@ -271,7 +271,7 @@ Enfin, l'initialisation du serveur Resteasy-netty :
 MyNettyJaxrsServer netty = new MyNettyJaxrsServer();
 ```
 
-#Conclusion
+# Conclusion
 
 On a vu, dans cet article, comment il était possible d'intégrer JAX-RS avec Netty 4 à l'aide de Resteasy tout en ayant une intégration de Jackson 2.
 

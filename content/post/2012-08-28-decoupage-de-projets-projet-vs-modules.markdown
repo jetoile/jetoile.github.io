@@ -26,7 +26,7 @@ Il s'agit d'une opinion très personnelle qui peut ne pas être partagée par to
 
 <!-- more -->
 
-#Module ou projet?
+# Module ou projet?
 
 Comme mentionné en introduction, cet article traitera de comment architecturer son projet, à savoir, s'il vaut mieux découper son projet en différents projets ou en sous-modules. Bien sûr, ce point doit être pris en compte conjointement avec le découpage technique et/ou fonctionnel.
 
@@ -74,7 +74,7 @@ projet11                  scm : branches/projet1/projet11
 
 On constate que la transformation de la valeur de l'élément scm pour le projet11 est erronée. Cela n'influe en rien le livrable, cependant, il devient alors impossible de créer une branche ou de faire une release du projet11 avec le plugin maven release...
 
-#Conclusion
+# Conclusion
 
 Pour conclure cet article, on peut voir que le choix entre module et projet n'est pas si complexe que cela mais qu'il est préférable (et même, à mon sens, indispensable) de se poser les bonnes questions. Pour ma part, j'aurai tendance à dire que plus cela est tôt dans le projet, mieux c'est. Cependant, il faut se méfier de l'overdesign et trop de découpage peut tuer le découpage... Certaines personnes préfèrent, d'ailleurs, n'avoir qu'un seul projet décomposé en différent sous module puis, en fonction de l'avancée du projet, effectuer un découpage : c'est également une possibilité qui se veut aussi plus pragmatique.
 

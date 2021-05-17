@@ -55,13 +55,13 @@ Nigel nous a donc présenté certaines des pistes qu'ils avaient (pistes encore 
 
 Ce sont ces dernières que je vais essayer de retranscrire ci-dessous dans l'ordre dans lesquelles il les a énoncé.
 
-#Simplification sur la création de Sessions
+# Simplification sur la création de Sessions
 Afin de simplifier l'API de JMS pour créer une Session, Nigel nous a présenté deux pistes :
 
 * Ajout d'une méthode `createSession(SessionMode sessionMode)` pour JavaSE où la classe SessionMode pourrait être une classe ayant comme variable d'instance le mode de transaction et le type d'acknowledge.
 * Ajout d'une méthode `createSession()` qui serait utilisée et présente seulement pour JEE.
 
-#Supprimer la lourdeur des close()
+# Supprimer la lourdeur des close()
 
 Afin de rendre moins verbeuse l'utilisation des `Connection` et des `Session`, une proposition plausible pourrait être de leur faire implémenter l'interface `java.lang.AutoCloseable`.
 
@@ -124,14 +124,14 @@ public void sendMessage(String payload) {
 }
 ```
 
-#Autres simplifications
+# Autres simplifications
 
 Les autres simplifications d'API envisageables pourraient être :
 
 * de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : `producer.send(String/Serializable);` ). Cependant, ce type d'API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types `BytesMessage` ou `StreamMessage`. A ajouter à cela la question de son pendant pour la réception
 * de simplifier la gestion des `DurableSubscriber` (http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic, java.lang.String)), qui, au jour d'aujourd'hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d'une utilisation conjointe avec les EJB 3.2
 
-#Vers le futur...
+# Vers le futur...
 
 Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.
 
@@ -141,7 +141,7 @@ Pour ce faire, de nouvelles annotations pourraient voir le jour (par exemple : `
 
 Concernant une meilleure intégration avec les serveurs d'applications (ce qui permettrait d'utiliser n'importe quel JMS Provider dans n'importe quel serveur d'application JEE), Nigel propose la solution de JCA (_Java Connector Architecture_), un peu comme ce qui existe avec le drivers de bases de données.
 
-#Nouvelles features
+# Nouvelles features
 
 Concernant les nouvelles features de l'API, Nigel nous a ensuite présenté ce qui pourrait arriver, à savoir (en vrac) :
 
@@ -155,7 +155,7 @@ De même, la gestion des Topics hiérarchiques pourraient être rendue obligatoi
 
 Enfin, une meilleure gestion des batch pourrait être possible via de nouvelles API comme par exemple l'introduction de la méthode `receive(Message[])`.
 
-#Conclusion
+# Conclusion
 
 En conclusion, je suis assez mitigé par cette session.
 

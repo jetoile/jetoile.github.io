@@ -34,7 +34,7 @@ De plus, la solution proposée dans cet article (enfin plutôt sur mon [github](
 
 <!-- more -->
 
-#Contexte et proposition
+# Contexte et proposition
 
 Comme je l'ai dit précédemment, le besoin était de pouvoir disposer de l'écosystème nécessaire à l'exécution de tests d'intégration mais également de pouvoir démarrer l'écosystème nécessaire en mode _standalone_.
 
@@ -61,7 +61,7 @@ La surcouche proposée (que j'ai décidé d'appeler __Hadoop-bootstrap__) se tro
 
 Elle nécessite cependant quelques pré-requis...
 
-#Prérequis
+# Prérequis
 
 Pour fonctionner, Hadoop-bootstrap nécessite d'avoir téléchargé et décompressé Hadoop sur son poste. Dans mon cas, j'ai juste récupéré la version d'[Apache](http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz) que j'ai décompressée dans ```/opt/hadoop```
 
@@ -71,7 +71,7 @@ Pour l'utilisation de Oozie, il est nécessaire de télécharger les ```sharelib
 
 Il suffit alors de modifier le fichier ```default.properties``` en y renseignant les variables ```HADOOP_HOME``` et ```oozie.sharelib.path``` avec les bonnes valeurs.
 
-#Fonctionnement
+# Fonctionnement
 
 Une fois la partie prérequis réalisée, il ne reste plus qu'à générer :
 
@@ -83,7 +83,7 @@ Pour ce faire, exécuter simplement la commande :
 mvn install
 ```
 
-##Pour un fonctionnement en test d'intégration ou unitaire
+## Pour un fonctionnement en test d'intégration ou unitaire
 
 Pour ce mode, il est possible de faire de 2 manières différentes :
 
@@ -92,7 +92,7 @@ Pour ce mode, il est possible de faire de 2 manières différentes :
 
 Attention cependant, dans les 2 cas, il est faut démarrer/arrêter les composants dans le bon ordre...
 
-###Zookeeper
+### Zookeeper
 
 ```java
 private static Bootstrap zookeeper;
@@ -126,7 +126,7 @@ public static void tearDown() throws BootstrapException {
 }
 ```
 
-###HDFS
+### HDFS
 
 ```java
 private static Bootstrap hdfs;
@@ -160,7 +160,7 @@ public static void tearDown() throws BootstrapException {
 }
 ```
 
-###HBase
+### HBase
 
 ```java
 static private Bootstrap zookeeper;
@@ -200,7 +200,7 @@ public static void tearDown() throws BootstrapException {
 }
 ```
 
-###Hive
+### Hive
 
 ```java
 static private Bootstrap zookeeper;
@@ -241,7 +241,7 @@ public static void tearDown() throws BootstrapException {
 ```
 
 
-###Kafka
+### Kafka
 
 ```java
 static private Bootstrap zookeeper;
@@ -279,7 +279,7 @@ public static void tearDown() throws BootstrapException {
 ```
 
 
-###SolRCloud
+### SolRCloud
 
 La difficulté pour intégrer ce composant était que le mode SolR Cloud n'existait pas. Dans mon contexte d'utilisation, la cible était SolR Cloud qui impose l'utilisation de Zookeeper. Concernant l'interaction d'un client externe, il doit donc récupérer la configuration de SolR au sein de Zookeeper : le mode de fonctionnement est donc différent d'un SolR en _standalone_.
 
@@ -323,7 +323,7 @@ public static void tearDown() throws BootstrapException {
 ```
 
 
-###Oozie
+### Oozie
 
 La difficulté pour intégrer ce composant était que [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters) ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d'intéragir avec le serveur.
 
@@ -369,7 +369,7 @@ public static void tearDown() throws BootstrapException {
 }
 ```
 
-##Pour un fonctionnement en mode _standalone_
+## Pour un fonctionnement en mode _standalone_
 
 Pour ce mode de fonctionnement, il suffit de récupérer le tar.gz généré lors de la compilation. Il est _autoporteur_ et il suffit de le décompresser puis de démarrer Hadoop-bootstrap.
 
@@ -403,7 +403,7 @@ A noter que ces commandes fonctionnent également sous Windows.
 Concernant macOS, je n'ai pas testé mais cela ne devrait pas poser de difficultées.
 
 
-#Conclusion
+# Conclusion
 
 [Hadoop-bootstrap](https://github.com/jetoile/hadoop-bootstrap) n'est pas un composant révolutionnaire et ne fait que wrapper ce qui a déjà été fait dans [Hadoop-mini-clusters](https://github.com/sakserv/hadoop-mini-clusters).
 
@@ -421,7 +421,7 @@ A noter également que j'ai simplement copier/coller les tests de [Hadoop-mini-c
 
 Voilà, ce n'est pas le plus beau code que j'ai pu faire, mais j'espère que ca pourra aider certains et, au pire, n'hésitez pas à contribuer ou à forker pour en faire ce que vous en voulez ;)
 
-##Limitations connues
+## Limitations connues
 
 * phoenix ne fonctionne pas (voir la branche phoenix)
 * une seule collection possible avec SolR

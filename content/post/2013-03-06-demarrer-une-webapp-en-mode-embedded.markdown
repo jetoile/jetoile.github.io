@@ -24,7 +24,7 @@ Pour les habitués de ce blog (oui, je sais, cela fait un moment que je n'ai rie
 
 <!-- more -->
 
-#Contexte
+# Contexte
 
 Le contexte du projet est le suivant : l'application cible est composée de deux applications web qui suivent le même cycle de vie et qui sont dépendantes l'une de l'autre (au sens _runtime_ en non compilation).
 
@@ -54,11 +54,11 @@ Cependant, afin d'avoir la main, lors des tests d'intégration/d'acceptance, sur
 
 _ndlr_ : l'application ayant un certain existant, elle ne dispose pas de fonctionnalités comme les __Profile__ Spring ou l'utilisation de variables systèmes : toutes les propriétés de configuration se trouvent donc dans des fichiers properties ou dans des fichiers de contexte Spring.
 
-#Le plugin tomcat 7
+# Le plugin tomcat 7
 
 ![center](http://2.bp.blogspot.com/-vO0vp3GQG_4/UTbgJFKXJ5I/AAAAAAAAA3E/Z8EtqhZbPJU/s1600/tomcat.gif)
 
-##Mise en oeuvre
+## Mise en oeuvre
 
 Le plugin [Maven Tomcat 7](http://tomcat.apache.org/maven-plugin-2.0/index.html) est un plugin que j'apprécie pour sa simplicité d'utilisation et ses différentes _features_ (merci [@olamy](https://twitter.com/olamy) pour me l'avoir fait découvrir/redécouvrir ;-) ) et c'est donc naturellement que c'est le premier qui a été testé. De plus, la cible de déploiement étant Tomcat, cela tombait bien ;-) .
 
@@ -181,17 +181,17 @@ Cependant, pour ceux qui auraient suivi, je rappelle que l'application cible ét
 
 Malheureusement, sauf erreur de ma part, le plugin Maven Tomcat7 ne propose pas de déployer deux applications web simultanément lorsque ces dernières sont éclatées dans un répertoire.
 
-##Conclusion
+## Conclusion
 
 On a vu dans ce paragraphe comment il était possible de déployer simplement, via le plugin Maven Tomcat 7, une application web de manière _embedded_ dans un processus Maven.
 
 Malheureusement, le goal qui nous intéressait ne permettant pas démarrer deux applications web simultanément, il n'a pas pu répondre à notre besoin.
 
-#Le plugin Jetty
+# Le plugin Jetty
 
 ![center](http://3.bp.blogspot.com/-9CX6HuFGgPA/UTbgPT2O6gI/AAAAAAAAA3M/JQ_lOt2NnsI/s1600/jetty_logo.png)
 
-##Mise en oeuvre
+## Mise en oeuvre
 
 Dans cette deuxième tentative, c'est le [plugin Maven Jetty](http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin) qui a été utilisé. 
 
@@ -386,13 +386,13 @@ et le fichier `jetty-webapp-context.xml` pendant du fichier `context.xml` de Tom
 </Configure>
 ```
 
-##Conclusion
+## Conclusion
 
 On a pu constater que l'utilisation du plugin Maven Jetty a parfaitement répondu à notre petit cahier des charges. C'est vrai que cela peut sembler un peu poussif mais cela est surtout dû au fonctionnement même de Jetty.
 
 Enfin, il est à noter que la configuration présentée dans le paragraphe précédent ne fonctionne pas pour la version 6 du plugin (connecteurs et packages différents, ...) et qu'elle a été testé avec la version 7.6.9.v20130131. Normalement, cela devrait fonctionner avec la version 8 mais n'ayant pas testé, je ne pourrais pas le certifier...
 
-#Conclusion
+# Conclusion
 
 En conclusion, cet article avait pour objectif de présenter quelques-unes des façons de démarrer de manière _embedded_ des applications web dans des conteneurs de Servlet légés au sein d'un processus Maven. 
 

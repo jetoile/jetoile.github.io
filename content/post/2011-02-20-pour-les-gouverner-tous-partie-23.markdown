@@ -16,7 +16,7 @@ L'autre raison d'être de cet article permettra d'introduire la couche protocola
 
 <!-- more -->
 
-#Spécification des besoins/pré-requis
+# Spécification des besoins/pré-requis
 
 Ce projet s'appuiera sur les pré-requis suivant :
 
@@ -37,7 +37,7 @@ Comme je l'ai mentionné précédemment dans l'introduction, le but de cet artic
 
 Coté configuration de JGroups, cet article s'appuiera sur une configuration par défaut, c'est à dire une configuration en UDP.
 
-#Architecture de l'application
+# Architecture de l'application
 
 Comme vous pouvez vous en douter, l'architecture de l'application sera simple puisque JGroups fournit nativement de nombreuses possibilités. Aussi, je ne présenterai pas de super conception.
 
@@ -60,11 +60,11 @@ Diagramme de séquence lors de la connexion d'une nouvelle instance de l'applica
 
 ![medium](http://4.bp.blogspot.com/-DsKcW_KWIZM/TWFDF_0MbsI/AAAAAAAAAUw/EAXva9PJsm8/s1600/jgroups_seq_diagram.png)
 
-#Mise en oeuvre
+# Mise en oeuvre
 
 A noter que le code écrit ici ne contiendra pas les imports par souci de lisibilité.
 
-##La classe JGroupsClient
+## La classe JGroupsClient
 
 Commençons donc par la mise en oeuvre de la classe `JGroupsClient` :
 
@@ -107,7 +107,7 @@ Dans cette classe, on observe donc que l'on a :
 * la méthode `start()` qui a à sa charge la partie connexion à JGroups,
 * la méthode `getData()` qui correspond à la méthode exposée utilisée pour transmettre la valeur de la donnée aux autres instances.
 
-##La classe ChangeInfraListener
+## La classe ChangeInfraListener
 
 Pour la classe `ChangeInfraListener`, nous aurons :
 ```java
@@ -207,7 +207,7 @@ Dans cette classe, on observe que la méthode `viewAccepted()` (qui est la méth
 
 Il est intéressant de noter l'utilisation qui est faite de la classe `RequestOptions` mais également le fait que les méthode `block()` et `suspect()` n'ont pas été spécifiées dans notre cas d'utilisation. 
 
-##La classe Data
+## La classe Data
 
 Enfin, la classe `Data` qui sera utilisée est la suivante (par souci de lisibilité, les méthodes `equals()` et `hashCode()` ne sont pas détaillées ici) :
 
@@ -260,7 +260,7 @@ Cette classe, comme on peut le remarquer, n'a rien de particulier, si ce n'est q
 
 Ainsi, on peut voir que l'implémentation est très simple (je ne commenterai donc pas ce qui est fait ici...).
 
-#Exécution et utilisation
+# Exécution et utilisation
 
 L'exécution, quant à elle, pourra se faire avec une classe de type :
 ```java
@@ -279,7 +279,7 @@ A noter que si les différentes instances venaient à ne pas se voir, cela peut 
 -Djava.net.preferIPv4Stack=true
 ```
 
-#Conclusion
+# Conclusion
 On a vu ici que permettre la communication d'instances d'une application de manière distribuée était aisée avec JGroups. Bien sûr (et comme je l'ai fait remarqué précédemment), la notion de _tuning_ de JGroups (ie. la configuration de la couche protocolaire - cf. mon [article précédent](/2010/12/jgroups-tour-d.html#protocoles)) n'a pas été abordée, mais cela doit être fait en fonction des besoins de l'infrastructure (trafic réseau, firewall, sécurité, ...) et je laisse donc ce point à la convenance de chacun ;-).
 
 Ici se clôture donc la partie JGroups de notre petit POC jmanager4all qui nous a permis de voir comment JGroups répondait à notre besoin mais également comment il allait être utilisé par la suite.

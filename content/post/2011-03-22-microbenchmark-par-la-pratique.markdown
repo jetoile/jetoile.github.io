@@ -12,7 +12,7 @@ Cet article fait suite à mon article précédent afin de donner mon rapide reto
 
 <!-- more -->
 
-#Contexte
+# Contexte
 
 Un collègue me disait que le foreach était moins performant qu'une boucle for en raison du fait que l'invocation d'une opération supplémentaire (la méthode `next()`) rendait l'opération plus lente en raison de la pile de notre cher compteur ordinal (pour ceux qui ne se rappelleraient pas, je vous renvoie sur vos cours d'assembleur ;-) ), enfin que, du moins, en .Net ça marchait comme ça. Ma réponse : _"ben j'en sais rien"_ puisque je ne savais pas quelles étaient les optimisations faites par le compilateur (ouais, je sais, super les sujets de conversation...).
 
@@ -26,11 +26,11 @@ Bien sûr, n'étant pas expert dans ce domaine, il s'agit juste d'un retour d'ex
 
 <u>Deuxième disclaimer</u> : lors de la procédure d'élagage, un coefficient de 0,5 sera utilisé afin de lisser au maximum mes résultats et cela, en raison de pics très importants observés (pics liés, comme nous le verrons par la suite soit, au warm-up de la JVM, soit au GC).
 
-#Procédure de test et analyse
+# Procédure de test et analyse
 
-##Première tentative
+## Première tentative
 
-###Scénario
+### Scénario
 
 Ma première tentative de benchmark était la suivante :
 
@@ -87,7 +87,7 @@ public class IterableBenchmark0 {
 
 On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’`ArrayList` utilisé ici sont faites en dehors du test.
 
-###Résultats
+### Résultats
 
 Suite à ce test, les résultats obtenus ont été les suivants :
 ![center](https://lh5.googleusercontent.com/-lI9NU2jROeg/TYfWEzjCs-I/AAAAAAAAAU8/9qW3rgg2xJM/s1600/naif_res01.png)
@@ -97,7 +97,7 @@ Suite à ce test, les résultats obtenus ont été les suivants :
 Après élagage des résultats abérants (procédé commun à tous tes des charges), ces résultats peuvent être réduits aux résultats suivants (ici, k = 0,5) :
 ![medium](https://lh5.googleusercontent.com/-Ld9lihH08bE/TYfWw4vaxFI/AAAAAAAAAVE/zVJXILl4wtg/s1600/naif_res03.png)
 
-###Analyse
+### Analyse
 Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d'itérer notre `List`.
 
 En outre, après élagage, on constate, malgré tout, qu'une nette différence persiste entre les boucles `for` et `while` et notre `foreach`.
@@ -139,8 +139,8 @@ Du coup (et là, je ne vais pas me fouler ;-) ), je vous cite les réponses des 
 
 Je pense que les conclusions à tirer sont claires... le code testé est erroné : mon Compilateur Planning m'a inliné le code à tester et le fait que les deux premières itérations soit si élevées par rapport aux autres résultats est lié au warm-up de ma JVM.
 
-##Deuxième tentative
-###Scénario
+## Deuxième tentative
+### Scénario
 
 Du coup, suite à ma première tentative de benchmark infructueuse, deuxième essai en apprenant de mes erreurs... :
 
@@ -201,7 +201,7 @@ public class IterableBenchmark1 {
 }
 ```
 
-###Résultats
+### Résultats
 
 Suite à ce test, les résultats obtenus ont été les suivants :
 
@@ -215,7 +215,7 @@ Après élagage des résultats aberrants (procédé commun à tous tests des cha
 
 A noter que ce graphique n'est toujours isssu que d'un seul tir...
 
-###Analyse
+### Analyse
 
 Les résultats semblent enfin cohérents! ouf...!
 
@@ -225,9 +225,9 @@ Après un coup d'élagage me permettant de me débarrasser de mes pics liés au 
 
 Enfin, j'ai ma réponse (mais je garde ça pour plus tard même si je suppose que, du coup, vous connaissez le fin mot de l'histoire!... mais attendez, ne partez pas... la suite est intéressante également ;-))
 
-##Troisième tentative
+## Troisième tentative
 
-##Scénario
+## Scénario
 
 Bon, il est vrai, j'ai obtenu mon résultat sur ma deuxième tentative.
 
@@ -299,7 +299,7 @@ public class IterableBenchmark2 extends SimpleBenchmark {
 
 On remarque ici, que, plutôt que d'exécuter via un script extérieur mon tir, j'ai préféré le faire en invoquant directement le `main()`.
 
-###Résultats
+### Résultats
 
 Suite à ce test, les résultats obtenus ont été les suivants :
 
@@ -372,13 +372,13 @@ vm: java
 
 ![medium](https://lh3.googleusercontent.com/-Lm7FexMT_jg/TYffb2Hsi3I/AAAAAAAAAVc/xspieQ1S0pc/s1600/caliper021.png)
 
-###Analyse
+### Analyse
 
 On constate ici que les résultats obtenus avec Caliper sont cohérents avec ceux obtenus précédemment (ie. les résultats sont similaires quelque soit la méthode d'itération), même si on remarque une légère différence due au bruit ajouté par l'utilisation du framework, bruit qui ne doit pas être pris en compte puisque si un tel framework venait à être utilisé, tous les résultats analysés seraient, évidemment, issus de l'utilisation de Caliper. En outre, n'oublions pas qu'il faut raisonner en terme de statistique et non en terme de chiffre pur...
 
-##Quatrième tentative... juste pour le fun
+## Quatrième tentative... juste pour le fun
 
-###Scénario
+### Scénario
 
 Cette avant dernière tentative est juste faite pour le fun pour montrer le comportement de Caliper avec un microBenchmark douteux... ie. notre premier test ;-).
 
@@ -426,7 +426,7 @@ public class IterableBenchmark3 extends SimpleBenchmark {
 }
 ```
 
-###Résultats
+### Résultats
 
 Suite à ce test, les résultats obtenus ont été les suivants :
 
@@ -438,15 +438,15 @@ starting Scenario{vm=java, trial=0, benchmark=For}
 Error: Doing 2x as much work didn't take 2x as much time! Is the JIT optimizing away the body of your benchmark?
 ```
 
-###Analyse
+### Analyse
 
 La bonne surprise est que Caliper nous indique clairement que JIT a optimisé notre code et que, donc, notre microBenchmark est erroné!
 
 A voir s'il se comporte ainsi avec tous les microBenchmark erronés...
 
-##Cinquième tentative... allez, une dernière pour la route
+## Cinquième tentative... allez, une dernière pour la route
 
-###Scénario
+### Scénario
 
 Cette dernière tentative permet de voir ce qui se passerait si on désactivait JIT via l'option `-Xint`.
 Pour rappel, l'option Xint permet de :
@@ -454,7 +454,7 @@ Pour rappel, l'option Xint permet de :
 
 Le code utilisé est celui de notre première tentative.
 
-###Résultats
+### Résultats
 
 Suite à ce test, les résultats obtenus ont été les suivants :
 ![center](https://lh5.googleusercontent.com/-ADT5BxKL07Y/TYfgAZ0s5aI/AAAAAAAAAVk/8pgxSKpcnL0/s1600/xint_res01.png)
@@ -467,11 +467,11 @@ Après élagage des résultats aberrants (procédé commun à tous tes des charg
 
 A noter que ce graphique n'est toujours issu que d'un seul tir...
 
-###Analyse
+### Analyse
 
 Bien sûr, ces résultats ne sont pas du tout représentatifs puisque le byte code est seulement interprété par la JVM et que cela ne représente pas la réalité. Cette dernière tentative n'est présentée qu'à titre indicatif afin de constater les différences qu'il peut y avoir entre le code que l'on écrit (ou compilé) et le code qui est réellement exécuté.
 
-#Conclusion
+# Conclusion
 
 Voilà, j'arrive à la fin de mes conclusions que je vous cite en vrac ;-) :
 
@@ -486,7 +486,7 @@ Ah oui, encore une chose, pour information, mon ordinateur possède les caracté
 
 ![medium](https://lh5.googleusercontent.com/-yR2nGEaMbxE/TYh5vTtnKdI/AAAAAAAAAWA/J4KlOIGwCWc/s1600/ordi01.PNG)
 
-#Remerciements
+# Remerciements
 
 Par ordre alphabétique :
 * Zouheir Cadi (@ZouheirCadi), 
@@ -495,7 +495,7 @@ Par ordre alphabétique :
 * Séven Lemesle (@slemesle)
 * et [François Ostyn](http://blog.ostyn.fr/) (@ostynf)
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Présentation de Joshua Blosh sur Parleys : http://www.parleys.com/#sl=0&st=5&id=2103
 * Site du framework Caliper : http://code.google.com/p/caliper/

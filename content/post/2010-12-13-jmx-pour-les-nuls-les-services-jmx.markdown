@@ -19,7 +19,7 @@ Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se pr�
 * __Service de sécurité__
 
 <!-- more -->
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -58,7 +58,7 @@ Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se pr�
 
 
 <a name="monitoring"></a>
-#Service Monitoring
+# Service Monitoring
 
 Il existe une famille de MBeans de monitoring qui se présentent qui permettent de scrupter les variations au cours du temps de la valeur des attributs des autres MBeans et qui permet d'émettre des notifications à intervalle régulier. Ils sont aussi classifiés comme des services de monitoring.
 
@@ -99,7 +99,7 @@ La figure suivante représente tous les types de notifications qui peuvent être
 ![medium](http://3.bp.blogspot.com/_XLL8sJPQ97g/TPKO0P3FAEI/AAAAAAAAAQQ/FSwyMlB4ryI/s1600/jmx57.png)
 
 <a name="timer"></a>
-#Service Timer
+# Service Timer
 
 Le service Timer permet de déclencher des notifications à des dates et heures spécifiques ou à intervalles réguliers. Les notifications sont émises à tous les objets déclarés comme étant interessés par les notifications émises par le timer (patron __Observer__). 
 
@@ -145,7 +145,7 @@ Si une notification dispose d'une date d'émission antérieure à son démarrage
 </tbody></table>
 
 <a name="relation"></a>
-#Service Relation
+# Service Relation
 
 JMX définit un modèle de relation entre les MBeans. Une relation est définie par l'utilisateur et se présente comme une association n-aire entre les MBeans. 
 
@@ -210,7 +210,7 @@ En raison de la complexité de ce service, pour plus d'informations, il est pré
 </tbody></table>
 
 <a name="securite"></a>
-#Service securité
+# Service securité
 Un MBean Server JMX peut avoir accès à des informations sensibles et peut être susceptible d'exposer des opérations sensibles. Pour ce faire, JMX propose un mécanisme d'accès à de telles opérations en s'appuyant sur le modèle de sécurité de Java : il est possible de définir des permissions qui permettent de contrôler l'accès au MBean Server et à ses opérations.
 
 <table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>

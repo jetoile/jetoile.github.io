@@ -20,7 +20,7 @@ Bien sûr, cet article montre comment j'ai fait mais il ne représente pas la se
 
 <!-- more -->
 
-#Contexte
+# Contexte
 
 Ce paragraphe présente mes motivations pour avoir eu un besoin d'une utilisation d'un Jetty embedded à Maven en activant la couche JMX car, c'est vrai, ce n'est pas un besoin très courant et qu'il peut même sembler, au premier abord, paraitre un peu stupide (en effet, utiliser un Jetty embedded répond plutôt à un besoin de poste de développement ou au pire (et je dis bien au pire!!) à un pseudo TU qui n'est, du coup, pas un TU... (ndlr : enfin, encore une fois, je diverge... ;-) )).
 
@@ -38,14 +38,14 @@ En fait, si vous me demandez pourquoi j'ai branché Spring pour une application 
 
 Si vous avez l'esprit chagrin et que vous me re-demandez pourquoi je n'ai pas utilisé un aspect, c'est que l'aspect était justement l'autre aspect de ma démo ;-).
 
-#Mise en oeuvre
+# Mise en oeuvre
 Pour ce paragraphe de mise en œuvre, je présenterai successivement :
 
 * Le code de l'application web utilisé.
 * La configuration Maven utilisée permettant de démarrer l'application web dans un Jetty embedded.
 * Les subtilités de la configuration à effectuer pour ajouter la couche JMX.
 
-#Application web cible
+# Application web cible
 
 Comme annoncé précédemment, notre application web cible se compose de :
 
@@ -57,7 +57,7 @@ Comme annoncé précédemment, notre application web cible se compose de :
 
 Il est à noter qu'elle utilisera la spécification 2.5 des Servlets afin de permettre, dans les parties suivantes, de montrer la différence de configuration qu'il existe entre Jetty 6 et 7.
 
-##Code du Servlet
+## Code du Servlet
 
 ```java
 public class SimpleServlet extends HttpServlet {
@@ -83,7 +83,7 @@ public class SimpleServlet extends HttpServlet {
 
 On constate que le Servlet est basique. Il n'y a donc rien à dire dessus si ce n'est la récupération du POJO _proxifié_ par Spring pour incrémenter un compteur qui sera exposé en JMX.
 
-##Code du POJO utilisé comme MBean Standard
+## Code du POJO utilisé comme MBean Standard
 
 ```java
 public class SimpleCounter {
@@ -105,7 +105,7 @@ public class SimpleCounter {
 
 Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l'attribut `nbGet` accessible en lecture/écriture par la couche cliente JMX.
 
-##Code de la jsp
+## Code de la jsp
 ```xml
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -123,7 +123,7 @@ Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que l
 
 Rien de particulier non plus à dire sur la jsp...
 
-##Code du web.xml
+## Code du web.xml
 
 ```xml
 <web-app version="2.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemalocation="http://java.sun.com/xml/ns/javaee 
@@ -155,7 +155,7 @@ Rien de particulier non plus à dire sur la jsp...
 
 Le fichier descripteur `web.xml` est classique donc rien de nouveau sur les tropiques ;-). Comme dit plus haut, c'est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.
 
-##Code du contexte Spring
+## Code du contexte Spring
 
 ```xml
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemalocation="http://www.springframework.org/schema/beans
@@ -179,7 +179,7 @@ Le fichier descripteur `web.xml` est classique donc rien de nouveau sur les trop
 
 Concernant le fichier descripteur de Spring, on constate que la classe `MBeanServerFactoryBean` de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c'est le `MBeanExporter` qui a la charge de l'enregistrement du MBean injecté.
 
-#Application web exécutable via Jetty au sein de Maven
+# Application web exécutable via Jetty au sein de Maven
 
 Afin de permettre une exécution de notre application web dans un Jetty embedded dans Maven, il faut, bien sûr, une structure Maven.
 
@@ -353,7 +353,7 @@ ou :
 mvn -Pjetty7 jetty:run
 ```
 
-##Activation de JMX
+## Activation de JMX
 
 Après avoir montré l'application web ainsi que la configuration du plugin Maven de Jetty nécessaire à son exécution dans le conteneur embarqué, il est possible de démarrer l'application web dans le Jetty embedded.
 
@@ -560,7 +560,7 @@ Pour Jetty 7 :
 </Configure>
 ```
 
-#Conclusion
+# Conclusion
 
 Cet article avait pour objectif de montrer comment il pouvait être facile d'activer la couche JMX pour un serveur Jetty embedded dans Maven.
 

@@ -20,7 +20,7 @@ Cet article va tenter de dresser un panorama non exhaustif de ce que j'ai pu tro
 
 Parmi les solutions intéressantes et simples que j'ai trouvés pour faire des tests d'intégration, il y a surtout 2 projets que j'ai retenus.
 
-#Plugin maven permettant de télécharger, installer et démarrer Elasticsearch
+# Plugin maven permettant de télécharger, installer et démarrer Elasticsearch
 
 Le premier se trouve être celui de [alexcojocaru](https://github.com/alexcojocaru/elasticsearch-maven-plugin).
 
@@ -56,7 +56,7 @@ Il s'agit d'un plugin maven s'appuyant sur [maven-resolver](https://github.com/a
 </plugin>
 ```
 
-##Exemple
+## Exemple
 
 Code java de test :
 ```java
@@ -212,7 +212,7 @@ Plugins maven utilisés :
 ```
 
 
-#Téléchargement, installation et démarrage d'Elasticsearch
+# Téléchargement, installation et démarrage d'Elasticsearch
 
 Le deuxième projet est celui d'[Allegro Tech](https://github.com/allegro/embedded-elasticsearch).
 
@@ -238,7 +238,7 @@ final embeddedElastic = EmbeddedElastic.builder()
     .start()
 ```
 
-#Exemple
+# Exemple
 
 Code java :
 ```java
@@ -356,7 +356,7 @@ dependencies {
     }
 ```    
 
-#Conclusion
+# Conclusion
 
 En conclusion, on a pu voir deux solutions qui permettent de faire des tests d'intégration avec Elasticsearch.
 

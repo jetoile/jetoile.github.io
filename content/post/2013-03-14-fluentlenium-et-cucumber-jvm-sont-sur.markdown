@@ -38,9 +38,9 @@ A noter que je ne m'attarderai pas, dans cet article, à présenter exhaustiveme
 
 <!-- more -->
 
-#Présentation des protagonistes
+# Présentation des protagonistes
 
-##Cucumber JVM
+## Cucumber JVM
 ![center](http://2.bp.blogspot.com/-vb7zd_BqITk/UTmwyd4yWsI/AAAAAAAAA3w/tYVxH4hxlig/s1600/cucumber2.jpg)
 
 [Cucumber JVM](https://github.com/cucumber/cucumber-jvm) est un fork Java de [Cucumber](http://cukes.info/) inialement développé en Ruby.
@@ -63,7 +63,7 @@ Ainsi, on peut résumer grossièrement en disant qu'un scénario est écrit dans
 
 Pour plus d'informations sur le BDD, je vous renvoie sur un [compte rendu](http://blog.soat.fr/2011/06/breizhcamp-behaviour-driven-development-par-olivier-billard-et-thierry-henrio/) d'une présentation d'Olivier Billard et de Thierry Henrio réalisé au BreizhCamp que j'avais fait à l'époque.
 
-##Selenium 2
+## Selenium 2
 
 ![center](http://4.bp.blogspot.com/-xOJkyRycXEU/UTmxGd1a-nI/AAAAAAAAA4A/kMPuTOc5tpY/s1600/big-logo.png)
 
@@ -78,7 +78,7 @@ Les liens suivants détaillent plus précisément ces différents points :
 * http://fr.slideshare.net/MathildeLemee/selenium-testng-selenium-grid-best-practices
 * http://docs.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations
 
-##FluentLenium
+## FluentLenium
 
 ![center](http://1.bp.blogspot.com/-fyH1CNEBvIw/UTmxNk5WZTI/AAAAAAAAA4I/obgbEW5Ae6w/s1600/code.png)
 
@@ -98,7 +98,7 @@ Enfin, via l'annotation __Page__, les classes qui étendent FluentPage peuvent �
 * http://fr.slideshare.net/MathildeLemee/fluentlenium
 * https://github.com/FluentLenium/FluentLenium
 
-#Etude sur la mise en oeuvre
+# Etude sur la mise en oeuvre
 
 On a vu dans le paragraphe précédent quelques-unes des notions nécessaires à l'intégration de nos trois comparses.
 
@@ -311,7 +311,7 @@ Feature: homepage test
 On constate que le code est un peu plus verbeux que ce qu'on aurait souhaité avoir mais cela fonctionne sans soucis.
 A noter que via la méthode init de __FluentTestDelegator__, il est possible de préciser le __webDriver__ à utiliser (dans notre cas, HtmlUnitDriver).
 
-#Mise en oeuvre
+# Mise en oeuvre
 
 On a vu dans le paragraphe précédent comment il était possible de faire fonctionner conjointement Cucumber JVM et FluentLenium.
 
@@ -412,7 +412,7 @@ public class RunCucumberFeatures {
 }
 ```
 
-#Conclusion
+# Conclusion
 
 On a vu dans cet article (qui est la suite logique d'un [article précédent](/2013/03/demarrer-une-webapp-en-mode-embedded.html)) comment il était possible de faire des tests d'acceptance en utilisant conjointement Cucumber JVM et FluentLenium.
 

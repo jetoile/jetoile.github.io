@@ -35,7 +35,7 @@ En fonction de l'usage, deux choix sont possibles :
 
 Il est à noter que l'implémentation présentée ici ne prend pas en compte la problématique de sécurité (et en particulier SSL) où deux ports différents doivent être utilisés. En outre, il sera supposé que le RMI Registry sera démarré dans l'application.
 
-#1ère méthode
+# 1ère méthode
 Ainsi, si vous avez la main sur la méthode `main` sur l'application, il suffit de rajouter le code qui va bien, à savoir :
 ```java
 package example;
@@ -91,7 +91,7 @@ puis lancer une jconsole et renseigner le champ `Remote Process` :
 service:jmx:rmi://localhost:3010/jndi/rmi://localhost:3010/jmxrmi
 ```
 
-#2ième méthode
+# 2ième méthode
 Par contre, la solution précédente n'est parfois pas applicable car le code de l'application à exécuter peut ne pas être disponible ou car récupérer ses sources, les modifiés et recompiler la dite application (par exemple, si c'est un conteneur de Servlet que vous voulez administrer...) peut être un peu problématique (je ne suis pas sûr que l'équipe de production soit enchantée d'utiliser une version modifiée d'Apache Tomcat...).
 
 Aussi, dans ce cas, il est possible de déclarer son propre agent à enregistrer dans la JVM (en définissant la méthode `premain` et en renseignant l'attribut `Premain-Class` du fichier `MANIFEST.MF`) qui se chargera de définir et de lancer l'agent JMX (une sorte de wrapper). Cependant, dans ce cas, l'agent JMX lancé par l'agent java ne sera pas arrêté par l'envoie du signal de fin de l'application. Il convient alors de lancer un Thread chargé de scrupter le processus de l'agentJMX.

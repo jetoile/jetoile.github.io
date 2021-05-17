@@ -13,7 +13,7 @@ Cet article toujours dans la lignée de ma petite série d'articles sur JMX (cf.
 
 <!-- more -->
 
-#Table des matières
+# Table des matières
 
 * JMX, qu'est ce que c'est?
 	* [Généralités](/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite)
@@ -52,7 +52,7 @@ Cet article toujours dans la lignée de ma petite série d'articles sur JMX (cf.
 
 
 <a name="mbean_dynamic"></a>
-#Chargement dynamique des MBeans
+# Chargement dynamique des MBeans
 
 JMX propose un service de chargement dynamique de MBeans qui s'appuie sur les fonctionnalités du classloader Java pour récupérer et instancier les MBeans qui peuvent utilisés indifféremment des classes Java ou des librairies natives. Cette fonctionnalité existe car lorsque le serveur JMX est démarré, il peut ne pas avoir connaissance de tous les MBeans et devoir en télécharger. Pour ce faire, un service particulier chargé de gérer des applets de management (m-let) est utilisé pour instancier les MBeans obtenus d'une URL distante sur le réseau. En fait, le service de m-let permet d'instancier et d'enregistrer des MBeans dans le MBean Server en chargeant un fichier texte, dont la localisation est spécifiée par une URL, qui contient les informations des MBeans à obtenir. Quand ce fichier texte est chargé, toutes les classes spécifiés par le tag MLET sont téléchargées et une instance de chaque MBean spécifié est crée et enregistré. Le service de m-let étant lui-même un MBean enregistré dans le MBean Server, il peut être utilisé par d'autres MBeans, par d'autres applications ou par d'autres applications d'administration et de supervision distantes.
 

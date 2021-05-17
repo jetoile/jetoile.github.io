@@ -28,7 +28,7 @@ _Disclaimer_ : je tiens à repréciser que Hadoop-unit n'est qu'une solution de 
 
 <!-- more -->
 
-#Description des changements/évolutions
+# Description des changements/évolutions
 
 Alors que la première version d'Hadoop Unit (aka. Hadoop Bootstrap) était monolithique, le projet a été découpé en modules permettant ainsi de ne démarrer que les composants qui sont présents dans le classpath de l'environnement de test (en maven le scope de test).
 
@@ -325,7 +325,7 @@ En utilisation remote, cela donne :
 </plugin>
 ```
 
-#Trucs et astuces
+# Trucs et astuces
 
 Il est possible d'intéragir avec Hadoop Unit (et même si il s'agit d'un cluster Hadoop dégradé) avec les moyens standards, à savoir :
 
@@ -350,7 +350,7 @@ Hadoop Unit propose également des classes utilitaires (à n'utiliser que dans l
 * des bonnes dépendances pour utiliser Spark-solr (cf. conflit de lib)
 
 
-#Conclusion
+# Conclusion
 Comme je l'ai déjà dit maintes et maintes fois, Hadoop Unit n'est qu'une solution de contournement (ou la solution du pauvre au choix... ;) ) mais cela peut permettre d'accélérer les phases de développement (en utilisant hadoop-unit-standalone par exemple) et peut permettre d'effectuer quelques tests d'intégration.
 
 Hadoop Unit s'appuie sur le travail de [Shane Kumpf](https://github.com/sakserv/hadoop-mini-clusters) et est lié aux versions des composants d'Hortonworks (d'ailleurs, une grosse partie des tests est directement un copier/coller de ce qu'à fait Shane Kumpf).

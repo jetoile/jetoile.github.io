@@ -16,7 +16,7 @@ Plus sérieusement, faire des tests d'intégration avec Apache Cassandra est bea
 Ce petit article résume comment utiliser ces 2 solutions.
 
 <!-- more -->
-#Classe de test
+# Classe de test
 
 La classe utilisée comme exemple dans les 2 cas est la suivante :
 
@@ -72,7 +72,7 @@ dependencies {
 
 Rien de bien compliqué mais il s'agit d'un cas d'exemple ultra simple... ;)
 
-#Cassandra-Unit
+# Cassandra-Unit
 
 Pour utiliser Cassandra-Unit, il suffit de déclarer sa dépendance en scope de test:
 ```xml
@@ -160,7 +160,7 @@ saved_caches_directory: target/embeddedCassandra/saved_caches
 
 A noter également que Cassandra-Unit propose également des loader permettant d'initialiser les données dans le cluster ainsi que d'autres facilités d'utilisation telles que des Rules ou un support de Spring. Pour avoir plus d'informations, je vous invite à aller voir la documentation.
 
-#Achille-Embedded
+# Achille-Embedded
 
 Pour utiliser Achille-embedded, il suffit de déclarer sa dépendance en scope de test:
 ```xml
@@ -223,7 +223,7 @@ public class UserDaoIntegrationTest {
 
 A noter également qu'Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d'informations, je vous invite à aller voir les différents tests du projet.
 
-#Conclusion
+# Conclusion
 
 On a donc vu dans ce rapide article comment il était possible de faire des tests d'intégration avec Cassandra.
 

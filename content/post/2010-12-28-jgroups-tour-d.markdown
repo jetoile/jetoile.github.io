@@ -50,14 +50,14 @@ Cet article suivra le plan suivant :
 * [Conclusion](#conclusion)
 
 <a name="histoire"></a>
-#Un peu d'histoire...
+# Un peu d'histoire...
 
 Créé par Bela Ban, JGroups a vu le jour suite à son travail universitaire dans les équipe de Ken Birman sur le framework _Ensemble_ qui, en 1998-1999, était un prototype pour la troisième génération de communication de groupes. _Ensemble_ faisait suite à _Horus_ (écrit par Robbert VanRenesse) qui faisait lui-même suite à _ISIS_ (écrit par Keb Birman) et était écrit en OCaml. _Ensemble_ proposant une interface pour s'interfacer avec Java mais s'appuyant sur son coeur, cela a été le début de JGroups (enfin pour être plus précis le début de _JChannel_ puis de la partie _ProtocolStack_) qui avait pour objectif de fournir une solution full Java de Ensemble.
 
 Ainsi, JGroups a pris son essor en 2000 avec le départ de Bela Ban du pôle de recherche de l'université de Cornell pour enfin être utilisé par JBoss dès 2002 avec, entre autre _JBossCache_.
 
 <a name="concept"></a>
-#Présentation des concepts
+# Présentation des concepts
 
 La communication entre groupes utilise les termes de groupes et de membres qui font partis intégrantes des groupes. En fait, un membre peut être vu comme un noeud et un groupe comme un cluster.
 
@@ -84,7 +84,7 @@ En fait, un canal est connecté à une pile (_stack_) de protocoles et lorsqu'un
 Il est à noter que lorsqu'une application se connecte à un canal, la pile de protocole est démarrée et que lorsqu'elle se déconnecte, cette même pile est arrêtée. Quand le canal est fermé, la pile est détruite permettant ainsi de libérer ses ressources.
 
 <a name="canal"></a>
-##Canal (Channel)
+## Canal (Channel)
 Pour joindre un groupe et émettre des messages, un processus doit créer un canal et s'y connecter en utilisant le nom du groupe puisque tous les canaux qui possèdent le même nom forment un même groupe. 
 
 Une fois connecté, un membre peut émettre (resp. recevoir) des messages aux (resp. des) autres membres du groupe.
@@ -114,7 +114,7 @@ En fait, les canaux sont similaires à des sockets BSD ; les messages sont stock
 Afin de positionner les propriétés sur un canal, JGroups s'appuie sur une configuration XML.
 
 <a name="bloc"></a>
-##Bloc de construction (Building Blocks)
+## Bloc de construction (Building Blocks)
 Le canal est un concept simple qui permet de fournir la fonctionnalité basique d'un groupe de communication en proposant une douzaine de méthodes qui permettent la communication entre applications via la transmission de messages asynchrones sur le même modèle que UDP. Ainsi, par exemple, le canal de base ne gère pas l'ordonnancement des messages et il est alors à la charge de l'application de réordonnancer les messages. En outre, le fonctionnement en mode _pull_ nécessite généralement au client d'avoir à gérer un thread pour éviter de bloquer l'application lorsqu'il attend un message.
 
 Ainsi, JGroups propose la notion de blocs de construction (__Building Blocks__) qui offre une API plus sophistiquée et qui s'appuie, en interne, sur les canaux. 
@@ -122,7 +122,7 @@ Ainsi, JGroups propose la notion de blocs de construction (__Building Blocks__) 
 Cela permet aux applications de communiquer en utilisant ces derniers en offrant une plus grande facilité d'utilisation du groupe de communication (par exemple, certains blocks permettent de gérer nativement les identifiants des corrélations).
 
 <a name="pile"></a>
-##Pile de protocoles (Protocol Stack)
+## Pile de protocoles (Protocol Stack)
 La pile de protocoles contient de nombreuses couches de protocoles qui sont bidirectionnels. Tous les messages émis et reçus par le canal doivent passer à travers ces protocoles qui peuvent :
 
 * modifier,
@@ -139,21 +139,21 @@ Cette séparation des concepts permet ainsi d'abstraire l'application, qui utili
 Si aucune pile de protocoles n'est fournie lors de la création du canal, alors c'est sa configuration par défaut qui est utilisé.
 
 <a name="entete"></a>
-##Entête (Header)
+## Entête (Header)
 
 Un entête (__Header__) est un ensemble d'informations personnalisables qui peut être ajouté à chaque message.
 
 Il est à noter que JGroups utilise cette fonctionnalité dans de nombreux cas de figures comme, par exemple, pour savoir connaitre l'ordonnancement d'envoi des messages (via les entêtes _NAKACK_ et _UNICAST_).
 
 <a name="evenement"></a>
-##Evénement (Event)
+## Evénement (Event)
 
 Les évènements (__Event__) permettent à JGroups de savoir quels protocoles peuvent communiquer avec quel autre. Ainsi, contrairement aux messages qui transitent au travers du réseau entre les membres d'un groupe, les évènements transitent au travers la pile.
 
 <a name="api"></a>
-#Présentation générale des APIs de JGroups
+# Présentation générale des APIs de JGroups
 <a name="interface"></a>
-##Les interfaces
+## Les interfaces
 JGroups propose un certain nombre d'interfaces principales sur lesquelles s'appuient les différentes implémentations :
 
 * `MessageListener`
@@ -163,14 +163,14 @@ JGroups propose un certain nombre d'interfaces principales sur lesquelles s'appu
 * `ReceiverAdapter`
 
 <a name="messageListener"></a>
-###MessageListener
+### MessageListener
 L'interface `MessageListener` permet d'être notifier lors de la réception d'un message lorsque le mode de fonctionnement est de type push.
 
 Pour ce faire, la méthode `receive(Message msg)` est invoquée. Les méthodes `getState()` et `setState()` permettent, quant à elles, de récupérer l'état du groupe.
 ![center](http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4yCVvoq6I/AAAAAAAAAQ8/P05famfiSL4/s1600/jgroups01.png)
 
 <a name="membershipListener"></a>
-###MembershipListener
+### MembershipListener
 
 L'interface `MembershipListener` permet d'être notifiée lorsqu'une nouvelle vue, un message de suspicion ou un évènement de bloc est reçu. 
 
@@ -179,28 +179,28 @@ Dans la plupart des cas, c'est la méthode `viewAccepted()` qui est invoquée pu
 ![center](http://4.bp.blogspot.com/_XLL8sJPQ97g/TQ4yKn49KiI/AAAAAAAAARA/w8UlwBfI1lc/s1600/jgroups02.png)
 
 <a name="channelListener"></a>
-###ChannelListener
+### ChannelListener
 
 L'interface `ChannelListener` est utilisée comme interface de _callback_ lorsque l'application souhaite recevoir des informations sur les changements d'état du canal (fermeture, déconnexion ou ouverture).
 
 ![center](http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4ydDBkt5I/AAAAAAAAARE/kEWjYvTnDFs/s1600/jgroups03.png)
 
 <a name="receiver"></a>
-###Receiver
+### Receiver
 
 L'interface `Receiver` peut être utilisée pour recevoir des messages et les changements de vue dans le mode _push_. A noter que cette interface est marquée comme dépréciée et sera supprimé en version 3. L'utilisation de `MessageListener` et `MembershipListener` est préconisée.
 
 ![center](http://1.bp.blogspot.com/_XLL8sJPQ97g/TRoGqAZ288I/AAAAAAAAASg/EshWFLsfHjA/s1600/jgroups04.png)
 
 <a name="receiverAdapter"></a>
-###ReceiverAdapter
+### ReceiverAdapter
 
 Cette classe permet de fournir une implémentation par défaut de l'interface `Receiver` en ne permettant d'avoir à implémenter que les méthodes nécessaires (dont la méthode `receive()`).
 
 ![center](http://2.bp.blogspot.com/_XLL8sJPQ97g/TRoG6cQ9F5I/AAAAAAAAASk/orJ7pVnADug/s1600/jgroups05.png)
 
 <a name="address"></a>
-##L'interface Address
+## L'interface Address
 
 Chaque membre d'un groupe dispose d'une adresse qui l'identifie de manière unique. Cette adresse est représentée par l'interface Address qui require une implémentation concrète afin de fournir ses méthodes de comparaison, de trie et afin de permettre de différencier une adresse de type multicast.
 
@@ -212,7 +212,7 @@ Ainsi, par exemple, dans le cas de `JChannel`, l'adresse, qui est implémentée 
 ![medium](http://1.bp.blogspot.com/_XLL8sJPQ97g/TRoHFjviIMI/AAAAAAAAASo/nsGhSwGXwzw/s1600/jgroups06.png)
 
 <a name="message"></a>
-##La classe Message
+## La classe Message
 
 Les échanges de données émis entre les membres se fait au travers de messages qui sont représentés par la classe `Message`. Un message peut être émis, par un membre, aussi bien à un membre ou à tous les membres du groupe du canal.
 
@@ -227,7 +227,7 @@ Il est composé de cinq parties :
 ![center](http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ4y5ZcL1RI/AAAAAAAAARU/3ayXiOTHOIY/s1600/jgroups07.png)
 
 <a name="view"></a>
-##La classe View
+## La classe View
 
 Une vue représente la liste des membres d'un groupe à un instant donné. Elle consiste en un objet de type `ViewId` qui représente de manière unique la vue ainsi que la liste de ses membres.
 
@@ -240,14 +240,14 @@ A noter que lorsqu'une application est notifiée que le groupe a changé (ie. qu
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TRoHVP9nFLI/AAAAAAAAASs/bdb-orAyhxo/s1600/jgroups08.png)
 
 <a name="viewId"></a>
-###La classe ViewId
+### La classe ViewId
 
 La classe `ViewId` est utilisée pour numéroter les vues et consiste en l'adresse du créateur de la vue et en son numéro de séquence.
 
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TRoHeWcBzbI/AAAAAAAAASw/aSNJllb0Q3o/s1600/jgroups09.png)
 
 <a name="mergeView"></a>
-###La classe MergeView
+### La classe MergeView
 
 Lorsqu'un groupe se retrouve découpé en sous-groupe (par exemple, lors d'un partitionnement du réseau puis de son ré-aggrégement), les vues peuvent nécessiter un merge.
 
@@ -258,7 +258,7 @@ Ainsi, par exemple, si un groupe est décrit par la vue _V1:(p,q,r,s,t)_, qu'il 
 ![center](http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4zP2h5POI/AAAAAAAAARg/SUrNkuEtuR8/s1600/jgroups10.png)
 
 <a name="jchannel"></a>
-###La classe JChannel
+### La classe JChannel
 
 Afin de pouvoir joindre un groupe et émettre des messages (ou en recevoir), un processus doit créer un canal. Un canal peut s'assimiler à une Socket. Quand le client se connecte à un canal, il doit donner le nom du groupe qu'il veut rejoindre. En effet, un canal est (dans son mode connecté) toujours associé à un groupe donné. La pile de protocoles a alors à sa charge de vérifier que le canal se joint au groupe du même nom, résultant un nouvelle vue à installer sur chaque membre du groupe.
 
@@ -269,14 +269,14 @@ A noter que lors de sa création, un canal est dans un état déconnecté. Pour 
 ![center](http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ40li7dxMI/AAAAAAAAARs/0kqgw2nAHfs/s1600/jgroups12.png)
 
 <a name="construction"></a>
-#Les blocs de construction (Building blocks)
+# Les blocs de construction (Building blocks)
 
 Les blocs de construction sont les couches qui se trouvent au dessus des canaux. La plupart ne nécessite pas d'un canal mais seulement d'implémenter l'interface `Transport` (qui est également implémentée par la classe `Channel`). Cela leurs permet de fonctionner pour n'importe quel type de transport qui implémente cette interface. Les blocs de construction peuvent donc être utilisés à la place des canaux si cela est nécessaire. Ainsi, alors que les canaux peuvent être vus comme des sortes de sockets, les blocs de construction peuvent bénéficier d'une interface beaucoup plus sophistiquée.
 
 Dans la suite, seuls les blocs de construction les plus importants seront décrits (à noter que le bloc de construction `PushPullAdapter` étant déprécié, il ne sera pas non plus décrit).
 
 <a name="messageDispatcher"></a>
-##MessageDispatcher
+## MessageDispatcher
 
 Les canaux sont de simple patron pour émettre et recevoir des messages de manière asynchrone. Cependant, il peut être nécessaire de disposer d'un moyen de communiquer de manière synchrone.
 
@@ -312,7 +312,7 @@ Ces deux méthodes peuvent positionner un certain nombre d'options lors de l'ém
 A noter que si un membre destinataire se déconnecte du canal (dans le cas d'un arrêt brutal par exemple), alors l'objet RspList retourner par la méthode castMessage() contiendra une réponse indiquée comme en échec.
 
 <a name="rpcDispatcher"></a>
-##RpcDispatcher
+## RpcDispatcher
 
 La classe RpcDispatcher est dérivée de `MessageDispatcher` et permet donc au programmeur d'invoquer des méthodes distantes sur un ou tous les membres du groupe et, optionnellement, attendre leurs réponses. Cependant, contrairement à l'utilisation d'un `MessageDispatcher`, l'utilisation d'un `RpcDispatcher` est plus simple pour un besoin de type requête/réponse puisqu'il ne nécessite pas d'avoir à implémenter l'interface `RequestHandler` (et donc la méthode `handle()`).
 
@@ -327,7 +327,7 @@ De plus, il est à noter qu'il est possible d'utiliser les méthodes `callRemote
 ![center](http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ44DbehK6I/AAAAAAAAASM/SEJXTcIvnZY/s1600/jgroups16.png)
 
 <a name="replicatedHashMap"></a>
-##ReplicatedHashMap
+## ReplicatedHashMap
 La classe `ReplicatedHashMap` a été écrite comme une classe de démonstration afin de montrer comme les états pouvaient être partagés entre les différents noeuds du cluster. Aussi, elle n'a pas été entièrement testée et n'a pas pour objectif d'être utilisée en production.
 
 Une ReplicatedHashMap utilise une HashMap concurrente en interne et permet de créer différentes instances d'objets de type `HashMap` dans différents processus. Toutes ces instances possèdent exactement le même état. Lorsqu'une instance de `ReplicatedHashMap` est créée, un nom de groupe permet de déterminer quel groupe de `ReplicatedHashMap` est rejoint et la nouvelle instance interroge alors les autres membres existants pour connaitre l'état courant, le met à jour et se démarre.
@@ -339,7 +339,7 @@ Les modifications de la `ReplicatedHashMap` (méthodes `put()`, `clear()` ou `re
 ![medium](http://4.bp.blogspot.com/_XLL8sJPQ97g/TQ44U-8aDBI/AAAAAAAAASQ/8P6jK1PT8j8/s1600/jgroups18.png)
 
 <a name="notificationBus"></a>
-##NotificationBus
+## NotificationBus
 
 La classe `NotificationBus` permet d'émettre et de recevoir des notifications. Ainsi, cela permet à une application de maintenir un cache local répliqué avec toutes les autres instances. La classe `NotificationBus` s'appuie sur un canal en interne.
 
@@ -348,7 +348,7 @@ En fait, le bloc de construction NotificationBus s'apparente à JMS dans son mod
 ![medium](http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ44eSOwW3I/AAAAAAAAASU/l8hNwFLTXYU/s1600/jgroups19.png)
 
 <a name="protocole"></a>
-#Liste des protocoles
+# Liste des protocoles
 
 Ce paragraphe fournit à titre indicatif une liste non exhaustive de protocoles fournies par JGroups. Pour plus d'informations sur la configuration de chacun, il est conseillé de se référer à la documentation [officielle](http://www.jgroups.org/ug.html) et/ou au [wiki](http://community.jboss.org/wiki/JGroups) dont est issu ce paragraphe.
 
@@ -387,7 +387,7 @@ Authentification et cryptage |	AUTH |	Le protocole AUTH est utilisé pour le cou
 Synchronisation |	BARRIER |	Le protocole BARRIER peut être utilisé pour suspendre les messages à émettre. 
 
 <a name="conclusion"></a>
-#Conclusion
+# Conclusion
 
 Comme nous avons pu le voir, JGroups présente une API pour le développeur qui est très agréable à utiliser.
 Cependant, la configuration des canaux peut s'avérer très ardue car elle est demande une bonne connaissance de la couche réseau mais aussi de ce qui est ciblé :
@@ -402,7 +402,7 @@ Pour moi, c'est ce type de questions qu'il est important de se poser afin de con
 
 Ainsi JGroups s'adresse aux personnes qui veulent avoir la main sur les couches basses (contrairement à JMS qui a tendance à être plus abstrait sur les couches basses puisque cela dépend du provider choisi).
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Site officiel de JGroups : http://www.jgroups.org/
 * Wiki de JGroups : http://community.jboss.org/wiki/JGroups

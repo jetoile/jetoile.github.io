@@ -27,7 +27,7 @@ Suite à l'obtention d'une licence gracieusement offerte par [ZeroTurnaround](ht
 
 Cet article va donc donner mon retour d'expérience.
 <!-- more -->
-#JRebel, quesako?
+# JRebel, quesako?
 JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement permettant de prendre en compte des modifications de code sans avoir à redéployer l'application ou à redémarrer le serveur. Pour ce faire, il utilise un agent java qui lui permet d'instrumenter le classloader de la JVM (opération rendu possible depuis java 5).
 
 Ainsi, lorsque qu'une classe est chargée, JRebel essaie d'y associer un fichier .class qui est recherché dans le classpath ainsi que dans les répertoires cibles précisés par le fichier de configuration `rebel.xml`. Si un fichier .class est trouvé, JRebel instrumente la classe chargée et y associe le fichier trouvé. Le timestamp du fichier .class est alors monitoré afin de détecter les changements et les modifications sont propagées au travers du class loader à l'application.
@@ -67,7 +67,7 @@ En conclusion, pour utiliser JRebel, il est nécessaire :
 * de démarrer l'application ou le conteneur de Servlet ou Serveur d'application en précisant à la JVM d'utiliser l'agent JRebel,
 * d'ajouter dans le répertoire WEB-INF/classes (pour un war) ou racine (pour un jar) le fichier rebel.xml contenant l'emplacement des fichiers susceptibles de changer (classes, ressources, ...) qui se trouve être généralement le répertoires build ou target/classes (pour maven).
 
-#JRebel, mise en oeuvre
+# JRebel, mise en oeuvre
 Pour expliquer une mise en œuvre de JRebel, je prendrai un exemple simple (qui, je pense, couvrira le besoin de la majorité des développeurs) : une application web embarquant un certain nombre de librairies métiers "maison" déployée dans un conteneur de Servlet. Cette application web pouvant être indifféremment un service web ou une application ayant pour objectif de fournir un rendu graphique dans un navigateur web (ie. pouvant contenir des jsp, css, javascript, ...). L'objectif étant, ici, de montrer comment l'application web est capable de se recharger à chaud afin de prendre en compte les modifications du développeur.
 
 Cette application web, développé avec maven 2, se composera de deux modules :
@@ -219,7 +219,7 @@ export JAVA_OPTS="-noverify -javaagent:/opt/jrebel/jrebel.jar $JAVA_OPTS"
 Les modifications sont alors pris à chaud par notre conteneur de Servlet ou serveur d'application!
 
 Attention cependant à ne pas oublier de préciser la valeur de la variable que nous avons utilisé sous via un -D, soit via le fichier de configuration de JRebel.
-#Conclusion
+# Conclusion
 
 Suite à l'utilisation de JRebel, j'ai vraiment été agréablement surpris par sa facilité d'utilisation que j'ai essayé de retranscrire ici.
 
@@ -227,7 +227,7 @@ Cependant, JRebel ne doit pas être vu non plus comme un outil miracle mais plut
 
 Cependant, il est tout de même conseiller de se référer à la documentation officielle dans le cas d'usage plus complexe (avec la possibilité de tuner plus finement le fichier rebel.xml entre autre).
 En outre, il est important de garder en mémoire certaines de ses limitations (il faut, par exemple, forcer le rechargement des fichiers de contexte spring pour que certaines modifications soient pris en compte).
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Site de ZeroTurnaround : http://www.zeroturnaround.com/
 * Page de FAQ de JRebel : http://www.zeroturnaround.com/jrebel/faq/

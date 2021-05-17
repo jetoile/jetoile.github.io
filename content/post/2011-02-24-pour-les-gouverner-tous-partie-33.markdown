@@ -14,7 +14,7 @@ Cet article fait suite à mes précédents posts ([ici](/2011/01/pour-les-gouver
 
 <!-- more -->
 
-#Expression du besoin et conception
+# Expression du besoin et conception
 
 Comme je l'ai expliqué [ici](/2011/01/pour-les-gouverner-tous-partie-13.html), le principe est simple : en démarrant son application qui aura à sa charge d'appeler un petit bout de code de notre toolkit, tous les MBeans se trouvant sur les autres serveurs JMX (modulo que l'application qui les ait démarrés ait démarré en instanciant notre toolkit) doivent être remonter dans notre serveur JMX courant. Réciproquement, tous les MBeanServer devront enregistrer les MBeans offerts par notre instance d'application.
 
@@ -32,9 +32,9 @@ Bien sûr, encore une fois, cela aurait été trop simple s'il n'y avait pas un 
 
 En outre, un cas particulier lié à la JRE 6 de Sun (Hostpot) a, ici, été traité (du coup, cela rend le code proposé adhérent à notre jdk...) puisque le MXBean `HotpostDiagnostic` a fait l'objet d'une attention particulière...
 
-#Mise en oeuvre
+# Mise en oeuvre
 
-##Intégration de JMX
+## Intégration de JMX
 
 <u>Note</u> : à noter que le code présenté dans cet article comporte quelques raccourcis et n'a pour objectif que de montrer les points clé. Aussi, certaines portions (comme, entre autre, la gestion des threads, des exceptions ou les méthodes `equals()`, `hashCode()` ou `toString()`) ne sont pas présentes par soucis de clarté. Le code complet peut être trouvé sur GitHub : https://github.com/jetoile/jmanager4all.
 
@@ -152,7 +152,7 @@ public class JMXConnectorStubCache implements Serializable {
 ```
 Ce dernier point nous amène au paragraphe suivant, à savoir la récupération des MBeans distants et leur enregistrement.
 
-#Récupération des MBeans distants et enregistrement
+# Récupération des MBeans distants et enregistrement
 
 La récupération des MBeans distants est globalement simple et suit le schéma suivant (cet algorithme ne s'applique pas aux MXBeans) :
 
@@ -438,7 +438,7 @@ final private static Map<String, Class<?>> MXBEAN_MAP = new HashMap<String, Clas
 ```
 Pour le cas particulier du `MXBean HotspotDiagnostic`, je vous laisse le soin de jeter un oeil sur le code... ;-)
 
-#Désenregistrement d'une instance (et donc de ses MBeans associés)
+# Désenregistrement d'une instance (et donc de ses MBeans associés)
 
 Bien entendu, si une instance venait à disparaitre, il est nécessaire de désenregistrer ses `MBeans` pour chaque instance de l'application encore présente.
 
@@ -455,14 +455,14 @@ void handleRemove() throws Exception {
  }
 ```
 
-#Conclusion
+# Conclusion
 On a vu tout au long de cette article comment il était possible d'utiliser JMX coté client (on récupère des `MBeans` distants) mais également coté serveur (on créé des `MBeans`). Bien sûr, la couche JGroups n'est qu'un prétexte mais je trouvais intéressant de pouvoir s'appuyer sur ce dernier pour être notifié de changement dans le système. Si je suis motivé, j'intégrerais peut être une implémentation NoSQL pour stocker et partager les JMXConnector ou un truc du genre... ;-)
 
 Par contre, je n'ai pas testé le comportement dans le cas où des notifications seraient émises... en outre, si un service de __Relation__ JMX était utilisé, je pense que cela pourrait poser quelques soucis...
 
 A noter que je suis tombé tout récemment sur une [autre solution](http://blog.infin-it.fr/2010/08/05/aggregateur-jmx-2/) (que je n'ai pas testé) qui permet d'aggréger des informations JMX au sein d'un même serveur `MBeanServer`. La cible n'est pas tout à fait identique mais peut être suffisante pour la plupart des cas... par contre, il faut aimer Spring... ;-)
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 * Site officiel de JGroups : http://www.jgroups.org/
 * Wiki de JGroups : http://community.jboss.org/wiki/JGroups

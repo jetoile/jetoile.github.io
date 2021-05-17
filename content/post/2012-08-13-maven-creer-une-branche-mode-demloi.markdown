@@ -86,10 +86,10 @@ avec la déclaration suivante :
 </plugin>
 ```
 
-#Conclusion
+# Conclusion
 
 En conclusion de ce court article, pas grand chose à ajouter sauf que le goal `branch` du plugin __release__ est vraiment très utile puisqu'il permet en une seule commande de faire plusieurs opérations qui se trouvent être assez rébarbatives.
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html`

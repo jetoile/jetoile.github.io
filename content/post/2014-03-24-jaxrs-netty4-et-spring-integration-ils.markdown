@@ -27,7 +27,7 @@ Le code se trouve sur Github [ici](https://github.com/jetoile/spring-integration
 
 <!-- more -->
 
-#Présentation du usecase
+# Présentation du usecase
 
 Le service qui est exposé est un service de type REST répondant à un appel de type POST et acceptant du JSON.
 
@@ -41,9 +41,9 @@ Ainsi, avec la commande suivante, on devrait voir un incrément du nombre à cha
 ```bash
 watch 'ls *.msg | wc -l'
 ```
-#Mise en oeuvre
+# Mise en oeuvre
 
-##Dépendances
+## Dépendances
 
 A titre informatif, les dépendances ainsi que leurs versions sont les suivantes (au format gradle) :
 ```text
@@ -71,7 +71,7 @@ dependencies {
 
 Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId __org.codehaus__). En effet, Jackson 2 et JodaTime m'ont fait des misères et je n'ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1... ;-)
 
-##DTO
+## DTO
 
 Un DTO annoté JAX-B (compris par Jackson) sera utilisé pour représenter le JSON reçu dans le corps du POST.
 
@@ -105,7 +105,7 @@ Ici, la méthode `toString()` a été overridé car utilisé lors de l'affichage
 
 Jusque là, ça ne casse pas trois pattes à un canard ;-)
 
-##Intégration complète de Spring Integration
+## Intégration complète de Spring Integration
 
 Pour rappel, Spring Integration est une implémentation des [EIP](/2009/12/eip-quest-ce-que-cest.html) (_Enterprise Integration Patterns_) et propose donc une mise en oeuvre de l'architecture __Pipes and Filters__.
 
@@ -164,7 +164,7 @@ On y remarque la lecture du fichier de configuration, ainsi que les activations 
 
 En soit, il s'agit d'une configuration extrèmement simple pour toute personne connaissant un minimum Spring Integration, donc encore une fois, rien de compliqué... ;-)
 
-##Gateway Spring Integration
+## Gateway Spring Integration
 
 Afin de rentrer dans le vif du sujet, ce paragraphe montrera comment il est possible de transformer notre petit serveur Resteasy-Netty4 en une Gateway Spring Integration.
 
@@ -287,7 +287,7 @@ public class Client {
 
 Juste un dernier point : le lecteur un peu concentré aura remarqué qu'il y a, ici, un petit meli melo dans la lecture des fichiers de configuration (parfois chargé par Spring, parfois chargé via commons-configuration). Je laisse cependant ces points en suspens et à la discrétion de la personne qui utilisera et lira cet article (ou qui aura atteint ce point...) (s'il y en a... ;-) ).
 
-##Intégration de Metrics
+## Intégration de Metrics
 
 L'objectif de cet article étant de monter une stack "presque complète", il est, bien sûr, primordial de fournir les bonnes métriques.
 
@@ -340,7 +340,7 @@ Pour montrer que je ne mens pas, on a donc (ici, utilisation de Hawt.io via Jolo
 
 On constate encore une fois la simplicité de la chose!
 
-##Intégration de Jolokia
+## Intégration de Jolokia
 
 De même que pour notre paragraphe précédent, l'intégration de Jolokia se fera ici par configuration Spring plutôt que de manière programmatique.
 
@@ -384,17 +384,17 @@ Pour ce faire, il suffit de tirer la dépendance __'org.jolokia', name: 'jolokia
 
 Et... c'est tout... Jolokia est intégré à notre petite stack.
 
-##Intégration de Swagger
+## Intégration de Swagger
 
 Concernant l'intégration de Swagger, cela ne diffère en rien de mon article précédent. Même problème de CORS, même hack...
 
 ![medium](http://4.bp.blogspot.com/-ev6GX1U7SEs/Ux8fxhWTl_I/AAAAAAAABRo/srY62BOqZS4/s1600/si-swagger.png)
 
-##Branchement des plugins Maven Appassembler et Assembly
+## Branchement des plugins Maven Appassembler et Assembly
 
 De même que pour Swagger, rien à signaler de particulier par rapport à mon article précédent... cela fonctionne sans problème ;-)
 
-#Conclusion
+# Conclusion
 
 En conclusion, on peut constater que l'intégration de Spring integration dans notre petite stack est tout aussi trivial que le reste!
 

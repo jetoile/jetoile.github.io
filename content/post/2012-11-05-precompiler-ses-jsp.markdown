@@ -22,7 +22,7 @@ Aussi, dans une première partie, je présenterai le contexte, pour ensuite abor
 
 <!-- more -->
 
-#Contexte
+# Contexte
 
 Cette partie présentera le contexte de l'application web où j'ai eu à mettre en oeuvre une validation des jsp. Le but de l'application web étant d'offrir aux utilisateurs un site web, elle disposait de nombreuses pages jsp.
 
@@ -39,11 +39,11 @@ La partie compilation des jsp ayant pour objectif de prévenir au plus tôt l'é
 
 Embarquer les jsp pré-compilés dans le livrable final (ie. le war) n'était donc pas la cible.
 
-#Mise en oeuvre
+# Mise en oeuvre
 
-##jspc-maven-plugin
+## jspc-maven-plugin
 
-###Mise en oeuvre
+### Mise en oeuvre
 
 Dans ma première tentative de mise en oeuvre, j'ai utilisé le goal compile du plugin __jspc-maven-plugin__ pour tomcat6 :
 
@@ -211,7 +211,7 @@ Au final, on aura donc le code suivant :
 </dependencies>
 ```
 
-###Conclusion
+### Conclusion
 
 Au final, ce plugin m'aura bien fait suer (et là, je n'ai fait qu'un rapide condenser de mes recherches et de mes galères - modification des pom en cascade, recherche internet, ...), mais bon... la solution est fonctionnelle même si elle demande une petite recompilation du plugin.
 
@@ -219,9 +219,9 @@ Cependant, le plugin __jspc-maven-plugin__ ne propose pas (si j'ai bien regardé
 
 Du coup, cette solution n'a pas été retenue...
 
-##jsp-compile-maven-jetty
+## jsp-compile-maven-jetty
 
-###Mise en oeuvre
+### Mise en oeuvre
 
 Dans cette deuxième tentative de mise en oeuvre, j'ai utilisé le goal `jspc` du plugin __jsp-compile-maven-plugin__. On peut se demander pourquoi choisir le plugin Jetty alors que la cible était Tomcat. La réponse est que, vu que ce qui m'intéressait était la partie compilation pure et non la partie packaging, cela m'était égal.
 
@@ -296,15 +296,15 @@ Aussi, avec mon code de test qui utilise de superbes "switch case" avec des Stri
 
 En effet, après analyses (si je ne me suis pas fourvoyé...), le code source ([git://git.codehaus.org/jetty-project.git](git://git.codehaus.org/jetty-project.git)) ne positionne pas le `compilerTarget` sur __JspC__ et donc, à part hacker le plugin, impossible de surmonter ce manque...
 
-###Conclusion
+### Conclusion
 
 On a vu que le plugin __jetty-jspc-maven-plugin__ était très simple à mettre en oeuvre mais qu'il manquait quelques fonctionnalités comme la possibilité de compiler avec une version supérieure au jdk 1.5.
 
 Du coup, cette solution n'a pas été retenue...
 
-##Ant
+## Ant
 
-###Mise en oeuvre
+### Mise en oeuvre
 
 Dans cette troisième tentative de mise en oeuvre, j'ai gentiment suivi les préconisations présentes sur le site de Tomcat pour précompiler les jsp (http://tomcat.apache.org/tomcat-6.0-doc/jasper-howto.html) :
 
@@ -506,13 +506,13 @@ Afin de palier à ce point, il convient de référencer en dépendance du plugin
 </dependency>
 ```
 
-###Conclusion
+### Conclusion
 
 Au final, le plugin Ant fonctionne bien (même si je ne suis pas fan d'appeler du Ant via Maven...) et répond au besoin de mon cahier des charges.
 
 Même si cela m'embête, c'est la solution qui a été retenue... :'(
 
-#Conclusion
+# Conclusion
 
 En conclusion, comme vous avez pu le constater, j'ai bien galéré avec une tache enfantine qui n'était qu'une simple validation des jsp par compilation.
 

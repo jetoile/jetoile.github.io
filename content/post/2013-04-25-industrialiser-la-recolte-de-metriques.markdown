@@ -30,7 +30,7 @@ Evidemment, l'objectif n'étant pas d'obtenir ces métriques de manière "one sh
 
 # HTML et ses bonnes pratiques
 
-##Contexte
+## Contexte
 
 Parmi les outils courants pour récupérer une évaluation d'une page HTML au sein d'un navigateur, il existe YSlow et Pagespeed. Ces deux outils fournissent un ensemble de notes qui permettent de qualifier les _bonnes_ pratiques tels que la minification des fichiers Javascript. 
 
@@ -43,7 +43,7 @@ Parmi les outils courants pour récupérer une évaluation d'une page HTML au se
 * la récupération des métriques,
 * la présentation de ces métriques dans un _dashboard_ afin qu'elles soient lisibles et qu'il soit possible de voir leur évolution dans le temps.
 
-##Solution et mise en oeuvre
+## Solution et mise en oeuvre
 Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.
 
 Du coté de YSlow, cela est facilement faisable en s'appuyant sur phantomjs.
@@ -95,7 +95,7 @@ Cependant, YSlow ne prenant en entrée qu'une url, un job doit être créé pour
 
 Coté Pagespeed, j'avoue ne pas avoir cherché mais le chapitre suivant proposera une solution simple et efficace pour obtenir une visualisation et une historisation de ces métriques.
 
-##Conclusion
+## Conclusion
 
 Comme on a pu le constater, la génération de métriques YSlow et/ou Pagespeed oblige (je n'ai pas trouvé d'autres moyens plus simples :'( ) à passer par des frameworks tierces tels que phantomjs ou nodejs.
 
@@ -103,9 +103,9 @@ Pour le lecteur qui a su lire entre les lignes, il a pu constater qu'il y a deux
 
 En outre, du fait que les résultats obtenus l'ont été par page, pour un site complet, cela peut vite devenir... rébarbatif (pour rester poli)... pas glop...
 
-#Vitesse de rendu
+# Vitesse de rendu
 
-##Contexte
+## Contexte
 
 Dans la première partie, nous avons vu comment il était possible de générer des rapports d'exécution de bonnes pratiques d'une page HTML. Dans ce chapitre, nous nous intéresserons à la récupération de métriques de rendu d'une page au sens temps de récupération de ses différents éléments. 
 
@@ -127,7 +127,7 @@ Pour la partie génération, plusieurs pistes ont été étudiées :
 
 Coté affichage et historisation, nous verrons que cela a, encore une fois, été un peu galère même si les résultats obtenus sont satisfaisant (ouf... heureusement).
 
-##Solution et mise en oeuvre
+## Solution et mise en oeuvre
 
 La première piste étudiée a été celle utilisant le plugin loadpage.js de phantomjs : 
 ```bash
@@ -169,7 +169,7 @@ Du coté de [HarStorage](https://code.google.com/p/harstorage/), son [installati
 
 ![medium](http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7M/LzB4r9hRU98/s1600/01-timeline-harstorage5.png)
 
-##Conclusion
+## Conclusion
 
 On a vu dans ce chapitre comment il était possible de générer et de visualiser des timeline de rendu de pages HTML. La solution HarStorage me semble, dans le cadre d'une phase d'industrialisation, la solution la plus aboutie en permettant de conserver un historique pour évaluer l'évolution de la page tout en fournissant un moyen de visualiser les métriques de PageSpeed (chose qui n'avait, pour rappel, pas été abordé dans le chapitre précédent).
 
@@ -177,15 +177,15 @@ Cependant, on a pu constater qu'il était nécessaire de faire pas mal d'actions
 
 En outre, le même constat peut être fait que pour le chapitre précédent : les résultats obtenus l'ont été par page... pas glop...
 
-#Automatisation totale
+# Automatisation totale
 
-##Contexte
+## Contexte
 
 On a vu dans les chapitres précédent comment générer des rapports au format HAR via phantomjs. Cependant, dans le cas où des tests d'acceptance sont déjà mis en place sur le projet via, par exemple, Selenium et Cucumber JVM, il peut être judicieux de se servir de l'existant pour intégrer la génération des rapports ainsi que la remonté de ces dernières dans l'outils de DashBoard.
 
 Cela permet ainsi de faire une pierre deux coups, mais également d'éviter les étapes manuelles ou d'avoir à maintenir des jobs jenkins un peu trop techniques.
 
-##Solution et mise en oeuvre
+## Solution et mise en oeuvre
 
 Comme annoncé précédemment, l'objectif de ce chapitre est d'étudier la faisabilité d'intégration de la génération de rapport HAR et leur upload dans HarStorage avec notre trio [Cucumber JVM/FluentLenium/Selenium](http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html).
 
@@ -285,14 +285,14 @@ Feature: harstorage
 #    | firefox |            | http://10.147.2.83:4444/wd/hub |         | win7     |
 ```
 
-##Conclusion
+## Conclusion
 On a vu dans ce paragraphe qu'il était aisé d'intégrer la génération et l'upload d'un fichier HAR issu d'un scénario fonctionnel dans HarStorage.
 
 Cependant, ce mécanisme ne fonctionne malheureusement pas avec phantomjs, ce qui peut forcer à l'utilisation de Selenium Server (à noter que cela n'a pas été testé avec d'autres driver que Firefox).
 
 Enfin, un point essentiel à noter est que par cette méthode, le temps d'exécution du javascript n'est pas remonté dans la timeline. En effet, l'utilisation d'un proxy ne fournit pas cette information alors qu'avec une génération direct d'un fichier HAR via phantomjs, cette donnée est bien présente.
 
-#Conclusion
+# Conclusion
 
 Cet article a montré (enfin je l'espère...) comment il était possible d'automatiser la génération de métrique de rendu des pages HTML  dans une usine logicielle .
 
@@ -304,7 +304,7 @@ Je tiens tout de même à préciser que j'ai été déçu de ne pas trouver une 
 
 Cela pourrait s'expliquer par un manque de maturité de l'environnement Java pour faire du Web 2.0 (sic) ou par une mutation du métier de développeur web qui tendrait vers une meilleure qualité logicielle mais qui n'aurait pas encore assimilé/intégré toutes les contraintes induites par une usine logicielle telle que celles que l'on connait dans notre monde Java... enfin, en gros, il reste du boulot...
 
-#Pour aller plus loin...
+# Pour aller plus loin...
 
 
 * YSlow : http://yslow.org

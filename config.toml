@@ -12,7 +12,7 @@ paginate = 10
   topic = "topics"
 
 [permalinks]
-  post = "/:year/:month/:filename/"
+  post = "/:year/:month/:filename.html"
 
 [params]
   # Shown in the home page

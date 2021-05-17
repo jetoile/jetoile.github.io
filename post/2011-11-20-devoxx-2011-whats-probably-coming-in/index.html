@@ -306,13 +306,13 @@ La semaine dernière, j&rsquo;ai eu la chance d&rsquo;aller à Devoxx en Belgiqu
 <p>Un des prérequis principals de cette nouvelle version de la spécification est donc la simplification&hellip; simplification mais pas à n&rsquo;importe quel prix puisqu&rsquo;il était nécessaire de conserver la rétro compatibilité avec les versions ultérieures de la spécification.</p>
 <p>Nigel nous a donc présenté certaines des pistes qu&rsquo;ils avaient (pistes encore ouvertes à discussion).</p>
 <p>Ce sont ces dernières que je vais essayer de retranscrire ci-dessous dans l&rsquo;ordre dans lesquelles il les a énoncé.</p>
-<p>#Simplification sur la création de Sessions
-Afin de simplifier l&rsquo;API de JMS pour créer une Session, Nigel nous a présenté deux pistes :</p>
+<h1 id="simplification-sur-la-création-de-sessions">Simplification sur la création de Sessions</h1>
+<p>Afin de simplifier l&rsquo;API de JMS pour créer une Session, Nigel nous a présenté deux pistes :</p>
 <ul>
 <li>Ajout d&rsquo;une méthode <code>createSession(SessionMode sessionMode)</code> pour JavaSE où la classe SessionMode pourrait être une classe ayant comme variable d&rsquo;instance le mode de transaction et le type d&rsquo;acknowledge.</li>
 <li>Ajout d&rsquo;une méthode <code>createSession()</code> qui serait utilisée et présente seulement pour JEE.</li>
 </ul>
-<p>#Supprimer la lourdeur des close()</p>
+<h1 id="supprimer-la-lourdeur-des-close">Supprimer la lourdeur des close()</h1>
 <p>Afin de rendre moins verbeuse l&rsquo;utilisation des <code>Connection</code> et des <code>Session</code>, une proposition plausible pourrait être de leur faire implémenter l&rsquo;interface <code>java.lang.AutoCloseable</code>.</p>
 <p>Ainsi, il serait alors possible d&rsquo;avoir les résultats suivants (pour rappel, il ne s&rsquo;agit que de propositions car cela est toujours à l&rsquo;étude) :</p>
 <ul>
@@ -366,18 +366,18 @@ TextMessage textMessage<span style="color:#f92672">;</span>
     <span style="color:#75715e">//todo
 </span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>#Autres simplifications</p>
+</code></pre></div><h1 id="autres-simplifications">Autres simplifications</h1>
 <p>Les autres simplifications d&rsquo;API envisageables pourraient être :</p>
 <ul>
 <li>de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : <code>producer.send(String/Serializable);</code> ). Cependant, ce type d&rsquo;API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types <code>BytesMessage</code> ou <code>StreamMessage</code>. A ajouter à cela la question de son pendant pour la réception</li>
 <li>de simplifier la gestion des <code>DurableSubscriber</code> (<a href="http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic,">http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic,</a> java.lang.String)), qui, au jour d&rsquo;aujourd&rsquo;hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d&rsquo;une utilisation conjointe avec les EJB 3.2</li>
 </ul>
-<p>#Vers le futur&hellip;</p>
+<h1 id="vers-le-futur">Vers le futur&hellip;</h1>
 <p>Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.</p>
 <p>Ainsi, JMS 2.0 devra, pour répondre aux besoins des problématiques de type SaaS (<em>Software As A Service</em>), permettre de déclarer ses ressources créées dans un serveur d&rsquo;applications et de les enregistrer dans un annuaire JNDI (comme c&rsquo;est actuellement le cas pour les DataSource).</p>
 <p>Pour ce faire, de nouvelles annotations pourraient voir le jour (par exemple : <code>@JMSConnectionFactoryDefinition</code> et <code>@JMSDestinationDefinition</code>) mais également un SPI (<em>Service Provider Interface</em>) pour le faire de manière programmatique.</p>
 <p>Concernant une meilleure intégration avec les serveurs d&rsquo;applications (ce qui permettrait d&rsquo;utiliser n&rsquo;importe quel JMS Provider dans n&rsquo;importe quel serveur d&rsquo;application JEE), Nigel propose la solution de JCA (<em>Java Connector Architecture</em>), un peu comme ce qui existe avec le drivers de bases de données.</p>
-<p>#Nouvelles features</p>
+<h1 id="nouvelles-features">Nouvelles features</h1>
 <p>Concernant les nouvelles features de l&rsquo;API, Nigel nous a ensuite présenté ce qui pourrait arriver, à savoir (en vrac) :</p>
 <ul>
 <li>l&rsquo;émission de messages avec un acquittement asynchrone du serveur,</li>
@@ -387,7 +387,7 @@ TextMessage textMessage<span style="color:#f92672">;</span>
 <p>Il se pourrait également que la propriété <code>JMSXDeliveryCount</code> ne soit plus optionnelle, ce qui permettrait aux serveurs d&rsquo;applications de mieux gérer le <em>flood</em>.</p>
 <p>De même, la gestion des Topics hiérarchiques pourraient être rendue obligatoire.</p>
 <p>Enfin, une meilleure gestion des batch pourrait être possible via de nouvelles API comme par exemple l&rsquo;introduction de la méthode <code>receive(Message[])</code>.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>En conclusion, je suis assez mitigé par cette session.</p>
 <p>En effet, autant, je trouve que certaines propositions permettraient de rendre moins verbeuses l&rsquo;utilisation de JMS, autant, je ne suis pas convaincu que pouvoir faire la même chose de différentes manières soit une bonne chose (et, cela, même si ça simplifie le travail du développeur&hellip;).</p>
 <p>En outre, je trouve que, pour la majorité des propositions (même si elles sont totalement viables), l&rsquo;axe de JEE est trop important.</p>

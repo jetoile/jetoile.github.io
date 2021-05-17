@@ -270,7 +270,7 @@
 <p>Un des points central de Spark est son utilisation des RDDs (<em>Resilient Distributed Datasets</em>).</p>
 <p>Cet article tentera d&rsquo;expliquer un peu plus précisément ce que sont ces fameux RDDs (enfin, pour être plus précis, il ne s&rsquo;agit (comme à mon habitude) que d&rsquo;une pseudo-traduction du <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">papier</a> de recherche expliquant ses tenants et aboutissants).</p>
 <!-- more -->
-<p>#Introduction</p>
+<h1 id="introduction">Introduction</h1>
 <p>Les frameworks de cluster de calcul tels que <a href="http://cs.brown.edu/~debrabant/cis570-website/papers/dryad.pdf"><em>Dryad</em></a> et ceux basés sur <a href="http://static.googleusercontent.com/media/research.google.com/fr//archive/mapreduce-osdi04.pdf"><em>MapReduce</em></a> ont largement été adoptés pour les analyses de données à grande échelle. Ces systèmes permettent aux utilisateurs d&rsquo;écrire des calculs parallèles en utilisant des opérateurs de haut niveau sans avoir à se soucier de la distribution des unités de calcul ni de la tolérance aux pannes.</p>
 <p>Bien que ces frameworks actuels fournissent de nombreuses abstractions pour accéder aux ressources de calcul du cluster, ils n&rsquo;en fournissent pas pour accéder à la mémoire partagée. Cela les rend inefficace pour une importante classe d&rsquo;applications émergeantes : celle qui doit réutiliser les résultats intermédiaires entre leurs différents calculs. La réutilisation de données est courante dans de nombreux algorithmes <em>itératifs</em> de <em>machine learning</em> et de graphe (comme le <strong>PageRank</strong>, <strong>K-Means</strong> et la régression logique) mais également dans des algorithmes d&rsquo;extraction de données <em>interactive</em> où un utilisateur a besoin d&rsquo;exécuter de multiples requêtes sur un même sous ensemble de données.</p>
 <p>Malheureusement, dans la plupart des frameworks actuels, la seule manière de réutiliser des données entre les calculs (ie. entre deux <em>MapReduce</em> job) est de les écrire dans un système de stockage externe (ie. un système de fichiers distribué). Cela engendre un <em>overhead</em> dû à la réplication de données, aux I/O disques et à la sérialisation.</p>
@@ -285,7 +285,7 @@
 <p>La principale difficulté dans la conception des RDDs a été de définir une interface de programmation qui pouvait palier efficacement à la panne. Les abstractions de stockage en mémoire pour les clusters telles que les mémoires partagées distribuées, les stockages clé/valeur, les bases de données et Piccolo offrent une interface basée sur de petites mises à jours d&rsquo;état mutables. Avec ces interface, les seules manières de fournir de la tolérance à la panne est de répliquer les données entre les machines ou de logger les mise à jours entre les machines. Ces deux approches sont consommatrices pour une charge de travail intensive sur des données puisque cela nécessite un fort transfert de données lors de la copie des informations entre les serveurs (le réseau est beaucoup plus lent que la RAM).</p>
 <p>RDDs fournit, pour sa part, une interface basée sur des transformations &ldquo;grosses mailles&rdquo; (ie. <em>map</em>, <em>filter</em> et <em>join</em>) qui appliquent les mêmes opérations aux données. Cela permet d&rsquo;être résiliant à la panne en loggant les transformations utilisées pour construire l&rsquo;ensemble de données plutôt que les données réelles. Si une partition de RDD est perdue, le RDD dispose de suffisament d&rsquo;informations sur la manière dont il a été produit pour recalculer la partition manquante. Ainsi les données perdues peuvent être récupérées souvent rapidement sans avoir à recourir aux mécanismes de réplication souvent couteux.</p>
 <p>Bien qu&rsquo;une interface basée sur des transformations &ldquo;grosses mailles&rdquo; peut sembler limité, RDDs convient pour beaucoup d&rsquo;applications parallèles qui appliquent naturellement les mêmes opérations à de multiples éléments de données. En effet, RDDs peut répondre efficacement à de nombreux modèles de programmations de type cluster qui ont, jusque là, été traités comme des systèmes séparés.</p>
-<p>#Resilient Distributed Datasets (RDDs)</p>
+<h1 id="resilient-distributed-datasets-rdds">Resilient Distributed Datasets (RDDs)</h1>
 <p>Un RDD est une collection partitionnée d&rsquo;enregistrements en lecture seule qui ne peut être créée que par des opérations déterministes :</p>
 <ul>
 <li>soit à partir de données présentes dans un stockage stable,</li>
@@ -328,16 +328,16 @@
 <li>la récupération après un noeud en échec est plus efficace avec une dépendance étroite puisque seules les partitions parentes perdues doivent être recalculées et que cela peut être fait en parallèle sur différents noeuds. A l&rsquo;inverse, avec une dépendance large, un simple échec d&rsquo;un noeud peut entrainer la perte de plusieurs partitions sur tous les ancêtres d&rsquo;un RDD entraînant une réexécution complète des opérations.</li>
 </ul>
 <p><img src="https://blog.jetoile.fr/images/rdd/rdd_dependencies.png" alt="center" title="crédit photo : https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf"></p>
-<p>#Implémentation</p>
+<h1 id="implémentation">Implémentation</h1>
 <p>Spark est un moteur rapide et général pour le traitement de données à grande échelle. Il permet, entre autre, de lire des données d&rsquo;Hadoop (HDFS ou HBase) en utilisant les API de lecture existantes d&rsquo;Hadoop.</p>
 <p>Ce paragraphe revient sur quelques-unes des parties techniques du système.</p>
-<p>##L&rsquo;ordonnanceur de job</p>
+<h2 id="lordonnanceur-de-job">L&rsquo;ordonnanceur de job</h2>
 <p>L&rsquo;ordonnanceur de Spark utilise la représentation des RDDs présentée précédemment.</p>
 <p>Lorsqu&rsquo;un utilisateur exécute une action sur un RDD, l&rsquo;ordonnanceur examine le graphe d&rsquo;origine des RDD pour construire un DAG (<a href="http://en.wikipedia.org/wiki/Directed_acyclic_graph"><em>Directed Acyclic Graph</em></a>) des étapes à exécuter. Chaque étape (déterminée, soit par les opérations de déplacements de données nécessaires définies par les dépendances larges, soit par une partition déjà calculée qui peut être court circuité par le calcul d&rsquo;un RDD parent) contient une série de transformations chainées avec autant de dépendances étroites que possible. L&rsquo;ordonnanceur exécute alors les tâches pour calculer les partitions manquantes sur chacune des étapes jusqu&rsquo;à l&rsquo;optention du RDD cible.</p>
 <p>L&rsquo;ordonnanceur assigne les tâches aux machines en fonction des données locales. Si une tâche nécessite une partition qui est disponible en mémoire sur un noeud, cette dernière est rappatriée. Sinon, si une tâche calcule une partition pour laquelle le RDD fourni une localisation souhaitée, alors la partition est envoyée à ce noeud.</p>
 <p>Pour les dépendances larges, les enregistrements intermédiaires sont matérialisés sur les noeuds hébergeant la partition parente afin de simplifier la reprise sur erreur.</p>
 <p>Si la tâche échoue, elle est réexécutée sur un autre noeud tant que l&rsquo;étape parente est disponible. Si certaines étapes deviennent inaccessibles, la tâche est re-soumise en parallèle afin de recalculer la partition manquante.</p>
-<p>##Gestion mémoire</p>
+<h2 id="gestion-mémoire">Gestion mémoire</h2>
 <p>Spark fournit 3 options de stockage pour les RDDs persistants :</p>
 <ul>
 <li>stockage en mémoire comme objet java désérialisé,</li>
@@ -348,10 +348,10 @@
 <p>La seconde option permet aux utilisateurs de choisir une représentation plus efficace de la mémoire lorsque l&rsquo;espace est limité. Bien sûr, la performance est moindre que pour la première option.</p>
 <p>La troisième option est utile lorsque les RDDs sont trop larges pour tenir en RAM.</p>
 <p>Afin de gérer la mémoire limitée disponible, la politique d&rsquo;éviction LRU est utilisée pour les RDDs. Lorsqu&rsquo;une nouvelle partition RDD est calculée mais qu&rsquo;il n&rsquo;y a pas suffisamment de place pour la stocker, la partition du RDD le plus anciennement accédée est évincée à moins qu&rsquo;il ne s&rsquo;agisse du même RDD que celui qui doit recevoir la nouvelle partition. Dans ce cas, la vieille partition est conservée en mémoire. Cela est important car la plupart des opérations exécutent des tâches sur un RDD entier. Aussi, la probabilité est forte pour qu&rsquo;une partition déjà en mémoire soit utilisée ultérieurement.</p>
-<p>##Point de contrôle
-Bien que l&rsquo;état initial peut toujours être utilisé pour recalculer les RDDs suite à un échec, cela peut être couteux surtout si la chaine est longue. Ainsi, il peut être utile de disposer d&rsquo;un point de controle des RDD (<em>checkpoint</em>) sur disque.</p>
+<h2 id="point-de-contrôle">Point de contrôle</h2>
+<p>Bien que l&rsquo;état initial peut toujours être utilisé pour recalculer les RDDs suite à un échec, cela peut être couteux surtout si la chaine est longue. Ainsi, il peut être utile de disposer d&rsquo;un point de controle des RDD (<em>checkpoint</em>) sur disque.</p>
 <p>En général, les points de controle sont utiles pour des RDDs qui disposent d&rsquo;un graphe contenant des dépendances larges. Dans les autres cas, cela peut être inutile. Ce point de controle peut être controlé manuellement via le flag <code>REPLICATE</code> de la méthode <code>persist</code>.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>On a vu dans ce court article une première explication de ce qu&rsquo;était les RDDs qui sont la pierre angulaire de Spark.</p>
 <p>Pour ceux qui souhaiteraient avoir plus d&rsquo;informations là-dessus, je les renverrai vers le papier officiel dont est extrait cet article disponible <a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">ici</a> ;-)</p>
 

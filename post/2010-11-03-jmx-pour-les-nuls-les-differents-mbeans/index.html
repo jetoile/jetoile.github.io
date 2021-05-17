@@ -267,7 +267,7 @@
 Mon <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">précédent article</a> portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.</p>
 <p>Ainsi, cette partie traitera des différents MBeans et du concept notification.</p>
 <!-- more -->
-<p>#Table des matières</p>
+<h1 id="table-des-matières">Table des matières</h1>
 <ul>
 <li>JMX, qu&rsquo;est ce que c&rsquo;est?
 <ul>
@@ -328,9 +328,9 @@ Mon <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-part
 </ul>
 </li>
 </ul>
-<p><a name="mbean"></a>
-#MBean
-Un MBean est une classe java concrète qui :</p>
+<p><a name="mbean"></a></p>
+<h1 id="mbean">MBean</h1>
+<p>Un MBean est une classe java concrète qui :</p>
 <ul>
 <li>doit implémenter sa propre interface MBean ou implémenter l’interface <code>DynamicMBean</code>,</li>
 <li>peut implémenter l’interface <code>NotificationBroacaster</code></li>
@@ -339,9 +339,9 @@ Un MBean est une classe java concrète qui :</p>
 <p>Pour un Dynamic MBean (et donc une classe implémentant l’interface <code>DynamicMBean</code>), les opérations et les attributs sont exposés de manière indirecte à l’agent JMX qui invoque alors des méthodes pour déterminer le nom et la nature des opérations et attributs.</p>
 <p>Un MBean n’est pas obligatoirement une classe publique Java. Cependant, elle doit implémenter une interface publique (que ce soit ses propres opérations pour un MBean standard ou l’interface <code>DynamicMBean</code> pour un MBean dynamique).</p>
 <p>En outre, le MBean peut avoir plusieurs constructeurs qui doivent être publiques s’il doit être instancié par un agent.</p>
-<p><a name="mbean_standard"></a>
-##MBean Standard
-Comme il a été vu précédemment que, pour être gérable via un agent JMX, un MBean Standard doit explicitement définir son interface de gestion et doit être conforme à certaines règles de nommage qui sont inspirées du modèle des JavaBean.</p>
+<p><a name="mbean_standard"></a></p>
+<h2 id="mbean-standard">MBean Standard</h2>
+<p>Comme il a été vu précédemment que, pour être gérable via un agent JMX, un MBean Standard doit explicitement définir son interface de gestion et doit être conforme à certaines règles de nommage qui sont inspirées du modèle des JavaBean.</p>
 <p>Ainsi, l’interface de gestion d’un MBean Standard peut être composée de :</p>
 <ul>
 <li>ses constructeurs : seuls les constructeurs publics sont exposés,</li>
@@ -403,9 +403,9 @@ Par exemple, les attributs suivants ne sont pas valides :
 </code></pre></div></ul></td></tr>
 </tbody></table>
 <p>Les opérations JMX peuvent avoir différentes fonctions (comme effectuer une opération interne sur la ressource managée ou renvoyer une valeur) et sont des méthodes Java qui doivent être spécifiées dans l’interface de management (MBean). Ainsi, toute opération qui ne répond pas au design pattern défini par la définition d’attribut JMX est vue comme une opération.</p>
-<p><a name="mbean_dynamic"></a>
-##Dynamic MBean
-Alors que les MBean Standard permettent de gérer des ressources bien définies, les Dynamics MBean offrent une solution plus flexible. En effet, les Dynamics MBean sont des ressources qui sont instrumentés au travers d’une interface prédéfinie qui n’expose les attributs et les opérations qu’à l’exécution. En effet, au lieu d’exposer ses opérations et attributs au travers de méthodes déterminées à l’avance, les Dynamics MBean implémentent une méthode qui retourne tous ses attributs ainsi que la signature de toutes ses méthodes, permettant ainsi de rendre l’exposition dynamique.</p>
+<p><a name="mbean_dynamic"></a></p>
+<h2 id="dynamic-mbean">Dynamic MBean</h2>
+<p>Alors que les MBean Standard permettent de gérer des ressources bien définies, les Dynamics MBean offrent une solution plus flexible. En effet, les Dynamics MBean sont des ressources qui sont instrumentés au travers d’une interface prédéfinie qui n’expose les attributs et les opérations qu’à l’exécution. En effet, au lieu d’exposer ses opérations et attributs au travers de méthodes déterminées à l’avance, les Dynamics MBean implémentent une méthode qui retourne tous ses attributs ainsi que la signature de toutes ses méthodes, permettant ainsi de rendre l’exposition dynamique.</p>
 <p>En fait, un MBean qui implémente l’interface <code>DynamicMBean</code> ne fonctionne pas par introspection comme les MBean Standard mais appelle des méthodes qui lui renvoient les attributs et opérations gérables.</p>
 <p>Ainsi, un MBean Dynamic est une classe Java qui implémente directement ou indirectement (ie. par héritage) l’interface publique <code>DynamicMBean</code>.</p>
 <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCUxCaOtDI/AAAAAAAAAL8/xrRlOQfuDAo/s1600/jmx13.png" alt="center"></p>
@@ -435,9 +435,9 @@ De par sa nature, un Dynamic MBean est susceptible d’évoluer à l’exécutio
 </td></tr>
 </tbody></table>
 <blockquote>
-<p><a name="notification"></a>
-#Notification</p>
+<p><a name="notification"></a></p>
 </blockquote>
+<h1 id="notification">Notification</h1>
 <p>Les interfaces de gestion des MBean permettent à un agent de récupérer ou de modifier la valeur des attributs des ressources ainsi que d’invoquer des opérations sur ces dernières. Cependant, JMX permet également de notifier les applications de gestion en cas de changement d’état du système (et plus particulièrement des ressources).</p>
 <p>Ainsi, JMX propose un modèle pour émettre des événements (appelés <strong>Notification</strong>) fonctionnant sur le principe d’écouteurs : les applications de managements et les autres objets enregistrés peuvent s’enregistrer comme des écouteurs (<code>NotificationListener</code>) du MBean émetteur de notifications (<code>Notification</code>). Il est cependant à noter qu’il ne leur est possible de ne s’enregistrer qu’une seule fois auprès de l’émetteur.</p>
 <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCYqpaFn1I/AAAAAAAAAME/hy9yqTxYLjU/s1600/jmx11_1.png" alt="center"></p>
@@ -454,8 +454,8 @@ De par sa nature, un Dynamic MBean est susceptible d’évoluer à l’exécutio
 <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCZnN_WiiI/AAAAAAAAAMQ/U3qrTB-431c/s1600/jmx12_1.png" alt="center"></p>
 <p>En outre, il est également possible de filtrer les notifications reçues en implémentant l’interface <code>NotificationFilter</code>.</p>
 <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCZ3MbN7WI/AAAAAAAAAMU/kM4ERUGeCBg/s1600/jmx10_1.png" alt="center"></p>
-<p><a name="mbean_open"></a>
-#Open MBean</p>
+<p><a name="mbean_open"></a></p>
+<h1 id="open-mbean">Open MBean</h1>
 <p>Les Open MBean sont un-sous type des Dynamic MBean. En fait, il s’agit de Dynamic MBean mais dont le type des attributs et des signatures des opérations a été normalisé afin de permettre une meilleure interopérabilité entre le MBean et l’interface de management. Ainsi, l’application de management et les Open MBean peuvent partager et utiliser les données de management (attribut) et invoquer les opérations sans nécessiter une recompilation, un ré-assemblement ou un linkage dynamique, opérations qui nécessiteraient que l’application de management ait accès aux classes Java de l’agent si les types n’étaient pas normalisés.</p>
 <p>Cependant, les Open MBean ne sont que des Dynamic MBean, c&rsquo;est-à-dire que c’est à la charge du développeur de vérifier qu’ils n’utilisent que les types définis supportés par les Open MBean.</p>
 <p>Aussi, la méthode <code>getMBeanInfo()</code> doit retourner une instance d’un <code>OpenMBeanInfoSupport</code> plutôt qu’une instance d’un <code>MBeanInfo</code> (pour rappel, un Dynamic MBean doit implémenter l’interface <code>DynamicMBean</code> qui possède la méthode <code>getMBeanInfo()</code> et qui renvoie un objet de type <code>MBeanInfo</code>).</p>
@@ -559,9 +559,9 @@ Pour développer un Open MBean, il faut :<br />
 </ul>
 </td></tr>
 </tbody></table>
-<p><a name="mbean_model"></a>
-#Model MBean
-Un Model MBean est un MBean générique configurable ayant pour objectif de fournir un patron de MBean pouvant être utilisé simplement par n’importe quelles ressources. Il s’agit, en fait, d’un MBean Dynamic particulier dont l’interface définie une structure qui, lorsqu’elle est implémentée, fournie un MBean avec un comportement par défaut. Ces Model MBean devant être supportés par les agents JMX, ils peuvent être utilisés par n’importe quels applications, ressources et services pour créer un objet gérable à l’exécution : les utilisateurs n’ont qu&rsquo;a instancier un Model MBean, configurer son comportement par défaut et l’enregistrer au sein de l’agent JMX.</p>
+<p><a name="mbean_model"></a></p>
+<h1 id="model-mbean">Model MBean</h1>
+<p>Un Model MBean est un MBean générique configurable ayant pour objectif de fournir un patron de MBean pouvant être utilisé simplement par n’importe quelles ressources. Il s’agit, en fait, d’un MBean Dynamic particulier dont l’interface définie une structure qui, lorsqu’elle est implémentée, fournie un MBean avec un comportement par défaut. Ces Model MBean devant être supportés par les agents JMX, ils peuvent être utilisés par n’importe quels applications, ressources et services pour créer un objet gérable à l’exécution : les utilisateurs n’ont qu&rsquo;a instancier un Model MBean, configurer son comportement par défaut et l’enregistrer au sein de l’agent JMX.</p>
 <p>En fait un Model MBean est constitué d’un ensemble d’interfaces et de classes concrètes fournit par l’agent JMX (qui doit fournir une implémentation de la classe <code>RequiredModelMBean</code> et qui a pour objectif de fournir un comportement par défaut).</p>
 <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCd8pEaVUI/AAAAAAAAAM8/zp_uL_-y7p8/s1600/jmx29.png" alt="medium"></p>
 <p>Un MBean Server est donc un repository et factory de Model MBean qui peuvent être obtenus au travers de l’agent JMX afin de rendre une ressource gérable : le développeur n’a pas besoin de fournir une implémentation de cette classe mais juste la configurer à l’exécution afin d’exposer l’interface d’administration et de supervision nécessaire à la ressource.</p>
@@ -654,7 +654,7 @@ Il est à noter, qu’actuellement, il n’existe pas de standardisation de la r
 Une liste exhaustive des champs prédéfinis des descripteurs peut être trouvée dans la version agrégée de la spécification <a href="http://download.oracle.com/javase/6/docs/technotes/guides/jmx/JMX_1_4_specification.pdf">JMX au chapitre 4.5 Predefined Descriptor Fields</a>.
 </td></tr>
 </tbody></table>
-<p>#Le mot de la fin de cette partie</p>
+<h1 id="le-mot-de-la-fin-de-cette-partie">Le mot de la fin de cette partie</h1>
 <p>Ainsi s&rsquo;achève cette partie qui a permis de voir les notions de MBeans (en particulier les différences entre les différents MBeans) et de Notification.</p>
 
   

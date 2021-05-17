@@ -282,7 +282,7 @@
 <img src="http://2.bp.blogspot.com/-MSYG8ZCqVAE/TfOEVNKnNfI/AAAAAAAAAXs/k6heNnlMZhg/s1600/ubuntu04.png" alt="center"></p>
 <p>Entraînant, bien sûr, une erreur lors de son exécution :
 <img src="http://1.bp.blogspot.com/-qdZH3XNVpns/TfOFJ5O3xYI/AAAAAAAAAXw/2ueSn_2rZ9s/s1600/ubuntu05.png" alt="center"></p>
-<p>#Correctif</p>
+<h1 id="correctif">Correctif</h1>
 <p>Du coup, après une ou deux recherche sur mon ami google, je suis tombé sur le <a href="https://bugs.launchpad.net/ubuntu/+source/bash-completion/+bug/769866">bug suivant</a>.</p>
 <p>En fait, pour résumer, il semble que cela vienne du script de complétion utilisé par bash.</p>
 <p>Aussi pour corriger ce problème, il ne vous reste plus qu&rsquo;à éditer le fichier <code>/etc/bash_completion</code> avec les bons droits et à modifier sa ligne 1587 pour y remplacer <code>default</code> par <code>filenames</code>.</p>

@@ -272,7 +272,7 @@ Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-i
 <li><code>AttributeList</code></li>
 </ul>
 <!-- more -->
-<p>#Table des matières</p>
+<h1 id="table-des-matières">Table des matières</h1>
 <ul>
 <li>JMX, qu&rsquo;est ce que c&rsquo;est?
 <ul>
@@ -333,9 +333,9 @@ Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-i
 </ul>
 </li>
 </ul>
-<p><a name="objectName"></a>
-#ObjectName
-Un nom d&rsquo;objet permet d&rsquo;identifier un MBean dans le MBean Server de manière unique. L&rsquo;application de supervision et d&rsquo;administration utilise ce nom unique pour identifier le MBean cible.</p>
+<p><a name="objectName"></a></p>
+<h1 id="objectname">ObjectName</h1>
+<p>Un nom d&rsquo;objet permet d&rsquo;identifier un MBean dans le MBean Server de manière unique. L&rsquo;application de supervision et d&rsquo;administration utilise ce nom unique pour identifier le MBean cible.</p>
 <p>La classe <code>ObjectName</code> représente ce nom unique dans le MBean Server et est constitué :</p>
 <ul>
 <li>d&rsquo;un nom de domaine,</li>
@@ -377,21 +377,21 @@ Socrates:description=Printer,type=laser,date=1993
 </li>
 <li>&ldquo;<em>Domain:description=P</em>,*&rdquo; renverra les mêmes résultats que la requête précédente.</li>
 </ul>
-<p><a name="objectInstance"></a>
-#ObjectInstance</p>
+<p><a name="objectInstance"></a></p>
+<h1 id="objectinstance">ObjectInstance</h1>
 <p>La classe <code>ObjectInstance</code> permet de lier le nom d&rsquo;un objet MBean à sa classe Java. C&rsquo;est la seule description possible d&rsquo;un MBean dans le MBean Server puisque l&rsquo;accès à un MBean par sa référence n&rsquo;est pas autorisé.</p>
 <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk7jhfsxWI/AAAAAAAAAOE/izV9iyFNQmc/s1600/jmx40.png" alt="center">
-<a name="attribute"></a>
-##Attribute et AttributeList</p>
+<a name="attribute"></a></p>
+<h2 id="attribute-et-attributelist">Attribute et AttributeList</h2>
 <p>Les classes <code>Attribute</code> et <code>AttributeList</code> représente les attributs et leurs valeurs d&rsquo;un MBean. Elles contiennent le nom des attributs sous forme de chaîne de caractères et leurs valeurs sous forme d&rsquo;objet de type <code>ObjectInstance</code>.
 <img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TOk722T85fI/AAAAAAAAAOI/HTXxjiZt06o/s1600/jmx41.png" alt="center"></p>
 <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk8Go3ihYI/AAAAAAAAAOM/kE0Z7RzO6NQ/s1600/jmx42.png" alt="center"></p>
-<p><a name="exception"></a>
-##Les exceptions
-JMX propose un ensemble d&rsquo;exceptions qui peuvent principalement être levées par le MBean Server ou les services de l&rsquo;agent JMX qui effectuent les opérations sur le MBean lorsque le code de ce dernier lève une exception.</p>
+<p><a name="exception"></a></p>
+<h2 id="les-exceptions">Les exceptions</h2>
+<p>JMX propose un ensemble d&rsquo;exceptions qui peuvent principalement être levées par le MBean Server ou les services de l&rsquo;agent JMX qui effectuent les opérations sur le MBean lorsque le code de ce dernier lève une exception.</p>
 <p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TOk89656tOI/AAAAAAAAAOU/mGlxu_K6NJo/s1600/jmx73.png" alt="medium">
 <img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOk8v-NM4II/AAAAAAAAAOQ/m7Edr965FKk/s1600/jmx72.png" alt="medium"></p>
-<p>#Le mot de la fin de cette partie</p>
+<h1 id="le-mot-de-la-fin-de-cette-partie">Le mot de la fin de cette partie</h1>
 <p>Nous avons vu dans cette partie les objets de base manipulés par JMX. Dans les parties suivantes, nous verrons plus précisément la notion de MBean Server.</p>
 
   

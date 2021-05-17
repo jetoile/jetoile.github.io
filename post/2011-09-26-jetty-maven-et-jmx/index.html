@@ -273,7 +273,7 @@
 <p>Pour ce faire, je présenterai dans un premier temps le contexte, puis comment cela peut être mise en œuvre.
 Bien sûr, cet article montre comment j&rsquo;ai fait mais il ne représente pas la seule manière de faire&hellip; ;-). En outre, il ne présente rien de novateur mais je me suis dit que cela pouvait toujours être utile afin d&rsquo;éviter de faire perdre du temps à d&rsquo;autres personnes.</p>
 <!-- more -->
-<p>#Contexte</p>
+<h1 id="contexte">Contexte</h1>
 <p>Ce paragraphe présente mes motivations pour avoir eu un besoin d&rsquo;une utilisation d&rsquo;un Jetty embedded à Maven en activant la couche JMX car, c&rsquo;est vrai, ce n&rsquo;est pas un besoin très courant et qu&rsquo;il peut même sembler, au premier abord, paraitre un peu stupide (en effet, utiliser un Jetty embedded répond plutôt à un besoin de poste de développement ou au pire (et je dis bien au pire!!) à un pseudo TU qui n&rsquo;est, du coup, pas un TU&hellip; (ndlr : enfin, encore une fois, je diverge&hellip; ;-) )).</p>
 <p>En fait, pour les besoins d&rsquo;une démonstration, je voulais juste présenter une petite application web qui remontait des métriques via JMX. N&rsquo;ayant pas foncièrement envie d&rsquo;avoir à décompresser un Jetty sur mon poste, je me suis dit qu&rsquo;un Jetty embedded dans Maven suffisait largement à ma petite démo.</p>
 <p>En outre, cela offrait également la possibilité à n&rsquo;importe qui de rejouer la démo sans avoir à installer localement un conteneur de Servlets et sans à avoir à modifier le paramétrage de ce dernier pour activer la couche JMX de la JVM.</p>
@@ -282,14 +282,14 @@ Bien sûr, cet article montre comment j&rsquo;ai fait mais il ne représente pas
 <p>Spring 3 sera également utilisé pour lier le tout&hellip;</p>
 <p>En fait, si vous me demandez pourquoi j&rsquo;ai branché Spring pour une application ausi simple, c&rsquo;est, en fait, que JMX n&rsquo;était pas le seul composant que je voulais montrer pendant la petite démonstration&hellip;</p>
 <p>Si vous avez l&rsquo;esprit chagrin et que vous me re-demandez pourquoi je n&rsquo;ai pas utilisé un aspect, c&rsquo;est que l&rsquo;aspect était justement l&rsquo;autre aspect de ma démo ;-).</p>
-<p>#Mise en oeuvre
-Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<p>Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
 <ul>
 <li>Le code de l&rsquo;application web utilisé.</li>
 <li>La configuration Maven utilisée permettant de démarrer l&rsquo;application web dans un Jetty embedded.</li>
 <li>Les subtilités de la configuration à effectuer pour ajouter la couche JMX.</li>
 </ul>
-<p>#Application web cible</p>
+<h1 id="application-web-cible">Application web cible</h1>
 <p>Comme annoncé précédemment, notre application web cible se compose de :</p>
 <ul>
 <li>un Servlet,</li>
@@ -299,7 +299,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
 <li>et un fichier de contexte Spring.</li>
 </ul>
 <p>Il est à noter qu&rsquo;elle utilisera la spécification 2.5 des Servlets afin de permettre, dans les parties suivantes, de montrer la différence de configuration qu&rsquo;il existe entre Jetty 6 et 7.</p>
-<p>##Code du Servlet</p>
+<h2 id="code-du-servlet">Code du Servlet</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>SimpleServlet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
  
@@ -320,7 +320,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>On constate que le Servlet est basique. Il n&rsquo;y a donc rien à dire dessus si ce n&rsquo;est la récupération du POJO <em>proxifié</em> par Spring pour incrémenter un compteur qui sera exposé en JMX.</p>
-<p>##Code du POJO utilisé comme MBean Standard</p>
+<h2 id="code-du-pojo-utilisé-comme-mbean-standard">Code du POJO utilisé comme MBean Standard</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleCounter</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> nbGet <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
  
@@ -337,7 +337,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l&rsquo;attribut <code>nbGet</code> accessible en lecture/écriture par la couche cliente JMX.</p>
-<p>##Code de la jsp</p>
+<h2 id="code-de-la-jsp">Code de la jsp</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#960050;background-color:#1e0010">&lt;</span>%@ page language=&#34;java&#34; contentType=&#34;text/html; charset=UTF-8&#34; pageEncoding=&#34;UTF-8&#34;%&gt;
 <span style="color:#75715e">&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34; &#34;http://www.w3.org/TR/html4/loose.dtd&#34;&gt;</span>
 <span style="color:#f92672">&lt;html&gt;</span>
@@ -351,7 +351,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
     <span style="color:#f92672">&lt;/body&gt;</span>
 <span style="color:#f92672">&lt;/html&gt;</span>
 </code></pre></div><p>Rien de particulier non plus à dire sur la jsp&hellip;</p>
-<p>##Code du web.xml</p>
+<h2 id="code-du-webxml">Code du web.xml</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;web-app</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.5&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee 
 </span><span style="color:#e6db74"> http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;</span><span style="color:#f92672">&gt;</span>
  <span style="color:#f92672">&lt;context-param&gt;</span>
@@ -378,7 +378,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
  <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
 <span style="color:#f92672">&lt;/web-app&gt;</span>
 </code></pre></div><p>Le fichier descripteur <code>web.xml</code> est classique donc rien de nouveau sur les tropiques ;-). Comme dit plus haut, c&rsquo;est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.</p>
-<p>##Code du contexte Spring</p>
+<h2 id="code-du-contexte-spring">Code du contexte Spring</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans
 </span><span style="color:#e6db74"> http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span><span style="color:#f92672">&gt;</span>
@@ -397,7 +397,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
  <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.demo.jmx.SimpleCounter&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;simpleCounter&#34;</span><span style="color:#f92672">&gt;&lt;/bean&gt;</span>
 <span style="color:#f92672">&lt;/beans&gt;</span>
 </code></pre></div><p>Concernant le fichier descripteur de Spring, on constate que la classe <code>MBeanServerFactoryBean</code> de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c&rsquo;est le <code>MBeanExporter</code> qui a la charge de l&rsquo;enregistrement du MBean injecté.</p>
-<p>#Application web exécutable via Jetty au sein de Maven</p>
+<h1 id="application-web-exécutable-via-jetty-au-sein-de-maven">Application web exécutable via Jetty au sein de Maven</h1>
 <p>Afin de permettre une exécution de notre application web dans un Jetty embedded dans Maven, il faut, bien sûr, une structure Maven.</p>
 <p>Elle est la suivante :
 <img src="http://3.bp.blogspot.com/-q2jJEYSygfg/TnErFlaNEDI/AAAAAAAAAag/2vgwO_zYc6A/s1600/jmx-sample-tree.png" alt="center"></p>
@@ -555,7 +555,7 @@ Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn -Pjetty6 jetty:run
 </code></pre></div><p>ou :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn -Pjetty7 jetty:run
-</code></pre></div><p>##Activation de JMX</p>
+</code></pre></div><h2 id="activation-de-jmx">Activation de JMX</h2>
 <p>Après avoir montré l&rsquo;application web ainsi que la configuration du plugin Maven de Jetty nécessaire à son exécution dans le conteneur embarqué, il est possible de démarrer l&rsquo;application web dans le Jetty embedded.</p>
 <p><img src="http://1.bp.blogspot.com/-MC5ASoy7hYY/TnEsBl97o9I/AAAAAAAAAao/wKFzpPyRaI0/s1600/visualVM.png" alt="center"></p>
 <p><img src="http://1.bp.blogspot.com/-h1-h-jZ47Ys/TnEr6OFgvnI/AAAAAAAAAak/hkrxFyewmwA/s1600/jconsole.png" alt="center">
@@ -731,7 +731,7 @@ mvn -Dcom.sun.management.jmxremote -Pjetty7 package jetty:run
     <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span> <span style="color:#f92672">/&gt;</span>
   <span style="color:#f92672">&lt;/New&gt;</span>
 <span style="color:#f92672">&lt;/Configure&gt;</span>
-</code></pre></div><p>#Conclusion</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>Cet article avait pour objectif de montrer comment il pouvait être facile d&rsquo;activer la couche JMX pour un serveur Jetty embedded dans Maven.</p>
 <p>C&rsquo;est vrai que démarrer un Jetty embarqué n&rsquo;a pas pour objectif de faire des tests d&rsquo;intégration mais cela peut toujours être utile dans le cas d&rsquo;un POC ou d&rsquo;une démonstration (qui était d&rsquo;ailleurs l&rsquo;objectif de ce petit cas d&rsquo;usage. ;-) ).</p>
 

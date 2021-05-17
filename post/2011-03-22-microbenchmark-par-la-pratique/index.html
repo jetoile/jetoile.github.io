@@ -266,16 +266,16 @@
   <p><img src="https://lh4.googleusercontent.com/-VYpiI5ySjEA/TYKVFQyw27I/AAAAAAAAAU0/XDPtplNTTKQ/s1600/perf03.png" alt="left-small"></p>
 <p>Cet article fait suite à mon article précédent afin de donner mon rapide retour d&rsquo;expérience sur quelques écueils qui peuvent être commis lors de l&rsquo;écriture d&rsquo;un microBenchmark et dans lesquels je suis, bien sûr, tombé :(. Pour remettre dans le contexte, c&rsquo;est l&rsquo;écriture de ce benchmark qui a entrainé l&rsquo;écriture de mon article précédent suite aux résultats que j&rsquo;ai pu constater et pour lesquels j&rsquo;ai eu l&rsquo;aide de mes <a href="https://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html#remerciement">camarades</a>.</p>
 <!-- more -->
-<p>#Contexte</p>
+<h1 id="contexte">Contexte</h1>
 <p>Un collègue me disait que le foreach était moins performant qu&rsquo;une boucle for en raison du fait que l&rsquo;invocation d&rsquo;une opération supplémentaire (la méthode <code>next()</code>) rendait l&rsquo;opération plus lente en raison de la pile de notre cher compteur ordinal (pour ceux qui ne se rappelleraient pas, je vous renvoie sur vos cours d&rsquo;assembleur ;-) ), enfin que, du moins, en .Net ça marchait comme ça. Ma réponse : <em>&ldquo;ben j&rsquo;en sais rien&rdquo;</em> puisque je ne savais pas quelles étaient les optimisations faites par le compilateur (ouais, je sais, super les sujets de conversation&hellip;).</p>
 <p>Du coup, ni une, ni deux, j&rsquo;ai ouvert mon IDE préféré et j&rsquo;y ai jeté quelques lignes de code pour avoir ma réponse, et là&hellip; ce fut le drame&hellip; : des résultats bizarres sont apparus&hellip;</p>
 <p>Ce petit article a donc pour objectif de vous fournir le résultat de ce qu&rsquo;il faut faire et ne pas faire lors de l&rsquo;écriture d&rsquo;un microBenchmark mais également de fournir la réponse que tout le monde attend, à savoir : <strong>qui est réellement le plus fort entre le for et le foreach</strong> (ça peut éviter d&rsquo;avoir à perdre 5 minutes de test&hellip;).</p>
 <p>Bien sûr, n&rsquo;étant pas expert dans ce domaine, il s&rsquo;agit juste d&rsquo;un retour d&rsquo;expérience dont je vous laisse seul juge de la véracité&hellip; ;-)</p>
 <p><u>Premier disclaimer</u> : contrairement à ce que j&rsquo;ai présenté dans mon <a href="https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html">post précédent</a>, je n&rsquo;effectuerai pas, ici, différents tirs sur différentes architectures d&rsquo;ordinateurs, VM ou avec différentes options. En effet, ce qui m&rsquo;intéresse dans cet article est d&rsquo;entrevoir ce qui peut se passer dans la VM et comment cela peut impacter les performances d&rsquo;un petit bout de code.</p>
 <p><u>Deuxième disclaimer</u> : lors de la procédure d&rsquo;élagage, un coefficient de 0,5 sera utilisé afin de lisser au maximum mes résultats et cela, en raison de pics très importants observés (pics liés, comme nous le verrons par la suite soit, au warm-up de la JVM, soit au GC).</p>
-<p>#Procédure de test et analyse</p>
-<p>##Première tentative</p>
-<p>###Scénario</p>
+<h1 id="procédure-de-test-et-analyse">Procédure de test et analyse</h1>
+<h2 id="première-tentative">Première tentative</h2>
+<h3 id="scénario">Scénario</h3>
 <p>Ma première tentative de benchmark était la suivante :</p>
 <ul>
 <li>on instancie une liste d&rsquo;un chaîne de caractère,</li>
@@ -326,14 +326,14 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’<code>ArrayList</code> utilisé ici sont faites en dehors du test.</p>
-<p>###Résultats</p>
+<h3 id="résultats">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :
 <img src="https://lh5.googleusercontent.com/-lI9NU2jROeg/TYfWEzjCs-I/AAAAAAAAAU8/9qW3rgg2xJM/s1600/naif_res01.png" alt="center"></p>
 <p><img src="https://lh3.googleusercontent.com/-BjIbhc2E824/TYfWbycgbTI/AAAAAAAAAVA/xi74Zdu2He0/s1600/naif_res02.png" alt="medium"></p>
 <p>Après élagage des résultats abérants (procédé commun à tous tes des charges), ces résultats peuvent être réduits aux résultats suivants (ici, k = 0,5) :
 <img src="https://lh5.googleusercontent.com/-Ld9lihH08bE/TYfWw4vaxFI/AAAAAAAAAVE/zVJXILl4wtg/s1600/naif_res03.png" alt="medium"></p>
-<p>###Analyse
-Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d&rsquo;itérer notre <code>List</code>.</p>
+<h3 id="analyse">Analyse</h3>
+<p>Les résultats précédents montrent clairement une différence entre les tirs avec et sans élagages (normal me direz-vous). Cependant, elles apparaissent principalement sur les deux premières itérations de notre boucle chargée d&rsquo;itérer notre <code>List</code>.</p>
 <p>En outre, après élagage, on constate, malgré tout, qu&rsquo;une nette différence persiste entre les boucles <code>for</code> et <code>while</code> et notre <code>foreach</code>.</p>
 <p>A titre informatif, c&rsquo;est à ce moment là que j&rsquo;ai dû appeler mes amis (ça ne vous rappelle pas quelque chose&hellip;?)  pour obtenir une analyse plus précise des résultats que je ne comprenais pas&hellip; :(
 Du coup (et là, je ne vais pas me fouler ;-) ), je vous cite les réponses des différents intéressés (et oui, il est possible d&rsquo;avoir plusieurs amis&hellip; (si cela vous amuse, je vous laisse deviner qui a dit quoi) que je remercie encore une fois ;-) :</p>
@@ -376,8 +376,8 @@ Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en f
 <p>Je pense que les conclusions à tirer sont claires&hellip; le code testé est erroné : mon Compilateur Planning m&rsquo;a inliné le code à tester et le fait que les deux premières itérations soit si élevées par rapport aux autres résultats est lié au warm-up de ma JVM.</p>
 </blockquote>
 <p>Je pense que les conclusions à tirer sont claires&hellip; le code testé est erroné : mon Compilateur Planning m&rsquo;a inliné le code à tester et le fait que les deux premières itérations soit si élevées par rapport aux autres résultats est lié au warm-up de ma JVM.</p>
-<p>##Deuxième tentative
-###Scénario</p>
+<h2 id="deuxième-tentative">Deuxième tentative</h2>
+<h3 id="scénario-1">Scénario</h3>
 <p>Du coup, suite à ma première tentative de benchmark infructueuse, deuxième essai en apprenant de mes erreurs&hellip; :</p>
 <ul>
 <li>on instancie une liste d&rsquo;un chaîne de caractère,</li>
@@ -432,20 +432,20 @@ Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en f
         System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;moy : &#34;</span> <span style="color:#f92672">+</span> total <span style="color:#f92672">/</span> NB_TEST<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>###Résultats</p>
+</code></pre></div><h3 id="résultats-1">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
 <p><img src="https://lh5.googleusercontent.com/--yfx7Mdby8c/TYfXtahEIoI/AAAAAAAAAVI/uscIVmjqEsQ/s1600/sideEffect_res01.png" alt="center"></p>
 <p><img src="https://lh4.googleusercontent.com/-Sze5evxC3P0/TYfX867p4ZI/AAAAAAAAAVM/gZU-aP_AeyY/s1600/sideEffect_res02.png" alt="medium"></p>
 <p>Après élagage des résultats aberrants (procédé commun à tous tests des charges), ces résultats peuvent être réduits aux résultats suivants (ici, k = 0,5) :</p>
 <p><img src="https://lh3.googleusercontent.com/-3ekZo0BCGY4/TYfYLLB_TiI/AAAAAAAAAVQ/mz52DXajycg/s1600/sideEffect_res03.png" alt="medium"></p>
 <p>A noter que ce graphique n&rsquo;est toujours isssu que d&rsquo;un seul tir&hellip;</p>
-<p>###Analyse</p>
+<h3 id="analyse-1">Analyse</h3>
 <p>Les résultats semblent enfin cohérents! ouf&hellip;!</p>
 <p>En effet, on constate que, mis à part les <strong>GC</strong>, et le <strong>warm-up</strong> de ma VM, mon <em>Compilateur Planning</em> n&rsquo;a pas réussi à inliner mon code et me fournit, du coup, le résultat attendu.</p>
 <p>Après un coup d&rsquo;élagage me permettant de me débarrasser de mes pics liés au GC, mes courbes sont lissées et se chevauchent même.</p>
 <p>Enfin, j&rsquo;ai ma réponse (mais je garde ça pour plus tard même si je suppose que, du coup, vous connaissez le fin mot de l&rsquo;histoire!&hellip; mais attendez, ne partez pas&hellip; la suite est intéressante également ;-))</p>
-<p>##Troisième tentative</p>
-<p>##Scénario</p>
+<h2 id="troisième-tentative">Troisième tentative</h2>
+<h2 id="scénario-2">Scénario</h2>
 <p>Bon, il est vrai, j&rsquo;ai obtenu mon résultat sur ma deuxième tentative.</p>
 <p>Cependant, pendant la présentation de Joshua Bloch (cf. <a href="https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html">post précédent</a>), un point m&rsquo;a particulièrement intéressé : le framework <strong>Caliper</strong>.</p>
 <p>En effet, ce framework semble être fait pour répondre aux problématiques des microBenchmark.</p>
@@ -506,7 +506,7 @@ Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en f
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>On remarque ici, que, plutôt que d&rsquo;exécuter via un script extérieur mon tir, j&rsquo;ai préféré le faire en invoquant directement le <code>main()</code>.</p>
-<p>###Résultats</p>
+<h3 id="résultats-2">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0% Scenario{vm=java, trial=0, benchmark=For} 3535251,80 ns; σ=197827,29 ns @ 10 trials
 33% Scenario{vm=java, trial=0, benchmark=Foreach} 3676070,55 ns; σ=190018,30 ns @ 10 trials
@@ -562,10 +562,10 @@ benchmark trial   ms linear runtime
 vm: java
 </code></pre></div><p><img src="https://lh6.googleusercontent.com/-0jMElON2GG0/TYfeIplU2lI/AAAAAAAAAVY/8Ws8IPu8_l8/s1600/caliper02.png" alt="medium"></p>
 <p><img src="https://lh3.googleusercontent.com/-Lm7FexMT_jg/TYffb2Hsi3I/AAAAAAAAAVc/xspieQ1S0pc/s1600/caliper021.png" alt="medium"></p>
-<p>###Analyse</p>
+<h3 id="analyse-2">Analyse</h3>
 <p>On constate ici que les résultats obtenus avec Caliper sont cohérents avec ceux obtenus précédemment (ie. les résultats sont similaires quelque soit la méthode d&rsquo;itération), même si on remarque une légère différence due au bruit ajouté par l&rsquo;utilisation du framework, bruit qui ne doit pas être pris en compte puisque si un tel framework venait à être utilisé, tous les résultats analysés seraient, évidemment, issus de l&rsquo;utilisation de Caliper. En outre, n&rsquo;oublions pas qu&rsquo;il faut raisonner en terme de statistique et non en terme de chiffre pur&hellip;</p>
-<p>##Quatrième tentative&hellip; juste pour le fun</p>
-<p>###Scénario</p>
+<h2 id="quatrième-tentative-juste-pour-le-fun">Quatrième tentative&hellip; juste pour le fun</h2>
+<h3 id="scénario-3">Scénario</h3>
 <p>Cette avant dernière tentative est juste faite pour le fun pour montrer le comportement de Caliper avec un microBenchmark douteux&hellip; ie. notre premier test ;-).</p>
 <p>Aussi, reprenons notre troisième tentative et supprimons les effets de bord :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark3</span> <span style="color:#66d9ef">extends</span> SimpleBenchmark <span style="color:#f92672">{</span>
@@ -608,34 +608,34 @@ vm: java
         Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>###Résultats</p>
+</code></pre></div><h3 id="résultats-3">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0% Scenario{vm=java, trial=0, benchmark=For}  Failed to execute java -cp /home/khanh/eclipse-workspace/benchmark/target/classes:/home/khanh/eclipse-workspace/caliper-read-only/caliper/target/classes:/home/khanh/.m2/repository/com/google/code/gson/gson/1.7-SNAPSHOT/gson-1.7-SNAPSHOT.jar:/home/khanh/.m2/repository/com/google/guava/guava/r07/guava-r07.jar:/home/khanh/.m2/repository/com/google/code/java-allocation-instrumenter/java-allocation-instrumenter/2.0/java-allocation-instrumenter-2.0.jar com.google.caliper.InProcessRunner --warmupMillis 3000 --runMillis 1000 --measurementType TIME --marker //ZxJ/ -Dbenchmark=For fr.soat.blog.benchmark.IterableBenchmark3
 starting Scenario{vm=java, trial=0, benchmark=For}
 [caliper] [starting warmup]
 [caliper] [starting measured section]
 Error: Doing 2x as much work didn&#39;t take 2x as much time! Is the JIT optimizing away the body of your benchmark?
-</code></pre></div><p>###Analyse</p>
+</code></pre></div><h3 id="analyse-3">Analyse</h3>
 <p>La bonne surprise est que Caliper nous indique clairement que JIT a optimisé notre code et que, donc, notre microBenchmark est erroné!</p>
 <p>A voir s&rsquo;il se comporte ainsi avec tous les microBenchmark erronés&hellip;</p>
-<p>##Cinquième tentative&hellip; allez, une dernière pour la route</p>
-<p>###Scénario</p>
+<h2 id="cinquième-tentative-allez-une-dernière-pour-la-route">Cinquième tentative&hellip; allez, une dernière pour la route</h2>
+<h3 id="scénario-4">Scénario</h3>
 <p>Cette dernière tentative permet de voir ce qui se passerait si on désactivait JIT via l&rsquo;option <code>-Xint</code>.
 Pour rappel, l&rsquo;option Xint permet de :</p>
 <blockquote>
 <p>Operate in interpreted-only mode. Compilation to native code is disabled, and all bytecodes are executed by the interpreter. The performance benefits offered by the Java HotSpot Client VM&rsquo;s adaptive compiler will not be present in this mode.</p>
 </blockquote>
 <p>Le code utilisé est celui de notre première tentative.</p>
-<p>###Résultats</p>
+<h3 id="résultats-4">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :
 <img src="https://lh5.googleusercontent.com/-ADT5BxKL07Y/TYfgAZ0s5aI/AAAAAAAAAVk/8pgxSKpcnL0/s1600/xint_res01.png" alt="center"></p>
 <p><img src="https://lh4.googleusercontent.com/-amtITqXqdR4/TYfgjLGINcI/AAAAAAAAAVo/3R_TdGss_N4/s1600/xint_res02.png" alt="medium"></p>
 <p>Après élagage des résultats aberrants (procédé commun à tous tes des charges), ces résultats peuvent être réduits aux résultats suivants (k = 1) :</p>
 <p><img src="https://lh4.googleusercontent.com/-JZbaG93Z9UE/TYfgohOePMI/AAAAAAAAAVs/jgcwFKpjXl8/s1600/xint_res03.png" alt="medium"></p>
 <p>A noter que ce graphique n&rsquo;est toujours issu que d&rsquo;un seul tir&hellip;</p>
-<p>###Analyse</p>
+<h3 id="analyse-4">Analyse</h3>
 <p>Bien sûr, ces résultats ne sont pas du tout représentatifs puisque le byte code est seulement interprété par la JVM et que cela ne représente pas la réalité. Cette dernière tentative n&rsquo;est présentée qu&rsquo;à titre indicatif afin de constater les différences qu&rsquo;il peut y avoir entre le code que l&rsquo;on écrit (ou compilé) et le code qui est réellement exécuté.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Voilà, j&rsquo;arrive à la fin de mes conclusions que je vous cite en vrac ;-) :</p>
 <ul>
 <li>faire un microBenchmark est difficile et cet article ne montre qu&rsquo;une ébauche des difficultés que cela peut poser,</li>
@@ -646,7 +646,7 @@ d* e manière générale, on peut dire qu&rsquo;il y a match nul entre le for et
 <p>Bon, un dernier mot : cet article n&rsquo;apportera rien aux personnes déjà sensibilisées à ce type de problématiques et ce qu&rsquo;on peut retenir est qu&rsquo;il ne faut pas tenter d&rsquo;optimiser inutilement son code (cf. <a href="https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html">article précédent</a>). Je trouvais juste les résultats intéressants à montrer ;-)</p>
 <p>Ah oui, encore une chose, pour information, mon ordinateur possède les caractéristiques suivantes :</p>
 <p><img src="https://lh5.googleusercontent.com/-yR2nGEaMbxE/TYh5vTtnKdI/AAAAAAAAAWA/J4KlOIGwCWc/s1600/ordi01.PNG" alt="medium"></p>
-<p>#Remerciements</p>
+<h1 id="remerciements">Remerciements</h1>
 <p>Par ordre alphabétique :</p>
 <ul>
 <li>Zouheir Cadi (@ZouheirCadi),</li>
@@ -655,7 +655,7 @@ d* e manière générale, on peut dire qu&rsquo;il y a match nul entre le for et
 <li>Séven Lemesle (@slemesle)</li>
 <li>et <a href="http://blog.ostyn.fr/">François Ostyn</a> (@ostynf)</li>
 </ul>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Présentation de Joshua Blosh sur Parleys : <a href="http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103">http://www.parleys.com/#sl=0&amp;st=5&amp;id=2103</a></li>
 <li>Site du framework Caliper : <a href="http://code.google.com/p/caliper/">http://code.google.com/p/caliper/</a></li>

@@ -286,9 +286,9 @@
 <p>A noter que je ne m&rsquo;attarderai pas, dans cet article, à présenter exhaustivement les différents protagonistes mais seulement les quelques points qu&rsquo;il est nécessaires de connaitre afin d&rsquo;intégrer ensemble ces différents framework.</p>
 <p>[update] Suite à discussion avec la créatrice de FluentLenium, un autre article a été initié et apporte de nombreux compléments mais également correction à cet article. Pour en savoir, plus, rendez vous <a href="https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html">ici</a>&hellip;</p>
 <!-- more -->
-<p>#Présentation des protagonistes</p>
-<p>##Cucumber JVM
-<img src="http://2.bp.blogspot.com/-vb7zd_BqITk/UTmwyd4yWsI/AAAAAAAAA3w/tYVxH4hxlig/s1600/cucumber2.jpg" alt="center"></p>
+<h1 id="présentation-des-protagonistes">Présentation des protagonistes</h1>
+<h2 id="cucumber-jvm">Cucumber JVM</h2>
+<p><img src="http://2.bp.blogspot.com/-vb7zd_BqITk/UTmwyd4yWsI/AAAAAAAAA3w/tYVxH4hxlig/s1600/cucumber2.jpg" alt="center"></p>
 <p><a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> est un fork Java de <a href="http://cukes.info/">Cucumber</a> inialement développé en Ruby.</p>
 <p>Tout comme <a href="http://jbehave.org/">JBehave</a>, il est orienté BDD (<em>Behaviour Driven Development</em>) et il permet d&rsquo;écrire ses <strong>scénarii</strong> de tests en suivant le pattern <strong>Given/When/Then</strong> qui correspond à déterminer un ensemble de <a href="https://github.com/cucumber/cucumber/wiki/Step-Definitions">Step</a>.</p>
 <p>Ces scénarii s&rsquo;écrivent dans des fichiers <strong>features</strong> qui sont lus par Cucumber JVM. Ce dernier se charge alors de faire correspondre les <strong>Steps</strong> avec les fixtures associés. Ces <strong>steps</strong> sont des méthodes Java annotées par :</p>
@@ -302,7 +302,7 @@
 <p>A noter également que pour passer un état d&rsquo;une Step à une autre, Cucumber JVM nous oblige à stocker ces derniers dans des variables de classe ou à passer par son mécanisme d&rsquo;injection à l&rsquo;aide de framework IoC tels que <a href="http://picocontainer.codehaus.org/">Picocontainer</a>.</p>
 <p>Ainsi, on peut résumer grossièrement en disant qu&rsquo;un scénario est écrit dans un fichier <strong>feature</strong> et est composé d&rsquo;un ensemble de Step qui sont associés à des méthodes qui correspondent aux différentes <strong>fixtures</strong>.</p>
 <p>Pour plus d&rsquo;informations sur le BDD, je vous renvoie sur un <a href="http://blog.soat.fr/2011/06/breizhcamp-behaviour-driven-development-par-olivier-billard-et-thierry-henrio/">compte rendu</a> d&rsquo;une présentation d&rsquo;Olivier Billard et de Thierry Henrio réalisé au BreizhCamp que j&rsquo;avais fait à l&rsquo;époque.</p>
-<p>##Selenium 2</p>
+<h2 id="selenium-2">Selenium 2</h2>
 <p><img src="http://4.bp.blogspot.com/-xOJkyRycXEU/UTmxGd1a-nI/AAAAAAAAA4A/kMPuTOc5tpY/s1600/big-logo.png" alt="center"></p>
 <p>Dans notre cas d&rsquo;usage, il y a assez peu de chose à dire sur <a href="http://docs.seleniumhq.org/">Selenium</a> si ce n&rsquo;est qu&rsquo;il permet, en fournissant différents <strong>WebDriver</strong>, de tester le rendu d&rsquo;une page HTML en simulant différentes actions telles que le submit de formulaires, le clique d&rsquo;un bouton et en allant chercher différents éléments dans la page rendue.</p>
 <p>Il propose différentes implémentations de WebDriver tels que <strong>FirefoxDriver</strong> ou <strong>HtmlUnitDriver</strong>.</p>
@@ -312,7 +312,7 @@
 <li><a href="http://fr.slideshare.net/MathildeLemee/selenium-testng-selenium-grid-best-practices">http://fr.slideshare.net/MathildeLemee/selenium-testng-selenium-grid-best-practices</a></li>
 <li><a href="http://docs.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations">http://docs.seleniumhq.org/docs/03_webdriver.jsp#selenium-webdriver-api-commands-and-operations</a></li>
 </ul>
-<p>##FluentLenium</p>
+<h2 id="fluentlenium">FluentLenium</h2>
 <p><img src="http://1.bp.blogspot.com/-fyH1CNEBvIw/UTmxNk5WZTI/AAAAAAAAA4I/obgbEW5Ae6w/s1600/code.png" alt="center"></p>
 <p><a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a> est un framework utilisant Selenium mais proposant une API plus simple et plus naturelle que celle offerte par ce dernier.</p>
 <p>Il a été pensé pour s&rsquo;intégrer à des tests exécutés avec JUnit ou TestNG et se charge donc d&rsquo;initialiser le <strong>WebDriver</strong> Selenium à chaque fois qu&rsquo;il exécute un test.</p>
@@ -324,7 +324,7 @@
 <li><a href="http://fr.slideshare.net/MathildeLemee/fluentlenium">http://fr.slideshare.net/MathildeLemee/fluentlenium</a></li>
 <li><a href="https://github.com/FluentLenium/FluentLenium">https://github.com/FluentLenium/FluentLenium</a></li>
 </ul>
-<p>#Etude sur la mise en oeuvre</p>
+<h1 id="etude-sur-la-mise-en-oeuvre">Etude sur la mise en oeuvre</h1>
 <p>On a vu dans le paragraphe précédent quelques-unes des notions nécessaires à l&rsquo;intégration de nos trois comparses.</p>
 <p>Cependant, il est intéressant de noter que Cucumber JVM et FluentLenium s&rsquo;appuient sur deux paradigmes potentiellement opposés. En effet, alors que Cucumber JVM dispose d&rsquo;une représentation par Step formalisé par des méthodes java, FluentLenium propose une granularité par méthode.</p>
 <p>En outre, deux points sont primordiaux :</p>
@@ -501,7 +501,7 @@ Feature: homepage test
     Then I stop my driver
 </code></pre></div><p>On constate que le code est un peu plus verbeux que ce qu&rsquo;on aurait souhaité avoir mais cela fonctionne sans soucis.
 A noter que via la méthode init de <strong>FluentTestDelegator</strong>, il est possible de préciser le <strong>webDriver</strong> à utiliser (dans notre cas, HtmlUnitDriver).</p>
-<p>#Mise en oeuvre</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
 <p>On a vu dans le paragraphe précédent comment il était possible de faire fonctionner conjointement Cucumber JVM et FluentLenium.</p>
 <p>Du coup, il n&rsquo;y a plus grand chose à rajouter dans ce paragraphe si ce n&rsquo;est la configuration de notre chef d&rsquo;orchestre (à savoir Maven) qui a été utilisé pour faire fonctionner tout ce beau monde&hellip; ;-)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">    <span style="color:#f92672">&lt;dependencies&gt;</span>        
@@ -593,7 +593,7 @@ A noter que via la méthode init de <strong>FluentTestDelegator</strong>, il est
 <span style="color:#a6e22e">@Cucumber.Options</span><span style="color:#f92672">(</span>features <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classpath:fr/jetoile/webapp/acceptance&#34;</span><span style="color:#f92672">,</span> format <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;pretty&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;html:target/cucumber&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;json:target/cucumber.json&#34;</span><span style="color:#f92672">})</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RunCucumberFeatures</span> <span style="color:#f92672">{</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>#Conclusion</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>On a vu dans cet article (qui est la suite logique d&rsquo;un <a href="https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html">article précédent</a>) comment il était possible de faire des tests d&rsquo;acceptance en utilisant conjointement Cucumber JVM et FluentLenium.</p>
 <p>A l&rsquo;utilisation, cela s&rsquo;avère agréable et rapide à écrire surtout avec quelques petits tweaks supplémentaires qui n&rsquo;ont pas été exposés ici (profile Maven pour ne démarrer que le serveur embedded et exécution des scénarii Cucumber avec IntelliJ 12 avec possibilité de bénéficier du debugger que ce soit au niveau de l&rsquo;exécution des tests (debugger ou utilisation d&rsquo;un webDriver autre que HtmlUnitDriver) ou de l&rsquo;application cible (via <code>mvnDebug</code>)).</p>
 <p>Bref, en tout cas, même si la mise en oeuvre a été un peu galère, il a été possible de bénéficier du meilleur des deux framework sans avoir à se &ldquo;taper&rdquo; la lourdeux de Selenium&hellip; ;-).</p>

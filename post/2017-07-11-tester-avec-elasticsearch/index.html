@@ -269,7 +269,7 @@
 <p>Oui, Elastic propose officiellement une <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html">alternative</a> via l&rsquo;utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&hellip;</p>
 <p>Cet article va tenter de dresser un panorama non exhaustif de ce que j&rsquo;ai pu trouver d&rsquo;intéressant pour permettre de réaliser des tests d&rsquo;intégration avec Elasticsearch.</p>
 <p>Parmi les solutions intéressantes et simples que j&rsquo;ai trouvés pour faire des tests d&rsquo;intégration, il y a surtout 2 projets que j&rsquo;ai retenus.</p>
-<p>#Plugin maven permettant de télécharger, installer et démarrer Elasticsearch</p>
+<h1 id="plugin-maven-permettant-de-télécharger-installer-et-démarrer-elasticsearch">Plugin maven permettant de télécharger, installer et démarrer Elasticsearch</h1>
 <p>Le premier se trouve être celui de <a href="https://github.com/alexcojocaru/elasticsearch-maven-plugin">alexcojocaru</a>.</p>
 <p>Il s&rsquo;agit d&rsquo;un plugin maven s&rsquo;appuyant sur <a href="https://github.com/apache/maven-resolver">maven-resolver</a> qui permet sur les phases de pré-intégration et post-intégration de démarrer et d&rsquo;arrêter Elasticsearch.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
@@ -299,7 +299,7 @@
         <span style="color:#f92672">&lt;/execution&gt;</span>
     <span style="color:#f92672">&lt;/executions&gt;</span>
 <span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>##Exemple</p>
+</code></pre></div><h2 id="exemple">Exemple</h2>
 <p>Code java de test :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ElasticsearchIntegrationTest</span> <span style="color:#f92672">{</span>
 
@@ -444,7 +444,7 @@
         <span style="color:#f92672">&lt;/execution&gt;</span>
     <span style="color:#f92672">&lt;/executions&gt;</span>
 <span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>#Téléchargement, installation et démarrage d&rsquo;Elasticsearch</p>
+</code></pre></div><h1 id="téléchargement-installation-et-démarrage-delasticsearch">Téléchargement, installation et démarrage d&rsquo;Elasticsearch</h1>
 <p>Le deuxième projet est celui d'<a href="https://github.com/allegro/embedded-elasticsearch">Allegro Tech</a>.</p>
 <p>Contrairement à la solution précédente, ce projet permet programmatiquement de télécharger, installer et démarrer/arrêter Elasticsearch.</p>
 <p>En outre, l&rsquo;avantage de cette solution est qu&rsquo;il n&rsquo;est pas nécessaire de configurer la partie test d&rsquo;intégration dans maven. Ainsi, utiliser un autre outils de build est possible.</p>
@@ -463,7 +463,7 @@
         <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">())</span>
     <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">()</span>
-</code></pre></div><p>#Exemple</p>
+</code></pre></div><h1 id="exemple-1">Exemple</h1>
 <p>Code java :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ElasticsearchTest</span> <span style="color:#f92672">{</span>
 
@@ -574,7 +574,7 @@
        This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
        Please review and delete this closure when resolved. */
     }
-</code></pre></div><p>#Conclusion</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>En conclusion, on a pu voir deux solutions qui permettent de faire des tests d&rsquo;intégration avec Elasticsearch.</p>
 <p>Personnellement, j&rsquo;ai une préférence pour la deuxième solution qui me permet d&rsquo;avoir la main sur la récupération et installation d&rsquo;Elasticsearch.</p>
 <p>Pour aller plus loin, quelques liens en vrac.</p>

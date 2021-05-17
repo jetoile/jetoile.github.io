@@ -278,7 +278,7 @@
 <p>Evidemment, l&rsquo;objectif n&rsquo;étant pas d&rsquo;obtenir ces métriques de manière &ldquo;one shot&rdquo;, une attention particulière sera portée sur l&rsquo;intégration de ces outils à une usine logicielle et à leurs capacités à fournir une évolution dans le temps.</p>
 <!-- more -->
 <h1 id="html-et-ses-bonnes-pratiques">HTML et ses bonnes pratiques</h1>
-<p>##Contexte</p>
+<h2 id="contexte">Contexte</h2>
 <p>Parmi les outils courants pour récupérer une évaluation d&rsquo;une page HTML au sein d&rsquo;un navigateur, il existe YSlow et Pagespeed. Ces deux outils fournissent un ensemble de notes qui permettent de qualifier les <em>bonnes</em> pratiques tels que la minification des fichiers Javascript.</p>
 <p><img src="http://1.bp.blogspot.com/-FK0JmFOA6-E/UXhYlIp8YuI/AAAAAAAAA6M/X7S8oxoqMA4/s1600/01-pagespeed_chrome.png" alt="medium"></p>
 <p><img src="http://3.bp.blogspot.com/-BzaEnN79iIo/UXhZTxUiGaI/AAAAAAAAA6Y/YTmOqzR5c7M/s1600/yslow.png" alt="medium"></p>
@@ -287,8 +287,8 @@
 <li>la récupération des métriques,</li>
 <li>la présentation de ces métriques dans un <em>dashboard</em> afin qu&rsquo;elles soient lisibles et qu&rsquo;il soit possible de voir leur évolution dans le temps.</li>
 </ul>
-<p>##Solution et mise en oeuvre
-Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.</p>
+<h2 id="solution-et-mise-en-oeuvre">Solution et mise en oeuvre</h2>
+<p>Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.</p>
 <p>Du coté de YSlow, cela est facilement faisable en s&rsquo;appuyant sur phantomjs.</p>
 <p>Pour ce faire, il suffit de récupérer et d&rsquo;installer le binaire de <a href="http://phantomjs.org/">phantomjs</a>. Il reste ensuite à récupérer le script yslow.js puis d&rsquo;exécuter la commande suivante :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs yslow.js &lt;url page&gt;
@@ -315,12 +315,12 @@ Comme dit dans le paragraphe précédent, il convient au préalable de générer
 <p><img src="http://2.bp.blogspot.com/-FEOYf1dOdCA/UXhXRxIT9SI/AAAAAAAAA50/iMrSJG1J3N4/s1600/01-tap.png" alt="medium"></p>
 <p><img src="http://2.bp.blogspot.com/-cFZAvtOQj0k/UXhX3xVuVUI/AAAAAAAAA58/9JNC8XhNsRo/s1600/01-tap1.png" alt="medium"></p>
 <p>Coté Pagespeed, j&rsquo;avoue ne pas avoir cherché mais le chapitre suivant proposera une solution simple et efficace pour obtenir une visualisation et une historisation de ces métriques.</p>
-<p>##Conclusion</p>
+<h2 id="conclusion">Conclusion</h2>
 <p>Comme on a pu le constater, la génération de métriques YSlow et/ou Pagespeed oblige (je n&rsquo;ai pas trouvé d&rsquo;autres moyens plus simples :'( ) à passer par des frameworks tierces tels que phantomjs ou nodejs.</p>
 <p>Pour le lecteur qui a su lire entre les lignes, il a pu constater qu&rsquo;il y a deux approches possibles : soit passer par phantomjs (qui offre un navigateur headless) pour capturer la page rendu en déléguant au script de YSlow l&rsquo;analyse de la page, soit passer par phantomjs pour générer un fichier HAR (qui contient, entre autre, les ressources chargées par la page ainsi que leur temps de récupération et le statut associé) puis de le passer à YSlow (via son module nodeJS) ou à PageSpeed.</p>
 <p>En outre, du fait que les résultats obtenus l&rsquo;ont été par page, pour un site complet, cela peut vite devenir&hellip; rébarbatif (pour rester poli)&hellip; pas glop&hellip;</p>
-<p>#Vitesse de rendu</p>
-<p>##Contexte</p>
+<h1 id="vitesse-de-rendu">Vitesse de rendu</h1>
+<h2 id="contexte-1">Contexte</h2>
 <p>Dans la première partie, nous avons vu comment il était possible de générer des rapports d&rsquo;exécution de bonnes pratiques d&rsquo;une page HTML. Dans ce chapitre, nous nous intéresserons à la récupération de métriques de rendu d&rsquo;une page au sens temps de récupération de ses différents éléments.</p>
 <p><img src="http://2.bp.blogspot.com/-9lTF11FrC0M/UXhZk7aI6gI/AAAAAAAAA6g/0ei3KIbIxUQ/s1600/02-timeline_firefox.png" alt="medium"></p>
 <p><img src="http://2.bp.blogspot.com/-ImWAUCGEEIk/UXhZtgHULqI/AAAAAAAAA6o/RV8oNYSYBWg/s1600/01-timeline.png" alt="medium"></p>
@@ -335,7 +335,7 @@ Comme dit dans le paragraphe précédent, il convient au préalable de générer
 <li>utilisation de phantomjs et de son plugin netsniff (se trouvant dans le répertoire examples) pour générer un rapport HAR.</li>
 </ul>
 <p>Coté affichage et historisation, nous verrons que cela a, encore une fois, été un peu galère même si les résultats obtenus sont satisfaisant (ouf&hellip; heureusement).</p>
-<p>##Solution et mise en oeuvre</p>
+<h2 id="solution-et-mise-en-oeuvre-1">Solution et mise en oeuvre</h2>
 <p>La première piste étudiée a été celle utilisant le plugin loadpage.js de phantomjs :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/loadspeed.js &lt;url page&gt;
 </code></pre></div><p><img src="http://2.bp.blogspot.com/-EnsolVkBftc/UXhYbNBGVSI/AAAAAAAAA6E/_gwMF7JBVnY/s1600/01-timeline-loadspeed.png" alt="medium"></p>
@@ -357,15 +357,15 @@ Comme dit dans le paragraphe précédent, il convient au préalable de générer
 <p><img src="http://1.bp.blogspot.com/-bCcDJ9DDRLU/UXhaP-REdGI/AAAAAAAAA7E/4SbClht1xao/s1600/01-timeline-harstorage3.png" alt="medium"></p>
 <p><img src="http://4.bp.blogspot.com/-xPHq6jh2V8A/UXhaQU3VcHI/AAAAAAAAA7I/8tyx8vKdB_4/s1600/01-timeline-harstorage4.png" alt="medium"></p>
 <p><img src="http://1.bp.blogspot.com/-3MDuvu3M7y8/UXhaQ4KpF0I/AAAAAAAAA7M/LzB4r9hRU98/s1600/01-timeline-harstorage5.png" alt="medium"></p>
-<p>##Conclusion</p>
+<h2 id="conclusion-1">Conclusion</h2>
 <p>On a vu dans ce chapitre comment il était possible de générer et de visualiser des timeline de rendu de pages HTML. La solution HarStorage me semble, dans le cadre d&rsquo;une phase d&rsquo;industrialisation, la solution la plus aboutie en permettant de conserver un historique pour évaluer l&rsquo;évolution de la page tout en fournissant un moyen de visualiser les métriques de PageSpeed (chose qui n&rsquo;avait, pour rappel, pas été abordé dans le chapitre précédent).</p>
 <p>Cependant, on a pu constater qu&rsquo;il était nécessaire de faire pas mal d&rsquo;actions : génération d&rsquo;un fichier HAR puis upload manuel dans HarStorage ou exécution manuel de HarViewer.</p>
 <p>En outre, le même constat peut être fait que pour le chapitre précédent : les résultats obtenus l&rsquo;ont été par page&hellip; pas glop&hellip;</p>
-<p>#Automatisation totale</p>
-<p>##Contexte</p>
+<h1 id="automatisation-totale">Automatisation totale</h1>
+<h2 id="contexte-2">Contexte</h2>
 <p>On a vu dans les chapitres précédent comment générer des rapports au format HAR via phantomjs. Cependant, dans le cas où des tests d&rsquo;acceptance sont déjà mis en place sur le projet via, par exemple, Selenium et Cucumber JVM, il peut être judicieux de se servir de l&rsquo;existant pour intégrer la génération des rapports ainsi que la remonté de ces dernières dans l&rsquo;outils de DashBoard.</p>
 <p>Cela permet ainsi de faire une pierre deux coups, mais également d&rsquo;éviter les étapes manuelles ou d&rsquo;avoir à maintenir des jobs jenkins un peu trop techniques.</p>
-<p>##Solution et mise en oeuvre</p>
+<h2 id="solution-et-mise-en-oeuvre-2">Solution et mise en oeuvre</h2>
 <p>Comme annoncé précédemment, l&rsquo;objectif de ce chapitre est d&rsquo;étudier la faisabilité d&rsquo;intégration de la génération de rapport HAR et leur upload dans HarStorage avec notre trio <a href="http://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html">Cucumber JVM/FluentLenium/Selenium</a>.</p>
 <p>En fait, il est possible d&rsquo;automatiser la génération d&rsquo;un rapport HAR à travers Selenium (et donc FluentLenium) en utilisant un proxy. Pour ce faire deux approches sont possibles :</p>
 <ul>
@@ -447,17 +447,17 @@ Comme dit dans le paragraphe précédent, il convient au préalable de générer
     | browser | parameters | host | version | platform |
     | firefox |            | none |         |          |
 #    | firefox |            | http://10.147.2.83:4444/wd/hub |         | win7     |
-</code></pre></div><p>##Conclusion
-On a vu dans ce paragraphe qu&rsquo;il était aisé d&rsquo;intégrer la génération et l&rsquo;upload d&rsquo;un fichier HAR issu d&rsquo;un scénario fonctionnel dans HarStorage.</p>
+</code></pre></div><h2 id="conclusion-2">Conclusion</h2>
+<p>On a vu dans ce paragraphe qu&rsquo;il était aisé d&rsquo;intégrer la génération et l&rsquo;upload d&rsquo;un fichier HAR issu d&rsquo;un scénario fonctionnel dans HarStorage.</p>
 <p>Cependant, ce mécanisme ne fonctionne malheureusement pas avec phantomjs, ce qui peut forcer à l&rsquo;utilisation de Selenium Server (à noter que cela n&rsquo;a pas été testé avec d&rsquo;autres driver que Firefox).</p>
 <p>Enfin, un point essentiel à noter est que par cette méthode, le temps d&rsquo;exécution du javascript n&rsquo;est pas remonté dans la timeline. En effet, l&rsquo;utilisation d&rsquo;un proxy ne fournit pas cette information alors qu&rsquo;avec une génération direct d&rsquo;un fichier HAR via phantomjs, cette donnée est bien présente.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion-3">Conclusion</h1>
 <p>Cet article a montré (enfin je l&rsquo;espère&hellip;) comment il était possible d&rsquo;automatiser la génération de métrique de rendu des pages HTML  dans une usine logicielle .</p>
 <p>C&rsquo;est vrai que de nombreuses technologies/manipulations sont nécessaires alors qu&rsquo;il existe de nombreux(?) services qui rendent le même service (<a href="http://gtmetrix.com/">GTMetrix</a>, <a href="http://www.webpagetest.org/compare">WebPageSpeed</a>, &hellip;).</p>
 <p>Malheureusement, ces services ne sont généralement branchées qu&rsquo;en production (pas d&rsquo;accès aux serveurs de tests/intégrations des entreprises) alors que les avoir au plus tôt dans le cycle de développement permettrait de minimiser les risques de régression et surtout de pousser à avoir une meilleure qualité telle que nous le permet Sonar.</p>
 <p>Je tiens tout de même à préciser que j&rsquo;ai été déçu de ne pas trouver une solution plus simple d&rsquo;intégration de ces outils dans nos usines de développement.</p>
 <p>Cela pourrait s&rsquo;expliquer par un manque de maturité de l&rsquo;environnement Java pour faire du Web 2.0 (sic) ou par une mutation du métier de développeur web qui tendrait vers une meilleure qualité logicielle mais qui n&rsquo;aurait pas encore assimilé/intégré toutes les contraintes induites par une usine logicielle telle que celles que l&rsquo;on connait dans notre monde Java&hellip; enfin, en gros, il reste du boulot&hellip;</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>
 <p>YSlow : <a href="http://yslow.org">http://yslow.org</a></p>

@@ -284,8 +284,8 @@ En effet, le connecteur JMX RMI ouvre deux ports :</p>
 <li>utiliser un agent JVM pour définir son propre agent JMX</li>
 </ul>
 <p>Il est à noter que l&rsquo;implémentation présentée ici ne prend pas en compte la problématique de sécurité (et en particulier SSL) où deux ports différents doivent être utilisés. En outre, il sera supposé que le RMI Registry sera démarré dans l&rsquo;application.</p>
-<p>#1ère méthode
-Ainsi, si vous avez la main sur la méthode <code>main</code> sur l&rsquo;application, il suffit de rajouter le code qui va bien, à savoir :</p>
+<h1 id="1ère-méthode">1ère méthode</h1>
+<p>Ainsi, si vous avez la main sur la méthode <code>main</code> sur l&rsquo;application, il suffit de rajouter le code qui va bien, à savoir :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> example<span style="color:#f92672">;</span>
  
 <span style="color:#f92672">import</span> java.lang.management.ManagementFactory<span style="color:#f92672">;</span>
@@ -331,8 +331,8 @@ Ainsi, si vous avez la main sur la méthode <code>main</code> sur l&rsquo;applic
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -Dexample.rmi.agent.port<span style="color:#f92672">=</span><span style="color:#ae81ff">3010</span> -classpath . example.MyApp
 </code></pre></div><p>puis lancer une jconsole et renseigner le champ <code>Remote Process</code> :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">service:jmx:rmi://localhost:3010/jndi/rmi://localhost:3010/jmxrmi
-</code></pre></div><p>#2ième méthode
-Par contre, la solution précédente n&rsquo;est parfois pas applicable car le code de l&rsquo;application à exécuter peut ne pas être disponible ou car récupérer ses sources, les modifiés et recompiler la dite application (par exemple, si c&rsquo;est un conteneur de Servlet que vous voulez administrer&hellip;) peut être un peu problématique (je ne suis pas sûr que l&rsquo;équipe de production soit enchantée d&rsquo;utiliser une version modifiée d&rsquo;Apache Tomcat&hellip;).</p>
+</code></pre></div><h1 id="2ième-méthode">2ième méthode</h1>
+<p>Par contre, la solution précédente n&rsquo;est parfois pas applicable car le code de l&rsquo;application à exécuter peut ne pas être disponible ou car récupérer ses sources, les modifiés et recompiler la dite application (par exemple, si c&rsquo;est un conteneur de Servlet que vous voulez administrer&hellip;) peut être un peu problématique (je ne suis pas sûr que l&rsquo;équipe de production soit enchantée d&rsquo;utiliser une version modifiée d&rsquo;Apache Tomcat&hellip;).</p>
 <p>Aussi, dans ce cas, il est possible de déclarer son propre agent à enregistrer dans la JVM (en définissant la méthode <code>premain</code> et en renseignant l&rsquo;attribut <code>Premain-Class</code> du fichier <code>MANIFEST.MF</code>) qui se chargera de définir et de lancer l&rsquo;agent JMX (une sorte de wrapper). Cependant, dans ce cas, l&rsquo;agent JMX lancé par l&rsquo;agent java ne sera pas arrêté par l&rsquo;envoie du signal de fin de l&rsquo;application. Il convient alors de lancer un Thread chargé de scrupter le processus de l&rsquo;agentJMX.</p>
 <p>Ci-dessous un exemple de l&rsquo;agent JVM :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/*

@@ -280,8 +280,8 @@
 <p>En fait, je ne rentrerai pas en détail dans les 2 plugins Maven qui, pour un, est assez connu mais je me contenterai juste de décrire les fonctionnalités que j&rsquo;ai appréciées.</p>
 <p>N&rsquo;étant pas expert sur ces derniers et n&rsquo;ayant pas creusé dans tous les paramétrages, j&rsquo;espère que la présentation qui suit ne dira pas trop de bêtises&hellip; ;-)</p>
 <!-- more -->
-<p>#Application Assembler Maven Plugin</p>
-<p>##Description</p>
+<h1 id="application-assembler-maven-plugin">Application Assembler Maven Plugin</h1>
+<h2 id="description">Description</h2>
 <p>[Cette description est une traduction libre de la page officielle du plugin]</p>
 <p>Le plugin Application Assembler est un plugin maven qui permet de générer les scripts utilisés au démarrage d&rsquo;une application Java. Pour ce faire, le plugin copie toutes les dépendances et les artifacts du projet dans un répertoire utilisé par le script pour la gestion du classpath de l&rsquo;application à démarrer.</p>
 <p>Les plateformes actuellement supportées sont :</p>
@@ -290,7 +290,7 @@
 <li>Windows NT</li>
 <li>Java Service Wrapper</li>
 </ul>
-<p>##Cas d&rsquo;utilisation</p>
+<h2 id="cas-dutilisation">Cas d&rsquo;utilisation</h2>
 <p>Ce plugin trouve parfaitement sa place pour générer les scripts d&rsquo;exécution d&rsquo;une application java standalone (ie. non exécuté au sein d&rsquo;un conteneur de servlet ou d&rsquo;un serveur d&rsquo;application) ou utilisée dans un batch.
 En fait, pour être plus précis, ce plugin dispose de 3 goals :</p>
 <ul>
@@ -298,7 +298,7 @@ En fait, pour être plus précis, ce plugin dispose de 3 goals :</p>
 <li><code>appassembler:create-repository</code> qui permet de créer le répertoire disposant de toutes les librairies nécessaires au bon fonctionnement de l&rsquo;application.</li>
 <li><code>appassembler:generate-daemons</code> qui permet de créer une arborescence de fichiers disposant des scripts et des librairies à utiliser pour wrapper l&rsquo;application dans un service via Java Service Wrapper.</li>
 </ul>
-<p>##Exemple</p>
+<h2 id="exemple">Exemple</h2>
 <p>Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon <a href="http://github.com/jetoile/sample-assembler-plugin">github</a>) qui ne contient qu&rsquo;une classe disposant d&rsquo;un main et qui log un message via logback au travers de slf4j (histoire de vérifier le comportement du plugin sur les dépendances).</p>
 <p><img src="http://1.bp.blogspot.com/-Dr-0c8AkLHs/T0tyqJW4UVI/AAAAAAAAAiY/A7dW1I3ve4Q/s1600/appassembler01.png" alt="center"></p>
 <p>où on a :</p>
@@ -587,22 +587,22 @@ wrapper.java.classpath.5=%REPO_DIR%/ch/qos/logback/logback-core/1.0.0/logback-co
 <p>Il manque l&rsquo;archetype de notre application dans le répertoire repo&hellip; (d&rsquo;un coté, pour les personnes qui ont suivi, cela était visible dans un des screenshots précédents&hellip;)</p>
 <p>Bon, je vous passe les quelques commandes à base de <code>mvn</code> et <code>cp</code> que j&rsquo;ai effectué pour, au final, obtenir :</p>
 <p><img src="http://1.bp.blogspot.com/-5JoIX1E06E8/T0ugnyyJ4YI/AAAAAAAAAjI/b66wqmxMFtM/s1600/appassembler07.png" alt="medium"></p>
-<p>##Conclusion</p>
+<h2 id="conclusion">Conclusion</h2>
 <p>Ce qui m&rsquo;a intéressé dans ce plugin est qu&rsquo;il s&rsquo;occupe de générer automatiquement les scripts nécessaires au lancement de l&rsquo;application. En effet, il est toujours possible d&rsquo;utiliser le plugin assembly (tel que je l&rsquo;avais décrit <a href="https://blog.jetoile.fr/2010/02/de-l-du-livrable.html">ici</a>), mais cette solution reste assez verbeuse et rébarbative.
 Aussi, avoir la possibilité, en n&rsquo;ayant qu&rsquo;à appeler ou qu&rsquo;à associer un goal à une phase du cycle de vie du projet pour générer les scripts est assez tentant.
 En outre, le plugin permet également de wrapper l&rsquo;application dans un service via Java Service Wrapper.</p>
 <p>Par contre, il peut sembler dommage que le &ldquo;livrable&rdquo; (au sens naïf du terme) ainsi produit ne puisse pas être considéré comme un archetype (et être déployé automatiquement sur un repository manager afin qu&rsquo;il puisse être directement utilisable par d&rsquo;éventuels OPS). Cependant, concernant ce point, vu que l&rsquo;on s&rsquo;appuie alors sur un plugin maven (dont la version est, bien sûr, maîtrisée), l&rsquo;utilisateur est garanti d&rsquo;avoir un script fonctionnel et reproductible.</p>
 <p>Concernant la partie <strong>Java Service Wrapper</strong>, il semble, cependant, qu&rsquo;il faille &ldquo;retoucher&rdquo; un peu ce qui est généré puisqu&rsquo;il manque le répertoire repo (utilisé par le fichier <code>wrapper.conf</code> (chargé par Java Service Wrapper)) nécessaire au chargement du classpath à l&rsquo;exécution du service.</p>
 <p>Autre point un peu dommage est que les droits d&rsquo;exécution ne soient pas directement positionnés sur les scripts .sh.</p>
-<p>#Tomcat 7 Maven Plugin</p>
-<p>##Description
-Le plugin Tomcat7 Maven Plugin permet (pour ceux qui ne le savent pas encore&hellip; ;-) ) de déployer une application web dans le conteneur de servlets Tomcat 7 via  le goal <code>deploy</code>.</p>
+<h1 id="tomcat-7-maven-plugin">Tomcat 7 Maven Plugin</h1>
+<h2 id="description-1">Description</h2>
+<p>Le plugin Tomcat7 Maven Plugin permet (pour ceux qui ne le savent pas encore&hellip; ;-) ) de déployer une application web dans le conteneur de servlets Tomcat 7 via  le goal <code>deploy</code>.</p>
 <p>Il permet, en outre, de démarrer directement un Tomcat de manière <em>embedded</em> à Maven (un peu comme le plugin jetty) via le goal <code>run</code>.</p>
 <p>Cependant, ce n&rsquo;est pas pour ces fonctionnalités que je tenais à parler de ce plugin.</p>
 <p>En effet, le plugin Tomcat7 dispose d&rsquo;une fonctionnalité &ldquo;amusante&rdquo;, à savoir la possibilité de générer un jar exécutable embarquant directement un Tomcat 7.</p>
 <p>En outre, de manière &ldquo;un peu&rdquo; transverse à ce plugin, un <a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">archetype</a> existe également. Il permet de <em>settuper</em> un projet exposant un service REST via Apache CXF et qui dispose de tests d&rsquo;intégration via Selenium.</p>
-<p>##Cas d&rsquo;utilisation
-Tomcat7 Maven Plugin dispose des <a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html">goals</a> suivants (que je décrirai pas&hellip;) :</p>
+<h2 id="cas-dutilisation-1">Cas d&rsquo;utilisation</h2>
+<p>Tomcat7 Maven Plugin dispose des <a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/plugin-info.html">goals</a> suivants (que je décrirai pas&hellip;) :</p>
 <ul>
 <li><code>tomcat7:deploy</code></li>
 <li><code>tomcat7:deploy-only</code></li>
@@ -615,8 +615,8 @@ Tomcat7 Maven Plugin dispose des <a href="http://tomcat.apache.org/maven-plugin-
 </ul>
 <p>Concernant l&rsquo;archetype, il est très bien décrit à la page suivante :
 <a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html</a></p>
-<p>##Exemple</p>
-<p>###Maven Tomcat 7 Plugin</p>
+<h2 id="exemple-1">Exemple</h2>
+<h3 id="maven-tomcat-7-plugin">Maven Tomcat 7 Plugin</h3>
 <p>Comme je l&rsquo;ai dit précédemment, je ne reviendrai pas sur l&rsquo;utilisation des goals <code>run</code> et <code>deploy</code> mais me focaliserai plutôt sur le goal <code>exec-war</code>.</p>
 <p>Pour montrer comment peut être utilisé ce plugin, je vais prendre un projet simple (accessible sur mon <a href="http://github.com/jetoile/sample-tomcat-plugin">github</a>) qui ne contient qu&rsquo;un simple Servlet <code>FooServlet</code>.</p>
 <p><img src="http://2.bp.blogspot.com/-ai5ZyP1YbgY/T0u6selcDwI/AAAAAAAAAjQ/Uq8UY04YtRw/s1600/tomcat01.png" alt="center"></p>
@@ -736,7 +736,7 @@ Tomcat7 Maven Plugin dispose des <a href="http://tomcat.apache.org/maven-plugin-
 java -jar sample-tomcat-plugin-1.0-SNAPSHOT-war-exec.jar
 </code></pre></div><p>il devient alors possible via notre navigateur préféré (à l&rsquo;url suivante : http://localhost:8080/sample-tomcat-plugin/) d&rsquo;obtenir la page suivante :
 <img src="http://2.bp.blogspot.com/-iHTkHAqCDRQ/T0u82VVpcHI/AAAAAAAAAjg/B1DIln_qwbk/s1600/tomcat03.png" alt="center"></p>
-<p>###Maven Tomcat 7 Archetype</p>
+<h3 id="maven-tomcat-7-archetype">Maven Tomcat 7 Archetype</h3>
 <p>Ce petit paragraphe a juste pour objectif de montrer ce que génère l&rsquo;archetype Tomcat7.
 Aussi, à la commande :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn archetype:generate <span style="color:#ae81ff">\
@@ -758,13 +758,13 @@ Aussi, à la commande :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn install -Pchrome
 </code></pre></div><div>
 <iframe allowfullscreen="" frameborder="0" height="315" src="http://www.youtube.com/embed/M3b6OPj6mGo" width="560"></iframe></div>
-<p>##Conclusion</p>
+<h2 id="conclusion-1">Conclusion</h2>
 <p>Ce qui m&rsquo;a plu sur le plugin Apache Tomcat 7 (en plus, bien sûr de la possibilité de lancer l&rsquo;application web de manière embedded à Maven et de pouvoir déployer la webapp sur un Tomcat existant) est la possibilité de créer un jar exécutable.</p>
 <p>C&rsquo;est vrai que je n&rsquo;ai toujours pas trouvé d&rsquo;utilité pour cela mais la performance méritait d&rsquo;être applaudit.</p>
 <p>Concernant l&rsquo;archetype Apache Tomcat 7, cela fournit en 1 ligne de commande un excellent template de projet qui dispose de tout.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion-2">Conclusion</h1>
 <p>Comme vous avez pu vous en rendre compte, il n&rsquo;y a rien de révolutionnaire dans cet article mais je tenais à mettre en avant ces 2 plugins qui, soit on des fonctionnalités utiles dans le cadre d&rsquo;un projet, soit ont quelques features intéressantes.</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Site officiel de l&rsquo;archetype Maven Tomcat7 : <a href="http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html">http://tomcat.apache.org/maven-plugin-2.0-beta-1/archetype.html</a></li>
 <li>Site officiel du plugin Maven Tomcat7 : <a href="http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/">http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/</a></li>

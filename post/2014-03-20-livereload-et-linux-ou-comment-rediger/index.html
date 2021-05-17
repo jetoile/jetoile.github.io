@@ -280,7 +280,7 @@
 <p>[NDLR : encore une fois, je précise que je ne suis pas du tout expert dans ce domaine, il est donc inutile de me poser des questions. Par contre, toutes propositions d&rsquo;amélioration est la bienvenue ;-)]</p>
 <p>A titre informatifs, les fichiers se trouvent sur <a href="https://github.com/jetoile/livereload-grunt">Github</a>.</p>
 <!-- more -->
-<p>#Installation de nodejs, de npm et de grunt</p>
+<h1 id="installation-de-nodejs-de-npm-et-de-grunt">Installation de nodejs, de npm et de grunt</h1>
 <p>Dans un premier temps, il convient d&rsquo;installer tout le strict minimum afin de permettre à Grunt de fonctionner.</p>
 <p>Installation de NodeJS :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install nodejs
@@ -291,7 +291,7 @@
 </code></pre></div><p>Installer le <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">plugin</a> livereload sur Chrome ou Firefox.</p>
 <p>Dans le cas de Chrome, pensez à modifier sa configuration pour qu&rsquo;il autorise l&rsquo;accès aux URLs de fichiers.
 <img src="http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png" alt="medium"></p>
-<p>#Configuration de Grunt</p>
+<h1 id="configuration-de-grunt">Configuration de Grunt</h1>
 <p>Par la suite, toutes les opérations seront effectué dans le répertoire <code>$HOME/tmp</code>.</p>
 <p>Une fois tous les logiciels installés, il ne reste qu&rsquo;à créer les fichiers nécessaires au bon fonctionnement de Grunt :</p>
 <ul>
@@ -375,7 +375,7 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/usr/bin/env: node: Aucun fichier ou dossier de ce type
 </code></pre></div><p>Il faut installer <code>nodejs-legacy</code> (cf. <a href="https://github.com/volojs/volo/issues/154">ici</a>)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install nodejs-legacy
-</code></pre></div><p>#Configuration de Grunt pour l&rsquo;intégration de Markdown</p>
+</code></pre></div><h1 id="configuration-de-grunt-pour-lintégration-de-markdown">Configuration de Grunt pour l&rsquo;intégration de Markdown</h1>
 <p>L&rsquo;intégration de Markdown se fait de la même manière que précédemment.</p>
 <p>Les fichiers <code>package.json</code> et <code>Gruntfile.js</code> se voient juste ajouter le module <code>grunt-markdown</code>.</p>
 <p><code>package.json</code></p>
@@ -453,11 +453,11 @@
 <p>L&rsquo;arborescence à respecter par rapport à la configuration est la suivante :
 <img src="http://2.bp.blogspot.com/-kgC6a8jRwG8/Uxno29Sr9EI/AAAAAAAABQg/lf3W_rnDAvU/s1600/arbo02.png" alt="center"></p>
 <p>Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d&rsquo;un fichier HTML ou Markdown n&rsquo;est pas si compliquée une fois que l&rsquo;on a tous les fichiers et les bons modules configurés.</p>
 <p>D&rsquo;ailleurs, cet article est le premier écrit en Markdown (quand je disais que ce n&rsquo;était pas ma tasse de thé&hellip;).</p>
 <p>En espérant qu&rsquo;il pourra être utile à d&rsquo;autres lecteurs et en m&rsquo;excusant par avance si des informations sont approximatives&hellip;</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li><a href="http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/">http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/</a></li>
 <li><a href="http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/">http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/</a></li>

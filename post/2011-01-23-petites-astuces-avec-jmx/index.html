@@ -271,9 +271,9 @@ Ce rapide article fournit un petit retour d&rsquo;expérience de quelques galèr
 <li>Impossibilité de se connecter à l&rsquo;agent JMX</li>
 </ul>
 <!-- more -->
-<p>#Message d&rsquo;erreur lors de l&rsquo;arrêt d&rsquo;Apache Tomcat?</p>
-<p>##Cas d&rsquo;usage
-Les options permettant d&rsquo;activer JMX sur la JVM ont été passées via la variable <code>JAVA_OPTS</code> ou autre (via le catalina.sh par exemple).</p>
+<h1 id="message-derreur-lors-de-larrêt-dapache-tomcat">Message d&rsquo;erreur lors de l&rsquo;arrêt d&rsquo;Apache Tomcat?</h1>
+<h2 id="cas-dusage">Cas d&rsquo;usage</h2>
+<p>Les options permettant d&rsquo;activer JMX sur la JVM ont été passées via la variable <code>JAVA_OPTS</code> ou autre (via le catalina.sh par exemple).</p>
 <p>Le démarrage de Tomcat s&rsquo;effectue sans problème mais lors de son arrêt, une erreur apparaît et tomcat refuse de s&rsquo;arrêter c&rsquo;est-à-dire que son processus tourne toujours en tâche de fond.</p>
 <p>Exemple de variable JAVA_OPTS :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$JAVA_OPTS<span style="color:#e6db74"> \
@@ -295,9 +295,9 @@ Using CATALINA_HOME:   /opt/apache-tomcat-6.0.20/temp
 Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
 Erreur: Exception envoyée par l<span style="color:#960050;background-color:#1e0010">&#39;</span>agent : java.rmi.server.ExportException: Port already in use: 18080; nested exception is: 
         java.net.BindException: Address already in use
-</code></pre></div><p>##Explication
-En fait, cette erreur se produit lors de l&rsquo;arrêt de Tomcat car le script <code>shutdown.sh</code> (ou <code>catalina.sh stop</code>) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l&rsquo;on tente d&rsquo;arrêter, cela échoue.</p>
-<p>##Proposition pour résoudre le problème</p>
+</code></pre></div><h2 id="explication">Explication</h2>
+<p>En fait, cette erreur se produit lors de l&rsquo;arrêt de Tomcat car le script <code>shutdown.sh</code> (ou <code>catalina.sh stop</code>) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l&rsquo;on tente d&rsquo;arrêter, cela échoue.</p>
+<h2 id="proposition-pour-résoudre-le-problème">Proposition pour résoudre le problème</h2>
 <ul>
 <li><del>Ne pas positionner les options pour activer JMX sur la variable système <code>JAVA_OPTS</code> au risque de ne pas pouvoir démarrer plusieurs processus Java.</del></li>
 <li><del>Si c&rsquo;est le script catalina.sh qui positionne la variable <code>JAVA_OPTS</code>, ne pas la positionner dans tous les cas mais seulement dans le cas où l&rsquo;argument start est passé au script.</del></li>
@@ -307,8 +307,8 @@ En fait, cette erreur se produit lors de l&rsquo;arrêt de Tomcat car le script 
 <blockquote>
 <p>CATALINA_OPTS   (Optional) Java runtime options used when the &ldquo;start&rdquo;,  or &ldquo;run&rdquo; command is executed.</p>
 </blockquote>
-<p>#Problème de connexion?</p>
-<p>##Cas d&rsquo;usage</p>
+<h1 id="problème-de-connexion">Problème de connexion?</h1>
+<h2 id="cas-dusage-1">Cas d&rsquo;usage</h2>
 <p>Une jconsole ou une jvisualvm qui n&rsquo;arrive pas à se connecter à un programme ou une connexion au connecteur d&rsquo;un agent JMX qui échoue avec une exception.</p>
 <p>Chose d&rsquo;autant plus étonnante qu&rsquo;avec une connexion réseau, il n&rsquo;y a pas de problèmes alors qu&rsquo;en mode hors-ligne, impossible d&rsquo;avoir accès à l&rsquo;agent JMX.</p>
 <p>Exemple d&rsquo;exception lors de la tentative de connexion à l&rsquo;agent JMX distant :</p>
@@ -324,7 +324,7 @@ at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest.main<span style="col
 <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TTsrkOibDDI/AAAAAAAAAUE/qpX-1nw0OOA/s1600/error02.png" alt="medium"></p>
 <p>Fenêtre d&rsquo;erreur de jvisualvm : <em>&ldquo;Data not available because JMX connection to the JMX agent could not be established.&quot;</em> :</p>
 <p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TTsroeTxKoI/AAAAAAAAAUI/0aUghCdjv0w/s1600/error01.png" alt="medium"></p>
-<p>##Analyse</p>
+<h2 id="analyse">Analyse</h2>
 <p>Après de multiples tentatives pour comprendre, j&rsquo;ai tenté un changement de jre pour voir si cela ne pouvait pas venir d&rsquo;une anomalie (si j&rsquo;avais un problème de connexion en mode hors-ligne, ce n&rsquo;était pas pour rien puisque j&rsquo;étais effectivement hors-ligne et, par conséquent, je devais me débrouiller par moi-même&hellip; ;-) ).</p>
 <p>Ainsi, en passant d&rsquo;une jre hotspot vers une openjdk, j&rsquo;ai obtenu une stacktrace beaucoup plus complète puisqu&rsquo;elle m&rsquo;a clairement indiquée la source du problème :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR c.b.j.j.c.ConnectorStubListener - ConnectorStubListener update: <span style="color:#f92672">{}</span>
@@ -359,10 +359,10 @@ at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket<span style="color
 at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket<span style="color:#f92672">(</span>RMIMasterSocketFactory.java:146<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
 at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:613<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
 ... <span style="color:#ae81ff">34</span> common frames omitted
-</code></pre></div><p>##Explication</p>
+</code></pre></div><h2 id="explication-1">Explication</h2>
 <p>En fait, mon problème venait du fait que mon fichier hosts était incorrect (je vous avais prévenu que c&rsquo;était une erreur stupide : n&rsquo;importe qui aurait pensé à vérifier sa configuration réseau&hellip; ! ;-) ).</p>
 <p>En effet, la couche logicielle gérant mes connexions réseaux sur mon ordinateur a tendance à ajouter dans mon fichier /etc/hosts mon adresse réseau. Cependant, lorsque je coupe mon wifi, mon ordinateur passe en mode hors-ligne sans modifier mon fichier hosts, ce qui corrompt ma configuration réseau.</p>
-<p>#Proposition pour résoudre le problème</p>
+<h1 id="proposition-pour-résoudre-le-problème-1">Proposition pour résoudre le problème</h1>
 <ul>
 <li>Corriger son fichier hosts et vérifier sa configuration réseau</li>
 </ul>

@@ -282,15 +282,15 @@
 <p>Cet article montrera donc comment il est possible d&rsquo;intégrer Spring Integration à notre petite stack basé sur Resteasy-Netty4, Jackson, <a href="http://metrics.codahale.com/">Metrics</a>, <a href="https://helloreverb.com/developers/swagger">Swagger</a> et <a href="http://www.jolokia.org/">Jolokia</a>.</p>
 <p>Le code se trouve sur Github <a href="https://github.com/jetoile/spring-integration-netty4">ici</a>.</p>
 <!-- more -->
-<p>#Présentation du usecase</p>
+<h1 id="présentation-du-usecase">Présentation du usecase</h1>
 <p>Le service qui est exposé est un service de type REST répondant à un appel de type POST et acceptant du JSON.</p>
 <p>Il répondra à une requête de type :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;message&#34;: &#34;hello&#34;, &#34;time&#34;: &#34;2014-03-05T10:55:39.835+01:00&#34;}&#39;</span>  http://127.0.0.1:8081/sample/write
 </code></pre></div><p>et écrira un fichier par requête reçue dans le répertoire <code>/tmp</code>. En outre, il loggera sur la console le message reçu.</p>
 <p>Ainsi, avec la commande suivante, on devrait voir un incrément du nombre à chaque réception de message.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">watch <span style="color:#e6db74">&#39;ls *.msg | wc -l&#39;</span>
-</code></pre></div><p>#Mise en oeuvre</p>
-<p>##Dépendances</p>
+</code></pre></div><h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<h2 id="dépendances">Dépendances</h2>
 <p>A titre informatif, les dépendances ainsi que leurs versions sont les suivantes (au format gradle) :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">dependencies {
     compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-core&#39;, version:&#39;3.0.1.RELEASE&#39;
@@ -313,7 +313,7 @@
     compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) {exclude(module: &#39;jsr305&#39;)}
 }
 </code></pre></div><p>Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId <strong>org.codehaus</strong>). En effet, Jackson 2 et JodaTime m&rsquo;ont fait des misères et je n&rsquo;ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1&hellip; ;-)</p>
-<p>##DTO</p>
+<h2 id="dto">DTO</h2>
 <p>Un DTO annoté JAX-B (compris par Jackson) sera utilisé pour représenter le JSON reçu dans le corps du POST.</p>
 <p>Il se présente comme suit :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@XmlRootElement</span>
@@ -340,7 +340,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Ici, la méthode <code>toString()</code> a été overridé car utilisé lors de l&rsquo;affichage du message par le loggueur sur la console.</p>
 <p>Jusque là, ça ne casse pas trois pattes à un canard ;-)</p>
-<p>##Intégration complète de Spring Integration</p>
+<h2 id="intégration-complète-de-spring-integration">Intégration complète de Spring Integration</h2>
 <p>Pour rappel, Spring Integration est une implémentation des <a href="https://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html">EIP</a> (<em>Enterprise Integration Patterns</em>) et propose donc une mise en oeuvre de l&rsquo;architecture <strong>Pipes and Filters</strong>.</p>
 <p><img src="http://3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png" alt="large"></p>
 <p>Au niveau écriture dans un répertoire, le <code>file-outbound-adapter</code> offert par Spring Integration sera utilisé :</p>
@@ -383,7 +383,7 @@
 <span style="color:#f92672">&lt;/beans&gt;</span>
 </code></pre></div><p>On y remarque la lecture du fichier de configuration, ainsi que les activations jmx adéquate afin d&rsquo;avoir un peu d&rsquo;informations ;-) Concernant l&rsquo;élément message-history, cela permet de préciser à Spring Integration d&rsquo;ajouter dans les headers du message (qui, pour rappel, transite via les Pipes entre les différents Filters) des informations de temps d&rsquo;exécution.</p>
 <p>En soit, il s&rsquo;agit d&rsquo;une configuration extrèmement simple pour toute personne connaissant un minimum Spring Integration, donc encore une fois, rien de compliqué&hellip; ;-)</p>
-<p>##Gateway Spring Integration</p>
+<h2 id="gateway-spring-integration">Gateway Spring Integration</h2>
 <p>Afin de rentrer dans le vif du sujet, ce paragraphe montrera comment il est possible de transformer notre petit serveur Resteasy-Netty4 en une Gateway Spring Integration.</p>
 <p>Pour ce faire, il suffit de définir une interface (NettyGateway) qui sera utilisée par Spring Integration.
 Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integration/docs/3.0.1.RELEASE/reference/html/messaging-endpoints-chapter.html#gateway">documentation officielle</a> :</p>
@@ -483,7 +483,7 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Juste un dernier point : le lecteur un peu concentré aura remarqué qu&rsquo;il y a, ici, un petit meli melo dans la lecture des fichiers de configuration (parfois chargé par Spring, parfois chargé via commons-configuration). Je laisse cependant ces points en suspens et à la discrétion de la personne qui utilisera et lira cet article (ou qui aura atteint ce point&hellip;) (s&rsquo;il y en a&hellip; ;-) ).</p>
-<p>##Intégration de Metrics</p>
+<h2 id="intégration-de-metrics">Intégration de Metrics</h2>
 <p>L&rsquo;objectif de cet article étant de monter une stack &ldquo;presque complète&rdquo;, il est, bien sûr, primordial de fournir les bonnes métriques.</p>
 <p>Comme dans mon article précédent, ce sera Metrics qui sera utilisé.</p>
 <p>Cependant, alors que cela avait été fait programmatiquement, ce coup-ci, cela sera fait via Spring (parce que sinon ce n&rsquo;est pas drôle&hellip; ;-) ).</p>
@@ -521,7 +521,7 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
 <p><img src="http://4.bp.blogspot.com/-CZebCZS47aE/Ux8fk-EwKQI/AAAAAAAABRY/C7OwMBMZNEc/s1600/si-hawtio-connextion.png" alt="medium"></p>
 <p><img src="http://2.bp.blogspot.com/-H-LmsIrivjA/Ux8fo7ORYpI/AAAAAAAABRg/EIp_-F6LzF4/s1600/si-hawtio-metrics.png" alt="medium"></p>
 <p>On constate encore une fois la simplicité de la chose!</p>
-<p>##Intégration de Jolokia</p>
+<h2 id="intégration-de-jolokia">Intégration de Jolokia</h2>
 <p>De même que pour notre paragraphe précédent, l&rsquo;intégration de Jolokia se fera ici par configuration Spring plutôt que de manière programmatique.</p>
 <p>Pour ce faire, il suffit de tirer la dépendance <strong>&lsquo;org.jolokia&rsquo;, name: &lsquo;jolokia-spring&rsquo;, version:&lsquo;1.1.2&rsquo;</strong> au lieu de <strong>&lsquo;org.jolokia&rsquo;, name: &lsquo;jolokia-jvm&rsquo;</strong>, et d&rsquo;ajouter le bon bean à Spring :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
@@ -559,12 +559,12 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
     ...
 <span style="color:#f92672">&lt;/beans&gt;</span>
 </code></pre></div><p>Et&hellip; c&rsquo;est tout&hellip; Jolokia est intégré à notre petite stack.</p>
-<p>##Intégration de Swagger</p>
+<h2 id="intégration-de-swagger">Intégration de Swagger</h2>
 <p>Concernant l&rsquo;intégration de Swagger, cela ne diffère en rien de mon article précédent. Même problème de CORS, même hack&hellip;</p>
 <p><img src="http://4.bp.blogspot.com/-ev6GX1U7SEs/Ux8fxhWTl_I/AAAAAAAABRo/srY62BOqZS4/s1600/si-swagger.png" alt="medium"></p>
-<p>##Branchement des plugins Maven Appassembler et Assembly</p>
+<h2 id="branchement-des-plugins-maven-appassembler-et-assembly">Branchement des plugins Maven Appassembler et Assembly</h2>
 <p>De même que pour Swagger, rien à signaler de particulier par rapport à mon article précédent&hellip; cela fonctionne sans problème ;-)</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>En conclusion, on peut constater que l&rsquo;intégration de Spring integration dans notre petite stack est tout aussi trivial que le reste!</p>
 <p>Encore une fois, simple et efficace ;-)</p>
 <p>Ainsi, on peut bénéficier du meilleur des deux mondes.</p>

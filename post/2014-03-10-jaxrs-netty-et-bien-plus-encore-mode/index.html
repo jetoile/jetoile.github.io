@@ -288,7 +288,7 @@
 </ul>
 <p>Le code se trouve sur Github <a href="https://github.com/jetoile/resteasy-netty-sample">ici</a>.</p>
 <!-- more -->
-<p>#Besoin et conception</p>
+<h1 id="besoin-et-conception">Besoin et conception</h1>
 <p>Le besoin était d&rsquo;offrir un ensemble de services REST qui devait être suffisamment véloce pour répondre au besoin de performance en terme de charge mais également en terme de temps de réponse.</p>
 <p>Venant du monde Java et plus précisément de Java EE, il aurait été pertinent de partir sur une solution classique à base de <a href="https://jcp.org/en/jsr/detail?id=311">JAX-RS</a> (<a href="https://jersey.java.net/">Jersey</a> ou <a href="http://www.jboss.org/resteasy">RestEasy</a>) hébergée par un <a href="http://tomcat.apache.org/">Tomcat</a> ou un <a href="http://www.eclipse.org/jetty/">Jetty</a>.</p>
 <p>Cependant, une crainte était que le mode de fonctionnement des Servlets soit limitant concernant les entrées/sorties. Bien sûr, il était possible d&rsquo;utiliser le connecteur NIO de Tomcat mais ce n&rsquo;est pas cette solution qui a été retenue&hellip; ;-)</p>
@@ -308,7 +308,7 @@
     <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2014-03-05T10:55:39.835+01:00&#34;</span>
 }
 </code></pre></div><p>La date de la réponse sera ajoutée juste pour le &ldquo;fun&rdquo; ;-)</p>
-<p>#Mise en oeuvre</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
 <p>A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
 compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-jvm&#39;, version:&#39;1.1.2&#39;
@@ -325,7 +325,7 @@ compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39
 compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
 compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&#39;
 compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) { exclude(module: &#39;jsr305&#39;) }
-</code></pre></div><p>##Implémentation du service REST</p>
+</code></pre></div><h2 id="implémentation-du-service-rest">Implémentation du service REST</h2>
 <p>Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial&hellip; et la classe ci-dessous fait humblement l&rsquo;affaire :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
@@ -365,7 +365,7 @@ compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;1
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>##Mise en oeuvre de Resteasy-Netty 3</p>
+</code></pre></div><h2 id="mise-en-oeuvre-de-resteasy-netty-3">Mise en oeuvre de Resteasy-Netty 3</h2>
 <p>Mettre en place Resteasy-Netty 3 est très simple, d&rsquo;après la <a href="https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/pdf/resteasy-reference-guide-en-US.pdf">documnentation</a>, il suffit de faire :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">(</span>ResteasyDeployment deployment<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
   netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NettyJaxrsServer<span style="color:#f92672">();</span>
@@ -428,7 +428,7 @@ netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployme
 netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
 </code></pre></div><p>Et voilà! On dispose désormais d&rsquo;un programme exécutable qui démarre un serveur REST basé sur Netty.</p>
 <p>Plutôt simple non? ;-)</p>
-<p>##Configuration de Jackson</p>
+<h2 id="configuration-de-jackson">Configuration de Jackson</h2>
 <p>Avec le code précédent, si la commande suivante est exécutée :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> curl -XGET  http://localhost:8081/sample/say/hello 
 </code></pre></div><p>Le résultat suivant est obtenu :</p>
@@ -470,7 +470,7 @@ netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span
     <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2014-06-12T10:06:54.553+02:00&#34;</span>
 }
 </code></pre></div><p>A noter que l'<em>ancienne</em> version de Jackson est utilisée ici car c&rsquo;est celle qui est utilisé par défaut par Resteasy. Il aurait été possible de l&rsquo;utiliser dans sa version plus récente mais j&rsquo;avoue ne pas avoir fait l&rsquo;exercice&hellip; (cf. <a href="https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/html/json.html#d4e1046">ici</a>)</p>
-<p>##Intégration de Metrics</p>
+<h2 id="intégration-de-metrics">Intégration de Metrics</h2>
 <p>Afin de permettre une mesure des temps d&rsquo;invocation de différentes opérations, la librairie <a href="http://metrics.codahale.com/">Metrics</a> a été utilisée.</p>
 <p>Pour plus d&rsquo;information dessus, le sujet est très bien traité sur le blog de <a href="https://twitter.com/clescot">Charles</a> :</p>
 <ul>
@@ -507,7 +507,7 @@ netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span
 </code></pre></div><p>Une fois l&rsquo;application démarrée et après 1 ou 2 appels, l&rsquo;ObjectName apparait dans la console JMX et il est alors possible de voir les différents résultats.</p>
 <p><img src="http://1.bp.blogspot.com/-RMh6acQ8Qkc/UxdsRqymVkI/AAAAAAAABPk/r3rvWdgPNtg/s1600/metrics-hawtio.png" alt="medium"></p>
 <p>On constate encore une fois que la mise en place de Metrics n&rsquo;a demandé aucun effort particulier.</p>
-<p>##Intégration de Jolokia</p>
+<h2 id="intégration-de-jolokia">Intégration de Jolokia</h2>
 <p>Une autre étape de notre périple consiste à activer Jolokia que j&rsquo;ai déjà présenté dans un <a href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html">article précédent</a>.</p>
 <p>Dans notre cas d&rsquo;usage, cela sera fait de manière programmatique.</p>
 <p>Pour ce faire, c&rsquo;est encore une fois très simple et il suffit d&rsquo;ajouter le code suivant dans notre classe principale :</p>
@@ -581,7 +581,7 @@ maxObjects=0
     }
 }
 </code></pre></div><p>A noter que les user/password ont été positionné car cela permet une connexion via <a href="http://hawt.io/">Hawt.io</a>.</p>
-<p>##Intégration de Swagger</p>
+<h2 id="intégration-de-swagger">Intégration de Swagger</h2>
 <p><a href="https://helloreverb.com/developers/swagger">Swagger</a> offre une manière très simple de documenter une API REST. En effet, en s&rsquo;appuyant sur des annotations à mettre dans la classe de service, elle permet d&rsquo;offrir une interface d&rsquo;écrivant les API.</p>
 <p><img src="http://4.bp.blogspot.com/-92lPQm1F_DM/UxdsgUK3bDI/AAAAAAAABPs/yWh6QRHKkFc/s1600/swagger.png" alt="medium"></p>
 <p>Pour le mettre en place, il suffit donc de rajouter les annotations adéquates à notre classe <code>SimpleService</code> :</p>
@@ -780,7 +780,7 @@ maxObjects=0
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Voilà, après ce petit tour de passe passe, notre swagger-UI fonctionne comme un charme ;-)</p>
 <p>Au final, (presque?) simple non? ;-)</p>
-<p>##Branchement des plugins Maven Appassembler et Assembly</p>
+<h2 id="branchement-des-plugins-maven-appassembler-et-assembly">Branchement des plugins Maven Appassembler et Assembly</h2>
 <p>Afin de générer une application utilisable <em>out of the box</em>, le plugin maven <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">appassembler</a> a été utilisé. Pour ceux qui ne saurait pas ce que c&rsquo;est, je les invite à regarder soit la documentation officielle soit un article que j&rsquo;avais fait <a href="https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html">précédemment</a> (#autopromo ;-) ).</p>
 <p>Ainsi, ici, le goal <code>generate-daemons</code> du plugin a été utilisé :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
@@ -922,7 +922,7 @@ maxObjects=0
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn package
 </code></pre></div><p>génère un livrable exploitable directement après sa décompression.</p>
 <p>Lors d&rsquo;un <code>mvn release</code>, il sera également automatiquement uploadé sur le <em>Repository Manager</em>.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>En conclusion, je n&rsquo;ai pas grand chose à ajouter si ce n&rsquo;est que j&rsquo;ai trouvé Resteasy-Netty simple à utiliser et qu&rsquo;il a été aisé d&rsquo;y ajouter tout ce qui était nécessaire à notre besoin.</p>
 <p>Et le tout de manière simple et efficace pour une solution véloce et légère!</p>
 <p>Pour faire encore plus simple, <a href="http://projectlombok.org/">Lombok</a> aurait pu être utilisé mais, de mémoire, en test de Java 8, une incompatibilité est apparue&hellip; à creuser donc pour cette partie&hellip; ;-)</p>

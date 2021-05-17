@@ -269,7 +269,7 @@
 <p>Par contre, je ne reviendrai pas sur les concepts de base de maven comme la définition de ce que sont les repositories local et distant.</p>
 <p>Enfin, ici, j&rsquo;utiliserai la même dénomination que le guide Nexus pour le terme organisation qui devra être pris au sens large du terme (entreprise, projet open source, poste local, &hellip;).</p>
 <!-- more -->
-<p>#Un repository Manager pour quoi faire?</p>
+<h1 id="un-repository-manager-pour-quoi-faire">Un repository Manager pour quoi faire?</h1>
 <p>Ce paragraphe fournit une courte introduction sur les repository Manager, qui pour ceux qui en douteraient encore, permet de répondre à deux problématiques :</p>
 <ul>
 <li>il agit comme un proxy configurable entre votre organisation et les repositories publics maven,</li>
@@ -281,7 +281,7 @@
 <p>De plus, un repository Manager permet à l&rsquo;organisation de garder le contrôle de ce qui est téléchargé par maven empêchant ainsi à nos chers développeurs (dont je fais parti) de tirer n&rsquo;importe quelle dépendance (ainsi que n&rsquo;importe quelle version) dans son projet mais également de contrôler les licences des dépendances utilisés (c&rsquo;est vrai que cela serait dommage de voir son projet tomber dans l&rsquo;open source juste à cause d&rsquo;une licence un peu trop contaminatrice&hellip;).</p>
 <p>Enfin, un repository manager permet de fournir un repository partagé par tout ou parti de l&rsquo;organisation offrant ainsi un repository privé où peuvent être entreposés les binaires de cette dernière, les rendant ainsi accessibles à tout ou parti des équipes de développement. Ces binaires pouvant être dans un état stable (release) ou en cours de développement (snapshot) permettent ainsi aux développeurs de ne pas à avoir à récupérer et à builder les sources lorsqu&rsquo;une dépendance à une librairie interne est nécessaire.</p>
 <p>Dernier point qui peut avoir son importance, mais si l&rsquo;organisation se retrouve coupé d&rsquo;internet ou que les repositories publics maven sont indisponibles, cela n&rsquo;impacte pas les développeurs (modulo le fait qu&rsquo;ils n&rsquo;aient pas besoin d&rsquo;une dépendance ne se trouvant pas sur le repository manager) qui peuvent alors continuer à travailler et même à releaser leurs projets, et cela même s&rsquo;ils disposent d&rsquo;un repository local vierge.</p>
-<p>#Retour sur les types de repositories possibles</p>
+<h1 id="retour-sur-les-types-de-repositories-possibles">Retour sur les types de repositories possibles</h1>
 <p>Cet article prenant ses racines dans la documentation officielle de Nexus, il est possible que certains types de repositories présentés ci-dessous ne soient pas offerts par d&rsquo;autres implémentations. Cependant, les concepts sont similaires même si certaines subtilités peuvent être présentes dans d&rsquo;autres solutions.</p>
 <p>Nexus offre 3 types de repositories :
 <img src="http://1.bp.blogspot.com/-Z4HaCDB8Eho/TdZAASMnH8I/AAAAAAAAAWc/96XhX5UdsQQ/s1600/nexus05.png" alt="center"></p>
@@ -316,7 +316,7 @@
 <p>Il est à noter que l&rsquo;ordre de déclaration des repositories dans un groupe a son importance puisque la recherche est ordonnée et que dès que la librairies est trouvée, la recherche s&rsquo;arrête et l&rsquo;artéfact rendu (ainsi, il convient de mettre le repository succeptible de posséder les librairies les plus recherchés en premier).</p>
 <p>En outre, il est possible d&rsquo;associer à un groupe des routes qui se comportent comme des filtres permettant ainsi d&rsquo;inclure ou d&rsquo;exclure des repositories. Cette fonctionnalité peut, par exemple, être utilisée afin d&rsquo;être sûr que les artéfacts récupérés dans un groupe donné ne sont que ceux de l&rsquo;organisation (en s&rsquo;appuyant sur le <em>groupId</em> maven).</p>
 <p><img src="http://2.bp.blogspot.com/-AxzBLRMUcQA/TdZAcBJX_oI/AAAAAAAAAWs/btqGC8lg5r8/s1600/nexus06.png" alt="center"></p>
-<p>#Gestion des repositories dans le cas où plusieurs équipes accèdent au même repository Manager</p>
+<h1 id="gestion-des-repositories-dans-le-cas-où-plusieurs-équipes-accèdent-au-même-repository-manager">Gestion des repositories dans le cas où plusieurs équipes accèdent au même repository Manager</h1>
 <p>Ces recommandations s&rsquo;appuient sur le chapitre 17 du guide sur Nexus.</p>
 <p>Les façons les plus communes pour supporter différentes équipes est :</p>
 <ul>
@@ -330,7 +330,7 @@
 ![medium](http://3.bp.blogspot.com/-mQZmpHgoHkw/TdZA7Xrs5oI/AAAAAAAAAW4/2LplkYKr-1Y/s1600/nexus09.png)
 <br/>
 ![medium](http://4.bp.blogspot.com/-pOaBDAUQ5v0/TdZBAv3nkrI/AAAAAAAAAW8/kpJampXGKe0/s1600/nexus10.png)
-<p>#Trucs et astuces en vrac&hellip;</p>
+<h1 id="trucs-et-astuces-en-vrac">Trucs et astuces en vrac&hellip;</h1>
 <p>Enfin, ce paragraphe liste en vrac un certain nombre de points qu&rsquo;il peut être nécessaire de prendre en compte lors de la mise en oeuvre d&rsquo;un repository Manager.</p>
 <p>Ayant la flemme de commenter les différents points, je ne jetterai que les idées sans ordre de préférence en laissant le soin à chacun de les prendre en compte&hellip; ou pas&hellip; ;-)</p>
 <ul>
@@ -345,10 +345,10 @@
 </ul>
 <p><img src="http://1.bp.blogspot.com/-q-ibFGeayTU/TdZBL9AfMxI/AAAAAAAAAXA/4AZv5qunm_A/s1600/nexus11.png" alt="medium"></p>
 <p>Enfin un point transverse, mais si la sécurité est mise en place sur les repositories et qu&rsquo;elle utilise une authentification pour chaque utilisateur, il est possible de crypter les mots de passe plutôt que de les avoir en clair dans le fichier <code>settings.xml</code> (<a href="http://sonatype.com/books/maven-book/reference/appendix-settings-sect-encrypting-passwords.html">http://sonatype.com/books/maven-book/reference/appendix-settings-sect-encrypting-passwords.html</a> et <a href="http://maven.apache.org/guides/mini/guide-encryption.html)">http://maven.apache.org/guides/mini/guide-encryption.html)</a>.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Vous aurez compris (si vous avez lu juste qu&rsquo;au bout cet article) que cet article correspond plus à un aide-mémoire qu&rsquo;à une vrai explication de ce qu&rsquo;est un repository Manager&hellip; ;-)</p>
 <p>Concernant les trucs et astuces, si vous en avez d&rsquo;autre, je suis preneur et je me ferai un plaisir les intégrer dans la rubrique trucs et astuces ;-)</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Pdf de Sonatype sur Nexus : <a href="http://www.sonatype.com/repository-management-with-nexus-book.html">http://www.sonatype.com/repository-management-with-nexus-book.html</a></li>
 <li><strong>Apache Maven</strong> de N. De Loof, A. Héritier chez Pearson</li>

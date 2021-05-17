@@ -282,15 +282,15 @@
 <p>Le use case sera simple puisque je m&rsquo;appuierai sur la création d&rsquo;un archetype simple pour mes besoins personnels afin de me fournir un patron normalisé (selon mes normes) me permettant de démarrer un POC rapidement pour un artifact de type jar et cela dans le seul but de ne pas avoir à faire moultes copier/coller&hellip; ;-)</p>
 <p>A noter qu&rsquo;il n&rsquo;y a rien de révolutionnaire dans cet article pour toutes les personnes qui ont quelques connaissances de base en maven mais qu&rsquo;il peut s&rsquo;avérer utile (enfin j&rsquo;espère) pour les autres&hellip; ;-)</p>
 <!-- more -->
-<p>#Méthodologie
-Afin de créer un archetype, il existe plusieurs méthodes :</p>
+<h1 id="méthodologie">Méthodologie</h1>
+<p>Afin de créer un archetype, il existe plusieurs méthodes :</p>
 <ul>
 <li>la première consiste à créer l&rsquo;archetype directement, chose pas trop complexe mais qui demande d&rsquo;être rodée à la chose,</li>
 <li>la deuxième consiste à créer le projet maven tel que l&rsquo;on souhaiterait que l&rsquo;archetype nous le créer et de demander à maven de nous générer l&rsquo;archetype en lui-même. Suite à cela, il convient de modifier l&rsquo;archetype généré afin de le rendre configurable (nom des packages, &hellip;).</li>
 </ul>
 <p>Suite à cela, il convient d&rsquo;installer (ou de déployer) notre archetype au sein de notre repository (global ou distant) afin de le rendre accessible aux autres membres de l&rsquo;équipe ou tout simplement à soi-même.</p>
 <p>Dans mon cas, j&rsquo;utiliserai la deuxième méthode qui consiste donc à générer l&rsquo;archetype à partir du projet maven que je souhaite avoir.</p>
-<p>#Création du projet de base</p>
+<h1 id="création-du-projet-de-base">Création du projet de base</h1>
 <p>Comme je l&rsquo;ai dit précédemment, mes besoins sont purement personnels et mon projet devra répondre aux points suivants :</p>
 <ul>
 <li>un seul projet,</li>
@@ -502,7 +502,7 @@ Afin de créer un archetype, il existe plusieurs méthodes :</p>
  <span style="color:#f92672">&lt;/fileSets&gt;</span>
  
 <span style="color:#f92672">&lt;/assembly&gt;</span>
-</code></pre></div><p>#Création de l&rsquo;archetype</p>
+</code></pre></div><h1 id="création-de-larchetype">Création de l&rsquo;archetype</h1>
 <p>La création de l&rsquo;archetype est simple puisqu&rsquo;il suffit de lancer la commande suivante :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn archetype:create-from-project
 </code></pre></div><p>Suite à cela, notre archetype se trouve dans le répertoire target/generated-sources/archetype et a la structure suivante :</p>
@@ -583,7 +583,7 @@ Afin de créer un archetype, il existe plusieurs méthodes :</p>
 <span style="color:#f92672">&lt;/archetype-descriptor&gt;</span>
 </code></pre></div><p>A cette étape, il est tout de suite possible d&rsquo;installer l&rsquo;archetype dans le repository maven (cf. Mise à disposition de l&rsquo;archetype) et de l&rsquo;invoquer (cf. Utilisation et résultat de l&rsquo;archetype).
 A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .project, .classpath et .settings si le template a été géré avec eclipse.</p>
-<p>#Transformation de l&rsquo;archetype</p>
+<h1 id="transformation-de-larchetype">Transformation de l&rsquo;archetype</h1>
 <p>Dans le cadre de mon petit use case, je n&rsquo;ai pas beaucoup besoin de customiser mon archetype. En effet, je souhaite seulement pouvoir demander à l&rsquo;utilisateur (en l&rsquo;occurence moi ;-) ), quel sera le nom de ma classe à me générer.</p>
 <p>Pour ce faire, il n&rsquo;y a qu&rsquo;à ajouter une propriété dans le fichier src/main/resources/META-INF/maven/archetype-metadata.xml :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;requiredProperties&gt;</span>
@@ -607,9 +607,9 @@ A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .pr
 </code></pre></div><p>En outre, il faut également modifier le fichier src/test/resources/projects/basic/archetype.properties pour y ajouter la ligne suivante :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">className=MyClass
 </code></pre></div><p>Enfin, il est possible de figer la version de l&rsquo;archetype en modifiant le pom du projet ainsi que son artifactId et son groupId. Dans mon cas, il restera identique.</p>
-<p>#Mise à disposition de l&rsquo;archetype</p>
+<h1 id="mise-à-disposition-de-larchetype">Mise à disposition de l&rsquo;archetype</h1>
 <p>Une fois que l&rsquo;archetype a été modifié pour répondre aux besoins, il n&rsquo;y a plus qu&rsquo;à exécuter la commande mvn install pour déployer l&rsquo;archetype dans le repository local et la commande mvn deploy pour le déployer dans le repository partagé.</p>
-<p>#Utilisation et résultat de l&rsquo;archetype</p>
+<h1 id="utilisation-et-résultat-de-larchetype">Utilisation et résultat de l&rsquo;archetype</h1>
 <p>Une fois l&rsquo;archetype déployé dans le repository adéquate, il n&rsquo;y a plus qu&rsquo;à l&rsquo;invoquer via la commande :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn archetype:generate <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span> -DarchetypeGroupId<span style="color:#f92672">=</span>fr.jetoile <span style="color:#ae81ff">\
@@ -619,7 +619,7 @@ A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .pr
 </span><span style="color:#ae81ff"></span> -DartifactId<span style="color:#f92672">=</span>test-archetype
 </code></pre></div><p>Ainsi, le résultat obtenu est le suivant :
 <img src="http://3.bp.blogspot.com/-IyLOW6pbUgw/TevFCch0TRI/AAAAAAAAAXU/-8aUatC2M5c/s1600/archetype04.png" alt="center"></p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Nous avons vu dans cet article qu&rsquo;il était extrêmement simple de créer un archetype maven, action qui peut s&rsquo;avérer très utile pour gagner du temps que ce soit pour des besoins personnels ou dans un cadre d&rsquo;industrialisation du processus d&rsquo;initialisation d&rsquo;un projet dans une équipe.</p>
 <p>[update] Je viens de mettre sur github le code :</p>
 <ul>
@@ -668,7 +668,7 @@ A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .pr
       <span style="color:#f92672">&lt;/fileSets&gt;</span>
     <span style="color:#f92672">&lt;/module&gt;</span>
 </code></pre></div><p><img src="http://1.bp.blogspot.com/-VL7re_vr97E/TevFPbO9msI/AAAAAAAAAXY/tXBaVB_kG-0/s1600/archetype03.png" alt="center"></p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Apache Maven de N. De Loof, A. Héritier chez Pearson</li>
 <li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>

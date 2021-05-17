@@ -254,7 +254,7 @@
   <p><img src="http://maven.apache.org/images/maven-logo-2.gif" alt="left">
 Ce post aura pour principal objectif de répertorier un ensemble d&rsquo;astuces et de pointeurs sur maven2 (cela m&rsquo;évitant également de rechercher dans mes liens ;-) ). Ne voulant pas répéter ce qu&rsquo;y a déjà été traité par d&rsquo;autres sites ou blogs, je me contenterai seulement de faire des références.</p>
 <!-- more -->
-<p>#Descriptif des différentes phases</p>
+<h1 id="descriptif-des-différentes-phases">Descriptif des différentes phases</h1>
 <p>Page du site de maven2 décrivant le cycle de vie d&rsquo;un projet :
 <a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a></p>
 <p>Cette page récapitule le cycle des phases utilisés pour un packaging donné. Cela est très utile lors de l&rsquo;utilisation de plugins comme maven-assembly-plugin, maven-surefire-plugin, maven-sql-plugin, maven-checkstyle-plugin ou encore cargo-maven2-plugin, en permettant de positionner son exécution sur une phase donnée.</p>
@@ -277,7 +277,7 @@ Ce post aura pour principal objectif de répertorier un ensemble d&rsquo;astuces
 <img src="http://www.sonatype.com/books/mvnex-book/reference/figs/web/simple-project_lifecyclebinding.png" alt="center"></p>
 <p><a href="http://www.sonatype.com/books/mvnex-book/reference/figs/web/simple-project_lifecyclebinding.png">http://www.sonatype.com/books/mvnex-book/reference/figs/web/simple-project_lifecyclebinding.png</a></p>
 <p><img src="http://dgouyette.developpez.com/tutoriels/java/exposer-service-crud-restful-avec-jboss-resteasy/images/Image%201.png" alt="center"></p>
-<p>#Liste de plugins maven 2 très utiles</p>
+<h1 id="liste-de-plugins-maven-2-très-utiles">Liste de plugins maven 2 très utiles</h1>
 <p>Article du blog d&rsquo;Octo Technologie sur une liste très utile de plugins maven2 :
 <a href="http://blog.octo.com/maven-mes-plugins-preferes/">http://blog.octo.com/maven-mes-plugins-preferes/</a></p>
 <p>L&rsquo;auteur de cette page nous donne la liste des plugins maven2 qu&rsquo;il utilise fréquemment.</p>
@@ -366,14 +366,14 @@ Ce post aura pour principal objectif de répertorier un ensemble d&rsquo;astuces
 <span style="color:#f92672">&lt;/plugin&gt;</span>
 </code></pre></div><p>exemple d&rsquo;utilisation :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn release:prepare release:perform
-</code></pre></div><p>#S&rsquo;en sortir quand on ne comprend pas un plugin avec mvnDebug
-Bon, quand on a besoin d&rsquo;un plugin maven mais que la documentation vient à manquer ou que google n&rsquo;est pas gentil (sic.), il reste toujours la solution de rentrer dans le code du plugin. Pour ce faire, maven, en plus des scripts mvn.bat ou mvn, vient également avec les scripts mvnDebug et mvnDebug.bat.</p>
+</code></pre></div><h1 id="sen-sortir-quand-on-ne-comprend-pas-un-plugin-avec-mvndebug">S&rsquo;en sortir quand on ne comprend pas un plugin avec mvnDebug</h1>
+<p>Bon, quand on a besoin d&rsquo;un plugin maven mais que la documentation vient à manquer ou que google n&rsquo;est pas gentil (sic.), il reste toujours la solution de rentrer dans le code du plugin. Pour ce faire, maven, en plus des scripts mvn.bat ou mvn, vient également avec les scripts mvnDebug et mvnDebug.bat.</p>
 <p>Ces derniers scripts permettent de rentrer en remote debug dans votre exécution maven, permettant ainsi, après récupération du code source du plugin de suivre son déroulement en utilisant votre IDE préféré et en mettant vos points d&rsquo;arrêt où bon vous semble.</p>
 <p>Par défaut, mvnDebug attend que votre debugger soit branché pour continuer l&rsquo;exécution et émet ses informations sur le port 8000 :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MAVEN_DEBUG_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000&#34;</span>
-</code></pre></div><p>Avec ça, plus d&rsquo;excuse pour dire que l&rsquo;on ne sait pas ce que fait un plugin! ;-)
-#Ne pas commiter les fichiers de travail de maven dans Subversion
-Article du blog d&rsquo;Arnaud Héritier sur une petite astuce pour créer les .ignore :
+</code></pre></div><p>Avec ça, plus d&rsquo;excuse pour dire que l&rsquo;on ne sait pas ce que fait un plugin! ;-)</p>
+<h1 id="ne-pas-commiter-les-fichiers-de-travail-de-maven-dans-subversion">Ne pas commiter les fichiers de travail de maven dans Subversion</h1>
+<p>Article du blog d&rsquo;Arnaud Héritier sur une petite astuce pour créer les .ignore :
 <a href="http://blog.aheritier.net/subversion-exclure-en-masse-les-fichiers-et-repertoires-generes-dun-projet-maven/">http://blog.aheritier.net/subversion-exclure-en-masse-les-fichiers-et-repertoires-generes-dun-projet-maven/</a></p>
 <p>Cette page fournit une petite astuce pour ne plus avoir à gérer les svn ignore. Pas testé pour ma part mais j&rsquo;essaierai!</p>
 

@@ -271,7 +271,7 @@
 </ul>
 <p>Ce petit article résume comment utiliser ces 2 solutions.</p>
 <!-- more -->
-<p>#Classe de test</p>
+<h1 id="classe-de-test">Classe de test</h1>
 <p>La classe utilisée comme exemple dans les 2 cas est la suivante :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> com.datastax.driver.core.Cluster<span style="color:#f92672">;</span>
 <span style="color:#f92672">import</span> com.datastax.driver.core.ResultSet<span style="color:#f92672">;</span>
@@ -318,7 +318,7 @@
     compile(group: &#39;org.projectlombok&#39;, name: &#39;lombok&#39;, version:&#39;1.16.18&#39;) 
 }
 </code></pre></div><p>Rien de bien compliqué mais il s&rsquo;agit d&rsquo;un cas d&rsquo;exemple ultra simple&hellip; ;)</p>
-<p>#Cassandra-Unit</p>
+<h1 id="cassandra-unit">Cassandra-Unit</h1>
 <p>Pour utiliser Cassandra-Unit, il suffit de déclarer sa dépendance en scope de test:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
     <span style="color:#f92672">&lt;groupId&gt;</span>org.cassandraunit<span style="color:#f92672">&lt;/groupId&gt;</span>
@@ -395,7 +395,7 @@
 <span style="color:#75715e">#compaction_preheat_key_cache: true</span>
 <span style="color:#75715e">#in_memory_compaction_limit_in_mb: 64</span>
 </code></pre></div><p>A noter également que Cassandra-Unit propose également des loader permettant d&rsquo;initialiser les données dans le cluster ainsi que d&rsquo;autres facilités d&rsquo;utilisation telles que des Rules ou un support de Spring. Pour avoir plus d&rsquo;informations, je vous invite à aller voir la documentation.</p>
-<p>#Achille-Embedded</p>
+<h1 id="achille-embedded">Achille-Embedded</h1>
 <p>Pour utiliser Achille-embedded, il suffit de déclarer sa dépendance en scope de test:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
     <span style="color:#f92672">&lt;groupId&gt;</span>info.archinnov<span style="color:#f92672">&lt;/groupId&gt;</span>
@@ -450,7 +450,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>A noter également qu&rsquo;Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d&rsquo;informations, je vous invite à aller voir les différents tests du projet.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>On a donc vu dans ce rapide article comment il était possible de faire des tests d&rsquo;intégration avec Cassandra.</p>
 <p>A noter que le code montré dans cet article est extrêmement simple mais je voulais juste montrer un rapide cas d&rsquo;usage, du coup, pas grand chose à ajouter puisque les exemples parlent d&rsquo;eux-même ;) .</p>
 <p>Concernant le choix de l&rsquo;un ou de l&rsquo;autre, j&rsquo;avoue avoir une préférence pour Achille-Embedded car il permet plus simplement d&rsquo;avoir la main sur la configuration et ne pas avoir à maintenir un fichier de configuration en plus.</p>

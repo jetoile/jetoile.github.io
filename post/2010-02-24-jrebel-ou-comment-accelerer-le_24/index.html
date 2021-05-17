@@ -278,8 +278,8 @@
 <p>Suite à l&rsquo;obtention d&rsquo;une licence gracieusement offerte par <a href="http://www.zeroturnaround.com/">ZeroTurnaround</a> lors du 2ième anniversaire du <a href="http://www.parisjug.org/">Paris JUG</a> (merci à eux et longue vie aux JUGs!!), je ne pouvais que tester à mon tour&hellip;</p>
 <p>Cet article va donc donner mon retour d&rsquo;expérience.</p>
 <!-- more -->
-<p>#JRebel, quesako?
-JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement permettant de prendre en compte des modifications de code sans avoir à redéployer l&rsquo;application ou à redémarrer le serveur. Pour ce faire, il utilise un agent java qui lui permet d&rsquo;instrumenter le classloader de la JVM (opération rendu possible depuis java 5).</p>
+<h1 id="jrebel-quesako">JRebel, quesako?</h1>
+<p>JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement permettant de prendre en compte des modifications de code sans avoir à redéployer l&rsquo;application ou à redémarrer le serveur. Pour ce faire, il utilise un agent java qui lui permet d&rsquo;instrumenter le classloader de la JVM (opération rendu possible depuis java 5).</p>
 <p>Ainsi, lorsque qu&rsquo;une classe est chargée, JRebel essaie d&rsquo;y associer un fichier .class qui est recherché dans le classpath ainsi que dans les répertoires cibles précisés par le fichier de configuration <code>rebel.xml</code>. Si un fichier .class est trouvé, JRebel instrumente la classe chargée et y associe le fichier trouvé. Le timestamp du fichier .class est alors monitoré afin de détecter les changements et les modifications sont propagées au travers du class loader à l&rsquo;application.</p>
 <p>En outre, JRebel permet de monitorer les fichiers .class présents dans les JARs s&rsquo;ils possèdent un fichier rebel.xml.</p>
 <p>Enfin, JRebel permet également la prise en compte d&rsquo;autres types de ressources telles que les CSS, javascript, HTML, XML, JSP et properties.</p>
@@ -309,8 +309,8 @@ JRebel de ZeroTurnaround, anciennement JavaRebel, est un outil de développement
 <li>de démarrer l&rsquo;application ou le conteneur de Servlet ou Serveur d&rsquo;application en précisant à la JVM d&rsquo;utiliser l&rsquo;agent JRebel,</li>
 <li>d&rsquo;ajouter dans le répertoire WEB-INF/classes (pour un war) ou racine (pour un jar) le fichier rebel.xml contenant l&rsquo;emplacement des fichiers susceptibles de changer (classes, ressources, &hellip;) qui se trouve être généralement le répertoires build ou target/classes (pour maven).</li>
 </ul>
-<p>#JRebel, mise en oeuvre
-Pour expliquer une mise en œuvre de JRebel, je prendrai un exemple simple (qui, je pense, couvrira le besoin de la majorité des développeurs) : une application web embarquant un certain nombre de librairies métiers &ldquo;maison&rdquo; déployée dans un conteneur de Servlet. Cette application web pouvant être indifféremment un service web ou une application ayant pour objectif de fournir un rendu graphique dans un navigateur web (ie. pouvant contenir des jsp, css, javascript, &hellip;). L&rsquo;objectif étant, ici, de montrer comment l&rsquo;application web est capable de se recharger à chaud afin de prendre en compte les modifications du développeur.</p>
+<h1 id="jrebel-mise-en-oeuvre">JRebel, mise en oeuvre</h1>
+<p>Pour expliquer une mise en œuvre de JRebel, je prendrai un exemple simple (qui, je pense, couvrira le besoin de la majorité des développeurs) : une application web embarquant un certain nombre de librairies métiers &ldquo;maison&rdquo; déployée dans un conteneur de Servlet. Cette application web pouvant être indifféremment un service web ou une application ayant pour objectif de fournir un rendu graphique dans un navigateur web (ie. pouvant contenir des jsp, css, javascript, &hellip;). L&rsquo;objectif étant, ici, de montrer comment l&rsquo;application web est capable de se recharger à chaud afin de prendre en compte les modifications du développeur.</p>
 <p>Cette application web, développé avec maven 2, se composera de deux modules :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">module-parent
    |-- module-metier
@@ -437,13 +437,13 @@ Pour expliquer une mise en œuvre de JRebel, je prendrai un exemple simple (qui,
 export JAVA_OPTS=&#34;-noverify -javaagent:/opt/jrebel/jrebel.jar $JAVA_OPTS&#34;
 `dirname $0`/startup.sh $@
 </code></pre></div><p>Les modifications sont alors pris à chaud par notre conteneur de Servlet ou serveur d&rsquo;application!</p>
-<p>Attention cependant à ne pas oublier de préciser la valeur de la variable que nous avons utilisé sous via un -D, soit via le fichier de configuration de JRebel.
-#Conclusion</p>
+<p>Attention cependant à ne pas oublier de préciser la valeur de la variable que nous avons utilisé sous via un -D, soit via le fichier de configuration de JRebel.</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Suite à l&rsquo;utilisation de JRebel, j&rsquo;ai vraiment été agréablement surpris par sa facilité d&rsquo;utilisation que j&rsquo;ai essayé de retranscrire ici.</p>
 <p>Cependant, JRebel ne doit pas être vu non plus comme un outil miracle mais plutôt juste comme un accélérateur de développement. De part son fonctionnement, il possède un certain nombre de limitations mais reste tout de même plus naturel, plus puissant et plus simple d&rsquo;utilisation que le mode debugger qui permet via le mécanisme de HotSwap de prendre à chaud certaines modifications du code (pour ma part, je ne branche le débuggeur qu&rsquo;au besoin).</p>
 <p>Cependant, il est tout de même conseiller de se référer à la documentation officielle dans le cas d&rsquo;usage plus complexe (avec la possibilité de tuner plus finement le fichier rebel.xml entre autre).
-En outre, il est important de garder en mémoire certaines de ses limitations (il faut, par exemple, forcer le rechargement des fichiers de contexte spring pour que certaines modifications soient pris en compte).
-#Pour aller plus loin&hellip;</p>
+En outre, il est important de garder en mémoire certaines de ses limitations (il faut, par exemple, forcer le rechargement des fichiers de contexte spring pour que certaines modifications soient pris en compte).</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Site de ZeroTurnaround : <a href="http://www.zeroturnaround.com/">http://www.zeroturnaround.com/</a></li>
 <li>Page de FAQ de JRebel : <a href="http://www.zeroturnaround.com/jrebel/faq/">http://www.zeroturnaround.com/jrebel/faq/</a></li>

@@ -268,7 +268,7 @@
   <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small"></p>
 <p>Cet article fait suite à mes précédents posts (<a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">ici</a> et <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">là</a>) et à pour objectif d&rsquo;intégrer la partie JMX à mon petit POC JGroups afin d&rsquo;offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d&rsquo;une application distribuée (ie. d&rsquo;aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d&rsquo;une application d&rsquo;obtenir la valeur d&rsquo;une donnée offerte par les autres instances.</p>
 <!-- more -->
-<p>#Expression du besoin et conception</p>
+<h1 id="expression-du-besoin-et-conception">Expression du besoin et conception</h1>
 <p>Comme je l&rsquo;ai expliqué <a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">ici</a>, le principe est simple : en démarrant son application qui aura à sa charge d&rsquo;appeler un petit bout de code de notre toolkit, tous les MBeans se trouvant sur les autres serveurs JMX (modulo que l&rsquo;application qui les ait démarrés ait démarré en instanciant notre toolkit) doivent être remonter dans notre serveur JMX courant. Réciproquement, tous les MBeanServer devront enregistrer les MBeans offerts par notre instance d&rsquo;application.</p>
 <p>Pour ce faire, notre toolkit gérera la partie JMX, c&rsquo;est-à-dire qu&rsquo;il créera un connecteur JMX serveur (connecteur s&rsquo;appuyant sur le protocole RMI) permettant d&rsquo;accéder au MBeanServer courant (ie. il utilisera le MBeanServer s&rsquo;il en existe un ou, dans le cas échéant, il en créera un) et qu&rsquo;il l&rsquo;exposera aux autres instances en fournissant un stub de la partie connecteur JMX cliente. Ce stub permettra aux autres instances d&rsquo;instancier la couche de communication nécessaire vers le MBeanServer cible. C&rsquo;est ce stub qui sera transmis par JGroups (et qui remplacera donc la donnée partagée de notre <em>POC</em> JGroups).</p>
 <p>Ca va? Tout le monde suit? Bon, on va pouvoir accélérer&hellip; ;-)</p>
@@ -277,8 +277,8 @@
 <p>En outre, pour le cas spécifique des MXBeans (un certain nombre de MXBean est spécifié par JMX : <a href="http://download.oracle.com/javase/6/docs/api/),">http://download.oracle.com/javase/6/docs/api/),</a> un traitement particulier sera effectué. En effet, JMX offre la possibilité de créer directement un proxy de l&rsquo;interface d&rsquo;un MXBean donné via la méthode statique <code>ManagementFactory.newPlatformMXBeanProxy()</code>. Aussi, pour les MXBeans, notre wrapper ne sera pas utilisé puisqu&rsquo;il est possible d&rsquo;enregistrer directement au sein de notre MBeanServer courant le MXBean distant.</p>
 <p>Bien sûr, encore une fois, cela aurait été trop simple s&rsquo;il n&rsquo;y avait pas un mais&hellip; ;-) En effet, la spécification JMX précise qu&rsquo;il est possible d&rsquo;avoir plusieurs MXBeans de type <code>MemoryPoolMXBean</code>, <code>MemoryManagerMXBean</code> et <code>GarbageCollector</code> (cf. <a href="http://download.oracle.com/javase/6/docs/api/)">http://download.oracle.com/javase/6/docs/api/)</a>. Dans ces cas précis, ce sont les propriétés de ces MXBeans qui permettent de les différencier : un traitement particulier sera donc effectué dans ces cas précis puisqu&rsquo;une recherche pour décrouvrir les propritétés du MXBean sera faite.</p>
 <p>En outre, un cas particulier lié à la JRE 6 de Sun (Hostpot) a, ici, été traité (du coup, cela rend le code proposé adhérent à notre jdk&hellip;) puisque le MXBean <code>HotpostDiagnostic</code> a fait l&rsquo;objet d&rsquo;une attention particulière&hellip;</p>
-<p>#Mise en oeuvre</p>
-<p>##Intégration de JMX</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<h2 id="intégration-de-jmx">Intégration de JMX</h2>
 <p><u>Note</u> : à noter que le code présenté dans cet article comporte quelques raccourcis et n&rsquo;a pour objectif que de montrer les points clé. Aussi, certaines portions (comme, entre autre, la gestion des threads, des exceptions ou les méthodes <code>equals()</code>, <code>hashCode()</code> ou <code>toString()</code>) ne sont pas présentes par soucis de clarté. Le code complet peut être trouvé sur GitHub : <a href="https://github.com/jetoile/jmanager4all">https://github.com/jetoile/jmanager4all</a>.</p>
 <p>Ici, la donnée, traduite par la classe <code>Data</code> dans mon article précédent, sera remplacée par le stub au <code>JMXConnector</code>. Ce stub sera créé par la classe utilisée pour instancier les objets nécessaires à la bonne initalisation du toolkit et il sera encapsulé dans la classe <code>JManagerConnector</code> (à noter, bien sûr que la classe <code>RMIConnector</code> (implémentation de l&rsquo;interface <code>JMXConnector</code>) utilisée ici est sérialisable) lors de sa transmission entre les différentes instances de l&rsquo;application.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JManagerConnector</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
@@ -382,7 +382,7 @@
  <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Ce dernier point nous amène au paragraphe suivant, à savoir la récupération des MBeans distants et leur enregistrement.</p>
-<p>#Récupération des MBeans distants et enregistrement</p>
+<h1 id="récupération-des-mbeans-distants-et-enregistrement">Récupération des MBeans distants et enregistrement</h1>
 <p>La récupération des MBeans distants est globalement simple et suit le schéma suivant (cet algorithme ne s&rsquo;applique pas aux MXBeans) :</p>
 <ul>
 <li>à partir du <code>JMXConnector</code> client, récupération du <code>MBeanServerConnection</code>,</li>
@@ -656,7 +656,7 @@
   <span style="color:#f92672">}</span>
  <span style="color:#f92672">}</span>
 </code></pre></div><p>Pour le cas particulier du <code>MXBean HotspotDiagnostic</code>, je vous laisse le soin de jeter un oeil sur le code&hellip; ;-)</p>
-<p>#Désenregistrement d&rsquo;une instance (et donc de ses MBeans associés)</p>
+<h1 id="désenregistrement-dune-instance-et-donc-de-ses-mbeans-associés">Désenregistrement d&rsquo;une instance (et donc de ses MBeans associés)</h1>
 <p>Bien entendu, si une instance venait à disparaitre, il est nécessaire de désenregistrer ses <code>MBeans</code> pour chaque instance de l&rsquo;application encore présente.</p>
 <p>Là encore, la principe est ultra-simple puisqu&rsquo;il suffit de récupérer l&rsquo;ensemble des MBeans qui se trouvent dans le domaine JMX <em>&ldquo;remote&rdquo;</em> (qui pour rappel est le domaine utilisé pour enregistrer tous nos proxy) avec la &ldquo;bonne&rdquo; propriété (à savoir la propriété <code>instance</code> qui doit valoir la valeur de l&rsquo;adresse de l&rsquo;instance à supprimer) et de les désenregistrer du <code>MBeanServer</code> local.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRemove</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
@@ -667,11 +667,11 @@
    mbeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">unregisterMBean</span><span style="color:#f92672">(</span>objectName<span style="color:#f92672">);</span>
   <span style="color:#f92672">}</span>
  <span style="color:#f92672">}</span>
-</code></pre></div><p>#Conclusion
-On a vu tout au long de cette article comment il était possible d&rsquo;utiliser JMX coté client (on récupère des <code>MBeans</code> distants) mais également coté serveur (on créé des <code>MBeans</code>). Bien sûr, la couche JGroups n&rsquo;est qu&rsquo;un prétexte mais je trouvais intéressant de pouvoir s&rsquo;appuyer sur ce dernier pour être notifié de changement dans le système. Si je suis motivé, j&rsquo;intégrerais peut être une implémentation NoSQL pour stocker et partager les JMXConnector ou un truc du genre&hellip; ;-)</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>On a vu tout au long de cette article comment il était possible d&rsquo;utiliser JMX coté client (on récupère des <code>MBeans</code> distants) mais également coté serveur (on créé des <code>MBeans</code>). Bien sûr, la couche JGroups n&rsquo;est qu&rsquo;un prétexte mais je trouvais intéressant de pouvoir s&rsquo;appuyer sur ce dernier pour être notifié de changement dans le système. Si je suis motivé, j&rsquo;intégrerais peut être une implémentation NoSQL pour stocker et partager les JMXConnector ou un truc du genre&hellip; ;-)</p>
 <p>Par contre, je n&rsquo;ai pas testé le comportement dans le cas où des notifications seraient émises&hellip; en outre, si un service de <strong>Relation</strong> JMX était utilisé, je pense que cela pourrait poser quelques soucis&hellip;</p>
 <p>A noter que je suis tombé tout récemment sur une <a href="http://blog.infin-it.fr/2010/08/05/aggregateur-jmx-2/">autre solution</a> (que je n&rsquo;ai pas testé) qui permet d&rsquo;aggréger des informations JMX au sein d&rsquo;un même serveur <code>MBeanServer</code>. La cible n&rsquo;est pas tout à fait identique mais peut être suffisante pour la plupart des cas&hellip; par contre, il faut aimer Spring&hellip; ;-)</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Site officiel de JGroups : <a href="http://www.jgroups.org/">http://www.jgroups.org/</a></li>
 <li>Wiki de JGroups : <a href="http://community.jboss.org/wiki/JGroups">http://community.jboss.org/wiki/JGroups</a></li>

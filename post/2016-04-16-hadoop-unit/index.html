@@ -280,7 +280,7 @@ Dans mon dernier <a href="https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-boot
 <p>Cet article présentera donc quels ont été les améliorations qui ont été apportées.</p>
 <p><em>Disclaimer</em> : je tiens à repréciser que Hadoop-unit n&rsquo;est qu&rsquo;une solution de contournement permettant de simuler une partie de l&rsquo;écosystème Hadoop afin de permettre de disposer en local d&rsquo;un ersatz de distribution afin de fluidifier le développement mais proposant aussi d&rsquo;effectuer des tests d&rsquo;intégration dans un environnement dégradé. Cela peut également permettre d&rsquo;éviter de monter un cluster Hadoop dédié aux tests d&rsquo;intégration.</p>
 <!-- more -->
-<p>#Description des changements/évolutions</p>
+<h1 id="description-des-changementsévolutions">Description des changements/évolutions</h1>
 <p>Alors que la première version d&rsquo;Hadoop Unit (aka. Hadoop Bootstrap) était monolithique, le projet a été découpé en modules permettant ainsi de ne démarrer que les composants qui sont présents dans le classpath de l&rsquo;environnement de test (en maven le scope de test).</p>
 <p>Ainsi, par exemple, si l&rsquo;application nécessite HBase (qui nécessite lui-même Hdfs et Zookeeper), il n&rsquo;y a qu&rsquo;à ajouter au classpath de test la dépendance à HBase.</p>
 <p>Dans ce cas, grâce à la transitivité Maven, les modules Zookeeper et Hdfs seront automatiquement ajoutés au classpath de test et les composants démarrés avant HBase.</p>
@@ -552,7 +552,7 @@ Dans mon dernier <a href="https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-boot
         <span style="color:#f92672">&lt;outputFile&gt;</span>/tmp/toto.txt<span style="color:#f92672">&lt;/outputFile&gt;</span>
     <span style="color:#f92672">&lt;/configuration&gt;</span>
 <span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>#Trucs et astuces</p>
+</code></pre></div><h1 id="trucs-et-astuces">Trucs et astuces</h1>
 <p>Il est possible d&rsquo;intéragir avec Hadoop Unit (et même si il s&rsquo;agit d&rsquo;un cluster Hadoop dégradé) avec les moyens standards, à savoir :</p>
 <ul>
 <li>hbase shell</li>
@@ -571,8 +571,8 @@ hdfs dfs -ls hdfs://localhost:20112/
 <li>des bonnes dépendances pour utiliser Spark 1.6.0 (cf. conflit de lib)</li>
 <li>des bonnes dépendances pour utiliser Spark-solr (cf. conflit de lib)</li>
 </ul>
-<p>#Conclusion
-Comme je l&rsquo;ai déjà dit maintes et maintes fois, Hadoop Unit n&rsquo;est qu&rsquo;une solution de contournement (ou la solution du pauvre au choix&hellip; ;) ) mais cela peut permettre d&rsquo;accélérer les phases de développement (en utilisant hadoop-unit-standalone par exemple) et peut permettre d&rsquo;effectuer quelques tests d&rsquo;intégration.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Comme je l&rsquo;ai déjà dit maintes et maintes fois, Hadoop Unit n&rsquo;est qu&rsquo;une solution de contournement (ou la solution du pauvre au choix&hellip; ;) ) mais cela peut permettre d&rsquo;accélérer les phases de développement (en utilisant hadoop-unit-standalone par exemple) et peut permettre d&rsquo;effectuer quelques tests d&rsquo;intégration.</p>
 <p>Hadoop Unit s&rsquo;appuie sur le travail de <a href="https://github.com/sakserv/hadoop-mini-clusters">Shane Kumpf</a> et est lié aux versions des composants d&rsquo;Hortonworks (d&rsquo;ailleurs, une grosse partie des tests est directement un copier/coller de ce qu&rsquo;à fait Shane Kumpf).</p>
 <p>Il ne propose ni Spark ni Map/Reduce car ces derniers n&rsquo;ont pas besoin d&rsquo;être simulés puisqu&rsquo;ils proposent un mode de développement.</p>
 <p>Enfin, pour plus d&rsquo;informations sur l&rsquo;utilisation d&rsquo;Hadoop-Unit, je vous invite à aller sur la page du projet <a href="https://github.com/jetoile/hadoop-unit">github</a> et/ou de faire des Pull Request si vous avez des remarques/bugs et/ou à forker si cela vous convient pas.</p>

@@ -271,7 +271,7 @@ Cet article fera un rapide tour d&rsquo;horizon sur les différentes stratégies
 <p>Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</p>
 <p>[<em>ndlr</em> : par contre, je ne ferai, comme à mon habitude, que retranscrire ce qui est présent dans le livre&hellip;]</p>
 <!-- more -->
-<p>#Les concepts</p>
+<h1 id="les-concepts">Les concepts</h1>
 <p>Logstash est écrit en JRuby et fonctionne dans une JVM. Son architecture est orientée messages et est très simple. Plutôt que de séparer le concepts d&rsquo;agents et de serveurs, Logstash se présente comme  un simple agent qui est configuré pour combiner différentes fonctions avec d&rsquo;autres composants open souce.</p>
 <p>L&rsquo;écosystème de Logstash est constitué de 4 composants :</p>
 <ul>
@@ -311,8 +311,8 @@ output {
 <li><code>filter</code> peut prendre en valeur des <em>plugins</em> qui permettent de manipuler l&rsquo;événement en le <em>parsant</em>, filtrant ou en ajoutant des informations issues du parsing ou non.</li>
 <li><code>output</code> peut prendre en valeur des <em>plugins</em> qui permettent de préciser où seront envoyés les événements (comme, par exemple, la sortie standard ou ElasticSearch).</li>
 </ul>
-<p>#Les différentes stratégies de déploiement possibles</p>
-<p>##Le mode de déploiement <em>classique</em></p>
+<h1 id="les-différentes-stratégies-de-déploiement-possibles">Les différentes stratégies de déploiement possibles</h1>
+<h2 id="le-mode-de-déploiement-_classique_">Le mode de déploiement <em>classique</em></h2>
 <p>Dans l&rsquo;architecture de déploiement <em>classique</em>, on retrouve la <em>stack</em> préconisée qui est la suivante :</p>
 <ul>
 <li>Les agents Logstash se trouvant sur les machines hôtes collectent et émettent les logs (sous forme d&rsquo;événements) au système central.</li>
@@ -329,9 +329,9 @@ output {
 <li>Cele permet de fournir de la résiliance. Si l&rsquo;indexation Logstash échoue, alors les événements sont mise en fils d&rsquo;attente afin d&rsquo;éviter la perte d&rsquo;informations.</li>
 </ul>
 <p>On observe donc, dans cette configuration, que les agents Logstash présents sur les machines hôtes ne font que transmettre sans intelligence réelle au buffer les différents événements de log et qu&rsquo;ils n&rsquo;ont pas <em>vraiment</em> de logique (ie. ils n&rsquo;ont pas de section <strong>filter</strong> mais juste les sections <strong>input</strong> et <strong>output</strong>).</p>
-<p>##Le mode de déploiement sans agent
-###A la mode système
-Comme on a pu voir dans le paragraphe précédent, les machines hôtes disposent d&rsquo;un agent Logstash complet. Cependant, ils n&rsquo;ont pas vraiment de logique puisqu&rsquo;ils ne font que transmettre les événements de logs au broker dont le rôle est de servir de buffer.</p>
+<h2 id="le-mode-de-déploiement-sans-agent">Le mode de déploiement sans agent</h2>
+<h3 id="a-la-mode-système">A la mode système</h3>
+<p>Comme on a pu voir dans le paragraphe précédent, les machines hôtes disposent d&rsquo;un agent Logstash complet. Cependant, ils n&rsquo;ont pas vraiment de logique puisqu&rsquo;ils ne font que transmettre les événements de logs au broker dont le rôle est de servir de buffer.</p>
 <p>Cependant, parfois, il peut être intéressant de ne pas à avoir besoin d&rsquo;installer un agent Logstash sur les machines hôtes :</p>
 <ul>
 <li>si la JVM déployé sur la machine hôte est limitée,</li>
@@ -342,8 +342,8 @@ Comme on a pu voir dans le paragraphe précédent, les machines hôtes disposent
 <p>Dans ce cas, le serveur Logstash n&rsquo;aura qu&rsquo;à déclarer un <em>input</em> supplémentaire permettant d&rsquo;écouter des événéments (dans notre cas, Syslog).</p>
 <p>A titre informatif, il est possible d&rsquo;utiliser un <em>Appender</em> syslog dans log4j ou logback (entre autre).</p>
 <p><img src="https://blog.jetoile.fr/images/logstash/archi03.png" alt="center"></p>
-<p>###A la mode agent
-Dans le cas où ni un agent Logstash ni Syslog ne sont envisageables, il est possible d&rsquo;utiliser <a href="https://github.com/elasticsearch/logstash-forwarder">Logstash Forwarder</a> (anciennement Lumberjack).</p>
+<h3 id="a-la-mode-agent">A la mode agent</h3>
+<p>Dans le cas où ni un agent Logstash ni Syslog ne sont envisageables, il est possible d&rsquo;utiliser <a href="https://github.com/elasticsearch/logstash-forwarder">Logstash Forwarder</a> (anciennement Lumberjack).</p>
 <p>Il s&rsquo;agit d&rsquo;un client légé permettant d&rsquo;envoyer des messages à Logstash en offrant un protocole maison intégrant de la sécurité (encryption SSL) ainsi que de la compression.</p>
 <p>Il a été conçu pour être petit avec une faible emprunte mémoire tout en étant rapide. Il a été écrit en <a href="http://golang.org/">Go</a>.</p>
 <p>Dans ce cas, il suffit d&rsquo;exécuter logstash-forwarder avec les <em>bons</em> fichiers de configuration spécifiant l&rsquo;adresse du serveur cible ainsi que l&rsquo;emplacement du certificat et les fichiers à scruter.</p>
@@ -353,7 +353,7 @@ Dans le cas où ni un agent Logstash ni Syslog ne sont envisageables, il est pos
 <li><a href="https://github.com/josegonzalez/beaver">Beaver</a></li>
 <li><a href="https://github.com/danryan/woodchuck">Woodchuck</a></li>
 </ul>
-<p>#Les filtres</p>
+<h1 id="les-filtres">Les filtres</h1>
 <p>Logstash vient avec un système de filtre qu&rsquo;il est possible de configurer via la section <strong>filter</strong>.</p>
 <p>Ces filtres permettent de filtrer mais également de modifier (via <strong>mutable</strong>) le contenu de l&rsquo;événement. Ils permettent également de <em>parser</em> les événements (via <strong>grok</strong>) afin de les rajouter lors de la phase d&rsquo;indexation (et donc de stockage). Cela permet ainsi de pouvoir rechercher des événements de manière plus ciblé.</p>
 <p>Il existe plusieurs stratégies lors de l&rsquo;utilisation de filtres :</p>
@@ -365,19 +365,19 @@ Dans le cas où ni un agent Logstash ni Syslog ne sont envisageables, il est pos
 <p>Le plus simple est encore d&rsquo;émettre les logs au bon format, cependant, cela n&rsquo;est pas toujours possible (trop de log différents, systèmes hétérogènes, code legacy, &hellip;).</p>
 <p>Une autre manière de faire est d&rsquo;exécuter le filtrage localement (ie. directement sur l&rsquo;agent). Cela permet de réduire la charge de traitement du serveur central et d&rsquo;être sûr que seuls les événements propres et structurés seront stockés. Cependant, cela oblige à maintenir une configuration plus complexe sur chaque agent.</p>
 <p>A l&rsquo;inverse, si le filtrage est effectué sur le serveur central, cela permet de centraliser les filtres et permet donc une administration plus simple. Cependant, cela demande des ressources supplémentaires pour effectuer le filtrage sur un plus grand nombre d&rsquo;événements.</p>
-<p>#La scalabilité et Logstash
-Une des grande force de Logstash est qu&rsquo;il est possible de le composer avec différents composants : Logstash lui-même, Redis comme <em>broker</em>, ElasticSearch et bien d&rsquo;autres éléments qu&rsquo;il est possible de composer via la configuration de Logstash.</p>
+<h1 id="la-scalabilité-et-logstash">La scalabilité et Logstash</h1>
+<p>Une des grande force de Logstash est qu&rsquo;il est possible de le composer avec différents composants : Logstash lui-même, Redis comme <em>broker</em>, ElasticSearch et bien d&rsquo;autres éléments qu&rsquo;il est possible de composer via la configuration de Logstash.</p>
 <p>Ainsi, il est possible de jouer à plusieurs niveaux pour répondre à telles ou telles problématiques comme la perte de messages, le fait d&rsquo;avoir un SPOF (<em>Single Point Of Failure</em>) ou d&rsquo;avoir un point de contention dans le système.</p>
 <p>Par exemple, si Redis est utilisé comme broker entre les agents Logstash et le serveur central, il peut être intéressant de passer Redis en mode <em>failover</em> afin d&rsquo;éviter une perte d&rsquo;événements lors de la transmission de ces derniers. Pour ce faire, il suffit de configurer le plugin <strong>redis</strong> de la section <strong>output</strong>  avec l&rsquo;option <code>shuffle_hosts</code> pour indiquer à l&rsquo;agent Logstash de n&rsquo;utiliser qu&rsquo;un seul noeud Redis lors de sa phase d&rsquo;écriture. Du coté du serveur central, il suffit d&rsquo;ajouter (et de configurer) autant de plugin <strong>redis</strong> de la section <strong>input</strong> que de noeud.</p>
 <p><img src="https://blog.jetoile.fr/images/logstash/archi04.png" alt="center"></p>
 <p>Afin de permettre à la partie stockage/indexation d&rsquo;être scalable, il suffit de configurer ElasticSearch en mode cluster, ce qui est natif chez lui.</p>
 <p>Enfin, il est possible de rendre le serveur central Logstash robuste à la panne en en créant d&rsquo;autres instances (mode <em>failover</em>) qui partageront la même configuration.</p>
 <p><img src="https://blog.jetoile.fr/images/logstash/archi05.png" alt="center"></p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>En conclusion de cet article où je ne suis pas rentré dans les détails (mais ce n&rsquo;est pas ce qui m&rsquo;intéressait&hellip;), on peut constater qu&rsquo;il existe moultes façons de configurer Logstash (et son écosystème) qui dépendent à chaque fois des besoins.</p>
 <p>Cela est rendu possible par l&rsquo;architecture et la conception modulaire de Logstash et le fait qu&rsquo;il est très simple de le <em>plugger</em> à différentes solutions.</p>
 <p>Même si cela est évident, je trouvais utile de le marquer noir sur blanc dans un court article&hellip; ;-)</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li><a href="http://logstash.net/">http://logstash.net/</a></li>
 <li><a href="http://www.logstashbook.com/">http://www.logstashbook.com/</a></li>

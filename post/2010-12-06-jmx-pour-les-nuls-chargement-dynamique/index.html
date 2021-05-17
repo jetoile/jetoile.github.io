@@ -266,7 +266,7 @@
   <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left"></p>
 <p>Cet article toujours dans la lignée de ma petite série d&rsquo;articles sur JMX (cf. <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités, <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification, <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX, <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">partie 4</a> sur les classes de base et <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html">partie 5</a> sur le MBeanServer) sera plus accès sur les capacités de chargement dynamique des MBeans. Cependant, il n&rsquo;abordera que succinctement cette partie car il est nécessaire  d&rsquo;avoir une très bonne connaissance du fonctionnement du classloader et qu&rsquo;un simple article ne saurait l&rsquo;aborder comme il se doit.</p>
 <!-- more -->
-<p>#Table des matières</p>
+<h1 id="table-des-matières">Table des matières</h1>
 <ul>
 <li>JMX, qu&rsquo;est ce que c&rsquo;est?
 <ul>
@@ -327,8 +327,8 @@
 </ul>
 </li>
 </ul>
-<p><a name="mbean_dynamic"></a>
-#Chargement dynamique des MBeans</p>
+<p><a name="mbean_dynamic"></a></p>
+<h1 id="chargement-dynamique-des-mbeans">Chargement dynamique des MBeans</h1>
 <p>JMX propose un service de chargement dynamique de MBeans qui s&rsquo;appuie sur les fonctionnalités du classloader Java pour récupérer et instancier les MBeans qui peuvent utilisés indifféremment des classes Java ou des librairies natives. Cette fonctionnalité existe car lorsque le serveur JMX est démarré, il peut ne pas avoir connaissance de tous les MBeans et devoir en télécharger. Pour ce faire, un service particulier chargé de gérer des applets de management (m-let) est utilisé pour instancier les MBeans obtenus d&rsquo;une URL distante sur le réseau. En fait, le service de m-let permet d&rsquo;instancier et d&rsquo;enregistrer des MBeans dans le MBean Server en chargeant un fichier texte, dont la localisation est spécifiée par une URL, qui contient les informations des MBeans à obtenir. Quand ce fichier texte est chargé, toutes les classes spécifiés par le tag MLET sont téléchargées et une instance de chaque MBean spécifié est crée et enregistré. Le service de m-let étant lui-même un MBean enregistré dans le MBean Server, il peut être utilisé par d&rsquo;autres MBeans, par d&rsquo;autres applications ou par d&rsquo;autres applications d&rsquo;administration et de supervision distantes.</p>
 <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TPKDftVvX6I/AAAAAAAAAPw/3wQmopnzDw0/s1600/jmx74.png" alt="medium"></p>
 <table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
@@ -386,6 +386,7 @@ Un m-let est un classe loader et, comme l'indique le comportement d'un classe lo
 Pour avoir d'autres informations sur le chargement de classe ainsi que sur les problèmes qui peuvent apparaitre, voir les chapitres <i>8.4 The Class Loader Repository</i> et <i>8.5 Using the Correct Class Loader for Parameters</i> des spécifications JMX.
 </ul></td></tr>
 </tbody></table>
+
   
   <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
 <ul class="share-buttons">

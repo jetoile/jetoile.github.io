@@ -289,7 +289,7 @@
 <li>et la deuxième sur ce qui me plait dans une approche telle que celle proposée par CloudBees.</li>
 </ul>
 <p>PS : au passage, encore un grand merci aux organisateurs de l&rsquo;atelier!</p>
-<p>#{DEV,RUN}@Cloud?&hellip; Kesako?</p>
+<h1 id="devruncloud-kesako">{DEV,RUN}@Cloud?&hellip; Kesako?</h1>
 <p>CloudBees propose deux services DEV@Cloud et RUN@Cloud.</p>
 <p>DEV@Cloud offre, pour sa part, un service de type <del>PaaS (<em>Platform As A Service</em>)</del> SaaS (<em>Software As A Service</em>) qui offre un environnement de développement, de construction et de test en s&rsquo;appuyant sur le cloud.</p>
 <p>DEV@Cloud permet :</p>
@@ -303,7 +303,7 @@
 <p>RUN@Cloud fournit, quant à lui, un ensemble d&rsquo;outils permettant de simplifier le processus de déploiement d&rsquo;une application Java dans le <em>cloud</em>. Il correspond, pour sa part, un service de type PaaS (<em>Platform As A Service</em>).</p>
 <p><img src="http://1.bp.blogspot.com/-aGeioKNPLJc/TsACXTWxgJI/AAAAAAAAAdM/yG4C8B3PmOA/s1600/cloudbees04.png" alt="medium"></p>
 <p><u>PS</u> : vous aurez remarqué que, pour cette partie, je ne me suis pas trop foulé puisque je n&rsquo;ai fait que reprendre les informations présentes sur le site&hellip; ;-)</p>
-<p>#C&rsquo;est bien gentil tout ça et moi, ça m&rsquo;apporte quoi?</p>
+<h1 id="cest-bien-gentil-tout-ça-et-moi-ça-mapporte-quoi">C&rsquo;est bien gentil tout ça et moi, ça m&rsquo;apporte quoi?</h1>
 <p>Comme vous avez pu le constater, DEV@Cloud et RUN@Cloud fournissent tout pleins de services.</p>
 <p>Cependant, la première question qui me vient à l&rsquo;esprit quand je vois tout ça, c&rsquo;est :</p>
 <blockquote>
@@ -318,7 +318,7 @@
 <p>Concernant les tests à proprement parler, CloudBees offre une intégration avec <a href="http://saucelabs.com/">SauceLab</a> qui se charge de l&rsquo;exécution des tests Selenium (ie. qui prends à sa charge l&rsquo;installation des agents Selenium ainsi que leurs configurations en mettant à disposition les browsers (butineurs ;-)) nécessaires à l&rsquo;exécution des tests Selenium). En outre, SauceLab propose même la vidéo du test exécuté permettant, ainsi, <em>a postériori</em> d&rsquo;analyser ce qui a échoué pendant le test. Bien sûr, DEV@Cloud n&rsquo;offre pas encore la décorrélation entre le test fonctionnel exécuté et la partie vue mais, coté infrastructure, il n&rsquo;y a plus à se soucier des agents et coté analyse, il n&rsquo;est plus nécessaire d&rsquo;analyser les rapports <em>surefire</em> pour connaitre le test en échec.</p>
 <p>Il est également possible d&rsquo;effectuer un test de charge en s&rsquo;appuyant sur le plugin maven <a href="http://jmeter.apache.org/">JMeter</a> en ciblant l&rsquo;instance déployée dans RUN@Cloud. L&rsquo;intégration avec le service <a href="http://newrelic.com/">New Relic</a> offre la possibilité de superviser l&rsquo;activité de l&rsquo;instance afin d&rsquo;évaluer son comportement. En outre, en configurant RUN@Cloud de manière <em>scalable</em>, il est aisé de tester la charge supportée par de multiples instances (pour ce faire, CloudBees passe par un <em>load balancer</em> qui, si je ne me trompe pas, fonctionne, à ce jour, en <em>round-robin</em>). L&rsquo;intégration du service New Relic permet de s&rsquo;abstraire de la mise en place d&rsquo;une solution comme Hyperic sur un environnement de recette, chose qui manque régulièrement et qui peut être consommateur en temps. En outre, New Relic permet même de déterminer les points de contension en offrant la possibilité d&rsquo;activer un profiling à chaud dans l&rsquo;application cible.</p>
 <p>Concernant le comportement applicatif, l&rsquo;intégration du service <a href="https://papertrailapp.com/">Papertrail</a> offre la possibilité d&rsquo;accéder aux logs de l&rsquo;application mais permet également d&rsquo;agréger les logs pour l&rsquo;ensemble des instances et de les analyser. Ce dernier point est généralement manquant lors de la mise en place d&rsquo;un environnement de test/validation/recette pour des questions d&rsquo;infrastructure mais également de moyen. Aussi, disposer d&rsquo;un tel service intégré avec l&rsquo;offre RUN@Cloud dans un contexte de test (mais, bien sûr, pas uniquement) apporte un réel plus dans l&rsquo;analyse des anomalies et du comportement de l&rsquo;application.</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Vous l&rsquo;aurez compris (enfin, je l&rsquo;espère), les offres DEV@Cloud et RUN@Cloud de CloudBees m&rsquo;ont vraiment fait bonne impression. Je n&rsquo;ai fait qu&rsquo;effleurer les possibilités offertes et je suis sûrement passé à coté de beaucoup de features mais je tenais tout de même à partager mon ressenti sur ces offres.</p>
 <p>C&rsquo;est vrai que mon article est très orienté usine logicielle (peut être parce que c&rsquo;est justement le point de départ de l&rsquo;atelier) mais, au moins pour ce seul point, il mérite qu&rsquo;on s&rsquo;intéresse aux services offerts par CloudBees (et services, il y en a&hellip;).</p>
 <p><img src="http://4.bp.blogspot.com/-Nws_YjWNluM/TsAC_MmnpzI/AAAAAAAAAdc/W78rV1GiHns/s1600/cloudbees02.png" alt="small"></p>

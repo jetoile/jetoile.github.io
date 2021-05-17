@@ -285,7 +285,7 @@
 <p>C&rsquo;est donc ces différents points qui seront abordés dans cet article.</p>
 <p>Le code se trouve sur github sur la branche <a href="https://github.com/jetoile/resteasy-netty-sample/tree/netty4">netty4</a>.</p>
 <!-- more -->
-<p>#Les Dépendances</p>
+<h1 id="les-dépendances">Les Dépendances</h1>
 <p>Les dépendances utilisées sont les suivantes (au format gradle) :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">compile group: &#39;io.netty&#39;, name: &#39;netty-all&#39;, version:&#39;4.0.17.Final&#39;
 compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
@@ -304,7 +304,7 @@ compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&
 compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) {exclude(module: &#39;jsr305&#39;)}
 </code></pre></div><p>On peut y constater depuis la version précédente que netty est passé en version <strong>4.0.17.Final</strong> mais également c&rsquo;est maintenant l&rsquo;artefact <strong>resteasy-netty4</strong> qui est utilisé plutôt que <strong>resteasy-netty</strong>. De la même manière, c&rsquo;est maintenant l&rsquo;artefact <strong>resteasy-jackson2-provider</strong> plutôt que <strong>resteasy-jackson-provider</strong>.</p>
 <p>En outre l&rsquo;artefact <strong>jackson-datatype-joda</strong> a été ajouté (nous y reviendrons ultérieurement).</p>
-<p>#Intégration de Resteasy-netty4</p>
+<h1 id="intégration-de-resteasy-netty4">Intégration de Resteasy-netty4</h1>
 <p>Afin de remplacer Resteasy-netty 3 par Resteasy-Netty4, il suffit de modifier les dépendances et de supprimer le hack fait précédemment concernant le CORS (ie. la classe <code>RequestHandler</code>) qui est incompatible avec cette nouvelle version.</p>
 <p>Une fois cela fait, le programme devrait être de nouveau fonctionnel sans avoir à modifier quoique ce soit (modulo Swagger-UI mais nous y reviendrons ultérieurement.)</p>
 <p>#Intégration de Jackson 2</p>
@@ -325,7 +325,7 @@ compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;1
         <span style="color:#66d9ef">return</span> objectMapper<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>#Support de JodaTime dans Jackson 2</p>
+</code></pre></div><h1 id="support-de-jodatime-dans-jackson-2">Support de JodaTime dans Jackson 2</h1>
 <p>On a vu dans le paragraphe précédent comment il fallait modifier notre code pour utiliser Jackson 2 à la place de Jackson 1.</p>
 <p>Cependant, lors d&rsquo;un :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET http://localhost:8081/sample/say/hello
@@ -386,7 +386,7 @@ objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">conf
     <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;hello&#34;</span>,
     <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2014-03-06T13:53:38.714Z&#34;</span>
 }
-</code></pre></div><p>#Support du CORS dans Resteasy-Netty4</p>
+</code></pre></div><h1 id="support-du-cors-dans-resteasy-netty4">Support du CORS dans Resteasy-Netty4</h1>
 <p>Précédemment, avec Resteast-netty 3, nous avions remarqué un problème de CORS avec Swagger-UI.
 Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&rsquo;était pas très propre&hellip;</p>
 <p>Malheureusement, Resteasy-netty4 n&rsquo;offre pas, non plus, de manière simple pour surmonter ce problème. Heureusement, en fouillant un peu sur internet, un <a href="http://stackoverflow.com/questions/18857546/implement-cross-origin-resource-sharing-cors-on-resteasy-netty-server">article</a> propose de rajouter un <code>ChannelInboundHandler</code> au <em>pipeline</em> Netty.</p>
@@ -478,7 +478,7 @@ Pour en venir à bout, un <em>hack</em> avait été fait mais ce n&rsquo;était 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ch<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CorsHeadersChannelHandler<span style="color:#f92672">());</span>
 </code></pre></div><p>Enfin, l&rsquo;initialisation du serveur Resteasy-netty :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MyNettyJaxrsServer netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MyNettyJaxrsServer<span style="color:#f92672">();</span>
-</code></pre></div><p>#Conclusion</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>On a vu, dans cet article, comment il était possible d&rsquo;intégrer JAX-RS avec Netty 4 à l&rsquo;aide de Resteasy tout en ayant une intégration de Jackson 2.</p>
 <p>On a également montré qu&rsquo;il était possible d&rsquo;y intégrer très simplement Swagger et Jolokia.</p>
 

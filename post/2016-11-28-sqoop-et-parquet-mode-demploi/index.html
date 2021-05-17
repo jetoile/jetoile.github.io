@@ -276,7 +276,7 @@
 <p>En outre, il permet d&rsquo;avoir un mode incrémental afin de gérer le mode delta.</p>
 <p>Cependant, comme on le verra dans cet article, Sqoop n&rsquo;est pas aussi trivial qu&rsquo;il peut le paraitre.</p>
 <p>C&rsquo;est ce qui sera détaillé dans cet article : à savoir une sorte de mini retour d&rsquo;expérience&hellip; et heureux en plus ;)</p>
-<p>#Cas d&rsquo;usage</p>
+<h1 id="cas-dusage">Cas d&rsquo;usage</h1>
 <p>Techniquement, voilà ce qui est souhaité concernant l&rsquo;import des données dans hdfs :</p>
 <ul>
 <li>pouvoir ingérer le contenu d&rsquo;une base de données dans hdfs au format parquet ou avro,</li>
@@ -287,14 +287,14 @@
 <p>En outre, concernant le mode incrémental, cela est lié au fait que des données sont reçues quotidiennement et que des traitements sont effectués à l&rsquo;aide de PL/SQL (<em>no comment&hellip;</em>). Heureusement, il peut être considérer que les informations reçues/calculées sont seulement ajoutées aux tables.</p>
 <p>Enfin, afin de permettre la parallélisation du traitement, plusieurs <em>mappers</em> seront utilisés. Afin de permettre le calcul des <em>ranges</em> affectés à chacun des <em>mappers</em>, il est nécessaire de préciser l&rsquo;option <code>--split-by</code>. Cependant, dans notre cas d&rsquo;usage, la colonne utilisée pour le split-by dispose d&rsquo;un index mais est partitionné. Etant donné qu&rsquo;il n&rsquo;est pas possible (toujours dans notre cas précis) de préciser l&rsquo;option <code>--boundary-query</code>, c&rsquo;est donc le comportement par défaut qui est appliqué (à savoir un <code>select min(&lt;split-by&gt;), max(&lt;split-by&gt;)</code>). Cependant, attaquer la table sans préciser la partition implique que notre temps d&rsquo;exécution du min/max dure plusieurs heures, chose non acceptable dans le cas du fonctionnement incrémental.</p>
 <p>Aussi, il a été décidé d&rsquo;ingérer la table partition par partition en précisant la partition à chaque fois avec l&rsquo;option <code>--query</code> (à noter que l&rsquo;option <code>--where</code> aurait pu suffire mais que cela n&rsquo;a pas été testé).</p>
-<p>#Mise en oeuvre</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
 <p>Afin de mettre en oeuvre notre cas d&rsquo;usage, plusieurs expérimentations on été effectuées.</p>
 <p>Dans ce chapitre, il sera expliqué ce qui a pu être constaté ainsi que les <em>workaround</em> qui ont été trouvées lorsqu&rsquo;un soucis se présentait.</p>
-<p>##Import au format parquet ou avro</p>
+<h2 id="import-au-format-parquet-ou-avro">Import au format parquet ou avro</h2>
 <p>En fait, lorsque la commande <code>sqoop import</code> est utilisée avec les options <code>--as-avrodatafile</code> ou <code>--as-parquetfile</code>, les données récupérées sont toutes de type string. Aussi, il est nécessaire de préciser le type de chaque colonne avec l&rsquo;option <code>--map-column-java</code>. Pour trouver le typage de chaque colonne, une simple requête jdbc a été effectuée afin de trouver les colonnes et leurs types.</p>
-<p>##Import incrémental</p>
+<h2 id="import-incrémental">Import incrémental</h2>
 <p>Le mode incrémental ne supportant pas le format avro, il a donc été écarté et l&rsquo;import s&rsquo;est fait au format parquet.</p>
-<p>##Parallélisation de l&rsquo;import</p>
+<h2 id="parallélisation-de-limport">Parallélisation de l&rsquo;import</h2>
 <p>En fait, le fait de préciser la requête d&rsquo;import avec sqoop 1.4.6 en mode parquet est buggé&hellip;
 En effet, il existe 2 <em>issues</em> qui traitent de ce problème :</p>
 <ul>
@@ -303,7 +303,7 @@ En effet, il existe 2 <em>issues</em> qui traitent de ce problème :</p>
 </ul>
 <p>Après avoir appliqué les 2 patchs et recompilé Sqoop (avec un joli <code>ant package -Dhadoopversion=210</code>, le verdict tombe&hellip; : une erreur kite.</p>
 <p>Heureusement, une montée de version de kite directement dans le lib de sqoop permet de faire fonctionner l&rsquo;import (ie. remplacer <code>kite-data-core-1.0.0.jar</code> par <code>kite-data-core-1.1.0.jar</code>, <code>kite-data-hive-1.0.0.jar</code> par <code>kite-data-hive-1.1.0.jar</code>, <code>kite-data-mapreduce-1.0.0.jar</code> par <code>kite-data-mapreduce-1.1.0.jar</code> et ``````kite-hadoop-compatibility-1.0.0.jar<code>par</code>kite-hadoop-compatibility-1.1.0.jar```).</p>
-<p>#Conclusion</p>
+<h1 id="conclusion">Conclusion</h1>
 <p>Ce mini retour d&rsquo;expérience sur l&rsquo;utilisation de Sqoop (dans sa version 1.4.6) a permis de voir qu&rsquo;il était tout à fait possible d&rsquo;importer des données d&rsquo;une base de données dans hdfs au format parquet.</p>
 <p>Cependant, il semble que, pour l&rsquo;instant, Sqoop manque <em>un peu</em> de maturité avec Parquet et trouver des contournements pour faire fonctionner le tout n&rsquo;est pas des plus trivial mais heureusement, cela fonctionne ;)</p>
 <p>A noter que dans notre cas d&rsquo;usage, il n&rsquo;y avait pas, bien sûr, qu&rsquo;une seule table mais plusieurs centaines.</p>

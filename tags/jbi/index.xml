@@ -26,7 +26,7 @@ En fait, pour être plus précis, je vais plutôt tenter de présenter la vision
       
       <guid>https://blog.jetoile.fr/post/2009-12-07-jbi-une-solution-enterree/</guid>
       <description>Voilà mon premier article. Il a pour objectif de présenter JBI (Java Business Service) aussi connue sous le doux nom de JSR 208 (Java Specification Release).
-#Pourquoi un article sur JBI? Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j&amp;rsquo;aime bien cette spécification et je trouve qu&amp;rsquo;elle a du potentiel et qu&amp;rsquo;elle est sous exploitée.
+Pourquoi un article sur JBI? Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j&amp;rsquo;aime bien cette spécification et je trouve qu&amp;rsquo;elle a du potentiel et qu&amp;rsquo;elle est sous exploitée.
 Bien sûr, me direz-vous, en tant qu&amp;rsquo;utilisateur d&amp;rsquo;un PEtALS ou ServiceMix, pourquoi devrais-je comprendre la technologie sous-jacente?</description>
     </item>
     

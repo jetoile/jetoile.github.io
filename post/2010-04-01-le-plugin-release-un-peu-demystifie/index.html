@@ -268,8 +268,8 @@ J&rsquo;ai déjà longuement parlé de maven 2 dans des posts précédents (<a h
 <p>En effet, il peut être utile de vouloir savoir quels sont les actions appelées et comment il est possible d&rsquo;y ajouter son petit grain de sel&hellip; ;-)</p>
 <p>Il est à noter que je ne reviendrai pas sur l&rsquo;intérêt d&rsquo;utiliser un tel plugin (ce n&rsquo;est pas le sujet qui m&rsquo;intéresse ici et d&rsquo;autres blogs ou livres le feront mieux que moi) même si je ferai un petite piqure de rappel sur ce qu&rsquo;il permet.</p>
 <!-- more -->
-<p>#Plugin release? Quoiqu&rsquo;il fait?
-Le principal intérêt du plugin release est de fournir un processus de livraison reproductible, maitrisé et auto-sufisant en permettant, entre autre, de :</p>
+<h1 id="plugin-release-quoiquil-fait">Plugin release? Quoiqu&rsquo;il fait?</h1>
+<p>Le principal intérêt du plugin release est de fournir un processus de livraison reproductible, maitrisé et auto-sufisant en permettant, entre autre, de :</p>
 <ul>
 <li>vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM,</li>
 <li>tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité,</li>
@@ -300,8 +300,8 @@ Le principal intérêt du plugin release est de fournir un processus de livraiso
 </li>
 </ul>
 <p>Il est également à noter qu&rsquo;il est possible de l&rsquo;utiliser pour créer des branches à partir d&rsquo;un tag donné mais que ce point ne sera pas traité dans cet article.</p>
-<p>#Et plus concrètement, comment qu&rsquo;il marche?
-En fait, le goal <code>prepare</code> du plugin release dispose d&rsquo;une liste d&rsquo;actions qui sont effectuées séquentiellement et où chaque action est associée à une classe se trouvant dans le package <strong>org.apache.maven.shared.release.phase</strong> :</p>
+<h1 id="et-plus-concrètement-comment-quil-marche">Et plus concrètement, comment qu&rsquo;il marche?</h1>
+<p>En fait, le goal <code>prepare</code> du plugin release dispose d&rsquo;une liste d&rsquo;actions qui sont effectuées séquentiellement et où chaque action est associée à une classe se trouvant dans le package <strong>org.apache.maven.shared.release.phase</strong> :</p>
 <ul>
 <li><strong>check-poms</strong> qui appelle la classe <code>CheckPomPhase</code> qui vérifie que le pom déclare bien la balise &lt;developerConnection&gt;, que le repository est bien déclaré et qu&rsquo;il existe bien au moins un module du projet qui est en version SNAPSHOT,</li>
 <li>scm-check-modifications qui appelle la classe <code>ScmCheckModificationsPhase</code> qui vérifie qu&rsquo;il n&rsquo;y a pas de modifications locales par rapport à ce qui se trouve sur le SCM,</li>
@@ -327,8 +327,8 @@ rewrite-poms-for-release qui appelle la classe <code>RewritePomsForReleasePhase<
 <li><strong>checkout-project-from-scm</strong> qui appelle la classe <code>CheckoutProjectFromScm</code> qui checkout le projet du SCM dans le répertoire checkout de target,</li>
 <li><strong>run-perform-goals</strong> qui appelle la classe <code>RunPerformGoalsPhase</code> qui exécute le goal maven <code>deploy</code> pour déployer le projet dans le repository maven.</li>
 </ul>
-<p>#et sinon, comment qu&rsquo;on l&rsquo;utilise?
-On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut parfois être utile de redéfinir certaines de ses actions, soit en précisant le profile à utiliser lors de la phase de déploiement (si le plugin <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">assembly</a> est utilisé par exemple), soit si l&rsquo;environnement où est effectué le livrable dispose d&rsquo;une configuration folklorique (oui, oui, c&rsquo;est possible&hellip; :( ).</p>
+<h1 id="et-sinon-comment-quon-lutilise">et sinon, comment qu&rsquo;on l&rsquo;utilise?</h1>
+<p>On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut parfois être utile de redéfinir certaines de ses actions, soit en précisant le profile à utiliser lors de la phase de déploiement (si le plugin <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">assembly</a> est utilisé par exemple), soit si l&rsquo;environnement où est effectué le livrable dispose d&rsquo;une configuration folklorique (oui, oui, c&rsquo;est possible&hellip; :( ).</p>
 <p>En fait, il est possible de préciser les goals à exécuter lors de l&rsquo;action run-preparation-goal de la goal <code>prepare</code> (qui, pour rappel, exécute par défaut les goals <code>clean</code> et <code>verify</code>) en configurant le plugin release via la balise <code>&lt;preparationGoals&gt;</code> :</p>
 <p>exemple :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
@@ -362,15 +362,15 @@ On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut 
     <span style="color:#f92672">&lt;useReleaseProfile&gt;</span>false<span style="color:#f92672">&lt;/useReleaseProfile&gt;</span>
   <span style="color:#f92672">&lt;/configuration&gt;</span>
 <span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>#Conclusion
-Vous l&rsquo;aurez donc compris, le maven-release-plugin est vraiment un outil puissant qui effectue un certain nombre d&rsquo;opérations prédéfinis et qui sont généralement faites manuellement par l&rsquo;utilisateur&hellip; Ainsi, il permet de gagner beaucoup de temps.</p>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>Vous l&rsquo;aurez donc compris, le maven-release-plugin est vraiment un outil puissant qui effectue un certain nombre d&rsquo;opérations prédéfinis et qui sont généralement faites manuellement par l&rsquo;utilisateur&hellip; Ainsi, il permet de gagner beaucoup de temps.</p>
 <p>Attention toutefois à ne pas oublier ce qu&rsquo;il fait. Cela évitera les petites surprises (enfin c&rsquo;est le cas de tous les outils&hellip;) et permettra de le configurer aux petits oignons (par exemple, en utilisant les options disponibles ou un fichier de configuration pour éviter d&rsquo;avoir un prompt de sa part)&hellip; ;-)</p>
 <p>A noter que certains points n&rsquo;ont pas été traités dans cet article puisque le plugin release permet également d&rsquo;effectuer, entre autre, :</p>
 <ul>
 <li>un rollback en cas, soit d&rsquo;échec de génération, soit d&rsquo;anomalies détectées dans le livrable,</li>
 <li>la création de branches permettant ainsi de produire des correctifs sur une version déjà livrée.</li>
 </ul>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li><strong>Apache Maven</strong> de N. De Loof, A. Héritier chez Pearson</li>
 <li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>

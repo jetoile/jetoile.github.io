@@ -267,8 +267,8 @@
 Dans l&rsquo;article sur <a href="https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html">JBI</a>, j&rsquo;ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l&rsquo;on doit jongler avec des messages asynchrones.</p>
 <p>En fait, les EIP (<em>Enterprise Integration Patterns</em>) sont issus de l&rsquo;excellent livre éponyme de G. Hohpe et B. Woolf chez Addisson Wesley. Ne pouvant que vous recommandez sa lecture si vous trempez dans cette problématique, cet article ne sera qu&rsquo;une brève introduction à son contenu (il fait quand même plus de 600 pages, donc je ne vais pas prétendre le résumer&hellip; ;-)). Cet article se voudra très théorique et d&rsquo;autres articles ultérieurs couvriront quelques implémentations d&rsquo;EIP comme Apache Camel ou Spring Integration (et peut être, un jour, iBeans). En outre, il suivra le plan du livre dont il est tiré.</p>
 <!-- more --> 
-<p>#EIP? Pour quoi faire?
-La notion de couplage faible, que ce soit au niveau applicatif ou entre applications, a toujours été primordiale pour, entre autre, permettre une meilleure évolutivité (et tous ce qui va avec) qui est une des bêtes noires pour tout DSI et même pour tous développeurs.</p>
+<h1 id="eip-pour-quoi-faire">EIP? Pour quoi faire?</h1>
+<p>La notion de couplage faible, que ce soit au niveau applicatif ou entre applications, a toujours été primordiale pour, entre autre, permettre une meilleure évolutivité (et tous ce qui va avec) qui est une des bêtes noires pour tout DSI et même pour tous développeurs.</p>
 <p>Pour cela, plusieurs solutions existent :</p>
 <ul>
 <li>utilisation d&rsquo;un répertoire tampon sur le système de fichiers,</li>
@@ -279,16 +279,16 @@ La notion de couplage faible, que ce soit au niveau applicatif ou entre applicat
 </ul>
 <p>En fait, les EIP sont des patterns qui permettent de normaliser les échanges de messages dans un système asynchrone. Comme beaucoup de patterns, ces notions sont généralement connues et les EIP ne font que récapituler, normaliser et nommer de nombreux concepts comme ce que doit contenir les messages qui transitent ou ce qu&rsquo;il faut faire pour router un message. En outre, il formalise graphiquement la représentation de ses concepts, ce qui permet avec un schéma de se faire comprendre par tous.</p>
 <p>Ses applications sont multiples : cela peut aussi bien être dans un middleware que dans un contrôleur (au sens MVC du terme), et ils sont d&rsquo;ailleurs souvent présent dans les EAI (généralement au travers d&rsquo;un outil graphique). Aussi, les EIP trouvent parfaitement leurs places dans une infrastructure SOA comme un ESB que ce soit de manière transparente ou apparente.</p>
-<p>#Concepts des EIP
-Les EIP s&rsquo;appuient sur une architecture <strong>Pipes and Filters</strong> : un <strong>Pipe</strong> étant&hellip; un pipe et un <strong>Filter</strong> pouvant être vu comme un composant qui fait quelque chose (dans certaines implémentations, ce Filter est aussi appelé <strong>Processor</strong>).</p>
+<h1 id="concepts-des-eip">Concepts des EIP</h1>
+<p>Les EIP s&rsquo;appuient sur une architecture <strong>Pipes and Filters</strong> : un <strong>Pipe</strong> étant&hellip; un pipe et un <strong>Filter</strong> pouvant être vu comme un composant qui fait quelque chose (dans certaines implémentations, ce Filter est aussi appelé <strong>Processor</strong>).</p>
 <p>En outre, les EIP décrivent :</p>
 <ul>
 <li>ce qui transite dans le Pipe entre les Filter : il s&rsquo;agit des <strong>Messages</strong> (logique non?) et quel peut et doit être son contenu en fonction de son cas d&rsquo;utilisation</li>
 <li>sur le type de <strong>Pipe</strong> sur lequel les messages peuvent transiter : il s&rsquo;agit des <strong>Channel</strong> (canaux)</li>
 <li>et introduisent les notions de <strong>Routing</strong>, <strong>Transformation</strong> et de <strong>Message Endpoint</strong> qui permettent de classifier les Filters.</li>
 </ul>
-<p>##Notion de Channel
-Un Channel correspond au Pipe dans l&rsquo;architecture Pipes and Filters et est le canal où transitent tous les messages.</p>
+<h2 id="notion-de-channel">Notion de Channel</h2>
+<p>Un Channel correspond au Pipe dans l&rsquo;architecture Pipes and Filters et est le canal où transitent tous les messages.</p>
 <p>Les EIP décrivent les différents types de canaux qu&rsquo;il est possible d&rsquo;avoir (liste non exhaustive) :</p>
 <ul>
 <li>Le <strong>Point-to-Point Channel</strong> qui est un canal où un message n&rsquo;est consommé que par un et un seul consommateur (ou Filter). Le message, une fois consommé, n&rsquo;est plus présent sur ce dernier. Ce canal est souvent utilisé pour faire du requête/réponse ou du load-balancing.
@@ -310,8 +310,8 @@ Un Channel correspond au Pipe dans l&rsquo;architecture Pipes and Filters et est
 <li>Le <strong>Messaging Bridge</strong> qui permet d&rsquo;interfacer plusieurs systèmes de messagerie.</li>
 </ul>
 <p>On peut constater que, généralement, ces différents points ne sont pas nouveaux et qu&rsquo;ils sont présent dans de nombreux produits, technologies et spécification sous des noms différents (JMS pour les Point-to-Point - <em>Queue</em> - ou les Publish-Subscribe - <em>Topic</em> -, PABX dans le monde des télécoms pour le Messaging Bridge, &hellip;).</p>
-<p>##Notion de Message
-Les EIP décrivent les messages qui peuvent transiter dans les canaux au niveau structurel et fonctionnel.</p>
+<h2 id="notion-de-message">Notion de Message</h2>
+<p>Les EIP décrivent les messages qui peuvent transiter dans les canaux au niveau structurel et fonctionnel.</p>
 <p>Aussi, au niveau structurel, ils définissent un message comme pouvant être constitué de :</p>
 <ul>
 <li>un entête</li>
@@ -340,8 +340,8 @@ Document Message qui sont des messages utilisés pour transmettre des données e
 </li>
 </ul>
 <img border="0" height="53" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaC-t6iMxI/AAAAAAAAAGQ/wG2Vj6ffxh0/s200/Image8.png" width="149" alt="center"/>
-<p>##Notion de Message Routing
-Un <strong>Message Routing</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de routage en offrant des composants de&hellip; routage (et oui&hellip; ;-) ) mais aussi de filtrage (qui peut être considérer un peu comme un routeur), de découpage (un routage de 1 vers n), d&rsquo;agrégation ou de reséquencement. En outre, on peut les classifier en deux catégories : les basiques et les composés qui composent les Message Routing basiques pour offrir un patron plus complet.</p>
+<h2 id="notion-de-message-routing">Notion de Message Routing</h2>
+<p>Un <strong>Message Routing</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de routage en offrant des composants de&hellip; routage (et oui&hellip; ;-) ) mais aussi de filtrage (qui peut être considérer un peu comme un routeur), de découpage (un routage de 1 vers n), d&rsquo;agrégation ou de reséquencement. En outre, on peut les classifier en deux catégories : les basiques et les composés qui composent les Message Routing basiques pour offrir un patron plus complet.</p>
 <p>Les EIP décrivent les Message Routing &ldquo;simple&rdquo; suivants :</p>
 <ul>
 <li>
@@ -414,8 +414,8 @@ Un <strong>Message Routing</strong> correspond à une catégorie de Filter dans 
 <li><strong>Message Broker</strong> qui permet de découpler les destinataires d’un message de l’émetteur en utilisant un unique point de contrôle qui permet de déterminer le consommateur d’un message.</li>
 </ul>
 <p>Il est à noter que beaucoup des fonctionnalités des Message Routing décrits précédemment peuvent également être traitées en utilisant différents types de Message Channel, en spécialisant le consommateur ou en combinant d’autres Messages Routing (par exemple, le Content-Based Router peut être remplacé en utilisant un Publish/Subscribe Channel en combinaison de Message Filter) : les critères de choix sont donc à étudier avec attention car cela peut impacter la maintenabilité du système ainsi que ses performances. En outre, donner connaissance de la logique aux composants peut entraîner un couplage plus fort.</p>
-<p>##Notion de Message Transformer
-Un <strong>Message Transformer</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de transformation et d&rsquo;encapsulation.</p>
+<h2 id="notion-de-message-transformer">Notion de Message Transformer</h2>
+<p>Un <strong>Message Transformer</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de transformation et d&rsquo;encapsulation.</p>
 <p>Les EIP décrivent les Message Transformer suivants :</p>
 <ul>
 <li><strong>Envelope Wrapper</strong> qui permet d’encapsuler un message ou un objet dans un message compatible avec le système de messagerie.
@@ -435,8 +435,8 @@ Un <strong>Message Transformer</strong> correspond à une catégorie de Filter d
 <li><strong>Normalizer</strong> qui permet de modifier le format d’un message.
 <img border="0" height="81" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/SyaGeyIOrNI/AAAAAAAAAIA/FtrTr12I1wY/s320/Image21.png" width="132" alt="center"/></li>
 </ul>
-<p>##Notion de Message Endpoint
-Un <strong>Message Endpoint</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques d&rsquo;interconnexion avec l&rsquo;extérieur du système de messagerie.</p>
+<h2 id="notion-de-message-endpoint">Notion de Message Endpoint</h2>
+<p>Un <strong>Message Endpoint</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques d&rsquo;interconnexion avec l&rsquo;extérieur du système de messagerie.</p>
 <p>Les Message Endpoint se décomposent en 2 catégories :</p>
 <ul>
 <li><strong>Send and Receive Patterns</strong> qui s’appliquent aux émetteurs et récepteurs et qui permet au code de l’application de s’interfacer, via une couche de code permettant également de transformer les données afin qu’elles soient compatibles, avec le système de messagerie. Cette couche peut également gérer le coté transactionnelle.</li>
@@ -457,13 +457,13 @@ Un <strong>Message Endpoint</strong> correspond à une catégorie de Filter dans
 <li><strong>Indempotent Receiver</strong> qui permet de ne recevoir qu’une seule instance d’un même message. Il doit être à état et doit donc gérer la purge de l’historique.</li>
 <li><strong>Service Activator</strong> qui permet d’invoquer une application prévue pour s’interfacer ou pas avec le système de messagerie. Un Service Activator peut être unidirectionnel (requêtes seules) ou bidirectionnel (requête/réponse) et peut, soit invoquer toujours le même service (application), soit utiliser des mécanismes de réflexion. Il permet d’invoquer, suite à la réception d’un message, l’application comme un client de manière à masquer complètement à l’application le système de messagerie.</li>
 </ul>
-<p>#Conclusion sur les EIP
-Comme il a été vu, les EIP ne réinventent pas la roue mais permettent de donner un nom à des fonctionnalités ainsi qu&rsquo;une représentation graphique. Cela peut être utile pour être compris de tous si tout le monde partage le même langage (un peu comme les Design Patterns).</p>
+<h1 id="conclusion-sur-les-eip">Conclusion sur les EIP</h1>
+<p>Comme il a été vu, les EIP ne réinventent pas la roue mais permettent de donner un nom à des fonctionnalités ainsi qu&rsquo;une représentation graphique. Cela peut être utile pour être compris de tous si tout le monde partage le même langage (un peu comme les Design Patterns).</p>
 <p>Ils ne proposent pas de solutions clé en main mais mettent en avant des notions qu&rsquo;il est nécessaire d&rsquo;avoir dans certains cas d&rsquo;usage (comme l&rsquo;identifiant de corrélation pour l&rsquo;agrégation ou le reséquencement).
 Aussi de mon point de vue, il est essentiel de connaitre ces concepts lorsque l&rsquo;on manipule des messages dans un système asynchrone et que des notions de médiation apparaissent. Je ne saurais donc que vous conseiller la lecture de cet excellent ouvrage.</p>
 <p>Les EIP trouvent donc parfaitement leurs places dans une architecture SOA et plus précisément dans les ESB.
 Au niveau de ses implémentations, on trouve l&rsquo;excellent Spring Integration ainsi que Apache Camel (que je trouve beaucoup moins bon de par son modèle de programmation que par ses concepts) et le petit dernier iBeans de Mule : une attention toute particulière doit être apportée quand à la mise en œuvre de ces concepts (et je dirais pour ma part qu&rsquo;il n&rsquo;est pas nécessaire (mais alors pas du tout) de rajouter une couche de concepts par dessus comme le fait Apache Camel</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li><strong>Enterprise Integration Patterns</strong> de G. Hohpe et B. Woolf chez Addisson Wesley</li>
 <li>Site de référence sur les EIP : <a href="http://www.eaipatterns.com/">http://www.eaipatterns.com/</a></li>

@@ -269,8 +269,8 @@ Au cours de certaines missions, je suis arrivé à un constat qui était que le 
 <p>Dans un <a href="https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html">post précédent</a>, j&rsquo;avais parler de la façon dont j&rsquo;avais en place maven dans un processus d&rsquo;usine logicielle. J&rsquo;y avais également abordé succinctement comment il était possible de générer un livrable.</p>
 <p>Ce post présente donc plus précisément comment cela est possible avec maven (je ne reviendrai pas sur le pourquoi car cela me parait évident dans le sens où c&rsquo;est ce que verra le client final et que, tout le monde le sait, la première impression est très souvent importante - un peu comme lorsque l&rsquo;on offre un cadeau à quelqu&rsquo;un, l&rsquo;emballage à son importance même si, au final, le cadeau est pourri&hellip; ;-) - ).</p>
 <!-- more --> 
-<p>#Cahier des charges
-L&rsquo;application de référence sera une application simple de type J2SE (nommé foo) qui devra pouvoir s&rsquo;exécuter de manière simple en exécutant par exemple un .bat ou un .sh.</p>
+<h1 id="cahier-des-charges">Cahier des charges</h1>
+<p>L&rsquo;application de référence sera une application simple de type J2SE (nommé foo) qui devra pouvoir s&rsquo;exécuter de manière simple en exécutant par exemple un .bat ou un .sh.</p>
 <p>Le livrable devra contenir la javadoc de l&rsquo;application ainsi que son code source.</p>
 <p>Il pourra optionnellement venir avec un fichier README qui précisera certaines informations (version, howto, issues, &hellip;).</p>
 <p>Enfin, il sera supposé que le client ne dispose que d&rsquo;un JRE sur la machine où sera amenée à être exécutée l&rsquo;application.</p>
@@ -281,11 +281,11 @@ L&rsquo;application de référence sera une application simple de type J2SE (nom
 <li>dans le répertoire source, les sources de l&rsquo;application sous forme de jar,</li>
 <li>à la racine, le fichier README ainsi que les .bat et .sh nécessaires à l&rsquo;exécution de l&rsquo;application.</li>
 </ul>
-<p>#Mise en oeuvre
-##Methodologie
-Comme vous l&rsquo;aurez compris, maven 2 sera notre outil pour gérer notre compilation, l&rsquo;exécution des tests unitaires (qui ne doivent pas être oubliés), et production du livrable.</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<h2 id="methodologie">Methodologie</h2>
+<p>Comme vous l&rsquo;aurez compris, maven 2 sera notre outil pour gérer notre compilation, l&rsquo;exécution des tests unitaires (qui ne doivent pas être oubliés), et production du livrable.</p>
 <p>Pour ce faire, notre application suivra les préconisations maven et le plugin assembly sera utilisé pour la phase de génération du livrable qui sera sous forme de zip. En outre, ce plugin sera associé à la phase maven d&rsquo;installation de notre application.</p>
-<p>##Arborescence du projet</p>
+<h2 id="arborescence-du-projet">Arborescence du projet</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">foo
   |-- src
         |-- main
@@ -300,7 +300,7 @@ Comme vous l&rsquo;aurez compris, maven 2 sera notre outil pour gérer notre com
         |-- test 
             |-- java
   |-- pom.xml
-</code></pre></div><p>##Fichier pom.xml</p>
+</code></pre></div><h2 id="fichier-pomxml">Fichier pom.xml</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
  <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
  <span style="color:#f92672">&lt;artifactId&gt;</span>foo<span style="color:#f92672">&lt;/artifactId&gt;</span>
@@ -370,7 +370,7 @@ Comme vous l&rsquo;aurez compris, maven 2 sera notre outil pour gérer notre com
   <span style="color:#f92672">&lt;/plugins&gt;</span>
  <span style="color:#f92672">&lt;/build&gt;</span>
 <span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>##Fichier src.xml</p>
+</code></pre></div><h2 id="fichier-srcxml">Fichier src.xml</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;assembly&gt;</span>
  <span style="color:#f92672">&lt;formats&gt;</span>
   <span style="color:#f92672">&lt;format&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
@@ -419,15 +419,15 @@ Comme vous l&rsquo;aurez compris, maven 2 sera notre outil pour gérer notre com
   <span style="color:#f92672">&lt;/file&gt;</span>
  <span style="color:#f92672">&lt;/files&gt;</span>
 <span style="color:#f92672">&lt;/assembly&gt;</span>
-</code></pre></div><p>##Fichier launcher.bat et cp.bat
-fichier cp.bat :</p>
+</code></pre></div><h2 id="fichier-launcherbat-et-cpbat">Fichier launcher.bat et cp.bat</h2>
+<p>fichier cp.bat :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">set CP<span style="color:#f92672">=</span>%CP%;%1
 </code></pre></div><p>fichier launcher.bat :</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">set TEST_HOME<span style="color:#f92672">=</span>.
 set CP<span style="color:#f92672">=</span>libfor %%i in <span style="color:#f92672">(</span>%TEST_HOME%<span style="color:#ae81ff">\l</span>ib<span style="color:#ae81ff">\*</span>.jar<span style="color:#f92672">)</span> <span style="color:#66d9ef">do</span>
 call cp.bat %%i
 java -classpath %CP% monpackage.ClasseMain
-</code></pre></div><p>##Fichier launcher.sh</p>
+</code></pre></div><h2 id="fichier-launchersh">Fichier launcher.sh</h2>
 <pre><code>#!/bin/bash
 export TEST_HOME=.
 export TEST_CP=.
@@ -435,11 +435,11 @@ for i in ${TEST_HOME}/lib/*.jar;
     do TEST_CP=$i:${TEST_CP}
 done
 java -classpath ${TEST_CP}:lib monpackage.ClasseMain
-</code></pre><p>#Conclusion</p>
+</code></pre><h1 id="conclusion">Conclusion</h1>
 <p>On a donc pu constater que la procédure de production d&rsquo;un livrable est totalement intégrable avec maven 2 et qu&rsquo;elle est extrêmement simple et peu consommatrice en temps une fois mise en place.</p>
 <p>En outre, cela permet de normaliser le livrable et d&rsquo;être sûr de ne rien oublier d&rsquo;une version à une autre&hellip; alors pourquoi s&rsquo;en passer?</p>
 <p>Il est à noter que la problématique est identique avec d&rsquo;autres outils (ant, graddle, easy-ant, &hellip;) et qu&rsquo;il est indispensable de prendre en compte cette phase de développement.</p>
-<p>#Pour aller plus loin&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li><strong>Apache Maven</strong> de N. De Loof, A. Héritier chez Pearson</li>
 <li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>

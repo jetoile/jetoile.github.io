@@ -1,0 +1,78 @@
+baseURL = "https://blog.jetoile.fr"
+languageCode = "en-us"
+title = "Jetoile"
+theme = "blackburn"
+
+copyright = "<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a>"
+canonifyurls = true
+paginate = 10
+
+[indexes]
+  tag = "tags"
+  topic = "topics"
+
+[params]
+  # Shown in the home page
+  subtitle = ""
+  brand = "Jetoile"
+  googleAnalytics = "UA-11955429-1"
+  disqus = "jetoile"
+  # CSS name for highlight.js
+  highlightjs = "androidstudio"
+  highlightjs_extra_languages = ["yaml"]
+  dateFormat = "02 Jan 2006, 15:04"
+  # Include any custom CSS and/or JS files
+  # (relative to /static folder)
+  custom_css = ["css/my.css"]
+  custom_js = ["js/my.js"]
+
+
+[menu]
+  # Shown in the side menu.
+  [[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 1
+    identifier = "home"
+    url = "/"
+  [[menu.main]]
+    name = "Posts"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 2
+    identifier = "posts"
+    url = "/post"
+  [[menu.main]]
+    name = "About"
+    pre = "<i class='fa fa-user fa-fw'></i>"
+    weight = 3
+    identifier = "about"
+    url = "/about"
+  [[menu.main]]
+    name = "Contact"
+    pre = "<i class='fa fa-phone fa-fw'></i>"
+    weight = 4
+    url = "/contact/"
+  [[menu.main]]
+    name = "Hadoop Unit"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 4
+    url = "https://blog.jetoile.fr/hadoop-unit"
+
+[markup.goldmark.renderer]
+  unsafe= true
+
+[social]
+  # Link your social networking accounts to the side menu
+  # by entering your username or ID.
+
+  # SNS microblogging
+  twitter = "jetoile"
+
+  slideshare = "jetoile"
+
+  # SNS career oriented
+  linkedin = "khanh-tuong-maudoux-11b92b19"
+
+  # Techie
+  github = "jetoile"
+

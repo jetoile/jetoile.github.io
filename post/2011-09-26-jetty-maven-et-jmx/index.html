@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Jetty, Maven et JMX &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Jetty, Maven et JMX</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Sep 2011, 22:19</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jetty">jetty</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/maven">maven</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://2.bp.blogspot.com/-bGP4Fnvfp1s/TnEtqz-UNkI/AAAAAAAAAa4/KBXNM8QXHKc/s1600/logoArticle.png" alt="left-small"></p>
+<p>Vous avez peut être remarqué que ces derniers temps, j&rsquo;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&hellip; Maven et de JMX.</p>
+<p>Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</p>
+<p>Pour ce faire, je présenterai dans un premier temps le contexte, puis comment cela peut être mise en œuvre.
+Bien sûr, cet article montre comment j&rsquo;ai fait mais il ne représente pas la seule manière de faire&hellip; ;-). En outre, il ne présente rien de novateur mais je me suis dit que cela pouvait toujours être utile afin d&rsquo;éviter de faire perdre du temps à d&rsquo;autres personnes.</p>
+<!-- more -->
+<p>#Contexte</p>
+<p>Ce paragraphe présente mes motivations pour avoir eu un besoin d&rsquo;une utilisation d&rsquo;un Jetty embedded à Maven en activant la couche JMX car, c&rsquo;est vrai, ce n&rsquo;est pas un besoin très courant et qu&rsquo;il peut même sembler, au premier abord, paraitre un peu stupide (en effet, utiliser un Jetty embedded répond plutôt à un besoin de poste de développement ou au pire (et je dis bien au pire!!) à un pseudo TU qui n&rsquo;est, du coup, pas un TU&hellip; (ndlr : enfin, encore une fois, je diverge&hellip; ;-) )).</p>
+<p>En fait, pour les besoins d&rsquo;une démonstration, je voulais juste présenter une petite application web qui remontait des métriques via JMX. N&rsquo;ayant pas foncièrement envie d&rsquo;avoir à décompresser un Jetty sur mon poste, je me suis dit qu&rsquo;un Jetty embedded dans Maven suffisait largement à ma petite démo.</p>
+<p>En outre, cela offrait également la possibilité à n&rsquo;importe qui de rejouer la démo sans avoir à installer localement un conteneur de Servlets et sans à avoir à modifier le paramétrage de ce dernier pour activer la couche JMX de la JVM.</p>
+<p>L&rsquo;application web utilisée pour ce petit POC est assez basique puisqu&rsquo;il ne s&rsquo;agit que d&rsquo;un simple Servlet redirigeant vers une simple jsp.</p>
+<p>Ce Servlet incrémentera un compteur exposé en JMX afin de fournir cette métrique basique à la couche de supervision.</p>
+<p>Spring 3 sera également utilisé pour lier le tout&hellip;</p>
+<p>En fait, si vous me demandez pourquoi j&rsquo;ai branché Spring pour une application ausi simple, c&rsquo;est, en fait, que JMX n&rsquo;était pas le seul composant que je voulais montrer pendant la petite démonstration&hellip;</p>
+<p>Si vous avez l&rsquo;esprit chagrin et que vous me re-demandez pourquoi je n&rsquo;ai pas utilisé un aspect, c&rsquo;est que l&rsquo;aspect était justement l&rsquo;autre aspect de ma démo ;-).</p>
+<p>#Mise en oeuvre
+Pour ce paragraphe de mise en œuvre, je présenterai successivement :</p>
+<ul>
+<li>Le code de l&rsquo;application web utilisé.</li>
+<li>La configuration Maven utilisée permettant de démarrer l&rsquo;application web dans un Jetty embedded.</li>
+<li>Les subtilités de la configuration à effectuer pour ajouter la couche JMX.</li>
+</ul>
+<p>#Application web cible</p>
+<p>Comme annoncé précédemment, notre application web cible se compose de :</p>
+<ul>
+<li>un Servlet,</li>
+<li>une page JSP,</li>
+<li>un POJO utilisé par Spring pour la partie MBean (Spring aura, à sa charge, sa <em>proxification</em> en MBean Standard et son enregistrement au sein du MBean Server),</li>
+<li>un fichier de configuration web.xml,</li>
+<li>et un fichier de contexte Spring.</li>
+</ul>
+<p>Il est à noter qu&rsquo;elle utilisera la spécification 2.5 des Servlets afin de permettre, dans les parties suivantes, de montrer la différence de configuration qu&rsquo;il existe entre Jetty 6 et 7.</p>
+<p>##Code du Servlet</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleServlet</span> <span style="color:#66d9ef">extends</span> HttpServlet <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>SimpleServlet<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">service</span><span style="color:#f92672">(</span>HttpServletRequest req<span style="color:#f92672">,</span> HttpServletResponse resp<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ServletException<span style="color:#f92672">,</span> IOException <span style="color:#f92672">{</span>
+        ApplicationContext beanFactory <span style="color:#f92672">=</span> WebApplicationContextUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequiredWebApplicationContext</span><span style="color:#f92672">(</span>getServletContext<span style="color:#f92672">());</span>
+        SimpleCounter jmxTestBean <span style="color:#f92672">=</span> beanFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simpleCounter&#34;</span><span style="color:#f92672">,</span> SimpleCounter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        jmxTestBean<span style="color:#f92672">.</span><span style="color:#a6e22e">inc</span><span style="color:#f92672">();</span>
+ 
+        req<span style="color:#f92672">.</span><span style="color:#a6e22e">setAttribute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nbInvocation&#34;</span><span style="color:#f92672">,</span> jmxTestBean<span style="color:#f92672">.</span><span style="color:#a6e22e">getNbGet</span><span style="color:#f92672">());</span>
+ 
+        RequestDispatcher dispatcher <span style="color:#f92672">=</span> req<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequestDispatcher</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WEB-INF/jsp/simpleDisplay.jsp&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>dispatcher <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            dispatcher<span style="color:#f92672">.</span><span style="color:#a6e22e">forward</span><span style="color:#f92672">(</span>req<span style="color:#f92672">,</span> resp<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to get the request dispatcher&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On constate que le Servlet est basique. Il n&rsquo;y a donc rien à dire dessus si ce n&rsquo;est la récupération du POJO <em>proxifié</em> par Spring pour incrémenter un compteur qui sera exposé en JMX.</p>
+<p>##Code du POJO utilisé comme MBean Standard</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleCounter</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> nbGet <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">inc</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nbGet</span><span style="color:#f92672">++;</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNbGet</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> nbGet<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nbGet</span> <span style="color:#f92672">=</span> nbGet<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getNbGet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> nbGet<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Concernant le POJO, rien de spécial non plus à remarquer. Juste à noter que les setter et getter sont nécessaires afin de rendre l&rsquo;attribut <code>nbGet</code> accessible en lecture/écriture par la couche cliente JMX.</p>
+<p>##Code de la jsp</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#960050;background-color:#1e0010">&lt;</span>%@ page language=&#34;java&#34; contentType=&#34;text/html; charset=UTF-8&#34; pageEncoding=&#34;UTF-8&#34;%&gt;
+<span style="color:#75715e">&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD HTML 4.01 Transitional//EN&#34; &#34;http://www.w3.org/TR/html4/loose.dtd&#34;&gt;</span>
+<span style="color:#f92672">&lt;html&gt;</span>
+    <span style="color:#f92672">&lt;head&gt;</span>
+        <span style="color:#f92672">&lt;meta</span> <span style="color:#a6e22e">http-equiv=</span><span style="color:#e6db74">&#34;Content-Type&#34;</span> <span style="color:#a6e22e">content=</span><span style="color:#e6db74">&#34;text/html; charset=UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;title&gt;</span>simple display<span style="color:#f92672">&lt;/title&gt;</span>
+    <span style="color:#f92672">&lt;/head&gt;</span>
+    <span style="color:#f92672">&lt;body&gt;</span>
+        <span style="color:#f92672">&lt;h1&gt;</span>This is a simple display<span style="color:#f92672">&lt;/h1&gt;</span>
+        Has been invoked: ${nbInvocation} times
+    <span style="color:#f92672">&lt;/body&gt;</span>
+<span style="color:#f92672">&lt;/html&gt;</span>
+</code></pre></div><p>Rien de particulier non plus à dire sur la jsp&hellip;</p>
+<p>##Code du web.xml</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;web-app</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.5&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee 
+</span><span style="color:#e6db74"> http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#f92672">&lt;context-param&gt;</span>
+  <span style="color:#f92672">&lt;param-name&gt;</span>contextConfigLocation<span style="color:#f92672">&lt;/param-name&gt;</span>
+  <span style="color:#f92672">&lt;param-value&gt;</span>classpath:applicationContext*.xml<span style="color:#f92672">&lt;/param-value&gt;</span>
+ <span style="color:#f92672">&lt;/context-param&gt;</span>
+ <span style="color:#f92672">&lt;listener&gt;</span>
+  <span style="color:#f92672">&lt;listener-class&gt;</span>org.springframework.web.context.ContextLoaderListener<span style="color:#f92672">&lt;/listener-class&gt;</span>
+ <span style="color:#f92672">&lt;/listener&gt;</span>
+ 
+ <span style="color:#f92672">&lt;servlet&gt;</span>
+  <span style="color:#f92672">&lt;servlet-name&gt;</span>SimpleServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+  <span style="color:#f92672">&lt;servlet-class&gt;</span>fr.jetoile.demo.servlet.SimpleServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+  <span style="color:#f92672">&lt;init-param&gt;</span>
+   <span style="color:#f92672">&lt;param-name&gt;</span>sleep-time-in-seconds<span style="color:#f92672">&lt;/param-name&gt;</span>
+   <span style="color:#f92672">&lt;param-value&gt;</span>10<span style="color:#f92672">&lt;/param-value&gt;</span>
+  <span style="color:#f92672">&lt;/init-param&gt;</span>
+  <span style="color:#f92672">&lt;load-on-startup&gt;</span>1<span style="color:#f92672">&lt;/load-on-startup&gt;</span>
+ <span style="color:#f92672">&lt;/servlet&gt;</span>
+ 
+ <span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+  <span style="color:#f92672">&lt;servlet-name&gt;</span>SimpleServlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+  <span style="color:#f92672">&lt;url-pattern&gt;</span>/sample<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+ <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
+<span style="color:#f92672">&lt;/web-app&gt;</span>
+</code></pre></div><p>Le fichier descripteur <code>web.xml</code> est classique donc rien de nouveau sur les tropiques ;-). Comme dit plus haut, c&rsquo;est ici la version 2.5 des servlets qui est utilisée afin de permettre un choix plus important de conteneurs de Servlets.</p>
+<p>##Code du contexte Spring</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans
+</span><span style="color:#e6db74"> http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+ <span style="color:#f92672">&lt;/bean&gt;</span>
+ 
+ <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.export.MBeanExporter&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;exporter&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;beans&#34;</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;map&gt;</span>
+    <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;bean:application=jmx-sample,name=simpleCounter&#34;</span> <span style="color:#a6e22e">value-ref=</span><span style="color:#e6db74">&#34;simpleCounter&#34;</span><span style="color:#f92672">&gt;&lt;/entry&gt;</span>
+   <span style="color:#f92672">&lt;/map&gt;</span>
+  <span style="color:#f92672">&lt;/property&gt;</span>
+   <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;server&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span><span style="color:#f92672">&gt;&lt;/property&gt;</span>
+ <span style="color:#f92672">&lt;/bean&gt;</span>
+ 
+ <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.demo.jmx.SimpleCounter&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;simpleCounter&#34;</span><span style="color:#f92672">&gt;&lt;/bean&gt;</span>
+<span style="color:#f92672">&lt;/beans&gt;</span>
+</code></pre></div><p>Concernant le fichier descripteur de Spring, on constate que la classe <code>MBeanServerFactoryBean</code> de Spring est utilisée comme moyen de récupération/création du MBeanServer et que c&rsquo;est le <code>MBeanExporter</code> qui a la charge de l&rsquo;enregistrement du MBean injecté.</p>
+<p>#Application web exécutable via Jetty au sein de Maven</p>
+<p>Afin de permettre une exécution de notre application web dans un Jetty embedded dans Maven, il faut, bien sûr, une structure Maven.</p>
+<p>Elle est la suivante :
+<img src="http://3.bp.blogspot.com/-q2jJEYSygfg/TnErFlaNEDI/AAAAAAAAAag/2vgwO_zYc6A/s1600/jmx-sample-tree.png" alt="center"></p>
+<p>Concernant le fichier descripteur <code>pom.xml</code>, il contiendra, bien sûr, le plugin nécessaire au lancement de jetty.</p>
+<p>Afin d&rsquo;être plus exhaustif, dans notre POC, deux profils Maven seront utilisés afin de pouvoir spécifier la version de Jetty à utiliser (le choix sera laissé entre Jetty 6 et 7). En outre, le port d&rsquo;écoute est forcé à 9090 :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+ <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+ <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.demo<span style="color:#f92672">&lt;/groupId&gt;</span>
+ <span style="color:#f92672">&lt;artifactId&gt;</span>jmx-sample<span style="color:#f92672">&lt;/artifactId&gt;</span>
+ <span style="color:#f92672">&lt;packaging&gt;</span>war<span style="color:#f92672">&lt;/packaging&gt;</span>
+ <span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+ 
+ <span style="color:#f92672">&lt;properties&gt;</span>
+  <span style="color:#f92672">&lt;java.version&gt;</span>1.5<span style="color:#f92672">&lt;/java.version&gt;</span>
+  <span style="color:#f92672">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span style="color:#f92672">&lt;/project.build.sourceEncoding&gt;</span>
+ 
+  <span style="color:#f92672">&lt;slf4j.version&gt;</span>1.6.1<span style="color:#f92672">&lt;/slf4j.version&gt;</span>
+  <span style="color:#f92672">&lt;logback.version&gt;</span>0.9.27<span style="color:#f92672">&lt;/logback.version&gt;</span>
+  <span style="color:#f92672">&lt;commons-lang.version&gt;</span>2.5<span style="color:#f92672">&lt;/commons-lang.version&gt;</span>
+  <span style="color:#f92672">&lt;spring.version&gt;</span>3.0.6.RELEASE<span style="color:#f92672">&lt;/spring.version&gt;</span>
+  <span style="color:#f92672">&lt;servlet.version&gt;</span>2.5<span style="color:#f92672">&lt;/servlet.version&gt;</span>
+ <span style="color:#f92672">&lt;/properties&gt;</span>
+ 
+ <span style="color:#f92672">&lt;dependencies&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${logback.version}<span style="color:#f92672">&lt;/version&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>slf4j-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${slf4j.version}<span style="color:#f92672">&lt;/version&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>commons-lang<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${commons-lang.version}<span style="color:#f92672">&lt;/version&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>spring-context<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${spring.version}<span style="color:#f92672">&lt;/version&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>spring-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${spring.version}<span style="color:#f92672">&lt;/version&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>javax.servlet<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>servlet-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${servlet.version}<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+ <span style="color:#f92672">&lt;/dependencies&gt;</span>
+ 
+ <span style="color:#f92672">&lt;build&gt;</span>
+  <span style="color:#f92672">&lt;plugins&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-deploy-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.1<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;source&gt;</span>${java.version}<span style="color:#f92672">&lt;/source&gt;</span>
+     <span style="color:#f92672">&lt;target&gt;</span>${java.version}<span style="color:#f92672">&lt;/target&gt;</span>
+     <span style="color:#f92672">&lt;encoding&gt;</span>UTF-8<span style="color:#f92672">&lt;/encoding&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.4.3<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;encoding&gt;</span>UTF-8<span style="color:#f92672">&lt;/encoding&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+  <span style="color:#f92672">&lt;/plugins&gt;</span>
+ <span style="color:#f92672">&lt;/build&gt;</span>
+  
+  
+ <span style="color:#f92672">&lt;profiles&gt;</span>
+  <span style="color:#f92672">&lt;profile&gt;</span>
+   <span style="color:#f92672">&lt;id&gt;</span>jetty6<span style="color:#f92672">&lt;/id&gt;</span>
+   <span style="color:#f92672">&lt;properties&gt;</span>
+    <span style="color:#f92672">&lt;jetty.version&gt;</span>6.1.26<span style="color:#f92672">&lt;/jetty.version&gt;</span>
+   <span style="color:#f92672">&lt;/properties&gt;</span>
+   <span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+     <span style="color:#f92672">&lt;plugin&gt;</span>
+      <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;artifactId&gt;</span>maven-jetty-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;version&gt;</span>${jetty.version}<span style="color:#f92672">&lt;/version&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>10<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+       <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+        <span style="color:#f92672">&lt;contextPath&gt;</span>/jmx-sample<span style="color:#f92672">&lt;/contextPath&gt;</span>
+       <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+       <span style="color:#f92672">&lt;connectors&gt;</span>
+         <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+         <span style="color:#f92672">&lt;host&gt;</span>0.0.0.0<span style="color:#f92672">&lt;/host&gt;</span>
+         <span style="color:#f92672">&lt;maxIdleTime&gt;</span>60000<span style="color:#f92672">&lt;/maxIdleTime&gt;</span>
+        <span style="color:#f92672">&lt;/connector&gt;</span>
+       <span style="color:#f92672">&lt;/connectors&gt;</span>  
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/plugin&gt;</span>
+    <span style="color:#f92672">&lt;/plugins&gt;</span>
+   <span style="color:#f92672">&lt;/build&gt;</span>
+  <span style="color:#f92672">&lt;/profile&gt;</span>
+  <span style="color:#f92672">&lt;profile&gt;</span>
+   <span style="color:#f92672">&lt;id&gt;</span>jetty7<span style="color:#f92672">&lt;/id&gt;</span>
+   <span style="color:#f92672">&lt;properties&gt;</span>
+    <span style="color:#f92672">&lt;jetty.version&gt;</span>7.4.5.v20110725<span style="color:#f92672">&lt;/jetty.version&gt;</span>
+   <span style="color:#f92672">&lt;/properties&gt;</span>
+   <span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+     <span style="color:#f92672">&lt;plugin&gt;</span>
+      <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;version&gt;</span>${jetty.version}<span style="color:#f92672">&lt;/version&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>10<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+       <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+        <span style="color:#f92672">&lt;contextPath&gt;</span>/jmx-sample<span style="color:#f92672">&lt;/contextPath&gt;</span>
+       <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+       <span style="color:#f92672">&lt;connectors&gt;</span>
+           <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+         <span style="color:#f92672">&lt;host&gt;</span>0.0.0.0<span style="color:#f92672">&lt;/host&gt;</span>
+         <span style="color:#f92672">&lt;maxIdleTime&gt;</span>60000<span style="color:#f92672">&lt;/maxIdleTime&gt;</span>
+        <span style="color:#f92672">&lt;/connector&gt;</span>
+       <span style="color:#f92672">&lt;/connectors&gt;</span>  
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/plugin&gt;</span>
+    <span style="color:#f92672">&lt;/plugins&gt;</span>
+   <span style="color:#f92672">&lt;/build&gt;</span>
+  <span style="color:#f92672">&lt;/profile&gt;</span>
+ <span style="color:#f92672">&lt;/profiles&gt;</span>
+<span style="color:#f92672">&lt;/project&gt;</span>
+</code></pre></div><p>Il n&rsquo;y a rien de particulier à remarquer si ce n&rsquo;est une version de plugin maven pour Jetty qui diffère, ainsi qu&rsquo;un changement de package pour le SelectChannelConnector utilisé pour spécifier le port d&rsquo;écoute.</p>
+<p>Pour démarrer notre Jetty, il ne reste plus qu&rsquo;à exécuter, au choix, la commande :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn -Pjetty6 jetty:run
+</code></pre></div><p>ou :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn -Pjetty7 jetty:run
+</code></pre></div><p>##Activation de JMX</p>
+<p>Après avoir montré l&rsquo;application web ainsi que la configuration du plugin Maven de Jetty nécessaire à son exécution dans le conteneur embarqué, il est possible de démarrer l&rsquo;application web dans le Jetty embedded.</p>
+<p><img src="http://1.bp.blogspot.com/-MC5ASoy7hYY/TnEsBl97o9I/AAAAAAAAAao/wKFzpPyRaI0/s1600/visualVM.png" alt="center"></p>
+<p><img src="http://1.bp.blogspot.com/-h1-h-jZ47Ys/TnEr6OFgvnI/AAAAAAAAAak/hkrxFyewmwA/s1600/jconsole.png" alt="center">
+Cependant, même si nos JConsole ou VisualVM préférées proposent une connexion au MBean Server local (visible au travers notre processus Maven3 <code>org.codehaus.plexus.classworlds.launcher.Launcher</code>), il n&rsquo;est pas possible d&rsquo;effectuer une connexion en spécifiant le JMXServiceURL de type : <code>service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi</code> .</p>
+<p>En effet, par défaut, Jetty ne créé pas de MBeanServer et, à fortiori, n&rsquo;enregistre aucun connecteur RMI nécessaire à une application JMX cliente.</p>
+<p>A titre informatif, même en démarrant un serveur Jetty en mode standalone, il est nécessaire de préciser, à son démarrage, le fichier de configuration <code>jetty-jmx.xml</code> se trouvant, par défaut, dans son répertoire etc et qu&rsquo;il faut éditer (pour préciser le port du serveur RMI à démarrer et le JMXServiceURL du connecteur JMX RMI).
+Pour Jetty 7, cela peut être fait, soit en modifiant le fichier start.ini, soit en démarrant Jetty en ligne de commande :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
+</code></pre></div><p>Pour Jetty 6, cela peut être fait, soit en modifiant le fichier <code>bin/jetty-service.conf</code>, soit en démarrant Jetty en ligne de commande :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -DOPTIONS<span style="color:#f92672">=</span>jmx -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
+</code></pre></div><p>Aussi, pour activer la création d&rsquo;un serveur RMI et créer un MBean Server dans le Jetty embarqué par Maven, il est nécessaire de fournir au plugin le fichier <code>jetty-jmx.xml</code>.</p>
+<p>Pour ce faire, il est possible de spécifier une configuration à Jetty via l&rsquo;élément : <code>&lt;jettyConfig&gt;</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
+ <span style="color:#f92672">&lt;profile&gt;</span>
+  <span style="color:#f92672">&lt;id&gt;</span>jetty6<span style="color:#f92672">&lt;/id&gt;</span>
+  <span style="color:#f92672">&lt;properties&gt;</span>
+   <span style="color:#f92672">&lt;jetty.version&gt;</span>6.1.26<span style="color:#f92672">&lt;/jetty.version&gt;</span>
+  <span style="color:#f92672">&lt;/properties&gt;</span>
+  <span style="color:#f92672">&lt;build&gt;</span>
+   <span style="color:#f92672">&lt;plugins&gt;</span>
+    <span style="color:#f92672">&lt;plugin&gt;</span>
+     <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId&gt;</span>maven-jetty-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version&gt;</span>${jetty.version}<span style="color:#f92672">&lt;/version&gt;</span>
+     <span style="color:#f92672">&lt;configuration&gt;</span>
+      <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>10<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+      <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/config/jetty-jmx-6.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
+      <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+       <span style="color:#f92672">&lt;contextPath&gt;</span>/jmx-sample<span style="color:#f92672">&lt;/contextPath&gt;</span>
+      <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+      <span style="color:#f92672">&lt;connectors&gt;</span>
+        <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+        <span style="color:#f92672">&lt;host&gt;</span>0.0.0.0<span style="color:#f92672">&lt;/host&gt;</span>
+        <span style="color:#f92672">&lt;maxIdleTime&gt;</span>60000<span style="color:#f92672">&lt;/maxIdleTime&gt;</span>
+       <span style="color:#f92672">&lt;/connector&gt;</span>
+      <span style="color:#f92672">&lt;/connectors&gt;</span>
+     <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;/plugin&gt;</span>
+   <span style="color:#f92672">&lt;/plugins&gt;</span>
+  <span style="color:#f92672">&lt;/build&gt;</span>
+ <span style="color:#f92672">&lt;/profile&gt;</span>
+ <span style="color:#f92672">&lt;profile&gt;</span>
+  <span style="color:#f92672">&lt;id&gt;</span>jetty7<span style="color:#f92672">&lt;/id&gt;</span>
+  <span style="color:#f92672">&lt;properties&gt;</span>
+   <span style="color:#f92672">&lt;jetty.version&gt;</span>7.4.5.v20110725<span style="color:#f92672">&lt;/jetty.version&gt;</span>
+  <span style="color:#f92672">&lt;/properties&gt;</span>
+  <span style="color:#f92672">&lt;build&gt;</span>
+   <span style="color:#f92672">&lt;plugins&gt;</span>
+    <span style="color:#f92672">&lt;plugin&gt;</span>
+     <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version&gt;</span>${jetty.version}<span style="color:#f92672">&lt;/version&gt;</span>
+     <span style="color:#f92672">&lt;configuration&gt;</span>
+      <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>10<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+      <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/config/jetty-jmx.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
+      <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+       <span style="color:#f92672">&lt;contextPath&gt;</span>/jmx-sample<span style="color:#f92672">&lt;/contextPath&gt;</span>
+      <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+      <span style="color:#f92672">&lt;connectors&gt;</span>
+          <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+        <span style="color:#f92672">&lt;host&gt;</span>0.0.0.0<span style="color:#f92672">&lt;/host&gt;</span>
+        <span style="color:#f92672">&lt;maxIdleTime&gt;</span>60000<span style="color:#f92672">&lt;/maxIdleTime&gt;</span>
+       <span style="color:#f92672">&lt;/connector&gt;</span>
+      <span style="color:#f92672">&lt;/connectors&gt;</span>  
+     <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;/plugin&gt;</span>
+   <span style="color:#f92672">&lt;/plugins&gt;</span>
+  <span style="color:#f92672">&lt;/build&gt;</span>
+ <span style="color:#f92672">&lt;/profile&gt;</span>
+<span style="color:#f92672">&lt;/profiles&gt;</span>
+</code></pre></div><p>La nouvelle arborescence de notre projet devient donc :</p>
+<p><img src="http://1.bp.blogspot.com/-isxZpdoIozo/TnHVHTqIwRI/AAAAAAAAAbA/urXO-bvkGsM/s1600/jmx-sample-tree2.png" alt="center"></p>
+<p>En outre, il est nécessaire de démarrer la JVM avec l&rsquo;option -Dcom.sun.management.jmxremote :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn -Dcom.sun.management.jmxremote -Pjetty6 package jetty:run
+</code></pre></div><br/>
+```bash
+mvn -Dcom.sun.management.jmxremote -Pjetty7 package jetty:run
+```
+<p>Suite au lancement du serveur Jetty via Maven, il est alors possible d&rsquo;y accéder au travers d&rsquo;un client JMX en mode distant :
+<img src="http://4.bp.blogspot.com/-neKAz6J3YXk/TnEsy6vJiZI/AAAAAAAAAa0/S8go6tW4weA/s1600/connection.png" alt="center"></p>
+<p><img src="http://4.bp.blogspot.com/-FlX8ZwRcjTU/TnEsVSwh0yI/AAAAAAAAAas/VxjMj6QeEHU/s1600/visualVM2.png" alt="medium"></p>
+<p><img src="http://3.bp.blogspot.com/-WYs5-5s-Aik/TnEsZ24uHdI/AAAAAAAAAaw/3bTMjhjYLdg/s1600/visualVM3.png" alt="medium"></p>
+<p>A titre informatif, ci-joint les fichiers de configuration de Jetty permettant la création d&rsquo;un serveur RMI, du MBean Server et du connecteur RMI ainsi que de sa configuration.</p>
+<p>Pour Jetty 6 :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Mort Bay Consulting//DTD Configure//EN&#34; &#34;http://jetty.mortbay.org/configure.dtd&#34;&gt;</span>
+ 
+<span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Server&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.mortbay.jetty.Server&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.lang.management.ManagementFactory&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;getPlatformMBeanServer&#34;</span><span style="color:#f92672">/&gt;</span>
+ 
+    <span style="color:#f92672">&lt;Get</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Container&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;container&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;addEventListener&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;Arg&gt;</span>
+          <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.mortbay.management.MBeanContainer&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;Arg&gt;&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanServer&#34;</span><span style="color:#f92672">/&gt;&lt;/Arg&gt;</span>
+            <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span> <span style="color:#f92672">/&gt;</span>
+          <span style="color:#f92672">&lt;/New&gt;</span>
+        <span style="color:#f92672">&lt;/Arg&gt;</span>
+      <span style="color:#f92672">&lt;/Call&gt;</span>
+    <span style="color:#f92672">&lt;/Get&gt;</span>
+ 
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;rmiRegistry&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.rmi.registry.LocateRegistry&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;createRegistry&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;int&#34;</span><span style="color:#f92672">&gt;</span>1099<span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;/Call&gt;</span>
+     
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;jmxConnectorServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;javax.management.remote.JMXConnectorServerFactory&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;newJMXConnectorServer&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Arg&gt;</span>
+        <span style="color:#f92672">&lt;New</span>  <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;javax.management.remote.JMXServiceURL&#34;</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;Arg&gt;</span>service:jmx:rmi://localhost:1099/jndi/rmi://localhost:1099/jmxrmi<span style="color:#f92672">&lt;/Arg&gt;</span>
+        <span style="color:#f92672">&lt;/New&gt;</span>
+      <span style="color:#f92672">&lt;/Arg&gt;</span>
+      <span style="color:#f92672">&lt;Arg/&gt;</span>
+      <span style="color:#f92672">&lt;Arg&gt;&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanServer&#34;</span><span style="color:#f92672">/&gt;&lt;/Arg&gt;</span>
+      <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/Call&gt;</span>
+<span style="color:#f92672">&lt;/Configure&gt;</span>
+</code></pre></div><p>Pour Jetty 7 :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Jetty//Configure//EN&#34; &#34;http://www.eclipse.org/jetty/configure.dtd&#34;&gt;</span>
+<span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Server&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.Server&#34;</span><span style="color:#f92672">&gt;</span>
+ 
+  <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.lang.management.ManagementFactory&#34;</span>
+    <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;getPlatformMBeanServer&#34;</span> <span style="color:#f92672">/&gt;</span>
+ 
+  <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanContainer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.jmx.MBeanContainer&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Arg&gt;</span>
+      <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanServer&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/Arg&gt;</span>
+  <span style="color:#f92672">&lt;/New&gt;</span>
+ 
+  <span style="color:#f92672">&lt;Get</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Container&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;container&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;addEventListener&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Arg&gt;</span>
+        <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanContainer&#34;</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;/Call&gt;</span>
+  <span style="color:#f92672">&lt;/Get&gt;</span>
+ 
+  <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;addBean&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Arg&gt;</span>
+      <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanContainer&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/Arg&gt;</span>
+  <span style="color:#f92672">&lt;/Call&gt;</span>
+ 
+  <span style="color:#f92672">&lt;Get</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Logger&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.util.log.Log&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;log&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;MBeanContainer&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;addBean&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Arg&gt;</span>
+        <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Logger&#34;</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;/Call&gt;</span>
+  <span style="color:#f92672">&lt;/Ref&gt;</span>
+   
+  <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;createRegistry&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.rmi.registry.LocateRegistry&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.Integer&#34;</span><span style="color:#f92672">&gt;</span>1099<span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sleep&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.lang.Thread&#34;</span><span style="color:#f92672">&gt;</span>
+       <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.Integer&#34;</span><span style="color:#f92672">&gt;</span>1000<span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;/Call&gt;</span>
+  <span style="color:#f92672">&lt;/Call&gt;</span>
+  
+ <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;ConnectorServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.jmx.ConnectorServer&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Arg&gt;</span>
+      <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;javax.management.remote.JMXServiceURL&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">&gt;</span>rmi<span style="color:#f92672">&lt;/Arg&gt;</span>
+        <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span> <span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.Integer&#34;</span><span style="color:#f92672">&gt;</span>0<span style="color:#f92672">&lt;/Arg&gt;</span>
+        <span style="color:#f92672">&lt;Arg</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">&gt;</span>/jndi/rmi://localhost:1099/jmxrmi<span style="color:#f92672">&lt;/Arg&gt;</span>
+      <span style="color:#f92672">&lt;/New&gt;</span>
+    <span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;Arg&gt;</span>org.eclipse.jetty:name=rmiconnectorserver<span style="color:#f92672">&lt;/Arg&gt;</span>
+    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/New&gt;</span>
+<span style="color:#f92672">&lt;/Configure&gt;</span>
+</code></pre></div><p>#Conclusion</p>
+<p>Cet article avait pour objectif de montrer comment il pouvait être facile d&rsquo;activer la couche JMX pour un serveur Jetty embedded dans Maven.</p>
+<p>C&rsquo;est vrai que démarrer un Jetty embarqué n&rsquo;a pas pour objectif de faire des tests d&rsquo;intégration mais cela peut toujours être utile dans le cas d&rsquo;un POC ou d&rsquo;une démonstration (qui était d&rsquo;ailleurs l&rsquo;objectif de ce petit cas d&rsquo;usage. ;-) ).</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-09-26-jetty-maven-et-jmx%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2011-09-23-presentation-aux-problematiques-dune/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2011-09-23-presentation-aux-problematiques-dune/">Présentation sur les problématiques liées à une architecture distribuée</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/">FuseSource Community Day 2011</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

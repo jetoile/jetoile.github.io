@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nexus on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/nexus/</link>
+    <description>Recent content in nexus on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 20 May 2011 19:50:24 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/nexus/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Les repositories Manager pour les nuls... focus sur Nexus</title>
+      <link>https://blog.jetoile.fr/post/2011-05-20-les-repositories-manager-pour-les-nuls/</link>
+      <pubDate>Fri, 20 May 2011 19:50:24 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2011-05-20-les-repositories-manager-pour-les-nuls/</guid>
+      <description>Cela fait un moment que je n&amp;rsquo;ai pas bloggé faute de temps mais également d&amp;rsquo;inspiration&amp;hellip; (ça c&amp;rsquo;est dit et ça, on s&amp;rsquo;en fout d&amp;rsquo;un coté ;-) ) Cet article parlera des repository manager. Rien de nouveau à l&amp;rsquo;horizon puisque la problématique et les solutions existent depuis un moment mais ayant dû en mettre un en place récemment et au vu de nombreuses questions que l&amp;rsquo;on m&amp;rsquo;a posées, je vais ici coucher sur &amp;ldquo;papier&amp;rdquo; ce qu&amp;rsquo;est un repository manager, c&amp;rsquo;est à dire quelques uns de ses concepts clés.</description>
+    </item>
+    
+  </channel>
+</rss>

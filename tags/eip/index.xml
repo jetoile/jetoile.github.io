@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eip on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/eip/</link>
+    <description>Recent content in eip on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 10 Apr 2014 14:15:44 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/eip/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lecture et traitement de fichiers : comment faire simple?</title>
+      <link>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</guid>
+      <description>De nombreuses applications ou systèmes d&amp;rsquo;informations nécessitent le chargement de données issues de fichiers.
+Bien souvent, cet import est exécuté par batch, mais il peut aussi être intéressant de faire cet import au fil de l&amp;rsquo;eau.
+En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&amp;rsquo;il n&amp;rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&amp;rsquo;est à dire avec, au minimum, le temps de traitement d&amp;rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code.</description>
+    </item>
+    
+    <item>
+      <title>Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud</title>
+      <link>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</link>
+      <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</guid>
+      <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
+Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
+ Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
+    </item>
+    
+    <item>
+      <title>Orchestration ou Routage?</title>
+      <link>https://blog.jetoile.fr/post/2010-04-07-orchestration-ou-routage/</link>
+      <pubDate>Wed, 07 Apr 2010 10:55:20 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-04-07-orchestration-ou-routage/</guid>
+      <description>Orchestration ou routage? Telle est la question qui se pose souvent&amp;hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s&amp;rsquo;agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?
+PEtALS Link vient de mettre à disposition un livre blanc traitant du sujet en proposant différentes pistes pour choisir la solution d&amp;rsquo;implémentation.</description>
+    </item>
+    
+    <item>
+      <title>Spring Integration vs. Apache Camel</title>
+      <link>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</link>
+      <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</guid>
+      <description>Lors d&amp;rsquo;un post précédent, j&amp;rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&amp;rsquo;il s&amp;rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
+Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
+En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&amp;rsquo;en ai ainsi que la façon dont je les ai compris.</description>
+    </item>
+    
+    <item>
+      <title>EIP : Qu&#39;est ce que c&#39;est</title>
+      <link>https://blog.jetoile.fr/post/2009-12-13-eip-quest-ce-que-cest/</link>
+      <pubDate>Sun, 13 Dec 2009 12:15:29 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2009-12-13-eip-quest-ce-que-cest/</guid>
+      <description>Dans l&amp;rsquo;article sur JBI, j&amp;rsquo;ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l&amp;rsquo;on doit jongler avec des messages asynchrones.
+En fait, les EIP (Enterprise Integration Patterns) sont issus de l&amp;rsquo;excellent livre éponyme de G. Hohpe et B. Woolf chez Addisson Wesley. Ne pouvant que vous recommandez sa lecture si vous trempez dans cette problématique, cet article ne sera qu&amp;rsquo;une brève introduction à son contenu (il fait quand même plus de 600 pages, donc je ne vais pas prétendre le résumer&amp;hellip; ;-)).</description>
+    </item>
+    
+  </channel>
+</rss>

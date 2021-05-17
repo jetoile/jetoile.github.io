@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>FluentLenium et Cucumber JVM... complément et precision &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>FluentLenium et Cucumber JVM... complément et precision</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>11 Apr 2013, 20:38</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/int%C3%A9gration-continue">intégration continue</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/fluentlenium">fluentlenium</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/selenium">selenium</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/maven">maven</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://4.bp.blogspot.com/-R3ORi15Ei3Y/UTmwoq5A2II/AAAAAAAAA3o/uaIMSSZlq38/s1600/logo.png" alt="left-small"></p>
+<p>Dans mon article précédent, j&rsquo;avais tenté d&rsquo;expliquer comment il était possible d&rsquo;intégrer les frameworks <a href="https://github.com/cucumber/cucumber-jvm">Cucumber JVM</a> et <a href="http://docs.seleniumhq.org/">Selenium</a> au travers de <a href="https://github.com/FluentLenium/FluentLenium">FluentLenium</a>.</p>
+<p>En effet, pour rappel, FluentLenium permettait d&rsquo;abstraire Selenium en lui offrant une API plus <em>fluent</em> mais également en lui apportant nativement ce qu&rsquo;il préconise, à savoir le <a href="http://docs.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern">Page Object Design Pattern</a>.</p>
+<p>Pour ce faire, j&rsquo;avais proposé d&rsquo;utiliser la délégation de l&rsquo;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&rsquo;injection de Cucumber JVM.</p>
+<p>Cependant, suite à discussion avec la créatrice de FluentLenium (à savoir <a href="https://twitter.com/mathildelemee">Mathilde</a>), on s&rsquo;est rendu compte que l&rsquo;axe utilisé était légèrement biaisé (même s&rsquo;il fonctionnait&hellip;).</p>
+<p>Cet article revient donc sur ce point en proposant une solution plus simple mais présentera également comment il est possible de tester le scénario Cucumber avec différents navigateurs et il y aura un petit mot sur l&rsquo;utilisation de navigateurs déportés (via les RemoteWebDriver de Selenium 2).</p>
+<p>Pour ce faire, il sera découpé en 3 parties qui couvriront des usecases différents se traduisant donc par des implémentations différentes :</p>
+<ul>
+<li>cas de tests pour un site simple,</li>
+<li>cas de tests pour un site complet,</li>
+<li>cas de tests multi-navigateurs pour un site complet.</li>
+</ul>
+<p>A noter que je ne reviendrai pas sur les principes des différents frameworks/concepts mais juste sur comment il est possible d&rsquo;implémenter ces différents usecases.</p>
+<p>A noter également que l&rsquo;article précédent aurait pu être modifié mais qu&rsquo;en raison du nombre important de changements, il était plus simple d&rsquo;en initier un autre&hellip;</p>
+<!-- more -->
+<p>#Cas de tests pour un site simple</p>
+<p>##Présentation et proposition d&rsquo;implémentation</p>
+<p>Ce premier cas d&rsquo;usage couvre le cas : &ldquo;j&rsquo;ai un site que je veux tester avec Cucumber JVM et l&rsquo;ensemble des steps peut être réuni dans une seule et même classe.&rdquo;</p>
+<p>Bon je vois déjà la levée de bouclier : pourquoi réunir toutes les steps dans une seule et même classe. En fait, la raison du pourquoi sera expliquée un peu plus tard dans le paragraphe <em>Limites</em> de ce chapitre donc patience&hellip; ;-)</p>
+<p>Contrairement à la façon que j&rsquo;avais présentée dans mon article précédent, il n&rsquo;est pas obligatoire de déléguer la déclaration des pages <code>FluentPage</code> à une autre classe étendant <code>FluentTest</code>. En fait, il suffit juste de faire étendre la classe contenant les steps cucumber de <code>FluentAdapter</code>, d&rsquo;y déclarer les pages et d&rsquo;appeler dans la méthode annotée par @Before (celui de Cucumber JVM bien sûr) les méthode d&rsquo;initialisation du contexte de FluentLenium.</p>
+<p>Pour rappel, cette initialisation instancie le WebDriver utilisé par Selenium 2 mais également les pages (annotées par l&rsquo;annotation <code>@Page</code>) présentes dans la classe courante (ou ses parentes) qui doit, au minimum, étendre de <code>FluentAdapter</code>. Cela se fait au travers des méthodes <code>initFluent()</code> et <code>initTest()</code>.</p>
+<p>Le code est donc extrêmement simple puisqu&rsquo;il suffit de faire quelque chose du style :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> cucumber.api.java.After<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> cucumber.api.java.Before<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> cucumber.api.java.en.Given<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> cucumber.api.java.en.Then<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> cucumber.api.java.en.When<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.fluentlenium.core.FluentAdapter<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.fluentlenium.core.annotation.Page<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.openqa.selenium.htmlunit.HtmlUnitDriver<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.fest.assertions.api.Assertions.assertThat<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleStep</span> <span style="color:#66d9ef">extends</span> FluentAdapter <span style="color:#f92672">{</span>
+
+ <span style="color:#a6e22e">@Page</span>
+ BingPage page<span style="color:#f92672">;</span>
+
+ <span style="color:#a6e22e">@Before</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">before</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HtmlUnitDriver<span style="color:#f92672">());</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
+ <span style="color:#f92672">}</span>
+
+ <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;j accede a bing&#34;</span><span style="color:#f92672">)</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  goTo<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
+ <span style="color:#f92672">}</span>
+
+ <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;je recherche ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step2</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  fill<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_q&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">with</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
+  submit<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_go&#34;</span><span style="color:#f92672">);</span>
+ <span style="color:#f92672">}</span>
+
+ <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;le titre est ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step3</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  assertThat<span style="color:#f92672">(</span>title<span style="color:#f92672">()).</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
+ <span style="color:#f92672">}</span>
+
+ <span style="color:#a6e22e">@After</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">after</span><span style="color:#f92672">(){</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>où BingPage est :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.fluentlenium.core.FluentPage<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BingPage</span> <span style="color:#66d9ef">extends</span> FluentPage <span style="color:#f92672">{</span>
+
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUrl</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;http://www.bing.com&#34;</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>et la feature, la suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Feature: basic
+
+  Scenario: scenar1
+    Given j accede a bing
+    When je recherche toto
+    Then le titre est toto 
+</code></pre></div><p>Il est intéressant de remarquer la simplicité de la chose (et rien à voir avec l&rsquo;implémentation que j&rsquo;avais proposé précédemment!).</p>
+<p>A part cela, peu de choses à ajouter : le code parle de lui même&hellip;</p>
+<p>##Limites</p>
+<p>On vient de voir comme il était simple de faire cohabiter FluentLenium et Cucumber JVM.</p>
+<p>Bien sûr, il y a un mais&hellip; (ça serait trop simple sinon) : comme on peut le constater, actuellement, toutes les steps se trouvent être dans la même classe. Cependant, dans le cas d&rsquo;un site web un peu plus complexe, il est courant et même encouragé de séparer les steps dans différentes classes.</p>
+<p>Dans l&rsquo;implémentation précédente, l&rsquo;annotation <code>@Before</code> a été utilisée pour initialiser le contexte (et plus particulièrement le webDriver et les pages pour ensuite injecter le webDriver dans ces dernières).</p>
+<p>Cependant, dans le cas où les steps se trouvent être dans plusieurs classes, cela pose potentiellement un problème.</p>
+<p>En effet, Cucumber JVM instancie la classe qui contient la définition de la step dès qu&rsquo;il en a besoin et appelle la méthode annotée par <code>@Before</code> à l&rsquo;instanciation de cette classe. Ainsi, dans notre cas, si les steps s&rsquo;étaient trouvées dans deux classes, chacune étendant <code>FluentAdapter</code> et appelant <code>initFluent()</code> et <code>initTest()</code> dans la méthode annotée par @Before, alors cette instanciation aurait été faite deux fois et non une seule fois comme on aurait pu s&rsquo;y attendre pour un même scénario donné&hellip;</p>
+<p>Pire, les pages déclarées dans les classes n&rsquo;auraient pas eu la même instance du webDriver et elles ne se seraient pas vu l&rsquo;une l&rsquo;autre&hellip;</p>
+<p>Pas glop tout ça&hellip; :'(</p>
+<p>Ainsi, l&rsquo;implémentation précédente fonctionne pour des cas &ldquo;simples&rdquo; mais si la partie test d’acceptante/intégration avait été plus complexe, alors cela aurait empêché la réutilisation et le découplage.</p>
+<p>#Cas de tests pour un site complet</p>
+<p>##Présentation et proposition d&rsquo;implémentation</p>
+<p>Il a été vu dans le paragraphe précédent qu&rsquo;il pouvait être utile de disposer de plusieurs classes disposant des implémentations des fixtures.
+Cependant, la question principale est de trouver comment il est possible de n&rsquo;instancier qu&rsquo;une seule fois par scénario le webDriver et de l&rsquo;injecter dans des instances de pages propres au scénario.</p>
+<p>La proposition présentée dans l&rsquo;article précédent (modulo qu&rsquo;il ne faut pas étendre de <code>FluentTest</code> mais de <code>FluentAdapter</code>) reste viable, mais il y a plus simple.</p>
+<p>En effet, dans la proposition faite précédemment, la classe <code>FluentTestDelegator</code> avait à sa charge, à la fois la déclaration des pages, et l&rsquo;instanciation et l&rsquo;initialisation du contexte de FluentLenium. Pour rappel, cette instanciation/initialisation était réalisée par <a href="http://picocontainer.codehaus.org/">Pico Container</a> lors de l&rsquo;injection de l&rsquo;instance de cette classe dans la classe contenant les fixtures.</p>
+<p>En fait, il est plus propre, d&rsquo;un point de vue séparation des concepts, de laisser à cette classe le soin de proposer les fixtures d&rsquo;initialisation du webDriver tout en séparant la déclaration des pages.</p>
+<p>Cela peut être réalisé en créant une classe (<code>FluentPageInjector</code>) étendant de <code>FluentAdapter</code> qui définit les pages et de la faire étendre d&rsquo;une classe (<code>FluentLeniumStepInitilizer</code>) qui définit les fixtures d&rsquo;instanciation du webDriver.</p>
+<p>Cela offre deux avantages : les classes qui définissent les steps de navigation n&rsquo;ont qu&rsquo;à étendre de <code>FluentPageInjector</code> pour avoir une visibilité sur les pages (tout en continuant d&rsquo;injecter via pico l&rsquo;instance de <code>FluentLeniumStepInitilizer</code>) et il devient alors possible de variabiliser le webDriver à utiliser.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Feature: browser
+
+  Scenario: navigation version firefox
+    Given I connect on url http://localhost:8080 with firefox
+    Given j accede a la homePage
+    And je suis sur homePage
+    When je submit
+    Then je suis sur la page result
+    And driver is closed
+
+
+  Scenario: navigation version chrome
+    Given I connect on url http://localhost:8080 with chrome with parameters webdriver.chrome.driver:/opt/chromedriver/chromedriver
+    Given j accede a la homePage
+    And je suis sur homePage
+    When je submit
+    Then je suis sur la page result
+    And driver is closed
+
+
+  Scenario: navigation version phantomjs
+    Given I connect on url http://localhost:8080 with phantomjs with parameters phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs 
+    Given j accede a la homePage
+    And je suis sur homePage
+    When je submit
+    Then je suis sur la page result
+    And driver is closed
+</code></pre></div><br/>
+```java
+package step;
+<p>import org.fluentlenium.core.FluentAdapter;
+import org.fluentlenium.core.annotation.Page;
+import page.HomePage;
+import page.ResultPage;</p>
+<p>public class FluentPageInjector extends FluentAdapter {
+@Page
+protected HomePage homePage;</p>
+<pre><code>@Page
+protected ResultPage resultPage;
+</code></pre>
+<p>}</p>
+<pre><code>
+On remarque, comme dit plus haut, que cette classe n'a qu'un seul rôle qui est de déclarer les pages tout en étendant de `FluentAdapter`. 
+
+```java
+public class HomePageStep extends FluentPageInjector {
+
+     public HomePageStep(FluentLeniumStepInitilizer delegator) {
+      this.homePage = delegator.homePage;
+      this.resultPage = delegator.resultPage;
+     }
+
+
+     @Given(&quot;^j accede a la homePage$&quot;)
+     public void j_accede_a_homePage() {
+      goTo(homePage);
+     }
+
+     @Given(&quot;^je suis sur homePage$&quot;)
+     public void je_suis_sur_homePage() {
+      homePage.isAt();
+     }
+
+     @When(&quot;^je submit$&quot;)
+     public void je_submit() throws Throwable {
+      homePage.submit();
+     }
+}
+</code></pre><br/>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResultPageStep</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ResultPageStep</span><span style="color:#f92672">(</span>FluentLeniumStepInitilizer delegator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span> <span style="color:#f92672">=</span> delegator<span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^je suis sur la page result$&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">je_suis_sur_la_page_result</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+        resultPage<span style="color:#f92672">.</span><span style="color:#a6e22e">isAt</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span> 
+</code></pre></div><p>Ces classes correspondent aux classes qui définissent les fixtures. Elles étendent de <code>FluentPageInjector</code> de façon à pouvoir bénéficier de la visibilité sur les pages. Par contre, il est intéressant de constater que, dans son constructeur, la classe <code>FluentLeniumStepInitializer</code> est injecté via Pico Container. Cela permet d&rsquo;affecter la valeur des pages.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FluentLeniumStepInitilizer</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^I connect on url ([^ ]*) with ([^ ]*) with parameters ([^ ]*)$&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">browser_connect</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browser<span style="color:#f92672">,</span> String parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        init<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> parameters<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^drivers are closed&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@After</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterClose</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserName<span style="color:#f92672">,</span> String parametersLine<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Browser browser <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+
+        DesiredCapabilities capabilities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DesiredCapabilities<span style="color:#f92672">();</span>
+
+        String<span style="color:#f92672">[]</span> parameters <span style="color:#f92672">=</span> parametersLine<span style="color:#f92672">.</span><span style="color:#a6e22e">slip</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;;&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String parameter <span style="color:#f92672">:</span> parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                String<span style="color:#f92672">[]</span> key_value <span style="color:#f92672">=</span> parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">);</span>
+                capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapability</span><span style="color:#f92672">(</span>key_value<span style="color:#f92672">[</span>0<span style="color:#f92672">],</span> key_value<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        browser <span style="color:#f92672">=</span> Browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>browserLine<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
+        capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setBrowserName</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+
+        initWebDriver<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browserHost<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initWebDriver</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserHost<span style="color:#f92672">,</span> Browser browser<span style="color:#f92672">,</span> DesiredCapabilities capabilities<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Fluent fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        WebDriver driver <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            driver <span style="color:#f92672">=</span> BrowserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getDriver</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
+            fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span>driver<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        fluent<span style="color:#f92672">.</span><span style="color:#a6e22e">withDefaultUrl</span><span style="color:#f92672">(</span>host<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Cette classe étend par transitivité <code>FluentAdapter</code> et dispose donc de la visibilité sur les méthodes d&rsquo;initialisation de <code>FluentLenium</code>. En outre, en étendant <code>FluentPageInjector</code> (qui étend de <code>FluentAdapter</code>), cela lui permet, à l&rsquo;appel de <code>initTest()</code>, d&rsquo;initialiser les pages.
+Concernant l&rsquo;initialisation des webDriver, cela est fait au niveau de la classe <code>BrowserMapper</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Browser <span style="color:#f92672">{</span>
+    HTMLUNIT<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">),</span>
+    FIREFOX<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firefox&#34;</span><span style="color:#f92672">),</span>
+    CHROME<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;chrome&#34;</span><span style="color:#f92672">),</span>
+    PHANTOMJS<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;phantomjs&#34;</span><span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+
+    Browser<span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Browser <span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Browser browser <span style="color:#f92672">:</span> values<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>name<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> browser<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> HTMLUNIT<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><br/>
+```java
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+<p>import java.util.HashMap;
+import java.util.Map;</p>
+<p>public class BrowserMapper {
+private String name;</p>
+<p>private static Map&lt;Browser, WebDriverLazyLoader&gt; browserMapper = new HashMap&lt;Browser, WebDriverLazyLoader&gt;();</p>
+<p>static {
+browserMapper.put(Browser.CHROME, new WebDriverLazyLoader(ChromeDriver.class));
+browserMapper.put(Browser.FIREFOX, new WebDriverLazyLoader(FirefoxDriver.class));
+browserMapper.put(Browser.HTMLUNIT, new WebDriverLazyLoader(HtmlUnitDriver.class));
+browserMapper.put(Browser.PHANTOMJS, new WebDriverLazyLoader(PhantomJSDriver.class));
+}</p>
+<p>public static WebDriver getDriver(Browser browser, Capabilities capabilities) {
+WebDriverLazyLoader webDriverLazyLoader = browserMapper.get(browser);
+if (webDriverLazyLoader != null) {
+if (browser == Browser.PHANTOMJS) {
+return webDriverLazyLoader.getWebDriverClass(capabilities);</p>
+<pre><code>        } else if (browser == Browser.CHROME) {
+            System.setProperty(&quot;webdriver.chrome.driver&quot;, (String) capabilities.getCapability(&quot;webdriver.chrome.driver&quot;));
+            return webDriverLazyLoader.getWebDriverClass(capabilities);
+
+        } else {
+            return webDriverLazyLoader.getWebDriverClass();
+        }
+</code></pre>
+<p>}
+return browserMapper.get(Browser.HTMLUNIT).getWebDriverClass();
+}
+}</p>
+<pre><code>
+Cette classe permet de faire le pont avec les webDriver qu'il est possible d'utiliser. Cependant, la petite astuce consiste à instancier de manière &quot;Lazy&quot; ces derniers.
+
+En effet, appeler le constructeur d'un webDriver l'instancie mais le démarre également (ie. que la fenêtre du navigateur s'ouvre réellement). Du coup, la petite classe présentée ci-dessous a été utilisée. 
+
+```java
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+
+class WebDriverLazyLoader {
+    private Class webDriverClass;
+
+
+    public WebDriverLazyLoader(Class webDriverClass) {
+        this.webDriverClass = webDriverClass;
+    }
+
+    public WebDriver getWebDriverClass() {
+        try {
+            return (WebDriver)this.webDriverClass.newInstance();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public WebDriver getWebDriverClass(Capabilities capabilities) {
+        try {
+            return (WebDriver)this.webDriverClass.getConstructor(Capabilities.class).newInstance(capabilities);
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+} 
+</code></pre><p>##Limites</p>
+<p>Comme on a pu le voir dans ce chapitre, il est aisé de partager les fixtures Cucumber JVM dans des classes différentes tout en bénéficiant de FluentLenium.</p>
+<p>Cependant, pour certains besoins, il peut être utile de vouloir lancer les tests d&rsquo;acceptance/intégration sur différents navigateurs.</p>
+<p>Bien sûr, chaque step pourrait boucler sur l&rsquo;ensemble des navigateurs sur lesquels les tests doivent être exécutés, mais cela induirait des problématiques d&rsquo;entrelacement des actions et donc soulèverait des problématiques comme la gestion d&rsquo;un contexte par webDriver, l&rsquo;accès à un rapport &ldquo;illisible&rdquo; ou un manque de contrôle sur les préconditions du test qui sont, généralement, lié au scénario et non à une Step.</p>
+<p>Le chapitre suivant tentera de répondre à cette problématique en proposant un moyen de &ldquo;boucler&rdquo; sur le scénario avec différents navigateurs.</p>
+<p>#Cas de tests multi-navigateurs pour un site complet</p>
+<p>##Présentation et proposition d&rsquo;implémentation</p>
+<p>Il a été vu dans le chapitre précédent comment il était possible d&rsquo;exécuter des tests d&rsquo;acceptances/intégration sur un navigateur donné.</p>
+<p>Ce chapitre présentera, pour sa part, une façon de les lancer sur différents navigateurs sans avoir à faire de copier/coller ;-).</p>
+<p>En fait, Cucumber JVM permet nativement de boucler sur un scénario en utilisant différents paramètres. Cela se fait par le mécanisme de <code>scenario outline</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">
+Feature: multibrowser
+
+  Scenario Outline: multi browser navigation version 1:
+    Given I connect on url http://localhost:8080 with &lt;browser&gt; with parameters &lt;parameters&gt;
+    Given j accede a la homePage
+    And je suis sur homePage
+    When je submit
+    Then je suis sur la page result
+    And driver is closed
+  Examples:
+    | browser | parameters                                             | 
+    | firefox |                                                        | 
+    | default |                                                        | 
+    | chrome  | webdriver.chrome.driver:/opt/chromedriver/chromedriver | 
+</code></pre></div><p>Et&hellip; c&rsquo;est tout!</p>
+<p>Le code n&rsquo;a pas à être modifié : Cucumber JVM s&rsquo;occupe de tout! ;-)</p>
+<p>##Limites</p>
+<p>On a vu dans le paragraphe précédent comment il était possible d&rsquo;exécuter facilement des tests d&rsquo;acceptance/intégration en s&rsquo;appuyant sur la notion de scénario outline offerte nativement par Cucumber JVM.</p>
+<p>Coté limitation, je n&rsquo;en vois pas trop&hellip;</p>
+<p>Peut être le fait de ne pas instancier le webDriver pour chaque scénario (opération assez coûteuse en temps) mais cela est aisément résolvable en utilisant une sorte de cache de webDriver fonctionnant sur le principe de singleton qui serait réinialisé lors de l&rsquo;appel à la step drivers are closed qui serait isolée dans son propre <code>scenario outline</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">  Scenario Outline: browsers are closed:
+    Then driver is closed
+  Examples:
+    | browser   | parameters                                                            | 
+    | firefox   |                                                                       | 
+    | default   |                                                                       | 
+    | phantomjs | phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs | 
+    | chrome    | webdriver.chrome.driver:/opt/chromedriver/chromedriver                |     
+</code></pre></div><p>#Conclusion</p>
+<p>Il a été présenté dans cet article comment il était possible d&rsquo;implémenter l&rsquo;intégration de Cucumber JVM et de Selenium à l&rsquo;aide de FluentLenium.</p>
+<p>Cet article n&rsquo;a, cependant, pas fait mention de l&rsquo;exécution des tests sur des navigateurs distants via les <strong>RemoteWebDriver</strong> mais cela est tout à fait possible (même si le code montré ici ne le présente pas) et est même totalement fonctionnel : pour ce faire (code disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/tree/multiNav">ici</a>), il suffit de fournir, entre autre, des paramètres supplémentaires comme l&rsquo;url de connexion au hub Selenium et d&rsquo;instancier un <code>RemoteWebDriver</code> plutôt que le webDriver.</p>
+<p>De même, le code permettant d&rsquo;instancier à la mode singleton les webDriver est disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/blob/multiNav/src/test/java/step/FluentLeniumStepInitilizer.java">ici</a> (voir la méthode <code>initCachedWebDriver()</code> de la classe <code>FluentLeniumStepInitilizer</code>).</p>
+<p>Enfin, un dernier mot sur la façon dont il est possible d&rsquo;exécuter tout ce beau monde (comme ça, je réponds à la remarque très pertinente de <a href="https://twitter.com/josepaumard">José</a> ;-) ) parce que faire des tests, c&rsquo;est bien, les jouer, c&rsquo;est mieux!</p>
+<p>Il est possible de jouer les tests d&rsquo;au moins trois manières distinctes : une orienté &ldquo;vraie vie&rdquo; (ie. utilisable au sein d&rsquo;un build maven et donc exécutable via une usine d&rsquo;intégration continue) et deux autres plutôt orientés développement.</p>
+<p>Ainsi, pour jouer les tests via maven, il suffit de le déclarer dans le <code>pom.xml</code> le plugin failsafe en le branchant sur la &ldquo;bonne phase&rdquo;, à savoir le runner Cucumber JVM :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-failsafe-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+        <span style="color:#f92672">&lt;execution&gt;</span>
+            <span style="color:#f92672">&lt;goals&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>integration-test<span style="color:#f92672">&lt;/goal&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>verify<span style="color:#f92672">&lt;/goal&gt;</span>
+            <span style="color:#f92672">&lt;/goals&gt;</span>
+        <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+        <span style="color:#f92672">&lt;includes&gt;</span>
+            <span style="color:#f92672">&lt;include&gt;</span>**/BasicRunner.java<span style="color:#f92672">&lt;/include&gt;</span>
+        <span style="color:#f92672">&lt;/includes&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+<span style="color:#f92672">&lt;/plugin&gt;</span>
+</code></pre></div><p>Coté jouabilité des tests sur un environnement de développement  il est possible d&rsquo;exécuter le <strong>Runner</strong> Cucumber JVM directement (comme lors de l&rsquo;exécution d&rsquo;une classe de test unitaire) ou d&rsquo;utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas&hellip;).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> cucumber.api.junit.Cucumber<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>Cucumber<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Cucumber.Options</span><span style="color:#f92672">(</span>features <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classpath:fr/jetoile/webapp/acceptance&#34;</span><span style="color:#f92672">,</span> format <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;pretty&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;html:target/cucumber&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;json:target/cucumber.json&#34;</span><span style="color:#f92672">})</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RunCucumberFeatures</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><img src="http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s1600/screenshot01.png" alt="medium"></p>
+<br/>
+<p><img src="http://3.bp.blogspot.com/-FkF8ZO6r6co/UWXnUNjqjII/AAAAAAAAA4g/obtSC7BS6kI/s1600/screenshot02.png" alt="medium"></p>
+<p>Enfin, pour rappel, mon usecase étant de tester mon application web en boite noire, un prérequis était que mon application web soit démarrée au préalable.</p>
+<p>Pour ce faire, le plugin maven Jetty (ou Tomcat au choix) a été utilisé et branché sur la phase de pré-integration.</p>
+<p>Lors de l&rsquo;exécution des tests en mode développement (ie. en les lançant comme un TU ou à l&rsquo;aide du plugin Cucumber JVM via l&rsquo;IDE), un profil n&rsquo;exécutant pas le plugin failsafe mais uniquement le démarrage du jetty/tomcat embarqué a été utilisé.</p>
+<p>#Pour aller plus loin&hellip;</p>
+<ul>
+<li>article sur les limitations de Cucumber JVM pour le partage de données entre steps : <a href="http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/">http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/</a></li>
+<li>page de fluentLenium : <a href="https://github.com/FluentLenium/FluentLenium">https://github.com/FluentLenium/FluentLenium</a></li>
+<li>page des webDriver de Selenium : <a href="http://docs.seleniumhq.org/docs/03_webdriver.jsp">http://docs.seleniumhq.org/docs/03_webdriver.jsp</a></li>
+<li>code : <a href="http://github.com/jetoile/fluentlenium-cucumber/">http://github.com/jetoile/fluentlenium-cucumber/</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2013-04-11-fluentlenium-et-cucumber-jvm-complement%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/">FluentLenium et Cucumber JVM sont sur un bateau...</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/">Industrialiser la récolte de métriques Web</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

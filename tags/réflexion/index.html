@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>réflexion &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+  <link rel="alternate" type="application/rss+xml" title="Jetoile"
+    href='https://blog.jetoile.fr/tags/r%C3%A9flexion/index.xml' />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href='https://blog.jetoile.fr/tags/r%C3%A9flexion/index.xml'><i
+          class="fas fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>réflexion</h1>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/">Indépendance, me voici ;-)</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>06 Nov 2012, 13:13</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Une fois n&rsquo;est pas coutume (quoique&hellip;)&hellip; cet article ne sert à rien&hellip; mais a juste pour objectif d&rsquo;annoncer que je quitte la société de service que j&rsquo;ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l&rsquo;indépendance&hellip;
+Je quitte donc une société de service où j&rsquo;ai eu la chance de rencontrer et côtoyer des personnes géniales (aussi bien humainement que professionnellement) et qui m&rsquo;a donné ma chance pour essayer de suivre et de transmettre mon enthousiasme à mes joyeux camarades ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/">Découpage de projets : projet vs. modules</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Aug 2012, 10:47</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/architecture">architecture</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/avis">avis</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/maven">maven</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/soa">soa</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Lorsqu&rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&rsquo;approches :
+ le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/">Petits retours sur Cassandra</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Mar 2012, 10:19</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/architecture">architecture</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/cassandra">cassandra</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/nosql">nosql</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&rsquo;ai aimé et ce que je n&rsquo;ai pas aimé sur Apache Cassandra.
+Je tiens toutefois à préciser que je n&rsquo;ai aucune expérience réelle sur le produit et que je ne m&rsquo;appuierai donc que sur sa documentation officielle en version 1.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2010-06-14-sooner-is-better/">Sooner is better</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>14 Jun 2010, 11:34</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Bon, voilà, cela fait un moment que je n&rsquo;ai pas bloggé&hellip; manque d&rsquo;inspiration peut être&hellip; manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard&hellip;
+Dans cet article, je voudrais revenir sur un point que j&rsquo;avais légèrement abordé dans ce post portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l&rsquo;importance de s&rsquo;intégrer aux processus de compilation et de livraison au plus tôt&hellip; en fait, pour être plus précis, je n&rsquo;avais pas vraiment abordé cette problématique mais cela vient du même constat&hellip; ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2010-06-14-sooner-is-better/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/">RTFM ou de l&#39;importance de savoir lire une documentation</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>15 May 2010, 11:24</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ce petit article est plus une tranche de vie ayant pour objectif de montrer l'importance de savoir lire une documentation qu'un "vrai" post intéressant... Il est vrai que savoir trouver son information s&rsquo;applique énormément dans le monde Open Source où il est crucial de savoir fouiller (documentation, forum, &hellip;) lorsqu&rsquo;un fait technique (anomalie? framework incomplet? cas d&rsquo;usage délirant? &hellip;) a lieu mais cela s&rsquo;applique aussi dans notre vie de programmeur de tous les jours.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/">JMX ou comment administrer et superviser son système...</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 May 2010, 11:07</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Je n&rsquo;ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu&rsquo;il s&rsquo;agit d&rsquo;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &ldquo;comment ça marche&rdquo; ou je ne fournirai pas de tutoriaux. Il s&rsquo;agit juste d&rsquo;un petit coup de gueule parce que j&rsquo;en ai marre d&rsquo;entendre toujours les mêmes inepties sur JMX&hellip;
+Bon, pourquoi JMX me direz-vous?
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

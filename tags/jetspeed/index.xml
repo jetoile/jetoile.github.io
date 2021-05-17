@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jetspeed on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/jetspeed/</link>
+    <description>Recent content in jetspeed on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 04 Jan 2010 20:17:40 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jetspeed/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Retour sur la mise en oeuvre d&#39;un environnement de développement</title>
+      <link>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</link>
+      <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</guid>
+      <description>Cet article présente la mise en œuvre que j&amp;rsquo;ai appliquée lors de la mise en place d&amp;rsquo;un environnement de développement devant s&amp;rsquo;interfacer, dans une démarche pseudo-agile, avec des outils d&amp;rsquo;intégration continue.
+Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&amp;rsquo;ai tenté de répondre à ces problématiques que ce soit d&amp;rsquo;un point de vue méthodologique que d&amp;rsquo;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&amp;rsquo;est aussi pour cela que j&amp;rsquo;ai créé ce blog (afin de faire partager mon expérience et d&amp;rsquo;avoir un retour) ;-)</description>
+    </item>
+    
+  </channel>
+</rss>

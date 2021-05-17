@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JMX pour les nuls... - Le MBean Server - Partie 5 &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JMX pour les nuls... - Le MBean Server - Partie 5</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Nov 2010, 16:27</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left">
+Cet article reste dans la lignée de ma petite série d&rsquo;articles sur JMX (cf. <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">introduction</a>, <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">partie 1</a> portant sur les généralités, <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">partie 2</a> portant sur les différents MBeans et le concept de Notification, <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html">partie 3</a> sur les agents JMX et <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">partie 4</a> sur les classes de base) et portera sur le MBean Server.</p>
+<!-- more -->
+<p>#Table des matières</p>
+<ul>
+<li>JMX, qu&rsquo;est ce que c&rsquo;est?
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite">Généralités</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture">Architecture JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation">Niveau instrumentation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent">Niveau agent</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue">Niveau service distribué</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant">Composants JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean">MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification">Modèle de notifications</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee">Classe de métadonnées de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur">Serveur de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service">Service d&rsquo;agents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spécifications
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">JMX Instrumentation</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean">MBean</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard">MBean Standard</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic">Dynamic MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification">Notification</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open">Open MBean</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model">Model MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent">Agent JMX</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">Concepts</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName">ObjectName</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance">ObjectInstance</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute">Attribute et AttributeList</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception">Les Exceptions</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server">MBean Server</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic">Chargement dynamique des MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html">Les services JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring">Service Monitoring</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer">Service Timer</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation">Service Relation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite">Service Sécurité</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector">Les Connecteurs</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="mbean_server"></a>
+#MBean Server</p>
+<p>Le MBean Server est un annuaire de MBeans se trouvant dans l&rsquo;agent JMX. Il permet de fournir les services que manipulent les MBeans et toutes les opérations d&rsquo;administration et de supervision, qui sont fournies par le MBean, le sont au travers de l&rsquo;interface <code>MBeanServer</code> :</p>
+<ul>
+<li>Les MBeans qui représentent une ressource managée qui peuvent être n&rsquo;importe quelle application, des ressources système ou réseaux tant qu&rsquo;elles sont représentés par une interface Java ou un wrappeur Java.</li>
+<li>Les MBeans qui ajoutent des fonctionnalités de management qui peuvent être génériques (par exemple, des fonctionnalités de journalisation ou de monitoring) ou plus spécifique à une technologie ou à un domaine d&rsquo;application.</li>
+<li>Les composants de l&rsquo;infrastructure comme les serveurs de connecteurs et les adaptateurs de protocole.</li>
+</ul>
+<p>Pour ce faire, l&rsquo;agent JMX propose une classe factory pour trouver ou créer un MBean Server qui peut ne pas êre unique dans un agent JMX.</p>
+<p>L&rsquo;interface <code>MBeanServer</code> définie les opérations accessible sur un agent JMX.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlMH2RYqlI/AAAAAAAAAOY/rcYE9XfKwrQ/s1600/jmx43.png" alt="medium"></p>
+<p>La classe <code>MBeanServerFactory</code> dispose de méthodes statiques permettant de retourner une instance de l&rsquo;implémentation de l&rsquo;interface <code>MBeanServer</code>.</p>
+<p>Lorsque l&rsquo;implémentation du MBean Server est créée, il est possible d&rsquo;indiquer le nom du domaine par défaut utilisé dans l&rsquo;agent JMX qu&rsquo;il représente. Ce sont ces méthodes qui sont également utilisées par l&rsquo;agent JMX pour créer un ou plusieurs MBean Server.</p>
+<p>Dans le cas où ce sont des méthodes de recherche et de récupération du MBean Server déjà créé dans l&rsquo;agent JMX, les classes chargées dans la JVM peuvent accéder aux MBean Server déjà existant sans avoir à connaitre l&rsquo;agent JMX.</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Depuis Java 5, toute application Java possède un MBean Server qui peut être obtenu via la méthode java.lang.management.ManagementFactory.getPlatformMBeanServer()
+</ul></td></tr>
+</tbody></table>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlM8DBItVI/AAAAAAAAAOc/GK-kgJY2Hos/s1600/jmx46.png" alt="center"></p>
+<p>L&rsquo;accès aux méthodes statiques de la classe <code>MBeanServerFactory</code> est controlé par la classe <code>MBeanServerPermission</code>. Cette classe étend les classes de permissions basiques de Java et permet l&rsquo;accès aux opérations suivantes :</p>
+<ul>
+<li><code>createMBeanServer</code></li>
+<li><code>findMBeanServer</code></li>
+<li><code>newMBeanServer</code></li>
+<li><code>releaseMBeanServer</code></li>
+</ul>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TOlQlzvrRwI/AAAAAAAAAPM/6MVsoLxzkxM/s1600/jmx47.png" alt="medium"></p>
+<p>L&rsquo;enregistrement des MBeans au sein du MBean Server peut être fait soit via l&rsquo;agent JMX, soit via un autre MBean. Pour ce faire, l&rsquo;interface <code>MBeanServer</code> propose deux types d&rsquo;enregistrement :</p>
+<ul>
+<li>l&rsquo;instanciation d&rsquo;un nouveau MBean et son enregistrement en une seule opération. Dans ce cas, le chargement de la classe Java du MBean peut être fait en utilisant le classe loader par défaut ou en en explicitant un,</li>
+<li>l&rsquo;enregistrement d&rsquo;un MBean déjà existant.</li>
+</ul>
+<p>Dans ces deux cas, un <code>ObjectName</code> doit être associé au MBean lors de son enregistrement afin de l&rsquo;identifier de manière unique au sein du contexte du MBean Server.</p>
+<p>Le développeur du MBean peut, de plus, avoir la main sur l&rsquo;enregistrement et le désenregistrement du MBean au sein du MBean Server en implémentant l&rsquo;interface <code>MBeanRegistration</code>. Pour ce faire, le MBean Server vérifie dynamiquement avant (resp. après) l&rsquo;exécution de ces opérations si le MBean implémente l&rsquo;interface <code>MBeanRegistration</code>. Si c&rsquo;est le cas, alors les opérations de callbacks adéquates sont invoquées.</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+L'implémentation de l'interface MBeanRegistration est la seule manière de renseigner le MBean sur son environnement et plus particulièrement de lui fournir des informations sur le MBean Server au sein duquel il est enregistré. Cela lui permet, entre autre, d'obtenir des informations sur les autres MBean présent dans le MBean Server.
+</ul></td></tr>
+</tbody></table>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlRJXtN5FI/AAAAAAAAAPQ/kWtb8jvKMsU/s1600/jmx48.png" alt="medium"></p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOlRaaRexrI/AAAAAAAAAPU/ho2Ok7wJLyE/s1600/jmx49.png" alt="medium"></p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TOlRdOCQS3I/AAAAAAAAAPY/qYOspXtPJx0/s1600/jmx50.png" alt="medium"></p>
+<p>Ainsi, l&rsquo;interface <code>MBeanServer</code> offre des opérations pour :</p>
+<ul>
+<li>récupérer un MBean à partir de son <code>ObjectName</code>,</li>
+<li>récupérer une collection de MBeans à partir d&rsquo;une expression régulière sur son nom en appliquant éventuellement un filtre sur ses attributs,</li>
+<li>récupérer la valeur d&rsquo;un ou plusieurs attributs d&rsquo;un MBean,</li>
+<li>invoquer une opération sur un MBean,</li>
+<li>d&rsquo;introspecter un MBean pour récupérer l&rsquo;interface de management d&rsquo;un MBean, c&rsquo;est-à-dire ses attributs et ses opérations,</li>
+<li>s&rsquo;enregistrer afin de recevoir les notifications émises par un MBean.</li>
+</ul>
+<p>Il est à noter que ces méthodes sont génériques, c&rsquo;est pourquoi elles se basent toutes sur l&rsquo;objectName du MBean. Le rôle du MBean Server est donc, entre autre :</p>
+<ul>
+<li>de résoudre l&rsquo;objectName,</li>
+<li>de déterminer si l&rsquo;opération invoquer sur le MBean peut être consistante (ie. résolue par le MBean),</li>
+<li>de renvoyer le résultat de l&rsquo;opération au demandeur si les deux points précédents ont été vérifiés.</li>
+</ul>
+<p>Cependant, il est également possible, plutôt que d&rsquo;utiliser l&rsquo;interface <code>MBeanServer</code>, d&rsquo;utiliser un proxy. Un proxy est un objet Java implémentant la même interface que le MBean et dont une méthode de son interface est routé au travers du MBean Server vers le MBean. Pour ce faire, la classe statique JMX offre les méthodes utilitaires.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TOlSItzCdaI/AAAAAAAAAPc/MYHC7W_7ORs/s1600/jmx51.png" alt="center"></p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Le MBean Server défini un domaine particulier appelé JMXImplementation dans lequel un MBean de la classe MBeanServerDelegate est enregistré. Cet objet identifie et décrit le MBean Server dans lequel il est enregistré. Il est également utilisé pour émettre les notifications émises par le MBean Server : ce MBean agit comme un delegate du MBean Server qu'il représente.<br/>
+Son ObjectName est JMXImplementation:type=MBeanServerDelegate et il possède que des attributs en lecture-seule.
+<br/>
+<img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlStTeaChI/AAAAAAAAAPg/DEI2Md4dIO0/s1600/jmx52.png" alt="medium"/>
+</ul></td></tr>
+</tbody></table>
+<p>Les méthodes <code>queryMBeans(ObjectName, QueryExp)</code> et <code>queryNames(ObjectName, QueryExp)</code> de récupération d&rsquo;un MBean permettent de fournir une requête afin de minimiser la recherche au sein du MBean Server. Pour ce faire, ces méthodes prennent en paramètre :</p>
+<ul>
+<li>un <code>ObjectName</code> sous forme de pattern qui correspond à la portée de la requête et qui permet de spécifier le nom de l'<code>ObjectName</code> des MBeans à rechercher,</li>
+<li>un critère de filtre sur la valeur des attributs qui s&rsquo;applique aux MBeans trouvés par le premier paramètre.</li>
+</ul>
+<p>Dans le cas où la requête ne trouve pas de MBeans ou qu&rsquo;aucun MBean trouvé ne répond aux critères fournis, le résultat ne contiendra pas d&rsquo;éléments.</p>
+<p>Dans le cas où le pattern de l&rsquo;ObjectName est null, alors la portée de la recherche se fera dans tout le MBean Server.</p>
+<p>Dans le cas où le critère de filtre est null, alors le résultat n&rsquo;est pas filtré et correspond à tous les éléments se trouvant dans la portée de la requête.</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Le MBeanServerDelegate est accessible lors de la recherche de MBeans.
+</ul></td></tr>
+</tbody></table>
+<p>La portée de la requête doit avoir la forme telle que celle vu dans la <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">quatrième partie</a> de cette série de post sur JMX.</p>
+<p>Le critère de filtre doit utiliser les classes et interfaces suivantes :</p>
+<ul>
+<li>L&rsquo;interface <code>QueryExp</code> qui permet d&rsquo;identifier les objets qui forme les expressions de la requête. Ces objets peuvent être utilisés dans une requête ou peuvent composés une requête plus complexe.</li>
+<li>Les interfaces <code>ValueExp</code> et <code>StringValueExp</code> qui permettent d&rsquo;identifier les objets qui représentent les valeurs numériques ou de type chaîne de caractères.</li>
+<li>L&rsquo;interface <code>AttributeValueExp</code> qui permet d&rsquo;identifier les objets qui représentent les attributs.</li>
+<li>La classe <code>Query</code> qui permet la construction d&rsquo;une requête. Elle propose des méthodes statiques qui retournent des objets de type <code>QueryExp</code> et <code>ValueExp</code>.</li>
+<li>La classe <code>ObjectName</code> qui implémente l&rsquo;interface QueryExp et qui peut donc être utilisé dans un critère de filtre.</li>
+</ul>
+<p>Dans la pratique, il n&rsquo;est pas nécessaire d&rsquo;avoir à utiliser directement les interfaces <code>ValueExp</code> et <code>QueryExp</code>. En effet, la classe Query fonctionne comme une fabrique d&rsquo;objets de type <code>QueryExp</code>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlUQAX1lSI/AAAAAAAAAPk/ILENCvAgkPQ/s1600/jmx53.png" alt="medium"></p>
+<p>Ainsi, on pourra, par exemple, avoir le code suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">geq</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;age&#34;</span><span style="color:#f92672">),</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span>20<span style="color:#f92672">)),</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">),</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;G*ling&#34;</span><span style="color:#f92672">)));</span>
+ 
+QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">classattr</span><span style="color:#f92672">(),</span>
+   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;managed.device.Printer&#34;</span><span style="color:#f92672">));</span>
+</code></pre></div><p>L&rsquo;interface <code>MBeanServerConnection</code> étendue par l&rsquo;interface <code>MBeanServer</code> permet de fournir une interface commune d&rsquo;accès au MBean Server qu&rsquo;il soit distant ou local.</p>
+<p>Enfin, il est possible de fournir sa propre implémentation du MBean Server en renseignant la propriété système javax.management.builder.initial : lorsque les méthodes <code>createMBeanServer()</code> ou <code>newMBeanServer()</code> sur les <code>MBeanServerFactory</code> sont appelées, alors, si la variable système est renseignée, c&rsquo;est le MBean Server qui est renseigné qui est utilisé, sinon, c&rsquo;est le MBean Server par défaut.</p>
+<p>Ce MBean Server doit être une classe publique qui étend la classe ``MBeanServerBuilder<code>. Il est à noter que cette classe doit également pouvoir créer une instance de </code>MBeanServerDelegate` (qui peut être standard ou pas).</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOlUoxk6UlI/AAAAAAAAAPo/oPr-jYiJNIw/s1600/jmx54.png" alt="center"></p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-11-29-jmx-pour-les-nuls-le-mbean-server%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2010-11-21-jmx-pour-les-nuls-les-classes-de-base/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2010-11-21-jmx-pour-les-nuls-les-classes-de-base/">JMX pour les nuls... - Les classes de base - Partie 4</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2010-12-06-jmx-pour-les-nuls-chargement-dynamique/">JMX pour les nuls... - Chargement dynamique de MBeans - Partie 6</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2010-12-06-jmx-pour-les-nuls-chargement-dynamique/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

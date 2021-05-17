@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi... &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Mar 2014, 08:03</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/netty">netty</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/metrics">metrics</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/rest">rest</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/performance">performance</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jolokia">jolokia</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/maven">maven</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/-HYBTn5anFdE/Uxdv3cRgu_I/AAAAAAAABP4/gsCZjUIxDyQ/s1600/resteasy_jolokia_metrics.png" alt="left-small"></p>
+<p>L&rsquo;informatique évolue constamment et c&rsquo;est également le cas des architectures qui ont tendance à s&rsquo;orienter de plus en plus vers l&rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&rsquo;un point de vue temps de réponse mais également d&rsquo;un point de vue charge suportée). C&rsquo;est dans ce contexte que des solutions comme <a href="http://restlet.org/">Restlet</a> ou <a href="http://restx.io/">RestX</a> (pour n&rsquo;en citer que quelques-unes) ont vu le jour.</p>
+<p>En effet, en plus d&rsquo;offrir la possibilité de servir des services REST, elles s&rsquo;appuient sur des framework dont la particularité est d&rsquo;offrir des traitements non bloquant sur les entrées/sorties (NIO).</p>
+<p>C&rsquo;est dans ce contexte que cet article parlera principalement de Resteasy-Netty 3 (la version 3 a été utilisé en raison de contraintes techniques (connexion à <a href="http://cassandra.apache.org/">Apache Cassandra</a> dont le <a href="https://github.com/datastax/java-driver">driver</a> utilise Netty 3)).</p>
+<p>Cependant, ce ne sera pas le seul protagoniste car, comme on verra par la suite, il est très simple à utiliser&hellip;</p>
+<p>Le vrai sujet de cet article est, en fait, comment il a été possible d&rsquo;ajouter d&rsquo;autres framework comme Swagger ou Jolokia à Resteasy-Netty 3.</p>
+<p>Cet article sera découpé en deux parties :</p>
+<ul>
+<li>Besoin et conception</li>
+<li>Mise en oeuvre</li>
+</ul>
+<p>Le code se trouve sur Github <a href="https://github.com/jetoile/resteasy-netty-sample">ici</a>.</p>
+<!-- more -->
+<p>#Besoin et conception</p>
+<p>Le besoin était d&rsquo;offrir un ensemble de services REST qui devait être suffisamment véloce pour répondre au besoin de performance en terme de charge mais également en terme de temps de réponse.</p>
+<p>Venant du monde Java et plus précisément de Java EE, il aurait été pertinent de partir sur une solution classique à base de <a href="https://jcp.org/en/jsr/detail?id=311">JAX-RS</a> (<a href="https://jersey.java.net/">Jersey</a> ou <a href="http://www.jboss.org/resteasy">RestEasy</a>) hébergée par un <a href="http://tomcat.apache.org/">Tomcat</a> ou un <a href="http://www.eclipse.org/jetty/">Jetty</a>.</p>
+<p>Cependant, une crainte était que le mode de fonctionnement des Servlets soit limitant concernant les entrées/sorties. Bien sûr, il était possible d&rsquo;utiliser le connecteur NIO de Tomcat mais ce n&rsquo;est pas cette solution qui a été retenue&hellip; ;-)</p>
+<p>Suite à la lecture de l&rsquo;excellent <a href="http://blog.xebia.fr/2011/11/09/java-nio-et-framework-web-haute-performance/">article</a> sur le retour d&rsquo;expérience de <a href="https://twitter.com/slemesle">Séven</a> et de <a href="https://twitter.com/julienBuret">Julien</a> lors du challenge USI 2011, le choix a été fait de partir sur une solution basée sur <a href="http://netty.io/">Netty</a>.</p>
+<p>Par contre, développer des services directement sur Netty était embêtant et risquait surtout de rebuter l&rsquo;équipe de développement. De la même manière, introduire un nouveau framework disposant de ses propres API n&rsquo;était pas préconisé (NDLR : les standards c&rsquo;est bien ! ;-) ).</p>
+<p>C&rsquo;est pour cette raison qu&rsquo;il était préférable de trouver une solution alliant à la fois les avantages de NIO (et si possible s&rsquo;appuyant sur Netty) et de JAX-RS.</p>
+<p>Ainsi, il a été décidé de partir sur Resteasy-Netty 3 qui semblait offrir le meilleur des deux mondes (je dis &ldquo;semblais&rdquo; car aucun comparatif en charge des différents protagonistes n&rsquo;a été réalisé et les résultats obtenus ont été suffisamment satisfaisant pour n&rsquo;avoir pas à pousser plus loin l&rsquo;expérimentation).</p>
+<p>L&rsquo;un des autres avantages de n&rsquo;avoir pas utiliser un conteneur de Servlet classique était qu&rsquo;il permettait de rendre le livrable auto-porteur et légé (il aurait bien sûr été possible d&rsquo;embarquer un Tomcat ou Jetty embedded ou de &ldquo;s&rsquo;embeddé&rdquo; dans un Tomcat via le goal exec-war de Tomcat7-maven-plugin).</p>
+<p>Bien sûr, l&rsquo;application devait être administrable et supervisable.</p>
+<p>Enfin, cerise sur le gateau, intégrer une solution comme <a href="https://helloreverb.com/developers/swagger">Swagger</a> pour documenter les API REST était un <em>&ldquo;nice to have&rdquo;</em>.</p>
+<p>Pour notre cas d&rsquo;exemple, le seul service exposé sera le classique service qui répète ce qu&rsquo;on lui demande&hellip;</p>
+<p>Il répondra donc à une requête de type GET du type :
+<code>http://localhost:8081/sample/say/&lt;message&gt;</code></p>
+<p>Du coté de la réponse, elle aura la forme suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">message</span><span style="color:#f92672">&gt;</span>,
+    <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2014-03-05T10:55:39.835+01:00&#34;</span>
+}
+</code></pre></div><p>La date de la réponse sera ajoutée juste pour le &ldquo;fun&rdquo; ;-)</p>
+<p>#Mise en oeuvre</p>
+<p>A titre informatif, les versions des différentes librairies qui sont utilisés dans les exemples de code ci-dessous sont les suivantes (au format gradle pour gagner de la place) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
+compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-jvm&#39;, version:&#39;1.1.2&#39;
+compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.0&#39;
+compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
+compile group: &#39;javax.servlet&#39;, name: &#39;servlet-api&#39;, version:&#39;2.5&#39;
+compile group: &#39;com.codahale.metrics&#39;, name: &#39;metrics-core&#39;, version:&#39;3.0.1&#39;
+compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-netty&#39;, version:&#39;3.0.6.Final&#39;
+compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson-provider&#39;, version:&#39;3.0.6.Final&#39;
+compile group: &#39;org.codehaus.jackson&#39;, name: &#39;jackson-core-asl&#39;, version:&#39;1.9.13&#39;
+compile group: &#39;org.codehaus.jackson&#39;, name: &#39;jackson-mapper-asl&#39;, version:&#39;1.9.13&#39;
+compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.9&#39;
+compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
+compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
+compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&#39;
+compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) { exclude(module: &#39;jsr305&#39;) }
+</code></pre></div><p>##Implémentation du service REST</p>
+<p>Le mise en place du service REST basé sur JAX-RS est on ne peut plus trivial&hellip; et la classe ci-dessous fait humblement l&rsquo;affaire :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/say/{msg}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">getPortDataSet</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;msg&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        DtoResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DtoResponse<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+            response<span style="color:#f92672">.</span><span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;internal error: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">status</span><span style="color:#f92672">(</span>Response<span style="color:#f92672">.</span><span style="color:#a6e22e">Status</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INTERNAL_SERVER_ERROR</span><span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>response<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Du coté de l&rsquo;objet retourné par la réponse au format JSON, Jackson intégré à Resteasy a été utilisé pour la partie marshalling/unmarshalling.</p>
+<p>Coté gestion des dates, ce sera JodaTime (l&rsquo;application tourne avec Java 7).</p>
+<p>Du coup, un objet DTO a été écrit et annoté à l&rsquo;aide d&rsquo;annotations JAXB :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@XmlRootElement</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DtoResponse</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">private</span> String message<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> DateTime time<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">DtoResponse</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> message<span style="color:#f92672">;}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> DateTime <span style="color:#a6e22e">getTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>##Mise en oeuvre de Resteasy-Netty 3</p>
+<p>Mettre en place Resteasy-Netty 3 est très simple, d&rsquo;après la <a href="https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/pdf/resteasy-reference-guide-en-US.pdf">documnentation</a>, il suffit de faire :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">(</span>ResteasyDeployment deployment<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NettyJaxrsServer<span style="color:#f92672">();</span>
+  netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
+  netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setPort</span><span style="color:#f92672">(</span>TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
+  netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setRootResourcePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+  netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityDomain</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+  netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+ <span style="color:#f92672">}</span>
+</code></pre></div><p>et c&rsquo;est donc ce que l&rsquo;on va faire&hellip; ;-)</p>
+<p><a href="http://commons.apache.org/proper/commons-configuration/">Apache commons-configuration</a> a été utilisé afin de déporter la configuration dans un fichier <em>properties</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Client<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CONF_PROPERTIES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;conf.properties&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Configuration config<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ConfigurationException<span style="color:#f92672">,</span> BootstrapException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PropertiesConfiguration<span style="color:#f92672">(</span>CONF_PROPERTIES<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ConfigurationException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BootstrapException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bad config&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        initServer<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initServer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        SimpleService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleService<span style="color:#f92672">();</span>
+        ResteasyDeployment deployment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResteasyDeployment<span style="color:#f92672">();</span>
+
+        <span style="color:#66d9ef">int</span> nettyPort <span style="color:#f92672">=</span> 8081<span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>config <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceEnabled</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getBoolean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceEnabled&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">));</span>
+            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxJobResults</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxJobResults&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span>
+            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxWait</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getLong</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxWait&#34;</span><span style="color:#f92672">,</span> 300000<span style="color:#f92672">));</span>
+            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceThreadPoolSize</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceThreadPoolSize&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span>
+
+            nettyPort <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.port&#34;</span><span style="color:#f92672">,</span> TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;is going to use default netty config&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResources</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.&lt;</span>Object<span style="color:#f92672">&gt;</span>asList<span style="color:#f92672">(</span>service<span style="color:#f92672">));</span>
+
+        NettyJaxrsServer netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NettyJaxrsServer<span style="color:#f92672">();</span>
+        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
+        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setPort</span><span style="color:#f92672">(</span>nettyPort<span style="color:#f92672">);</span>
+        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setRootResourcePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityDomain</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>    
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On y constate que pour ajouter un service, il suffit juste de déclarer la classe implémentant JAX-RS via la méthode <code>setResources()</code> sur l&rsquo;instance de <code>ResteasyDeployment</code> fournit au serveur <strong>NettyJaxrs</strong> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SimpleService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleService<span style="color:#f92672">();</span>
+ResteasyDeployment deployment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResteasyDeployment<span style="color:#f92672">();</span>
+deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResources</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.&lt;</span>Object<span style="color:#f92672">&gt;</span>asList<span style="color:#f92672">(</span>service<span style="color:#f92672">));</span>
+NettyJaxrsServer netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NettyJaxrsServer<span style="color:#f92672">();</span>
+netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
+<span style="color:#f92672">...</span>
+netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</code></pre></div><p>Et voilà! On dispose désormais d&rsquo;un programme exécutable qui démarre un serveur REST basé sur Netty.</p>
+<p>Plutôt simple non? ;-)</p>
+<p>##Configuration de Jackson</p>
+<p>Avec le code précédent, si la commande suivante est exécutée :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> curl -XGET  http://localhost:8081/sample/say/hello 
+</code></pre></div><p>Le résultat suivant est obtenu :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;hello&#34;</span>,
+    <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1402560438128</span>
+}
+</code></pre></div><p>Hum&hellip; la date n&rsquo;est pas formatté comme il faut&hellip; pas glop&hellip; :'(</p>
+<p>En fait, il est possible de modifier la configuration de <a href="http://jackson.codehaus.org/">Jackson</a> et on trouve, dans la littérature, un moyen très simple de le faire en configurant l'<em>ObjectMapper</em> comme suit :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>SerializationConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">Feature</span><span style="color:#f92672">.</span><span style="color:#a6e22e">WRITE_DATES_AS_TIMESTAMPS</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+</code></pre></div><p>Bien sûr, le but n&rsquo;étant pas de faire cette transformation manuellement à chaque fois, on préfère laisser Resteasy le gérer lui-même.</p>
+<p>Ainsi, il existe <a href="http://stackoverflow.com/questions/19229341/changing-default-json-time-format-with-resteasy-3-x">deux autres</a> manières de faire :</p>
+<ul>
+<li>Le faire par annotation</li>
+<li>Le faire par configuration dans le <code>web.xml</code></li>
+</ul>
+<p>Cependant, dans notre cas, nous ne disposons pas d&rsquo;un conteneur de Servlet classique et il n&rsquo;est donc pas possible de s&rsquo;appuyer sur une configuration par web.xml. Pour le faire par annotation, j&rsquo;avoue ne pas avoir testé mais je suis sceptique&hellip;</p>
+<p>Du coup, il reste une possibilité qui est de déclarer un <code>JacksonConfig</code> et de demander à Resteasy-Netty de nous l&rsquo;enregistrer en tant que <em>provider</em> (en gros de demander à Resteasy-Netty de faire manuellement ce qui est fait via le <code>web.xml</code>) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JacksonConfig</span> <span style="color:#66d9ef">implements</span> ContextResolver<span style="color:#f92672">&lt;</span>ObjectMapper<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> ObjectMapper objectMapper<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JacksonConfig</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        objectMapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectMapper<span style="color:#f92672">();</span>
+        objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">configure</span><span style="color:#f92672">(</span>SerializationConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">Feature</span><span style="color:#f92672">.</span><span style="color:#a6e22e">WRITE_DATES_AS_TIMESTAMPS</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+        objectMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">setSerializationInclusion</span><span style="color:#f92672">(</span>JsonSerialize<span style="color:#f92672">.</span><span style="color:#a6e22e">Inclusion</span><span style="color:#f92672">.</span><span style="color:#a6e22e">NON_NULL</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> ObjectMapper <span style="color:#a6e22e">getContext</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;?&gt;</span> objectType<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> objectMapper<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Pour l&rsquo;enregistrement, c&rsquo;est très simple puisqu&rsquo;il suffit d&rsquo;ajouter la ligne suivante :
+<code>deployment.setProviderClasses(Lists.newArrayList(&quot;fr.jetoile.sample.JacksonConfig&quot;));</code></p>
+<p>Et voilà! C&rsquo;est tout!</p>
+<p>Encore une fois, simple et efficace et le résultat obtenu est bien celui escompté :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;hello&#34;</span>,
+    <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2014-06-12T10:06:54.553+02:00&#34;</span>
+}
+</code></pre></div><p>A noter que l'<em>ancienne</em> version de Jackson est utilisée ici car c&rsquo;est celle qui est utilisé par défaut par Resteasy. Il aurait été possible de l&rsquo;utiliser dans sa version plus récente mais j&rsquo;avoue ne pas avoir fait l&rsquo;exercice&hellip; (cf. <a href="https://docs.jboss.org/resteasy/docs/3.0.6.Final/userguide/html/json.html#d4e1046">ici</a>)</p>
+<p>##Intégration de Metrics</p>
+<p>Afin de permettre une mesure des temps d&rsquo;invocation de différentes opérations, la librairie <a href="http://metrics.codahale.com/">Metrics</a> a été utilisée.</p>
+<p>Pour plus d&rsquo;information dessus, le sujet est très bien traité sur le blog de <a href="https://twitter.com/clescot">Charles</a> :</p>
+<ul>
+<li><a href="http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-les-bases/">Metrics : Les Bases</a></li>
+<li><a href="http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-integration-avec-jee/">Metrics : Intégration Avec JEE</a></li>
+<li><a href="http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-integration-avec-spring-et-guice/">Metrics : Intégration Avec Spring Et Guice</a></li>
+<li><a href="http://clescot.com/blog/2013/10/11/metrics-pour-mesurer-efficacement-les-performances-integration-avec-JDBC-logback-et-jersey/">Metrics : Intégration Avec JDBC, Logback Et Jersey</a></li>
+</ul>
+<p>Dans notre cas, bien sûr, pas de <em>Spring</em>, de <em>Guice</em> ou de <em>Servlet Listener</em>. Une simple variable de classe dans la classe portant la méthode <code>main()</code> suffit :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> MetricRegistry metricRegistry<span style="color:#f92672">;</span>
+    
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ConfigurationException<span style="color:#f92672">,</span> BootstrapException <span style="color:#f92672">{</span>
+   <span style="color:#f92672">...</span>
+
+    metricRegistry <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MetricRegistry<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">final</span> JmxReporter reporter <span style="color:#f92672">=</span> JmxReporter<span style="color:#f92672">.</span><span style="color:#a6e22e">forRegistry</span><span style="color:#f92672">(</span>metricRegistry<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+    reporter<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Concernant l&rsquo;utilisation à proprement parler, cela se fait de cette manière (dans notre cas, utilisation du <strong>Timer</strong> qui représente un histogramme des durées et une mesure de la fréquence d’apparition) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@GET</span>
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/say/{msg}&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">getPortDataSet</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;msg&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">final</span> Timer timer <span style="color:#f92672">=</span> Client<span style="color:#f92672">.</span><span style="color:#a6e22e">metricRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">timer</span><span style="color:#f92672">(</span>name<span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;say-service&#34;</span><span style="color:#f92672">));</span>
+    <span style="color:#66d9ef">final</span> Timer<span style="color:#f92672">.</span><span style="color:#a6e22e">Context</span> context <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span><span style="color:#a6e22e">time</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+  <span style="color:#f92672">...</span>
+        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>response<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>context <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Une fois l&rsquo;application démarrée et après 1 ou 2 appels, l&rsquo;ObjectName apparait dans la console JMX et il est alors possible de voir les différents résultats.</p>
+<p><img src="http://1.bp.blogspot.com/-RMh6acQ8Qkc/UxdsRqymVkI/AAAAAAAABPk/r3rvWdgPNtg/s1600/metrics-hawtio.png" alt="medium"></p>
+<p>On constate encore une fois que la mise en place de Metrics n&rsquo;a demandé aucun effort particulier.</p>
+<p>##Intégration de Jolokia</p>
+<p>Une autre étape de notre périple consiste à activer Jolokia que j&rsquo;ai déjà présenté dans un <a href="https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html">article précédent</a>.</p>
+<p>Dans notre cas d&rsquo;usage, cela sera fait de manière programmatique.</p>
+<p>Pour ce faire, c&rsquo;est encore une fois très simple et il suffit d&rsquo;ajouter le code suivant dans notre classe principale :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initJolokiaServer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        JolokiaServerConfig config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JolokiaServerConfig<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;());</span>
+
+        JolokiaServer jolokiaServer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JolokiaServer<span style="color:#f92672">(</span>config<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+        jolokiaServer<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to start jolokia server&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Concernant sa configuration, pour éviter d&rsquo;avoir à aller chercher des properties et à repeupler une Map, le fichier par défaut (<code>default-jolokia-agent.properties</code>) a été copié (en renseignant certaines informations comme le user/password) dans le répertoire <code>src/main/resources</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"># Configuration properties for the JVM jolokia-agent
+
+# Host address to bind to.
+# Default: localhost, determinated dynamically via InetAddress.getLocalHost()
+host=0.0.0.0
+
+# Port to listen to
+port=7778
+
+# Context path
+agentContext=/jolokia
+
+# Backlog of request to keep when queue
+backlog=10
+
+# Possible values:
+#  * &#34;fixed&#34;  : Thread pool with at max nrThreads
+#  * &#34;single&#34; : A single thread serves all requests (default)
+#  * &#34;cached&#34; : A thread pool which reuses threads and creates threads on demand (unbounded)
+# executor=fixed
+# nrThreads=5
+
+# User and password for basic authentication
+user=jolokia
+password=jolokia
+
+# How many entroes to keep in the history
+historyMaxEntries=10
+
+# Switch on debugging
+debug=false
+
+# How many debug entries to keep on the server side which can be queried by JMX
+debugMaxEntries=100
+
+# Maximum traversal depth for serialization of complex objects.
+maxDepth=15
+
+# Maximum size of collections returned during serialization.
+maxCollectionSize=1000
+
+# Maximum number of objects returned by serialization
+maxObjects=0
+</code></pre></div><p>Un petit coup de (le user jolokia et le mot de passe jolokia ont été positionné dans le fichier <em>properties</em>) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET -u jolokia:jolokia http://localhost:7778/jolokia/version
+</code></pre></div><p>nous permet bien d&rsquo;obtenir la réponse attendue :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1394036344</span>,
+    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
+    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;version&#34;</span>
+    },
+    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;protocol&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;7.0&#34;</span>,
+        <span style="color:#e6db74">&#34;agent&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1.1.2&#34;</span>,
+        <span style="color:#e6db74">&#34;info&#34;</span><span style="color:#f92672">:</span> {}
+    }
+}
+</code></pre></div><p>A noter que les user/password ont été positionné car cela permet une connexion via <a href="http://hawt.io/">Hawt.io</a>.</p>
+<p>##Intégration de Swagger</p>
+<p><a href="https://helloreverb.com/developers/swagger">Swagger</a> offre une manière très simple de documenter une API REST. En effet, en s&rsquo;appuyant sur des annotations à mettre dans la classe de service, elle permet d&rsquo;offrir une interface d&rsquo;écrivant les API.</p>
+<p><img src="http://4.bp.blogspot.com/-92lPQm1F_DM/UxdsgUK3bDI/AAAAAAAABPs/yWh6QRHKkFc/s1600/swagger.png" alt="medium"></p>
+<p>Pour le mettre en place, il suffit donc de rajouter les annotations adéquates à notre classe <code>SimpleService</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Api</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">,</span> description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;the sample api&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/say/{msg}&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@ApiOperation</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;repeat the word&#34;</span><span style="color:#f92672">,</span>
+            notes <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;response the word&#34;</span><span style="color:#f92672">,</span>
+            response <span style="color:#f92672">=</span> DtoResponse<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@ApiResponses</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#a6e22e">@ApiResponse</span><span style="color:#f92672">(</span>code <span style="color:#f92672">=</span> 500<span style="color:#f92672">,</span> message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Internal server error&#34;</span><span style="color:#f92672">)})</span>
+    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">getPortDataSet</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@PathParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;msg&#34;</span><span style="color:#f92672">)</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">final</span> Timer timer <span style="color:#f92672">=</span> Client<span style="color:#f92672">.</span><span style="color:#a6e22e">metricRegistry</span><span style="color:#f92672">.</span><span style="color:#a6e22e">timer</span><span style="color:#f92672">(</span>name<span style="color:#f92672">(</span>SimpleService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;say-service&#34;</span><span style="color:#f92672">));</span>
+        <span style="color:#66d9ef">final</span> Timer<span style="color:#f92672">.</span><span style="color:#a6e22e">Context</span> context <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span><span style="color:#a6e22e">time</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            DtoResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DtoResponse<span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">());</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;internal error: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">status</span><span style="color:#f92672">(</span>Response<span style="color:#f92672">.</span><span style="color:#a6e22e">Status</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INTERNAL_SERVER_ERROR</span><span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>response<span style="color:#f92672">).</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>context <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Reste maintenant à ajouter Swagger à notre <code>main()</code> que l&rsquo;on doit faire programmatiquement faute d&rsquo;être dans un conteneur de Servlet standard&hellip;</p>
+<p>Pour ce faire, il est nécessaire d&rsquo;instancier un objet <code>BeanConfig</code> qui contient la configuration de Swagger mais surtout l&rsquo;adresse et le port du serveur sur lequel tourne le service ainsi que le package où se trouve ce dernier. Ces informations sont renseignées, dans notre cas, dans notre fichier de configuration et positionnées programmatiquement dans notre <code>BeanConfig</code>.</p>
+<p>Enfin, il faut trouver le moyen de faire le pendant de ce qui est déclaré sur <a href="https://github.com/wordnik/swagger-core/wiki/Servlet-Quickstart">cette page</a>&hellip; bien sûr, le tout sans Servlet&hellip; ouch&hellip; :'( En fouillant un peu, on tombe rapidement sur le <a href="https://github.com/wordnik/swagger-core/wiki/Java-CXF-Quickstart">quickstart swagger/cxf</a> où les <em>providers</em> sont positionnés : il suffit de faire pareil avec Resteasy-Netty ;-)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initSwagger</span><span style="color:#f92672">(</span>ResteasyDeployment deployment<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    BeanConfig swaggerConfig <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BeanConfig<span style="color:#f92672">();</span>
+    swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setVersion</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.version&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;1.0.0&#34;</span><span style="color:#f92672">));</span>
+    swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setBasePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://&#34;</span> <span style="color:#f92672">+</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.host&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.port&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;8081&#34;</span><span style="color:#f92672">));</span>
+    swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;swagger.title&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;jetoile sample app&#34;</span><span style="color:#f92672">));</span>
+    swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setScan</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+    swaggerConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fr.jetoile.sample.service&#34;</span><span style="color:#f92672">);</span>
+
+    deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setProviderClasses</span><span style="color:#f92672">(</span>Lists<span style="color:#f92672">.</span><span style="color:#a6e22e">newArrayList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;fr.jetoile.sample.JacksonConfig&#34;</span><span style="color:#f92672">,</span>
+            <span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ResourceListingProvider&#34;</span><span style="color:#f92672">,</span>
+            <span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider&#34;</span><span style="color:#f92672">));</span>
+    deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResourceClasses</span><span style="color:#f92672">(</span>Lists<span style="color:#f92672">.</span><span style="color:#a6e22e">newArrayList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON&#34;</span><span style="color:#f92672">));</span>
+    deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityEnabled</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Et voilà, ça fonctionne!</p>
+<p>En exécutant la commande :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET http://localhost:8081/api-docs/sample
+</code></pre></div><p>On obtient bien le JSON escompté :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;apiVersion&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1.0.0&#34;</span>,
+    <span style="color:#e6db74">&#34;swaggerVersion&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1.2&#34;</span>,
+    <span style="color:#e6db74">&#34;basePath&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;http://localhost:8081&#34;</span>,
+    <span style="color:#e6db74">&#34;resourcePath&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/sample&#34;</span>,
+    <span style="color:#e6db74">&#34;apis&#34;</span><span style="color:#f92672">:</span> [
+        {
+            <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;/sample/say/{msg}&#34;</span>,
+            <span style="color:#e6db74">&#34;operations&#34;</span><span style="color:#f92672">:</span> [
+                {
+                    <span style="color:#e6db74">&#34;method&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;GET&#34;</span>,
+                    <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;repeat the word&#34;</span>,
+                    <span style="color:#e6db74">&#34;notes&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;response the word&#34;</span>,
+                    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;DtoResponse&#34;</span>,
+                    <span style="color:#e6db74">&#34;nickname&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;getPortDataSet&#34;</span>,
+                    <span style="color:#e6db74">&#34;produces&#34;</span><span style="color:#f92672">:</span> [
+                        <span style="color:#e6db74">&#34;application/json&#34;</span>
+                    ],
+                    <span style="color:#e6db74">&#34;parameters&#34;</span><span style="color:#f92672">:</span> [
+                        {
+                            <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;msg&#34;</span>,
+                            <span style="color:#e6db74">&#34;required&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+                            <span style="color:#e6db74">&#34;allowMultiple&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+                            <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+                            <span style="color:#e6db74">&#34;paramType&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;path&#34;</span>
+                        }
+                    ],
+                    <span style="color:#e6db74">&#34;responseMessages&#34;</span><span style="color:#f92672">:</span> [
+                        {
+                            <span style="color:#e6db74">&#34;code&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">500</span>,
+                            <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Internal server error&#34;</span>
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    <span style="color:#e6db74">&#34;models&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;DtoResponse&#34;</span><span style="color:#f92672">:</span> {
+            <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;DtoResponse&#34;</span>,
+            <span style="color:#e6db74">&#34;properties&#34;</span><span style="color:#f92672">:</span> {
+                <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> {
+                    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>
+                },
+                <span style="color:#e6db74">&#34;time&#34;</span><span style="color:#f92672">:</span> {
+                    <span style="color:#e6db74">&#34;$ref&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;DateTime&#34;</span>
+                }
+            }
+        }
+    }
+}
+</code></pre></div><p>Mais (car il y a un mais&hellip;) en utilisant <a href="https://github.com/wordnik/swagger-ui">Swagger-UI</a> (qu&rsquo;il faut déployer sur un apache/nginx/tomcat ou autre), il peut arriver que cela ne fonctionne pas&hellip; )(ie. que Swagger-IU n&rsquo;arrive pas à fetcher les ressources de notre service REST). Cela arrivera d&rsquo;ailleurs sûrement si notre application est déployée sur une machine différente de celle où est déployée Swagger-UI (pour rappel, on ne dispose pas, ici, d&rsquo;un conteneur de Servlet et exposer des pages statiques n&rsquo;est pas l&rsquo;objectif de notre petite application). Le problème vient de notre cher ami, le <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>&hellip; Du coup, il devient nécessaire d&rsquo;ajouter des <em>headers</em> dans le requête de réponse.</p>
+<p>Et c&rsquo;est là que la tâche se gâte&hellip; En effet, pas de possibilité de positionner un filtre comme avec les Servlets. Pas non plus de possibilité de modifier la configuration de Resteasy-Netty 3 pour lui demander d&rsquo;ajouter des headers (si cela existe, je n&rsquo;ai pas trouvé)&hellip;</p>
+<p>Du coup, la seule solution a été de patcher sauvagement notre ami Resteasy-Netty 3 en surchargeant une de ses classes pour y ajouter les bons headers&hellip; Pas très classe mais bon&hellip;</p>
+<p>Pour ce faire, il suffit de créer dans notre application le package <code>org.jboss.resteasy.plugins.server.netty</code> et d&rsquo;y copier la classe <code>RequestHandler</code> en y ajoutant les headers utiles :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.jboss.resteasy.plugins.server.netty<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.jboss.netty.channel.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.netty.channel.ChannelHandler.Sharable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.netty.handler.codec.frame.TooLongFrameException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.netty.handler.codec.http.DefaultHttpResponse<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.netty.handler.codec.http.HttpResponse<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.netty.handler.codec.http.HttpResponseStatus<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.resteasy.logging.Logger<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.resteasy.spi.Failure<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import static</span> org.jboss.netty.handler.codec.http.HttpResponseStatus.CONTINUE<span style="color:#f92672">;</span>
+<span style="color:#f92672">import static</span> org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * TODO : hack to add CORS into header
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * {@link org.jboss.netty.channel.SimpleChannelUpstreamHandler} which handles the requests and dispatch them.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * This class is {@link org.jboss.netty.channel.ChannelHandler.Sharable}.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @author The Netty Project
+</span><span style="color:#75715e"> * @author Andy Taylor (andy.taylor@jboss.org)
+</span><span style="color:#75715e"> * @author Trustin Lee
+</span><span style="color:#75715e"> * @author Norman Maurer
+</span><span style="color:#75715e"> * @version $Rev: 2368 $, $Date: 2010-10-18 17:19:03 +0900 (Mon, 18 Oct 2010) $
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Sharable</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestHandler</span> <span style="color:#66d9ef">extends</span> SimpleChannelUpstreamHandler <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">final</span> RequestDispatcher dispatcher<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> Logger logger <span style="color:#f92672">=</span> Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">jboss</span><span style="color:#f92672">.</span><span style="color:#a6e22e">resteasy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">plugins</span><span style="color:#f92672">.</span><span style="color:#a6e22e">server</span><span style="color:#f92672">.</span><span style="color:#a6e22e">netty</span><span style="color:#f92672">.</span><span style="color:#a6e22e">RequestHandler</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RequestHandler</span><span style="color:#f92672">(</span>RequestDispatcher dispatcher<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">dispatcher</span> <span style="color:#f92672">=</span> dispatcher<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">messageReceived</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> MessageEvent e<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">instanceof</span> NettyHttpRequest<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            NettyHttpRequest request <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>NettyHttpRequest<span style="color:#f92672">)</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getMessage</span><span style="color:#f92672">();</span>
+
+            <span style="color:#75715e">//HACK ICI!!!
+</span><span style="color:#75715e"></span>            request<span style="color:#f92672">.</span><span style="color:#a6e22e">getResponse</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getOutputHeaders</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Access-Control-Allow-Origin&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">);</span>
+            request<span style="color:#f92672">.</span><span style="color:#a6e22e">getResponse</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getOutputHeaders</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Access-Control-Allow-Methods&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;GET,POST,PUT,DELETE,OPTIONS&#34;</span><span style="color:#f92672">);</span>
+            request<span style="color:#f92672">.</span><span style="color:#a6e22e">getResponse</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getOutputHeaders</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Access-Control-Allow-Headers&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;X-Requested-With, Content-Type, Content-Length&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#75715e">//FIN DU HACK
+</span><span style="color:#75715e"></span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">is100ContinueExpected</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span> send100Continue<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+
+            NettyHttpResponse response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span><span style="color:#a6e22e">getResponse</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                dispatcher<span style="color:#f92672">.</span><span style="color:#a6e22e">service</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> response<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Failure e1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">reset</span><span style="color:#f92672">();</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setStatus</span><span style="color:#f92672">(</span>e1<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorCode</span><span style="color:#f92672">());</span>
+                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">reset</span><span style="color:#f92672">();</span>
+                response<span style="color:#f92672">.</span><span style="color:#a6e22e">setStatus</span><span style="color:#f92672">(</span>500<span style="color:#f92672">);</span>
+                logger<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Unexpected&#34;</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+
+            <span style="color:#75715e">// Write the response.
+</span><span style="color:#75715e"></span>            ChannelFuture future <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
+
+            <span style="color:#75715e">// Close the non-keep-alive connection after the write operation is done.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">isKeepAlive</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span> future<span style="color:#f92672">.</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>ChannelFutureListener<span style="color:#f92672">.</span><span style="color:#a6e22e">CLOSE</span><span style="color:#f92672">);</span> <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send100Continue</span><span style="color:#f92672">(</span>MessageEvent e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        HttpResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultHttpResponse<span style="color:#f92672">(</span>HTTP_1_1<span style="color:#f92672">,</span> CONTINUE<span style="color:#f92672">);</span>
+        e<span style="color:#f92672">.</span><span style="color:#a6e22e">getChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">exceptionCaught</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> ExceptionEvent e<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// handle the case of to big requests.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getCause</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">instanceof</span> TooLongFrameException<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            DefaultHttpResponse response <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultHttpResponse<span style="color:#f92672">(</span>HTTP_1_1<span style="color:#f92672">,</span> HttpResponseStatus<span style="color:#f92672">.</span><span style="color:#a6e22e">REQUEST_ENTITY_TOO_LARGE</span><span style="color:#f92672">);</span>
+            e<span style="color:#f92672">.</span><span style="color:#a6e22e">getChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>response<span style="color:#f92672">).</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>ChannelFutureListener<span style="color:#f92672">.</span><span style="color:#a6e22e">CLOSE</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            e<span style="color:#f92672">.</span><span style="color:#a6e22e">getCause</span><span style="color:#f92672">().</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+            e<span style="color:#f92672">.</span><span style="color:#a6e22e">getChannel</span><span style="color:#f92672">().</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Voilà, après ce petit tour de passe passe, notre swagger-UI fonctionne comme un charme ;-)</p>
+<p>Au final, (presque?) simple non? ;-)</p>
+<p>##Branchement des plugins Maven Appassembler et Assembly</p>
+<p>Afin de générer une application utilisable <em>out of the box</em>, le plugin maven <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/">appassembler</a> a été utilisé. Pour ceux qui ne saurait pas ce que c&rsquo;est, je les invite à regarder soit la documentation officielle soit un article que j&rsquo;avais fait <a href="https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html">précédemment</a> (#autopromo ;-) ).</p>
+<p>Ainsi, ici, le goal <code>generate-daemons</code> du plugin a été utilisé :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>appassembler-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+
+        <span style="color:#f92672">&lt;execution&gt;</span>
+            <span style="color:#f92672">&lt;id&gt;</span>spring-integ-reader<span style="color:#f92672">&lt;/id&gt;</span>
+            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+            <span style="color:#f92672">&lt;goals&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>generate-daemons<span style="color:#f92672">&lt;/goal&gt;</span>
+            <span style="color:#f92672">&lt;/goals&gt;</span>
+            <span style="color:#f92672">&lt;configuration&gt;</span>
+                <span style="color:#f92672">&lt;target&gt;</span>${project.build.directory}/appassembler-jsw<span style="color:#f92672">&lt;/target&gt;</span>
+
+                <span style="color:#f92672">&lt;repositoryLayout&gt;</span>flat<span style="color:#f92672">&lt;/repositoryLayout&gt;</span>
+
+                <span style="color:#f92672">&lt;daemons&gt;</span>
+                    <span style="color:#f92672">&lt;daemon&gt;</span>
+                        <span style="color:#f92672">&lt;id&gt;</span>${project.name}<span style="color:#f92672">&lt;/id&gt;</span>
+                        <span style="color:#f92672">&lt;mainClass&gt;</span>fr.jetoile.sample.Client<span style="color:#f92672">&lt;/mainClass&gt;</span>
+                        <span style="color:#f92672">&lt;commandLineArguments&gt;</span>
+                        <span style="color:#f92672">&lt;/commandLineArguments&gt;</span>
+                        <span style="color:#f92672">&lt;platforms&gt;</span>
+                            <span style="color:#f92672">&lt;platform&gt;</span>jsw<span style="color:#f92672">&lt;/platform&gt;</span>
+                        <span style="color:#f92672">&lt;/platforms&gt;</span>
+                        <span style="color:#f92672">&lt;generatorConfigurations&gt;</span>
+                            <span style="color:#f92672">&lt;generatorConfiguration&gt;</span>
+                                <span style="color:#f92672">&lt;generator&gt;</span>jsw<span style="color:#f92672">&lt;/generator&gt;</span>
+                                <span style="color:#f92672">&lt;includes&gt;</span>
+                                    <span style="color:#f92672">&lt;include&gt;</span>linux-x86-64<span style="color:#f92672">&lt;/include&gt;</span>
+                                    <span style="color:#f92672">&lt;include&gt;</span>linux-x86-32<span style="color:#f92672">&lt;/include&gt;</span>
+                                <span style="color:#f92672">&lt;/includes&gt;</span>
+                                <span style="color:#f92672">&lt;configuration&gt;</span>
+
+                                    <span style="color:#f92672">&lt;property&gt;</span>
+                                        <span style="color:#f92672">&lt;name&gt;</span>configuration.directory.in.classpath.first<span style="color:#f92672">&lt;/name&gt;</span>
+                                        <span style="color:#f92672">&lt;value&gt;</span>conf<span style="color:#f92672">&lt;/value&gt;</span>
+                                    <span style="color:#f92672">&lt;/property&gt;</span>
+
+                                <span style="color:#f92672">&lt;/configuration&gt;</span>
+                            <span style="color:#f92672">&lt;/generatorConfiguration&gt;</span>
+                        <span style="color:#f92672">&lt;/generatorConfigurations&gt;</span>
+                        <span style="color:#f92672">&lt;jvmSettings&gt;</span>
+                            <span style="color:#f92672">&lt;initialMemorySize&gt;</span>256M<span style="color:#f92672">&lt;/initialMemorySize&gt;</span>
+                            <span style="color:#f92672">&lt;maxMemorySize&gt;</span>2048M<span style="color:#f92672">&lt;/maxMemorySize&gt;</span>
+                            <span style="color:#f92672">&lt;systemProperties&gt;</span>
+                                <span style="color:#f92672">&lt;systemProperty&gt;</span>com.sun.management.jmxremote<span style="color:#f92672">&lt;/systemProperty&gt;</span>
+                                <span style="color:#f92672">&lt;systemProperty&gt;</span>com.sun.management.jmxremote.port=8199<span style="color:#f92672">&lt;/systemProperty&gt;</span>
+                                <span style="color:#f92672">&lt;systemProperty&gt;</span>com.sun.management.jmxremote.authenticate=false
+                                <span style="color:#f92672">&lt;/systemProperty&gt;</span>
+                                <span style="color:#f92672">&lt;systemProperty&gt;</span>com.sun.management.jmxremote.ssl=false<span style="color:#f92672">&lt;/systemProperty&gt;</span>
+                                <span style="color:#f92672">&lt;systemProperty&gt;</span>com.sun.management.jmxremote.local.only=false
+                                <span style="color:#f92672">&lt;/systemProperty&gt;</span>
+                            <span style="color:#f92672">&lt;/systemProperties&gt;</span>
+                            <span style="color:#f92672">&lt;extraArguments&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>-Xdebug<span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>
+                                    -Xrunjdwp:transport=dt_socket,address=9999,server=y,suspend=n
+                                <span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>-server<span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>-XX:+UnlockCommercialFeatures<span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>-XX:+FlightRecorder<span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                                <span style="color:#f92672">&lt;extraArgument&gt;</span>-XX:+HeapDumpOnOutOfMemoryError<span style="color:#f92672">&lt;/extraArgument&gt;</span>
+                            <span style="color:#f92672">&lt;/extraArguments&gt;</span>
+                        <span style="color:#f92672">&lt;/jvmSettings&gt;</span>
+                    <span style="color:#f92672">&lt;/daemon&gt;</span>
+                <span style="color:#f92672">&lt;/daemons&gt;</span>
+            <span style="color:#f92672">&lt;/configuration&gt;</span>
+        <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+<span style="color:#f92672">&lt;/plugin&gt;</span>
+</code></pre></div><p>En outre, ce plugin ne créant pas le répertoire <code>logs</code> et ne positionnant pas les droits d&rsquo;exécution sur les fichiers du répertoire bin, le plugin Maven <a href="https://maven.apache.org/plugins/maven-assembly-plugin/">assembly</a> a été utilisé conjointement :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+        <span style="color:#f92672">&lt;descriptors&gt;</span>
+            <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+        <span style="color:#f92672">&lt;/descriptors&gt;</span>
+        <span style="color:#f92672">&lt;appendAssemblyId&gt;</span>false<span style="color:#f92672">&lt;/appendAssemblyId&gt;</span>
+
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+        <span style="color:#f92672">&lt;execution&gt;</span>
+            <span style="color:#f92672">&lt;id&gt;</span>assembly<span style="color:#f92672">&lt;/id&gt;</span>
+            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+            <span style="color:#f92672">&lt;goals&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+            <span style="color:#f92672">&lt;/goals&gt;</span>
+        <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+<span style="color:#f92672">&lt;/plugin&gt;</span>
+</code></pre></div><p>Avec le descripteur simple suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#f92672">&lt;assembly</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&#34;</span>
+          <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+          <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;id&gt;</span>reader<span style="color:#f92672">&lt;/id&gt;</span>
+    <span style="color:#f92672">&lt;includeBaseDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeBaseDirectory&gt;</span>
+    <span style="color:#f92672">&lt;formats&gt;&lt;format&gt;</span>tar.gz<span style="color:#f92672">&lt;/format&gt;&lt;/formats&gt;</span>
+
+    <span style="color:#f92672">&lt;fileSets&gt;</span>
+        <span style="color:#f92672">&lt;fileSet&gt;</span>
+            <span style="color:#f92672">&lt;directory&gt;</span>${project.build.directory}/appassembler-jsw/jsw/${project.name}<span style="color:#f92672">&lt;/directory&gt;</span>
+            <span style="color:#f92672">&lt;outputDirectory&gt;</span>/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+            <span style="color:#f92672">&lt;excludes&gt;</span>
+                <span style="color:#f92672">&lt;exclude&gt;</span>bin/${project.name}<span style="color:#f92672">&lt;/exclude&gt;</span>
+                <span style="color:#f92672">&lt;exclude&gt;</span>bin/wrapper-linux-x86-32<span style="color:#f92672">&lt;/exclude&gt;</span>
+                <span style="color:#f92672">&lt;exclude&gt;</span>bin/wrapper-linux-x86-64<span style="color:#f92672">&lt;/exclude&gt;</span>
+            <span style="color:#f92672">&lt;/excludes&gt;</span>
+            <span style="color:#f92672">&lt;fileMode&gt;</span>640<span style="color:#f92672">&lt;/fileMode&gt;</span>
+            <span style="color:#f92672">&lt;directoryMode&gt;</span>750<span style="color:#f92672">&lt;/directoryMode&gt;</span>
+        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+        <span style="color:#f92672">&lt;fileSet&gt;</span>
+            <span style="color:#f92672">&lt;directory&gt;</span>src/main/assembly<span style="color:#f92672">&lt;/directory&gt;</span>
+            <span style="color:#f92672">&lt;outputDirectory&gt;</span>/logs<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+            <span style="color:#f92672">&lt;excludes&gt;&lt;exclude&gt;</span>*<span style="color:#f92672">&lt;/exclude&gt;&lt;/excludes&gt;</span>
+        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+    <span style="color:#f92672">&lt;/fileSets&gt;</span>
+
+    <span style="color:#f92672">&lt;files&gt;</span>
+        <span style="color:#f92672">&lt;file&gt;</span>
+            <span style="color:#f92672">&lt;source&gt;</span>${project.build.directory}/appassembler-jsw/jsw/${project.name}/bin/${project.name}<span style="color:#f92672">&lt;/source&gt;</span>
+            <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+            <span style="color:#f92672">&lt;fileMode&gt;</span>750<span style="color:#f92672">&lt;/fileMode&gt;</span>
+        <span style="color:#f92672">&lt;/file&gt;</span>
+        <span style="color:#f92672">&lt;file&gt;</span>
+            <span style="color:#f92672">&lt;source&gt;</span>${project.build.directory}/appassembler-jsw/jsw/${project.name}/bin/wrapper-linux-x86-64<span style="color:#f92672">&lt;/source&gt;</span>
+            <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+            <span style="color:#f92672">&lt;fileMode&gt;</span>750<span style="color:#f92672">&lt;/fileMode&gt;</span>
+        <span style="color:#f92672">&lt;/file&gt;</span>
+    <span style="color:#f92672">&lt;/files&gt;</span>
+<span style="color:#f92672">&lt;/assembly&gt;</span>
+</code></pre></div><p>Ainsi, l&rsquo;exécution de la commande suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn package
+</code></pre></div><p>génère un livrable exploitable directement après sa décompression.</p>
+<p>Lors d&rsquo;un <code>mvn release</code>, il sera également automatiquement uploadé sur le <em>Repository Manager</em>.</p>
+<p>#Conclusion</p>
+<p>En conclusion, je n&rsquo;ai pas grand chose à ajouter si ce n&rsquo;est que j&rsquo;ai trouvé Resteasy-Netty simple à utiliser et qu&rsquo;il a été aisé d&rsquo;y ajouter tout ce qui était nécessaire à notre besoin.</p>
+<p>Et le tout de manière simple et efficace pour une solution véloce et légère!</p>
+<p>Pour faire encore plus simple, <a href="http://projectlombok.org/">Lombok</a> aurait pu être utilisé mais, de mémoire, en test de Java 8, une incompatibilité est apparue&hellip; à creuser donc pour cette partie&hellip; ;-)</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-10-jaxrs-netty-et-bien-plus-encore-mode%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien/">Jolokia : le piment qui vous veut du bien </a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/">JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

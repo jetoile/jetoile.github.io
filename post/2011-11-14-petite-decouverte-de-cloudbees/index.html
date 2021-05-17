@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Petite découverte de CloudBees &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Petite découverte de CloudBees</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>14 Nov 2011, 22:40</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/avis">avis</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/cloudbees">cloudbees</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/int%C3%A9gration-continue">intégration continue</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/-F_mNTL2_BE4/TsACHNBk0fI/AAAAAAAAAdE/Ngcp8YNiDL0/s1600/cloudbees03.png" alt="left-small"></p>
+<p>La semaine dernière, j&rsquo;ai eu la chance d&rsquo;assister à un atelier sur <a href="http://www.cloudbees.com/">CloudBees</a> chez nos amis de <a href="http://blog.xebia.fr/">Xebia</a>.</p>
+<p>Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique pour éviter tout favoritisme ;-) ) :</p>
+<ul>
+<li>Eric Briand</li>
+<li>Simon Caplette</li>
+<li><a href="https://twitter.com/#%21/ndeloof">Nicolas De Loof</a></li>
+<li><a href="https://twitter.com/#%21/cyrilleleclerc">Cyrille Leclerc</a></li>
+<li><a href="https://twitter.com/#%21/olim7t">Olivier Michallat</a></li>
+<li><a href="https://twitter.com/#%21/jlrigau">Jean-Louis Rigau</a></li>
+<li><a href="https://twitter.com/#%21/eservent">Emmanuel Servent</a></li>
+</ul>
+<!-- more -->
+<p>Comme d&rsquo;habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n&rsquo;est pas le but de mon article&hellip;</p>
+<p>L&rsquo;objectif de cet article est, pour ceux qui n&rsquo;étaient pas présents, de faire un rapide tour d&rsquo;horizon de ce qui m&rsquo;a marqué dans la solution qu&rsquo;apporte Cloudbees avec ses offres DEV@Cloud et RUN@Cloud. Cet article sera surtout focalisé sur la partie usine logicielle offerte par Cloudbees car c&rsquo;est celle qui a été mise en avant pendant l&rsquo;atelier et c&rsquo;est aussi celle qui me semble la plus intéressante du point de vue de mes besoins actuels.</p>
+<p>Je vais donc essayer de vous résumer ce que j&rsquo;ai apprécié&hellip; Pour ce faire, je ne reviendrai pas sur le usecase qui a été utilisé car je pense qu&rsquo;il vaut mieux assister à l&rsquo;atelier et qu&rsquo;il faut bien laisser un peu de suspens&hellip; ;-). De même, je ne parlerai ni de l&rsquo;intérêt du cloud ni de comment mettre en place DEV@Cloud ou RUN@Cloud.</p>
+<p>Cet article s&rsquo;articulera donc en deux parties :</p>
+<ul>
+<li>la première consistant en un très rapide retour sur ce que propose CloudBees,</li>
+<li>et la deuxième sur ce qui me plait dans une approche telle que celle proposée par CloudBees.</li>
+</ul>
+<p>PS : au passage, encore un grand merci aux organisateurs de l&rsquo;atelier!</p>
+<p>#{DEV,RUN}@Cloud?&hellip; Kesako?</p>
+<p>CloudBees propose deux services DEV@Cloud et RUN@Cloud.</p>
+<p>DEV@Cloud offre, pour sa part, un service de type <del>PaaS (<em>Platform As A Service</em>)</del> SaaS (<em>Software As A Service</em>) qui offre un environnement de développement, de construction et de test en s&rsquo;appuyant sur le cloud.</p>
+<p>DEV@Cloud permet :</p>
+<ul>
+<li>de collaborer avec d&rsquo;autres personnes en s&rsquo;appuyant sur des SCM/DVCS comme SVN ou Git,</li>
+<li>de construire, tester et déployer de manière continue avec <a href="http://jenkins-ci.org/">Jenkins</a>,</li>
+<li>de tester l&rsquo;application web cible en s&rsquo;appuyant sur le service à la demande <a href="http://saucelabs.com/">SauceLab</a>,</li>
+<li>de controler la qualité du code en s&rsquo;appuyant sur <a href="http://www.sonarsource.org/">Sonar</a>,</li>
+<li>de gérer les artéfacts en utilisant <a href="http://www.jfrog.com/products.php">Artifactory</a>.</li>
+</ul>
+<p>RUN@Cloud fournit, quant à lui, un ensemble d&rsquo;outils permettant de simplifier le processus de déploiement d&rsquo;une application Java dans le <em>cloud</em>. Il correspond, pour sa part, un service de type PaaS (<em>Platform As A Service</em>).</p>
+<p><img src="http://1.bp.blogspot.com/-aGeioKNPLJc/TsACXTWxgJI/AAAAAAAAAdM/yG4C8B3PmOA/s1600/cloudbees04.png" alt="medium"></p>
+<p><u>PS</u> : vous aurez remarqué que, pour cette partie, je ne me suis pas trop foulé puisque je n&rsquo;ai fait que reprendre les informations présentes sur le site&hellip; ;-)</p>
+<p>#C&rsquo;est bien gentil tout ça et moi, ça m&rsquo;apporte quoi?</p>
+<p>Comme vous avez pu le constater, DEV@Cloud et RUN@Cloud fournissent tout pleins de services.</p>
+<p>Cependant, la première question qui me vient à l&rsquo;esprit quand je vois tout ça, c&rsquo;est :</p>
+<blockquote>
+<p>&ldquo;ben, je fais pareil dans mon usine logicielle&hellip; : pourquoi je m&rsquo;embêterai à payer une solution et surtout, pourquoi serais-je prêt à perdre la main sur mon infra mais aussi qu&rsquo;on m&rsquo;enlève l&rsquo;occasion de m&rsquo;amuser avec de nouveaux jouets&hellip;&rdquo;</p>
+</blockquote>
+<p>(pour le dernier argument, cela ne regarde que moi&hellip; ;-))</p>
+<p><img src="http://2.bp.blogspot.com/-dDnr_qH0vM0/TsACyBmfmsI/AAAAAAAAAdU/TI3TYA-Ujmc/s1600/Cloudbees01.png" alt="medium"></p>
+<p>En fait, les réponses sont simples (et je ne parlerai pas des réponses évidentes de coûts -infra, supervision, maintenance, etc.-).</p>
+<p>Déjà revenons sur les possibilités offertes par DEV@Cloud (je n&rsquo;aborderai pas le fait que CloudBees propose également l&rsquo;hébergement du SCM, du Repository Manager et de Sonar) :</p>
+<p>En offrant la partie orchestrateur (via Jenkins), on délègue au <em>cloud</em> le soin de gérer les agents de build. Ainsi, il n&rsquo;y a plus à administrer la ferme de serveurs succeptibles d&rsquo;héberger les agents (tâche assez réberbative et ingrate).</p>
+<p>De plus, en combinant la partie <em>build/package</em> à la partie RUN@Cloud permettant de déployer de manière continue l&rsquo;application sur une instance dédiée, cela permet de tester fonctionnellement et de manière intégrer la solution. Encore une fois, en passant par un service de CloudBees, il n&rsquo;y a plus à se soucier de devoir réserver un serveur ou de devoir déployer un conteneur de servlets puisque cela est fait pour nous.</p>
+<p>Concernant les tests à proprement parler, CloudBees offre une intégration avec <a href="http://saucelabs.com/">SauceLab</a> qui se charge de l&rsquo;exécution des tests Selenium (ie. qui prends à sa charge l&rsquo;installation des agents Selenium ainsi que leurs configurations en mettant à disposition les browsers (butineurs ;-)) nécessaires à l&rsquo;exécution des tests Selenium). En outre, SauceLab propose même la vidéo du test exécuté permettant, ainsi, <em>a postériori</em> d&rsquo;analyser ce qui a échoué pendant le test. Bien sûr, DEV@Cloud n&rsquo;offre pas encore la décorrélation entre le test fonctionnel exécuté et la partie vue mais, coté infrastructure, il n&rsquo;y a plus à se soucier des agents et coté analyse, il n&rsquo;est plus nécessaire d&rsquo;analyser les rapports <em>surefire</em> pour connaitre le test en échec.</p>
+<p>Il est également possible d&rsquo;effectuer un test de charge en s&rsquo;appuyant sur le plugin maven <a href="http://jmeter.apache.org/">JMeter</a> en ciblant l&rsquo;instance déployée dans RUN@Cloud. L&rsquo;intégration avec le service <a href="http://newrelic.com/">New Relic</a> offre la possibilité de superviser l&rsquo;activité de l&rsquo;instance afin d&rsquo;évaluer son comportement. En outre, en configurant RUN@Cloud de manière <em>scalable</em>, il est aisé de tester la charge supportée par de multiples instances (pour ce faire, CloudBees passe par un <em>load balancer</em> qui, si je ne me trompe pas, fonctionne, à ce jour, en <em>round-robin</em>). L&rsquo;intégration du service New Relic permet de s&rsquo;abstraire de la mise en place d&rsquo;une solution comme Hyperic sur un environnement de recette, chose qui manque régulièrement et qui peut être consommateur en temps. En outre, New Relic permet même de déterminer les points de contension en offrant la possibilité d&rsquo;activer un profiling à chaud dans l&rsquo;application cible.</p>
+<p>Concernant le comportement applicatif, l&rsquo;intégration du service <a href="https://papertrailapp.com/">Papertrail</a> offre la possibilité d&rsquo;accéder aux logs de l&rsquo;application mais permet également d&rsquo;agréger les logs pour l&rsquo;ensemble des instances et de les analyser. Ce dernier point est généralement manquant lors de la mise en place d&rsquo;un environnement de test/validation/recette pour des questions d&rsquo;infrastructure mais également de moyen. Aussi, disposer d&rsquo;un tel service intégré avec l&rsquo;offre RUN@Cloud dans un contexte de test (mais, bien sûr, pas uniquement) apporte un réel plus dans l&rsquo;analyse des anomalies et du comportement de l&rsquo;application.</p>
+<p>#Conclusion</p>
+<p>Vous l&rsquo;aurez compris (enfin, je l&rsquo;espère), les offres DEV@Cloud et RUN@Cloud de CloudBees m&rsquo;ont vraiment fait bonne impression. Je n&rsquo;ai fait qu&rsquo;effleurer les possibilités offertes et je suis sûrement passé à coté de beaucoup de features mais je tenais tout de même à partager mon ressenti sur ces offres.</p>
+<p>C&rsquo;est vrai que mon article est très orienté usine logicielle (peut être parce que c&rsquo;est justement le point de départ de l&rsquo;atelier) mais, au moins pour ce seul point, il mérite qu&rsquo;on s&rsquo;intéresse aux services offerts par CloudBees (et services, il y en a&hellip;).</p>
+<p><img src="http://4.bp.blogspot.com/-Nws_YjWNluM/TsAC_MmnpzI/AAAAAAAAAdc/W78rV1GiHns/s1600/cloudbees02.png" alt="small"></p>
+<p>Cependant, il reste un point qui me chagrine&hellip; en effet, CloudBees offre une excellente forge logicielle clé en main et qui semble parfaitement fonctionnelle mais, à mon sens, ce qui manque le plus est la bonne utilisation de ces outils et surtout, en amont, la bonne compréhension de ce qu&rsquo;est une bonne usine logicielle et de son importance.</p>
+<p>Bien sûr, si le client est réticent, il est toujours possible de faire une approche <em>bottom/up</em> en attaquant par la forge et en lui montrant le gain mais, je trouve cela dommage que l&rsquo;on soit obligé d&rsquo;en arriver là alors qu&rsquo;il devrait en voir tout le bénéfice (un peu comme maitriser son livrable et son build ou le cycle de vie de son application&hellip;) surtout dans un contexte où l'<em>agilité</em> est un terme de plus en plus courant et qui prone des livraisons fréquentes, chose possible que si l&rsquo;on dispose d&rsquo;une bonne méthodologie, d&rsquo;une bonne forge et que l&rsquo;on a compris de l&rsquo;intérêt des TUs, du refactoring et de la revue de code&hellip;</p>
+<p>Enfin, je m&rsquo;égare&hellip; ;-)
+Pour revenir à nos moutons, ce que j&rsquo;ai apprécié avec DEV@Cloud et RUN@Cloud est la grande intéraction et la modularisation des services avec Jenkins. Cependant, même si la solution offerte par CloudBees est de qualité et est simple à mettre en oeuvre en étant clé en main, il reste du ressort de l&rsquo;équipe de mettre en place les bonnes pratiques pour construire l&rsquo;usine logicielle sans lesquelles aussi bon que soient les outils et services à sa disposition, cela s&rsquo;achèvera par un échec (enfin, là, il s&rsquo;agit de mon humble avis&hellip; ;-)).</p>
+<p>Pour finir, je tiens à préciser que je n&rsquo;ai pas testé de manière plus approfondie les différents services offerts par CloudBees autre que ce qui nous a été présenté lors de l&rsquo;atelier et j&rsquo;espère ne pas avoir dénaturé le produit. Si des points étaient à ajouter, n&rsquo;hésitez pas à m&rsquo;en faire part afin de pouvoir compléter l&rsquo;approche naïve que je pourrais en avoir ;-)</p>
+<p>A noter aussi que concernant l&rsquo;injection de charge, à ce jour, il n&rsquo;existe pas de possibilité de scaler les injecteurs dans différents agents, ce qui limite l&rsquo;intérêt de l&rsquo;injection (je ne reviendrai pas sur le fait que si l&rsquo;injecteur est saturé, cela fausse les résultats obtenus pour le SUT (<em>System Under Test</em>)) mais que cela devrait être résolu dans un futur proche.</p>
+<p><u>PS</u> : Je tenais aussi à préciser que je ne touche rien pour ce post mais que cela me faisait plaisir de parler d&rsquo;un truc que j&rsquo;ai apprécié (et puis je fais ce qui me chante avec mon blog&hellip; !! ;-) ) et puis aussi à remercier Stéphanie pour avoir consacré du temps à relire cet article et m&rsquo;avoir apporté son esprit critique ;-)</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2011-11-14-petite-decouverte-de-cloudbees%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/">FuseSource Community Day 2011</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/">Devoxx 2011 - What&#39;s probably coming in Java Message Service 2.0</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

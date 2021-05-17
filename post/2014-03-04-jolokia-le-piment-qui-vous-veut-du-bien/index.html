@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Jolokia : le piment qui vous veut du bien  &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Jolokia : le piment qui vous veut du bien </h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>04 Mar 2014, 00:30</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jolokia">jolokia</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://3.bp.blogspot.com/-6Xm2grUWMtI/UxTNAazymaI/AAAAAAAABPE/dXJ7fti_FLA/s1600/jolokia.png" alt="left-small"></p>
+<p>Dans des articles précédents, je m&rsquo;étais déjà exprimé sur le fait que je trouvais qu&rsquo;il était important de monitorer son application (qu&rsquo;il s&rsquo;agisse d&rsquo;une application web, d&rsquo;un batch ou d&rsquo;une application standalone) (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">ici</a>). J&rsquo;avais même creusé un peu la spécification JMX (cf. <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html">là</a>).</p>
+<p>Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&rsquo;ai découvert récemment (merci Romain ;-) ) mais qui existe depuis un moment (la version 1.0.0 est apparue en octobre 2011 sur le repo Maven central et le premier commit apparaissant sur Github date de Juillet 2010) : cet outils est <strong>Jolokia</strong>.</p>
+<p>Comme à mon habitude, pour présenter cet outils, je m&rsquo;appuierai sur la document officielle dans sa version courante, à savoir la 1.2.0.</p>
+<p>Cependant, je ne ferai pas un plagiat exhaustif de la documentation qui est très complète (et surtout, je n&rsquo;ai pas envie de me traduire les 92 pages de cette dernière&hellip; ;-) ) mais j&rsquo;essaierai de faire un focus sur les points que je trouve les plus intéressants (à savoir les principes ainsi que le mode agent JVM (cf. plus tard) ).</p>
+<!-- more -->
+<p>#Principes et concepts</p>
+<p>##Jolokia&hellip; pour quoi faire?</p>
+<p>Dans le monde Java, il existe un standard pour faire de l&rsquo;administration/supervision : il s&rsquo;agit de JMX (Java Management eXtension). Il est inclus depuis le JDK 1.5.</p>
+<p>Cependant, JMX est malheureusement un des parents pauvres de Java : souvent méconnu ou mal utilisé, il est aussi très orienté vers le monde Java (et cela, même s&rsquo;il existe la <a href="https://jcp.org/en/jsr/detail?id=160">JSR 160 - Java Management eXtension Remote API</a>).</p>
+<p>C&rsquo;est la raison d&rsquo;être de Jolokia qui offre une approche agent (qui cohabite avec la JSR 160) tout en offrant une interopérabilité via HTTP au moyen de JSON pour la partie <em>payload</em>. Cela lui permet d&rsquo;exposer les couches d&rsquo;administration/supervision JMX des applicatifs Java via une protocole interopérable de tous.</p>
+<p>##Architecture</p>
+<p>L&rsquo;architecture de Jolokia diffère de celle de la JSR 160. En effet, la JSR 160 permet à un client d&rsquo;invoquer de manière transparente un MBean qu&rsquo;il soit dans un <strong>MBeanServer</strong> local ou distant.</p>
+<p>Cependant, même si cela est intéressant, c&rsquo;est également une approche dangereuse puisque cela masque la partie transport qui peut entraîner un <em>overhead</em> mais cela expose aussi le modèle des objets qui transitent.</p>
+<p>En effet, il existe une adhérence implicite au protocole RMI (qui est d&rsquo;ailleurs le protocole par défaut des connecteurs JMX) pour la partie mécanisme de sérialisation des objets. C&rsquo;est ce dernier point qui pose un problème d&rsquo;interopérabilité avec tout programme extérieur à une JVM.</p>
+<p>Ainsi, Jolokia, en offrant une approche différente via HTTP/JSon, permet de réconcilier ces différents mondes. Pour ce faire, il propose 2 modes :</p>
+<ul>
+<li>un mode agent,</li>
+<li>un mode proxy.</li>
+</ul>
+<p>###Le mode agent</p>
+<p>Dans ce mode, Jolokia se présente comme un agent qui expose un protocole au format JSON via HTTP et qui permet de servir de bridge vers les MBeans JMX locaux. Cela se passe donc en dehors du scope de la JSR 160.</p>
+<p>Ainsi, il est possible d&rsquo;exporter ce protocole de différentes manières dont la plus courante est via un conteneur de Servlet (qu&rsquo;il soit légé ou pas).</p>
+<p>Cependant, il existe d&rsquo;autres possibilités comme des agents spécialisés qui peuvent utiliser un service HTTP OSGI ou qui peuvent embarquer un serveur Jetty.</p>
+<p>Il est à noter que l&rsquo;agent utilise le serveur HTTP embarqué dans toutes les JVM 6 d&rsquo;Oracle et qu&rsquo;il peut donc s&rsquo;attacher dynamiquement à toutes les processus Java.</p>
+<p><img src="http://2.bp.blogspot.com/-TnigS1cXxaI/UxTNwI9jtzI/AAAAAAAABPM/q0rHjKSMmq4/s1600/jolokia-agent.png" alt="medium"></p>
+<p>###Le mode proxy</p>
+<p>Ce mode peut être utilisé lorsqu&rsquo;il n&rsquo;est pas possible de déployer un agent Jolokia sur la plateforme cible. Pour ce mode, le seul prérequis est l&rsquo;accès au serveur cible via une connexion à travers de la JSR 160. Cela peut être le cas si l&rsquo;application ne peut pas être modifiée ou si l&rsquo;application expose déjà ses MBeans via la JSR 160.</p>
+<p>Ce mode nécessite un conteneur de Servlet dans lequel sera déployée l&rsquo;application web <code>jolokia.war</code> qui a, à sa charge, de &ldquo;<em>proxyfier</em>&rdquo; et qui, par défaut, supporte à la fois le mode agent et le mode proxy.</p>
+<p>Ainsi, dans ce mode, un client enverra une requête Jolokia avec une section supplémentaire spécifiant la cible qui doit être atteinte. Toutes les information de routage est donc contenu dans la requête elle-même de manière à ce que le proxy puisse agir sans configuration spécifique.</p>
+<p><img src="http://2.bp.blogspot.com/-wf_ReDc9AKk/UxTN2msI-BI/AAAAAAAABPU/neUmwiePEs0/s1600/jolokia-proxy.png" alt="medium"></p>
+<p>##Les agents</p>
+<p>Jolokia propose une approche orientée agent qui doit être, soit déployé sur la cible (<strong>mode agent</strong>), soit sur un serveur proxy (<strong>mode proxy</strong>).</p>
+<p>Pour ces deux modes, il existe 4 types d&rsquo;agent :</p>
+<ul>
+<li><strong>WAR agent</strong> : cet agent est packagé sous forme de WAR.</li>
+<li><strong>OSGI agent</strong> : cet agent au format OSGI (bundle) vient sous 2 formes : un agent minimal qui dispose d&rsquo;une dépendance sur un OSGI <em>HTTService</em> qui doit être démarré et un agent &ldquo;tout en un&rdquo; qui embarque une implémentation de <em>HTTPService</em>.</li>
+<li><strong>Mule agent</strong> : cet agent s&rsquo;intègre à Mule et fourni une API d&rsquo;adminitration/supervision dans lequel un agent jolokia dédié est intégré. Il inclut un serveur Jetty embarqué.</li>
+<li><strong>JVM agent</strong> : Depuis la version 1.6 du JDK d&rsquo;Oracle, la JVM embarque un serveur HTTP légé. En utilisant ce dernier, Jolokia expose ses fonctionnalité. Cependant, cet agent peut être un peu lent en raison du fait que le serveur HTTP embarqué dans la JVM ne soit pas optimisé pour les performances.</li>
+</ul>
+<p>Les deux types d&rsquo;agent qui seront un peu plus détaillés dans cet article sont les types WAR agent et JVM agent.</p>
+<p>##WAR agent</p>
+<p>Le type WAR agent se présente comme une application web standard (au format WAR). La configuration se fait alors via l&rsquo;élément <code>init-param</code> du web.xml.</p>
+<p>Un autre moyen consiste à utiliser le context (dans le cas de Tomcat) qui permet de déporter la configuration en dehors du WAR. Ainsi, par exemple avec Tomcat, avec le context de l&rsquo;application web se trouvant dans <code>$TOMCAT_HOME/conf/Catalina/localhost</code>, on peut avoir par exemple :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Context&gt;</span>
+<span style="color:#f92672">&lt;Parameter</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maxDepth&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">&lt;/Context&gt;</span>
+</code></pre></div><p>Au niveau paramétrage, je vous laisse aller voir la document officielle ;-).</p>
+<p>Du point de vue sécurité, il est possible de bénéficier de la sécurité du conteneur de Servlet via le <code>web.xml</code>.</p>
+<p>Une autre manière de faire consite à intégrer Jolokia comme Servlet dans son application web. Pour ce faire, il suffit de tirer la bonne dépendance et de préciser le Servlet de Jolokia de manière classique via les éléments <code>servlet</code> et <code>servlet-mapping</code> du <code>web.xml</code> de l&rsquo;application.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version&gt;</span>${jolokia.version}<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>Comme il est possible de déployer de multiples WAR agents Jolokia sur une même JVM, puisque des MBeans spécifiques Jolokia sont déployé dans le <strong>PlatformMBeansServer</strong>, il faut préciser la valeur de l&rsquo;élément mbeanQualifier dans les paramètres d&rsquo;init.</p>
+<p>##JVM agent</p>
+<p>Ce type d&rsquo;agent Jolokia que j&rsquo;ai testé IRL est très simple à utiliser et permet d&rsquo;attacher un agent à une JVM afin qu&rsquo;elle expose à la mode REST ses couches d&rsquo;administration et de supervision.</p>
+<p>Il est possible de :</p>
+<ul>
+<li><em>bootstrapper</em> l&rsquo;agent JVM au démarrage de la JVM en lui fournissant le jar adéquate ainsi que les options qui vont bien :</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -javaagent:agent.jar<span style="color:#f92672">=</span>port<span style="color:#f92672">=</span>7777,host<span style="color:#f92672">=</span>localhost
+</code></pre></div><ul>
+<li><em>bootstrapper</em> l&rsquo;agent JVM en lui fournissant directement une fichier de configuration :</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -javaagent:agent.jar<span style="color:#f92672">=</span>config<span style="color:#f92672">=</span>$FICHIER_CONFIG_JOLOKIA
+</code></pre></div><p>où un exemple de fichier de configuration peut être trouvé dans jar de l&rsquo;agent (au nom de <code>default-jolokia-agent.properties</code>).</p>
+<p>où <code>agent.jar</code> peut être téléchargé de <a href="http://www.jolokia.org/download.html">http://www.jolokia.org/download.html</a> (artifact : <strong>JVM-Agent</strong>).</p>
+<p>De la même manière, un agent Jolokia peut être attaché à une processus Java à la demande (un peu comme lorsque JConsole se connecte à un processus local). Pour ce faire, il suffit de lancer la commande suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar agent.jar start &lt;PID&gt;
+</code></pre></div><p>##Jolokia et la sécurité</p>
+<p>Jolokia permet de configurer la sécurité assez finement. N&rsquo;ayant pas tester, je ne m&rsquo;attarderai pas trop sur le sujet.</p>
+<p>Cependant, il est intéressant de noter que Jolokia permet de filtrer l&rsquo;accès des clients par IP mais offre également un accès plus fin pour l&rsquo;accès aux MBeans (<code>read</code>/<code>write</code>/<code>exec</code>/<code>list</code>/<code>search</code>/<code>version</code>).</p>
+<p>Point également important, Jolokia supporte la spécification W3C pour le Cross-Origin Resource Sharing (CORS) qui permet d&rsquo;utiliser des outils comme <a href="http://hawt.io/">Hawt.io</a> (mais nous y reviendront plus tard&hellip;).</p>
+<p>##Le protocole Jolokia</p>
+<p>Jolokia utilise un protocole JSON sur HTTP. La communication est basé sur le paradigme requête/réponse où chaque requête fournit une réponse.</p>
+<p>Les requêtes peuvent être envoyées de deux manières :</p>
+<ul>
+<li>soit avec une requête HTTP GET (dans ce cas, les paramètres sont encodés dans l&rsquo;URL),</li>
+<li>soit avec une requête HTTP POST où la requête est incluse dans le corps de la requête au format JSON.</li>
+</ul>
+<p>Les réponses retournées par l&rsquo;agent sont, quant à elles, toujours envoyées en JSON.</p>
+<p>De plus, les requêtes au format HTTP GET peuvent prendre deux formes :</p>
+<ul>
+<li>utiliser un format REST (ex : http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage)</li>
+<li>utiliser un format où la requête est donnée par un paramètre <strong>p=</strong> (ex : http://localhost:8080/jolokia?p=/read/jboss.jmx:alias=jmx%2Frmi%2FRMIAdaptor/State)</li>
+</ul>
+<p>A noter que Jolokia utilise le caractère &ldquo;!&rdquo; comme caractère d&rsquo;échappement.</p>
+<p>Plutôt que de longs discours, quelques exemples issus de la documentation aideront à comprendre&hellip;</p>
+<p>Pour lire la valeur du MBean dont l&rsquo;objectName est <strong>java.lang:type=Memory/HeapMemoryUsage</strong>, les requêtes suivantes sont équivalentes :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
+</code></pre></div><br/>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/?p=/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
+</code></pre></div><br/>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -d <span style="color:#e6db74">&#39;{&#34;type&#34; : &#34;read&#34;, &#34;mbean&#34; : &#34;java.lang:type=Memory&#34;, &#34;attribute&#34; : &#34;HeapMemoryUsage&#34;, &#34;path&#34; : &#34;used&#34; }&#39;</span> http://127.0.0.1:8778/jolokia/
+</code></pre></div><p>soit en format lisible :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
+    <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+    <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+    <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>
+}
+</code></pre></div><p>La réponse obtenue est de la forme :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393865787</span>,
+    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
+    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+        <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>,
+        <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
+    },
+    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">162037504</span>
+}
+</code></pre></div><p>Pour montrer le coté structuré de la réponse, à une requête de type :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://127.0.0.1:8778/jolokia/read/java.lang:type<span style="color:#f92672">=</span>Memory
+</code></pre></div><p>on obtient :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393866039</span>,
+    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
+    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
+    },
+    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> {
+        <span style="color:#e6db74">&#34;Verbose&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+        <span style="color:#e6db74">&#34;ObjectPendingFinalizationCount&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+        <span style="color:#e6db74">&#34;NonHeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
+            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">329252864</span>,
+            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">218951680</span>,
+            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">19136512</span>,
+            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">139774968</span>
+        },
+        <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
+            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
+            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
+            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">134217728</span>,
+            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">179096552</span>
+        },
+        <span style="color:#e6db74">&#34;ObjectName&#34;</span><span style="color:#f92672">:</span> {
+            <span style="color:#e6db74">&#34;objectName&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>
+        }
+    }
+}
+</code></pre></div><p>Concernant les opérations possibles (dans l&rsquo;exemple précédent, il s&rsquo;agissait d&rsquo;une lecture), il existe :</p>
+<ul>
+<li><strong>read</strong> avec le format GET suivant :</li>
+</ul>
+<p><code>&lt;base-url&gt;/read/&lt;mbean name&gt;/&lt;attribute name&gt;/&lt;inner path&gt;</code></p>
+<p>(ex : http://localhost:8080/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used)</p>
+<ul>
+<li><strong>write</strong> avec le foramt GET suivant :</li>
+</ul>
+<p><code>&lt;base url&gt;/write/&lt;mbean name&gt;/&lt;attribute name&gt;/&lt;value&gt;/&lt;inner path&gt;</code></p>
+<p>(ex : http://localhost:8080/jolokia/write/java.lang:type=Memory/Verbose/true)</p>
+<ul>
+<li><strong>exec</strong> avec le format GET suivant :</li>
+</ul>
+<p><code>&lt;base url&gt;/exec/&lt;mbean name&gt;/&lt;operation name&gt;/&lt;arg1&gt;/&lt;arg2&gt;/....</code></p>
+<p>(ex : http://localhost:8080/jolokia/exec/java.lang:type=Memory/gc)</p>
+<ul>
+<li><strong>search</strong> avec le format GET suivant :</li>
+</ul>
+<p><code>&lt;base-url&gt;/search/&lt;pattern&gt;</code></p>
+<p>(ex : http://localhost:8080/jolokia/search/<em>:j2eeType=J2EEServer,</em>)</p>
+<ul>
+<li><strong>list</strong> avec le format GET suivant :</li>
+</ul>
+<p><code>&lt;base-url&gt;/list/&lt;inner path&gt;</code></p>
+<p>(ex : http://localhost:8080/jolokia/list/java.lang/type=Memory/attr)</p>
+<ul>
+<li><strong>version</strong> qui permet d&rsquo;avoir la version du protocole utilisé ainsi qu&rsquo;un ensemble de paramètre avec le format GET suivant :</li>
+</ul>
+<p><code>&lt;base-url&gt;/version</code></p>
+<p>(ex : http://localhost:8080/jolokia/version)</p>
+<p>Enfin, si le mode proxy est utilisé, seul le mode POST peut être utilisé et doit, alors, avoir le format suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+    <span style="color:#e6db74">&#34;type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
+    <span style="color:#e6db74">&#34;mbean&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+    <span style="color:#e6db74">&#34;attribute&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+    <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> { 
+         <span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;service:jmx:rmi:///jndi/rmi://targethost:9999/jmxrmi&#34;</span>,
+         <span style="color:#e6db74">&#34;user&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;jolokia&#34;</span>,
+         <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;s!cr!t&#34;</span>
+    } 
+} 
+</code></pre></div><p>Je ne rentrerai pas plus en détaille sur cette partie là qui est beaucoup plus exhaustive dans la documentation officielle (comment les objets sont sérialisés, le mapping complet des MXBeans, la découverte des agents ou les différentes versions du protocole Jolokia - actuellement la version 7.1 - ) et si cela est nécessaire, je conseille d&rsquo;aller directement se référer à la documentation.</p>
+<p>#Autres features</p>
+<p>En plus des fonctionnalités présentées précédemment, Jolokia offre les fonctionnalités suivantes :</p>
+<ul>
+<li>exposition de son propre MBean,</li>
+<li>différents clients (javascript, plugin cubism, java, Jmx4Perl),</li>
+<li>une API de programmation pour exposer sont MBeanServer,</li>
+<li>un JSonMBean,</li>
+<li>une integration Spring,</li>
+</ul>
+<p>Pour l&rsquo;intégration avec Spring, cela se fait via l&rsquo;import Maven suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-spring<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version&gt;</span>1.2.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>  
+</code></pre></div><p>et le contexte Spring suivant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
+       <span style="color:#a6e22e">xmlns:jolokia=</span><span style="color:#e6db74">&#34;http://www.jolokia.org/jolokia-spring/schema/config&#34;</span>
+       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">       http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+</span><span style="color:#e6db74">       http://www.jolokia.org/jolokia-spring/schema/config  http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
+</span><span style="color:#e6db74">       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+ 
+  <span style="color:#f92672">&lt;jolokia:agent</span> <span style="color:#a6e22e">lookupConfig=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">systemPropertiesMode=</span><span style="color:#e6db74">&#34;never&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;jolokia:config</span>
+                <span style="color:#a6e22e">autoStart=</span><span style="color:#e6db74">&#34;true&#34;</span>
+                <span style="color:#a6e22e">host=</span><span style="color:#e6db74">&#34;${jolokia.host}&#34;</span>
+                <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#34;${jolokia.port}&#34;</span>
+                <span style="color:#a6e22e">user=</span><span style="color:#e6db74">&#34;${jolokia.user}&#34;</span>
+                <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;${jolokia.password}&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/jolokia:agent&gt;</span>
+ 
+    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/bean&gt;</span>
+<span style="color:#f92672">&lt;/beans&gt;</span>
+</code></pre></div><p>#Conclusion
+Dans cet article, une présentation succincte a été faite de Jolokia. J&rsquo;espère qu&rsquo;elle vous aura plu ;-)&hellip;</p>
+<p>Il s&rsquo;agit d&rsquo;un outils simple, pluggable très facilement à n&rsquo;importe quelle application (une intégration à Cassandra s&rsquo;est fait en 5 minutes).</p>
+<p>Cette présentation était surtout axé concepts et principes afin de bien comprendre ce que peut apporter cet outils.</p>
+<p>Cependant, un des gros avantage de Jolokia est un point qui n&rsquo;a pas été abordé dans cet article : il s&rsquo;agit de son intégration à <a href="http://hawt.io/">Hawt.io</a>. Cet outils ayant déjà fait le sujet d&rsquo;article sur le blog de Zenika, je vous invite à y jeter un oeil :</p>
+<ul>
+<li><a href="http://blog.zenika.com/index.php?post/2014/01/07/HawtIO-la-console-web-polyvalente">HawtIO, la console web polyvalente</a></li>
+<li><a href="http://blog.zenika.com/index.php?post/2014/01/14/HawtIO-ecrire-un-plugin">HawtIO, écrire un plugin</a></li>
+</ul>
+<p>Ainsi, en production, disposer du combo Hawt.io + Jolokia offre, à mon sens, d&rsquo;énormes avantages comme, par exemple, accèder aux informations de n&rsquo;importe quelle application qui, généralement, n&rsquo;est pas accessible pour des raisons de sécurité (cf. <a href="https://blog.jetoile.fr/2010/05/jmx-et-firewall.html">ici</a>).</p>
+<p>Bien sûr, il existe d&rsquo;autres solutions comme l&rsquo;utilisation de <a href="http://www.crashub.org/">CraSH</a> mais exposer ses MBeans via JSON over HTTP est tellement simple et peut surtout être exploité simplement par les équipes de production ;-) .</p>
+<p>#Pour aller plus loin&hellip;</p>
+<ul>
+<li>Site de Jolokia : <a href="http://www.jolokia.org/">http://www.jolokia.org/</a></li>
+<li>Site de documentation de Jolokia : <a href="http://www.jolokia.org/reference/html/index.html">http://www.jolokia.org/reference/html/index.html</a></li>
+<li>Site d&rsquo;Hawt.io : <a href="http://hawt.io/">http://hawt.io/</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2013-06-13-breizhcamp-2013/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2013-06-13-breizhcamp-2013/">BreizhCamp 2013</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/">JAXRS, Netty et bien plus encore... mode d&#39;emploi...</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

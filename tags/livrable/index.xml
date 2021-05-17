@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Livrable on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/livrable/</link>
+    <description>Recent content in Livrable on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 03 Nov 2017 16:16:05 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/livrable/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Packaging, test et livraison pour Hadoop : Mode d&#39;emploi</title>
+      <link>https://blog.jetoile.fr/post/2017-11-03-packaging-et-livraison-pour-hadoop-mode-demploi/</link>
+      <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2017-11-03-packaging-et-livraison-pour-hadoop-mode-demploi/</guid>
+      <description>Hadoop et son écosystème est un monde complexe où beaucoup de nos paradigmes de développeur Java / JavaEE (EE4J?) sont chamboulés.
+D&amp;rsquo;une part les technologies utilisées diffèrent mais, en plus, d&amp;rsquo;autres questions telles que l&amp;rsquo;architecture, les tests (unitaires, intégrations, &amp;hellip;), la gestion des logs (debug, audit, pki, &amp;hellip;), les procédures de livraison, la gestion de la configuration de l&amp;rsquo;application, etc. viennent s&amp;rsquo;y ajouter.
+Cet article va montrer comment il est possible de concilier simplement les tests d&amp;rsquo;intégration mais aussi le déploiement afin de tendre vers la philosophie de continuous deployment.</description>
+    </item>
+    
+  </channel>
+</rss>

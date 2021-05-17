@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sqoop on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/sqoop/</link>
+    <description>Recent content in Sqoop on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 28 Nov 2016 11:15:19 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/sqoop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sqoop et Parquet : Mode d&#39;emploi</title>
+      <link>https://blog.jetoile.fr/post/2016-11-28-sqoop-et-parquet-mode-demploi/</link>
+      <pubDate>Mon, 28 Nov 2016 11:15:19 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2016-11-28-sqoop-et-parquet-mode-demploi/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://blog.jetoile.fr/images/apache_Sqoop_logo.png&#34; alt=&#34;left-small&#34;&gt; Dans le monde du &lt;em&gt;BigData&lt;/em&gt; (en l&amp;rsquo;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&amp;rsquo;une base de données dans son Datalake.&lt;/p&gt;
+&lt;p&gt;Pour ce faire, &lt;a href=&#34;http://sqoop.apache.org/&#34;&gt;Apache Sqoop&lt;/a&gt; est une des alternatives pour le faire (peut être pas la meilleure mais bon&amp;hellip;).&lt;/p&gt;
+&lt;p&gt;En effet, Sqoop permet d&amp;rsquo;importer (et exporter également) les données d&amp;rsquo;une base de données dans :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;hdfs au format &lt;em&gt;plain text&lt;/em&gt;, sequencefile, avro ou parquet&lt;/li&gt;
+&lt;li&gt;hive&lt;/li&gt;
+&lt;li&gt;hbase&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;En outre, il permet d&amp;rsquo;avoir un mode incrémental afin de gérer le mode delta.&lt;/p&gt;
+&lt;p&gt;Cependant, comme on le verra dans cet article, Sqoop n&amp;rsquo;est pas aussi trivial qu&amp;rsquo;il peut le paraitre.&lt;/p&gt;
+&lt;p&gt;C&amp;rsquo;est ce qui sera détaillé dans cet article : à savoir une sorte de mini retour d&amp;rsquo;expérience&amp;hellip; et heureux en plus ;)&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

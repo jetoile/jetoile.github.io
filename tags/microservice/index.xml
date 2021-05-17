@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>microservice on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/microservice/</link>
+    <description>Recent content in microservice on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 07 Oct 2015 17:33:08 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/microservice/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Template de projets REST</title>
+      <link>https://blog.jetoile.fr/post/2015-10-07-template-de-projets-rest/</link>
+      <pubDate>Wed, 07 Oct 2015 17:33:08 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2015-10-07-template-de-projets-rest/</guid>
+      <description>Il y a déjà un long moment, j&amp;rsquo;avais posté une série d&amp;rsquo;article expliquant comment il était possible de faire des web service de type REST de manière simple via RestEasy-Netty ou via Undertow.
+Dans la continuité de cette course au plus léger, je me suis dit que cela pouvait être intéressant de faire une petite étude un peu plus exhaustive des solutions légères qui existaient.
+L&amp;rsquo;objectif étant extraire une sorte de bench un peu naïf et un peu out of the box.</description>
+    </item>
+    
+    <item>
+      <title>Undertow pour booster vos services REST</title>
+      <link>https://blog.jetoile.fr/post/2015-06-23-undertow-pour-booster-vos-services-rest/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2015-06-23-undertow-pour-booster-vos-services-rest/</guid>
+      <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
+Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
+Au niveau des besoins, ils seront identiques ie. :
+ utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur.  RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
+    </item>
+    
+  </channel>
+</rss>

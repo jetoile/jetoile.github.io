@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/</link>
+    <description>Recent content in Tags on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 03 Nov 2017 16:16:05 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hadoop</title>
+      <link>https://blog.jetoile.fr/tags/hadoop/</link>
+      <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/hadoop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Livrable</title>
+      <link>https://blog.jetoile.fr/tags/livrable/</link>
+      <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/livrable/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Test</title>
+      <link>https://blog.jetoile.fr/tags/test/</link>
+      <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cassandra</title>
+      <link>https://blog.jetoile.fr/tags/cassandra/</link>
+      <pubDate>Fri, 21 Jul 2017 10:22:37 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/cassandra/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://blog.jetoile.fr/tags/redis/</link>
+      <pubDate>Mon, 17 Jul 2017 11:10:30 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elasticsearch</title>
+      <link>https://blog.jetoile.fr/tags/elasticsearch/</link>
+      <pubDate>Tue, 11 Jul 2017 10:05:51 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/elasticsearch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Parquet</title>
+      <link>https://blog.jetoile.fr/tags/parquet/</link>
+      <pubDate>Mon, 28 Nov 2016 11:15:19 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/parquet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sqoop</title>
+      <link>https://blog.jetoile.fr/tags/sqoop/</link>
+      <pubDate>Mon, 28 Nov 2016 11:15:19 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/sqoop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log</title>
+      <link>https://blog.jetoile.fr/tags/log/</link>
+      <pubDate>Tue, 05 Jan 2016 12:40:17 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/log/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>https://blog.jetoile.fr/tags/java/</link>
+      <pubDate>Wed, 07 Oct 2015 17:33:08 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>microservice</title>
+      <link>https://blog.jetoile.fr/tags/microservice/</link>
+      <pubDate>Wed, 07 Oct 2015 17:33:08 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/microservice/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rest</title>
+      <link>https://blog.jetoile.fr/tags/rest/</link>
+      <pubDate>Wed, 07 Oct 2015 17:33:08 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/rest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jmx</title>
+      <link>https://blog.jetoile.fr/tags/jmx/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jmx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jolokia</title>
+      <link>https://blog.jetoile.fr/tags/jolokia/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jolokia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>maven</title>
+      <link>https://blog.jetoile.fr/tags/maven/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/maven/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>metrics</title>
+      <link>https://blog.jetoile.fr/tags/metrics/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/metrics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>performance</title>
+      <link>https://blog.jetoile.fr/tags/performance/</link>
+      <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/performance/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>breizhcamp</title>
+      <link>https://blog.jetoile.fr/tags/breizhcamp/</link>
+      <pubDate>Thu, 12 Jun 2014 08:28:38 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/breizhcamp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>présentation</title>
+      <link>https://blog.jetoile.fr/tags/pr%C3%A9sentation/</link>
+      <pubDate>Thu, 12 Jun 2014 08:28:38 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/pr%C3%A9sentation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>big data</title>
+      <link>https://blog.jetoile.fr/tags/big-data/</link>
+      <pubDate>Mon, 12 May 2014 09:21:35 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/big-data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rdd</title>
+      <link>https://blog.jetoile.fr/tags/rdd/</link>
+      <pubDate>Mon, 12 May 2014 09:21:35 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/rdd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spark</title>
+      <link>https://blog.jetoile.fr/tags/spark/</link>
+      <pubDate>Mon, 12 May 2014 09:21:35 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>avis</title>
+      <link>https://blog.jetoile.fr/tags/avis/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/avis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>batch</title>
+      <link>https://blog.jetoile.fr/tags/batch/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/batch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>eip</title>
+      <link>https://blog.jetoile.fr/tags/eip/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/eip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spring integration</title>
+      <link>https://blog.jetoile.fr/tags/spring-integration/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/spring-integration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>logstash</title>
+      <link>https://blog.jetoile.fr/tags/logstash/</link>
+      <pubDate>Mon, 07 Apr 2014 11:20:26 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/logstash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>supervision</title>
+      <link>https://blog.jetoile.fr/tags/supervision/</link>
+      <pubDate>Mon, 07 Apr 2014 11:20:26 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/supervision/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>divers</title>
+      <link>https://blog.jetoile.fr/tags/divers/</link>
+      <pubDate>Mon, 31 Mar 2014 18:54:22 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/divers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>netty</title>
+      <link>https://blog.jetoile.fr/tags/netty/</link>
+      <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/netty/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>html</title>
+      <link>https://blog.jetoile.fr/tags/html/</link>
+      <pubDate>Thu, 20 Mar 2014 11:24:11 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/html/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fluentlenium</title>
+      <link>https://blog.jetoile.fr/tags/fluentlenium/</link>
+      <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/fluentlenium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>intégration continue</title>
+      <link>https://blog.jetoile.fr/tags/int%C3%A9gration-continue/</link>
+      <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/int%C3%A9gration-continue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>selenium</title>
+      <link>https://blog.jetoile.fr/tags/selenium/</link>
+      <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/selenium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jetty</title>
+      <link>https://blog.jetoile.fr/tags/jetty/</link>
+      <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jetty/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tomcat</title>
+      <link>https://blog.jetoile.fr/tags/tomcat/</link>
+      <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/tomcat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>architecture</title>
+      <link>https://blog.jetoile.fr/tags/architecture/</link>
+      <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>devoxx</title>
+      <link>https://blog.jetoile.fr/tags/devoxx/</link>
+      <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/devoxx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>soa</title>
+      <link>https://blog.jetoile.fr/tags/soa/</link>
+      <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/soa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>réflexion</title>
+      <link>https://blog.jetoile.fr/tags/r%C3%A9flexion/</link>
+      <pubDate>Tue, 06 Nov 2012 13:13:17 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/r%C3%A9flexion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ant</title>
+      <link>https://blog.jetoile.fr/tags/ant/</link>
+      <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/ant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jsp</title>
+      <link>https://blog.jetoile.fr/tags/jsp/</link>
+      <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jsp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>clif</title>
+      <link>https://blog.jetoile.fr/tags/clif/</link>
+      <pubDate>Wed, 17 Oct 2012 12:29:39 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/clif/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gatling</title>
+      <link>https://blog.jetoile.fr/tags/gatling/</link>
+      <pubDate>Wed, 17 Oct 2012 12:29:39 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/gatling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jmeter</title>
+      <link>https://blog.jetoile.fr/tags/jmeter/</link>
+      <pubDate>Wed, 17 Oct 2012 12:29:39 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jmeter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nosql</title>
+      <link>https://blog.jetoile.fr/tags/nosql/</link>
+      <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/nosql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jms</title>
+      <link>https://blog.jetoile.fr/tags/jms/</link>
+      <pubDate>Sun, 20 Nov 2011 22:49:24 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloudbees</title>
+      <link>https://blog.jetoile.fr/tags/cloudbees/</link>
+      <pubDate>Mon, 14 Nov 2011 22:40:16 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/cloudbees/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>archetype</title>
+      <link>https://blog.jetoile.fr/tags/archetype/</link>
+      <pubDate>Sun, 05 Jun 2011 21:48:02 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/archetype/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nexus</title>
+      <link>https://blog.jetoile.fr/tags/nexus/</link>
+      <pubDate>Fri, 20 May 2011 19:50:24 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/nexus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jgroups</title>
+      <link>https://blog.jetoile.fr/tags/jgroups/</link>
+      <pubDate>Thu, 24 Feb 2011 18:49:13 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jgroups/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>esb</title>
+      <link>https://blog.jetoile.fr/tags/esb/</link>
+      <pubDate>Wed, 07 Apr 2010 10:55:20 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/esb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>apache camel</title>
+      <link>https://blog.jetoile.fr/tags/apache-camel/</link>
+      <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/apache-camel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jbi</title>
+      <link>https://blog.jetoile.fr/tags/jbi/</link>
+      <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jbi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jrebel</title>
+      <link>https://blog.jetoile.fr/tags/jrebel/</link>
+      <pubDate>Wed, 24 Feb 2010 23:19:33 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jrebel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reflexion</title>
+      <link>https://blog.jetoile.fr/tags/reflexion/</link>
+      <pubDate>Tue, 26 Jan 2010 22:53:32 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/reflexion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cargo</title>
+      <link>https://blog.jetoile.fr/tags/cargo/</link>
+      <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/cargo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jetspeed</title>
+      <link>https://blog.jetoile.fr/tags/jetspeed/</link>
+      <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/jetspeed/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

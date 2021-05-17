@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nosql on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/nosql/</link>
+    <description>Recent content in nosql on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 22 May 2012 10:37:00 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/nosql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</title>
+      <link>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</link>
+      <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</guid>
+      <description>Pour ceux qui l&amp;rsquo;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de Devoxx France.
+L&amp;rsquo;annonce avait été faite pendant la dernière édition de Devoxx &amp;ldquo;l&amp;rsquo;originale&amp;rdquo; à Anvers en Belgique qui fêtait pour l&amp;rsquo;occasion ses 10 ans.
+Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille vivement à tous les développeurs), j&amp;rsquo;ai écrit un petit compte rendu d&amp;rsquo;une des moultes conférences qui m&amp;rsquo;ont marquées aussi bien par sa qualité scénique que par son contenu.</description>
+    </item>
+    
+    <item>
+      <title>Petits retours sur Cassandra</title>
+      <link>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</link>
+      <pubDate>Tue, 13 Mar 2012 10:19:01 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</guid>
+      <description>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&amp;rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&amp;rsquo;ai aimé et ce que je n&amp;rsquo;ai pas aimé sur Apache Cassandra.
+Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle sur le produit et que je ne m&amp;rsquo;appuierai donc que sur sa documentation officielle en version 1.</description>
+    </item>
+    
+  </channel>
+</rss>

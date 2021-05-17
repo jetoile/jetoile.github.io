@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>EIP : Qu&#39;est ce que c&#39;est &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>EIP : Qu&#39;est ce que c&#39;est</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 Dec 2009, 12:15</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/eip">eip</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/soa">soa</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://rcm-images.amazon.com/images/I/51tVn4YqQUL._SL110_.jpg" alt="left">
+Dans l&rsquo;article sur <a href="https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html">JBI</a>, j&rsquo;ai mentionné à de nombreuses reprises le terme EIP. Cet article revient sur cette notion que je considère comme étant très importante surtout lorsque l&rsquo;on doit jongler avec des messages asynchrones.</p>
+<p>En fait, les EIP (<em>Enterprise Integration Patterns</em>) sont issus de l&rsquo;excellent livre éponyme de G. Hohpe et B. Woolf chez Addisson Wesley. Ne pouvant que vous recommandez sa lecture si vous trempez dans cette problématique, cet article ne sera qu&rsquo;une brève introduction à son contenu (il fait quand même plus de 600 pages, donc je ne vais pas prétendre le résumer&hellip; ;-)). Cet article se voudra très théorique et d&rsquo;autres articles ultérieurs couvriront quelques implémentations d&rsquo;EIP comme Apache Camel ou Spring Integration (et peut être, un jour, iBeans). En outre, il suivra le plan du livre dont il est tiré.</p>
+<!-- more --> 
+<p>#EIP? Pour quoi faire?
+La notion de couplage faible, que ce soit au niveau applicatif ou entre applications, a toujours été primordiale pour, entre autre, permettre une meilleure évolutivité (et tous ce qui va avec) qui est une des bêtes noires pour tout DSI et même pour tous développeurs.</p>
+<p>Pour cela, plusieurs solutions existent :</p>
+<ul>
+<li>utilisation d&rsquo;un répertoire tampon sur le système de fichiers,</li>
+<li>base de données partagées,</li>
+<li>RPC (<em>Remote Procedure Call</em>),</li>
+<li>envoie de messages via un MOM (<em>Middleware Oriented Message</em>),</li>
+<li>&hellip;</li>
+</ul>
+<p>En fait, les EIP sont des patterns qui permettent de normaliser les échanges de messages dans un système asynchrone. Comme beaucoup de patterns, ces notions sont généralement connues et les EIP ne font que récapituler, normaliser et nommer de nombreux concepts comme ce que doit contenir les messages qui transitent ou ce qu&rsquo;il faut faire pour router un message. En outre, il formalise graphiquement la représentation de ses concepts, ce qui permet avec un schéma de se faire comprendre par tous.</p>
+<p>Ses applications sont multiples : cela peut aussi bien être dans un middleware que dans un contrôleur (au sens MVC du terme), et ils sont d&rsquo;ailleurs souvent présent dans les EAI (généralement au travers d&rsquo;un outil graphique). Aussi, les EIP trouvent parfaitement leurs places dans une infrastructure SOA comme un ESB que ce soit de manière transparente ou apparente.</p>
+<p>#Concepts des EIP
+Les EIP s&rsquo;appuient sur une architecture <strong>Pipes and Filters</strong> : un <strong>Pipe</strong> étant&hellip; un pipe et un <strong>Filter</strong> pouvant être vu comme un composant qui fait quelque chose (dans certaines implémentations, ce Filter est aussi appelé <strong>Processor</strong>).</p>
+<p>En outre, les EIP décrivent :</p>
+<ul>
+<li>ce qui transite dans le Pipe entre les Filter : il s&rsquo;agit des <strong>Messages</strong> (logique non?) et quel peut et doit être son contenu en fonction de son cas d&rsquo;utilisation</li>
+<li>sur le type de <strong>Pipe</strong> sur lequel les messages peuvent transiter : il s&rsquo;agit des <strong>Channel</strong> (canaux)</li>
+<li>et introduisent les notions de <strong>Routing</strong>, <strong>Transformation</strong> et de <strong>Message Endpoint</strong> qui permettent de classifier les Filters.</li>
+</ul>
+<p>##Notion de Channel
+Un Channel correspond au Pipe dans l&rsquo;architecture Pipes and Filters et est le canal où transitent tous les messages.</p>
+<p>Les EIP décrivent les différents types de canaux qu&rsquo;il est possible d&rsquo;avoir (liste non exhaustive) :</p>
+<ul>
+<li>Le <strong>Point-to-Point Channel</strong> qui est un canal où un message n&rsquo;est consommé que par un et un seul consommateur (ou Filter). Le message, une fois consommé, n&rsquo;est plus présent sur ce dernier. Ce canal est souvent utilisé pour faire du requête/réponse ou du load-balancing.
+<img border="0" height="14" alt="center" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/SyaAHSfE-1I/AAAAAAAAAFY/qwgCB-y4yjg/s200/Image1.png" width="98" /></a><br /></li>
+<li>Le <strong>Publish-Subscribe Channel</strong> qui est un canal où un message est consommé par tous les consommateurs qui se sont inscrits comme étant intéressés par les messages du canal. Il est à noter qu&rsquo;une fois que le message a été consommé par tous les Filter, il n&rsquo;est plus accessible (même fonctionnement que le Design Pattern Observer du GoF). Ce canal est souvent utilisé pour faire de la notification.
+<img border="0" height="60" alt="center" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaAbkFIlSI/AAAAAAAAAFg/aL3HbhSdObo/s200/Image2.png" width="98" /></a><br /></li>
+<li>Le <strong>Datatype Channel</strong> qui est un canal où tous les messages qui y transitent sont de même type.
+<img border="0" height="46" alt="center" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaApPYOGaI/AAAAAAAAAFo/xaLAftWvRkc/s200/Image3.png" width="138" /></li>
+<li>Le <strong>Message Invalid Channel</strong> est un canal qui permet de véhiculer les messages non valides (au sens applicatif du terme : manque d&rsquo;information, mauvais format, &hellip;) et qui ont besoin d&rsquo;un traitement particulier. Ces messages sont considérés comme invalide par les Filter qui, plutôt que de les ignorer ou de les réémettre sur un canal &ldquo;normal&rdquo; ont alors la possibilité d&rsquo;utiliser ce canal particulier pour, par exemple, pour le logger ou faire un traitement sur erreur.
+<img border="0" height="41" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaA1C5gx3I/AAAAAAAAAFw/o_rvD0NbEeo/s200/Image4.png" width="92" alt="center"/></li>
+<li>Le <strong>Dead Letter Channel</strong> est un canal qui permet de rerouter des messages non valides, au sens technique du terme (canal d&rsquo;émission mal configuré, canal supprimé avant réception du message, message expiré, &hellip;). Ces le système de messagerie qui doit prendre en compte ce type de problème et qui doit gérer, s&rsquo;il existe, ce Dead Letter Channel.
+<img border="0" height="44" src="http://4.bp.blogspot.com/_XLL8sJPQ97g/SyaBOr-9_2I/AAAAAAAAAF4/mvecgUh_4NY/s200/Image5.png" width="97" alt="center"/></li>
+<li>Le <strong>Garanteed Delivery Channel</strong> qui est un canal qui conserve les messages dans un espace de stockage persistant (base de données, système de fichiers, &hellip;) tant qu&rsquo;il n&rsquo;a pas été transmis ou tant qu&rsquo;il n&rsquo;a pas été stocké dans un autre espace de stockage. Ce canal permet de s&rsquo;assurer de la non perte de données dans le système en cas d&rsquo;anomalie de ce dernier (arrêt, &hellip;).
+<img border="0" height="52" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaBcLHKdCI/AAAAAAAAAGA/cozenqpx-sY/s200/Image6.png" width="117" alt="center"/></li>
+</ul>
+<p>En outre, les EIP décrivent également dans cette section des notions transverses aux canaux qui permettent leur interaction (liste non exhaustive) :</p>
+<ul>
+<li>Le <strong>Channel Adapter</strong> qui permet à une ou des applications quelconques de recevoir ou d&rsquo;émettre des messages de ou vers le système de messagerie.</li>
+<li>Le <strong>Messaging Bridge</strong> qui permet d&rsquo;interfacer plusieurs systèmes de messagerie.</li>
+</ul>
+<p>On peut constater que, généralement, ces différents points ne sont pas nouveaux et qu&rsquo;ils sont présent dans de nombreux produits, technologies et spécification sous des noms différents (JMS pour les Point-to-Point - <em>Queue</em> - ou les Publish-Subscribe - <em>Topic</em> -, PABX dans le monde des télécoms pour le Messaging Bridge, &hellip;).</p>
+<p>##Notion de Message
+Les EIP décrivent les messages qui peuvent transiter dans les canaux au niveau structurel et fonctionnel.</p>
+<p>Aussi, au niveau structurel, ils définissent un message comme pouvant être constitué de :</p>
+<ul>
+<li>un entête</li>
+<li>des propriétés</li>
+<li>un corps (body)</li>
+<li>une pièce jointe</li>
+</ul>
+<img border="0" height="148" src="http://4.bp.blogspot.com/_XLL8sJPQ97g/SyaBnNvb74I/AAAAAAAAAGI/Eq8XUk2Rz3Q/s200/Image7.png" width="126" alt="center"/>
+<p>Ils décrivent également ce que peut ou devrait contenir l&rsquo;entête ou les propriétés du message en fonction de son cas d&rsquo;utilisation :</p>
+<ul>
+<li><strong>Return Address</strong> qui permet lorsque le message est utilisé comme requête dans le mécanisme de requête/réponse de connaître à qui (c&rsquo;est à dire le canal) la réponse doit être renvoyé (ndlr : s&rsquo;il connait le canal alors le ou les destinataires sont connus au travers des Filter consommateurs ou en écoute du canal). Cette information est généralement mise dans l&rsquo;entête du message.</li>
+<li><strong>Correlation Identifier</strong> qui permet d&rsquo;associer un identifiant au message afin de, par exemple, l&rsquo;associer la réponse à sa requête lors d&rsquo;un échange asynchrone.</li>
+<li><strong>Message Sequence</strong> qui permet de reséquencer des messages pouvant être issus d&rsquo;un même message découpé en raison de sa taille ou en raison de la nécessité d&rsquo;en émettre des parties à des Filter différents puis de les réagréger. Ce type d&rsquo;information est généralement mise dans l&rsquo;entête du message et doit dans la plupart des cas disposer de 3 choses : l&rsquo;identifiant de la séquence, l&rsquo;identifiant de position et le nombre de fraction ou un identifiant de fin (flag).</li>
+<li><strong>Message Expiration</strong> qui permet de spécifier une durée de validité (en temps absolue ou relative) du message. S&rsquo;il est expiré, il peut, par être exemple, être rerouté vers un Dead Letter Channel par le système de messagerie ou vers un Invalid Message Channel s&rsquo;il a été reçu par un Filter. Cette information est généralement mise dans l&rsquo;entête du message.</li>
+<li><strong>Format Indicator</strong> qui permet de spécifier le format de la donnée (numéro de version, clé d&rsquo;identification, format de la donnée comme son schéma xsd, &hellip;). Cette information peut être mise soir dans l&rsquo;entête du message, soir dans le corps de ce dernier.</li>
+</ul>
+<p>Enfin, les EIP classifient les messages (qui peuvent être utilisés dans des échanges synchrone ou asynchrone) par type d&rsquo;utilisation :</p>
+<ul>
+<li><strong>Command Message</strong> qui sont des messages utilisés pour invoquer une méthode ou une procédure.
+Document Message qui sont des messages utilisés pour transmettre des données en laissant aux consommateurs de ces derniers le soin de décider de leur traitement.</li>
+<li><strong>Event Message</strong> qui sont des messages utilisés pour émettre un événement et qui peut se décliner en deux modèles :
+<ul>
+<li><strong>Push Model</strong>  : le message est une combinaison du contenu du nouvel élément et de l’événement.</li>
+<li><strong>Pull Model</strong> : le message est juste une notification devant être suivie d’une demande du nouvel élément par le consommateur via un Command Message qui reçoit alors un Document Message de l’émetteur.</li>
+</ul>
+</li>
+</ul>
+<img border="0" height="53" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaC-t6iMxI/AAAAAAAAAGQ/wG2Vj6ffxh0/s200/Image8.png" width="149" alt="center"/>
+<p>##Notion de Message Routing
+Un <strong>Message Routing</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de routage en offrant des composants de&hellip; routage (et oui&hellip; ;-) ) mais aussi de filtrage (qui peut être considérer un peu comme un routeur), de découpage (un routage de 1 vers n), d&rsquo;agrégation ou de reséquencement. En outre, on peut les classifier en deux catégories : les basiques et les composés qui composent les Message Routing basiques pour offrir un patron plus complet.</p>
+<p>Les EIP décrivent les Message Routing &ldquo;simple&rdquo; suivants :</p>
+<ul>
+<li>
+<p>De 1 vers 1 :</p>
+<ul>
+<li><strong>Content-Based Routing</strong> qui permet de router les messages en fonction du contenu de ces derniers en fonction de règles prédéfinies.
+<img border="0" height="62" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaDQR61EcI/AAAAAAAAAGY/AzMf-1jAW4U/s200/Image9.png" width="98" alt="center"/></li>
+<li><strong>Message Filter</strong> qui permet de filtrer les messages en fonction de règles prédéfinies. Il est à noter qu&rsquo;il peut être sans état ou avec état (par exemple dans le cas où il est nécessaire de supprimer les messages en doublons).
+<img border="0" height="67" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaDyGdyMCI/AAAAAAAAAGw/AtX-knuh1ZA/s200/Image11.png" width="106" alt="center"/></li>
+<li><strong>Dynamic Router</strong> qui permet de router les messages en fonction de critères fournis par un composant tierce pouvant être renseigné dynamiquement.
+<img border="0" height="78" src="http://4.bp.blogspot.com/_XLL8sJPQ97g/SyaDrLkbfSI/AAAAAAAAAGo/1kdMD9IXq24/s200/Image10.png" width="141" alt="center"/></li>
+<li><strong>Splitter</strong> qui permet de découper un message en fonction de règles pouvant être définies statiquement ou dynamiquement. Il est à noter qu&rsquo;il peut également adjoindre au message des propriétés comme Message Sequence et Correlation Identifier en prévision d&rsquo;une éventuelle réagrégation du message découpé.
+<img border="0" height="71" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaEpD_IwzI/AAAAAAAAAHA/TS1ldrpLZTg/s200/Image13.png" width="111" alt="center"/></li>
+<li><strong>Resequencer</strong> qui permet de réordonnancer une série de message. C&rsquo;est un Filter à état qui nécessite, généralement le Message Sequence et qui peut soit émettre les messages au fils de l&rsquo;eau (dès qu&rsquo;il reçoit le message n+1, il l&rsquo;émet) soit attendre d&rsquo;avoir reçu tous les messages à réordonner. Il doit pouvoir :
+<ul>
+<li>stocker les messages ne correspondant pas au suivant,</li>
+<li>gérer l’arrivée d’un nouveau message même si un ré-ordonnancement est en cours,</li>
+<li>gérer l’arrivée d’un message ayant déjà été pris en compte dans un processus de ré-ordonnancement,</li>
+<li>gérer son buffer afin d’éviter un dépassement de capacité.
+<img border="0" height="74" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/SyaE5HQxmjI/AAAAAAAAAHI/eIvUUvfXJjQ/s200/Image15.png" width="117" alt="center"/></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>De 1 vers n :</p>
+<ul>
+<li><strong>Recipient List</strong>  qui permet de multiplexer un message vers un ensemble de consommateurs en fonction de règles pouvant être basées sur le message ou pouvant être fourni par un composant tierce. Il est à noter que le Recipient List est responsable de l&rsquo;émission des messages et qu&rsquo;il doit donc être garant que le message a bien été reçu par tous les destinataires.	
+<img border="0" height="65" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaEaEsuo4I/AAAAAAAAAG4/B7LutTEsYY8/s200/Image12.png" width="103" alt="center"/></li>
+</ul>
+</li>
+<li>
+<p>De n vers 1 :</p>
+<ul>
+<li><strong>Aggregator</strong> qui permet de ré-agréger des message en un seul. C&rsquo;est un Filter à état et il peut disposer des stratégies suivantes :
+<ul>
+<li>Wait for All : attente de tous les messages,</li>
+<li>Timeout : attente pendant un laps de temps donné,</li>
+<li>First Best : transmission de la première fraction de message reçu et ignorance des autres,</li>
+<li>Timeout with Override : attente pendant un laps de temps donné et transmission de la meilleure fraction de message,</li>
+<li>External Event : attente jusqu’à réception d’un événement extérieur.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>et qu&rsquo;il doit pouvoir :</p>
+<ul><li><ul><li>
+	 <ul>
+		<li>décider du moment où un message est entièrement reçu, et de ce qu’il doit faire sinon,</li>
+		<li>décider de la manière dont il doit agréger les messages reçus,</li>
+		<li>gérer l’arrivée d’une fraction d’un nouveau message même si une agrégation est en cours,</li>
+		<li>gérer l’arrivée d’une fraction d’un message ayant déjà été agrégé et émis.</li>
+	</ul>
+</li></ul></li></ul>
+<img border="0" height="84" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaFFcSzivI/AAAAAAAAAHQ/RpkepGPHzWw/s320/Image14.png" width="131" alt="center"/>
+<p>En outre, les EIP décrivent les Message Routing &ldquo;composite&rdquo; suivants :</p>
+<ul>
+<li><strong>Composed Message Processor</strong> qui permet successivement de recevoir un message, de le découper, de l’émettre à différents composants puis d’agréger le résultat de ces derniers dans un unique message.
+<img border="0" height="76" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaFW3jJKjI/AAAAAAAAAHY/DDi7TEiJs-I/s320/Image16.png" width="125" alt="center"/></li>
+<li><strong>Scatter-Gather</strong> qui permet successivement de recevoir un message, de l’émettre à différents composants puis d’agréger le résultat de ces derniers dans un unique message.</li>
+<li><strong>Routing Slip</strong> qui permet d’utiliser l’architecture du Pipes and Filters dans un unique composant, c&rsquo;est-à-dire chaîner linéairement les appels vers différents filters en masquant les composants appelés et en minimisant les points de contrôle.</li>
+<li><strong>Process Manager</strong> qui permet d’invoquer, dans un unique composant, un ensemble d’opérations s’exécutant de manière non linéaire en minimisant les points de contrôle. Il s’agit d’un composant à état qui doit connaître l’étape du processus et qui est être capable de gérer plusieurs instances de processus (utilisation d’un identifiant de corrélation). Il est à noter que pour répondre à ces besoins, certains langages ont émergés tels que :
+<ul>
+<li>XLANG,</li>
+<li>WSFL (<em>Web Services Flow Language</em>),</li>
+<li>BPEL (<em>Business Process Execution Language</em>).</li>
+</ul>
+</li>
+<li><strong>Message Broker</strong> qui permet de découpler les destinataires d’un message de l’émetteur en utilisant un unique point de contrôle qui permet de déterminer le consommateur d’un message.</li>
+</ul>
+<p>Il est à noter que beaucoup des fonctionnalités des Message Routing décrits précédemment peuvent également être traitées en utilisant différents types de Message Channel, en spécialisant le consommateur ou en combinant d’autres Messages Routing (par exemple, le Content-Based Router peut être remplacé en utilisant un Publish/Subscribe Channel en combinaison de Message Filter) : les critères de choix sont donc à étudier avec attention car cela peut impacter la maintenabilité du système ainsi que ses performances. En outre, donner connaissance de la logique aux composants peut entraîner un couplage plus fort.</p>
+<p>##Notion de Message Transformer
+Un <strong>Message Transformer</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques de transformation et d&rsquo;encapsulation.</p>
+<p>Les EIP décrivent les Message Transformer suivants :</p>
+<ul>
+<li><strong>Envelope Wrapper</strong> qui permet d’encapsuler un message ou un objet dans un message compatible avec le système de messagerie.
+<img border="0" height="59" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaFoVY9E2I/AAAAAAAAAHg/2ViEhtBdJnA/s200/Image17.png" width="97" alt="center"/></li>
+<li><strong>Content Enricher</strong> qui permet d’ajouter des informations au message transmis. Ces informations peuvent provenir :
+<ul>
+<li>du Content Enricher lui-même,</li>
+<li>de l’environnement système,</li>
+<li>d’une entité tierce.
+<img border="0" height="64" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/SyaF1aBUKFI/AAAAAAAAAHo/ibPijgNSlm4/s320/Image18.png" width="104" alt="center"/></li>
+</ul>
+</li>
+<li><strong>Content Filter</strong> qui permet d’élaguer le contenu d’un message (confidentialité, …) ou de simplifier sa structure.
+<img border="0" height="61" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/SyaGDhigd1I/AAAAAAAAAHw/f7dl2L3Izyk/s320/Image19.png" width="100" alt="center"/></li>
+<li><strong>Claim Check</strong> qui permet de diminuer temporairement la taille d’un message en stockant les informations (système de fichiers, base de données) qui peuvent alors être récupérées ultérieurement. Il nécessite, généralement, la génération d’un identifiant permettant de récupérer l’information stockée.
+<img border="0" height="81" src="http://1.bp.blogspot.com/_XLL8sJPQ97g/SyaGRMZsSxI/AAAAAAAAAH4/ElWtLODHBQY/s320/Image20.png" width="134" alt="center"/></li>
+<li><strong>Normalizer</strong> qui permet de modifier le format d’un message.
+<img border="0" height="81" src="http://2.bp.blogspot.com/_XLL8sJPQ97g/SyaGeyIOrNI/AAAAAAAAAIA/FtrTr12I1wY/s320/Image21.png" width="132" alt="center"/></li>
+</ul>
+<p>##Notion de Message Endpoint
+Un <strong>Message Endpoint</strong> correspond à une catégorie de Filter dans l&rsquo;architecture Pipes and Filters. Ce type de Filter permet de gérer les problématiques d&rsquo;interconnexion avec l&rsquo;extérieur du système de messagerie.</p>
+<p>Les Message Endpoint se décomposent en 2 catégories :</p>
+<ul>
+<li><strong>Send and Receive Patterns</strong> qui s’appliquent aux émetteurs et récepteurs et qui permet au code de l’application de s’interfacer, via une couche de code permettant également de transformer les données afin qu’elles soient compatibles, avec le système de messagerie. Cette couche peut également gérer le coté transactionnelle.</li>
+<li><strong>Message Consumer Patterns</strong> qui s’appliquent aux consommateurs de messages et qui peuvent différer sur des critères comme la manière de lire un message dans le canal ou la possibilité de recevoir tous les messages.</li>
+</ul>
+<p>Il est à noter que le <strong>Message Producer Patterns</strong> n&rsquo;est pas défini car la procédure d’émission est simple et ne nécessite pas de mécanisme particulier.</p>
+<p>Les EIP décrivent les Message Endpoint suivants :</p>
+<ul>
+<li><strong>Messaging Gateway</strong> qui permet d’encapsuler l’accès au système de messagerie du reste de l’application en fournissant, généralement une API permettant d’émettre et de recevoir des messages de manière synchrone ou asynchrone et positionnant automatiquement, au besoin, les propriétés utiles aux messages. En outre, généralement, c’est à cette couche de gérer les exceptions pouvant être levées par le système de messagerie.</li>
+<li><strong>Messaging Mapper</strong> qui permet de lier des objets et des messages compatibles avec le système de messagerie. Cette opération peut s’avérer complexe car, si la donnée est transmise sous forme d’objet, alors les composants du système deviennent dépendants du format (il est à noter que le Messaging Mapper peut être comparé au design pattern Mediator et utiliser les mécanismes de réflexion).</li>
+<li><strong>Transactional Client</strong> qui permet de gérer les transactions dans le système de messagerie (dans le cas où il existe plusieurs consommateurs, …).</li>
+<li><strong>Polling Consumer</strong> qui permet, pour un consommateur, de récupérer un message du canal en scrutant ce dernier périodiquement ou lorsqu’il est disponible. Il est aussi dénommé Synchronhous receiver et permet de ne consommer qu’un seul thread.</li>
+<li><strong>Event-Driven Consumer</strong> qui permet, pour un consommateur, de récupérer un message dès qu’il est disponible sur le canal. Il est aussi dénommé Asynchronous receiver et fonctionne sur le mécanisme de callback.</li>
+<li><strong>Competing Consumers</strong> qui permet, lorsque le système nécessite une grande réactivité, en dispatchant les messages d’un Point-to-Point Channel, de les consommer de manière concurrente en associant un thread à chacun de consommateurs.</li>
+<li><strong>Message Dispatcher</strong> qui permet de dispatcher les messages d’un canal pour les consommer par différents consommateurs en leur associant un thread à chacun. Le Message Dispatcher peut utiliser des propriétés pour sélectionner le consommateur adéquat. Généralement, les consommateurs sont dans le même processus que le Message Dispatcher contrairement, au Competing Consumers.</li>
+<li><strong>Selective Consumer</strong> qui permet de ne consommer que certains messages en provenance d’un canal.</li>
+<li><strong>Durable Subscriber</strong> qui permet de recevoir tous les messages d’un Publish/Subscribe Channel même lorsqu’il n’est pas connecté (on utilise alors le terme d’inactif puisqu’il nécessite quand même un abonnement).</li>
+<li><strong>Indempotent Receiver</strong> qui permet de ne recevoir qu’une seule instance d’un même message. Il doit être à état et doit donc gérer la purge de l’historique.</li>
+<li><strong>Service Activator</strong> qui permet d’invoquer une application prévue pour s’interfacer ou pas avec le système de messagerie. Un Service Activator peut être unidirectionnel (requêtes seules) ou bidirectionnel (requête/réponse) et peut, soit invoquer toujours le même service (application), soit utiliser des mécanismes de réflexion. Il permet d’invoquer, suite à la réception d’un message, l’application comme un client de manière à masquer complètement à l’application le système de messagerie.</li>
+</ul>
+<p>#Conclusion sur les EIP
+Comme il a été vu, les EIP ne réinventent pas la roue mais permettent de donner un nom à des fonctionnalités ainsi qu&rsquo;une représentation graphique. Cela peut être utile pour être compris de tous si tout le monde partage le même langage (un peu comme les Design Patterns).</p>
+<p>Ils ne proposent pas de solutions clé en main mais mettent en avant des notions qu&rsquo;il est nécessaire d&rsquo;avoir dans certains cas d&rsquo;usage (comme l&rsquo;identifiant de corrélation pour l&rsquo;agrégation ou le reséquencement).
+Aussi de mon point de vue, il est essentiel de connaitre ces concepts lorsque l&rsquo;on manipule des messages dans un système asynchrone et que des notions de médiation apparaissent. Je ne saurais donc que vous conseiller la lecture de cet excellent ouvrage.</p>
+<p>Les EIP trouvent donc parfaitement leurs places dans une architecture SOA et plus précisément dans les ESB.
+Au niveau de ses implémentations, on trouve l&rsquo;excellent Spring Integration ainsi que Apache Camel (que je trouve beaucoup moins bon de par son modèle de programmation que par ses concepts) et le petit dernier iBeans de Mule : une attention toute particulière doit être apportée quand à la mise en œuvre de ces concepts (et je dirais pour ma part qu&rsquo;il n&rsquo;est pas nécessaire (mais alors pas du tout) de rajouter une couche de concepts par dessus comme le fait Apache Camel</p>
+<p>#Pour aller plus loin&hellip;</p>
+<ul>
+<li><strong>Enterprise Integration Patterns</strong> de G. Hohpe et B. Woolf chez Addisson Wesley</li>
+<li>Site de référence sur les EIP : <a href="http://www.eaipatterns.com/">http://www.eaipatterns.com/</a></li>
+<li>Article d’IBM sur les EIP : <a href="http://www.ibm.com/developerworks/library/ws-intpatterns/index.html?S_TACT=105AGX20&amp;S_CMP=EDU">http://www.ibm.com/developerworks/library/ws-intpatterns/index.html?S_TACT=105AGX20&amp;S_CMP=EDU</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2009-12-13-eip-quest-ce-que-cest%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2009-12-07-jbi-une-solution-enterree/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2009-12-07-jbi-une-solution-enterree/">JBI : Qu&#39;est ce que c&#39;est?</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/">Retour sur la mise en oeuvre d&#39;un environnement de développement</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

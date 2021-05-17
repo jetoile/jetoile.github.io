@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>batch on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/batch/</link>
+    <description>Recent content in batch on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 10 Apr 2014 14:15:44 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/batch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Lecture et traitement de fichiers : comment faire simple?</title>
+      <link>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</link>
+      <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</guid>
+      <description>De nombreuses applications ou systèmes d&amp;rsquo;informations nécessitent le chargement de données issues de fichiers.
+Bien souvent, cet import est exécuté par batch, mais il peut aussi être intéressant de faire cet import au fil de l&amp;rsquo;eau.
+En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&amp;rsquo;il n&amp;rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&amp;rsquo;est à dire avec, au minimum, le temps de traitement d&amp;rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code.</description>
+    </item>
+    
+  </channel>
+</rss>

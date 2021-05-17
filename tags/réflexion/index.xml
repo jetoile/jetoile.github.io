@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>réflexion on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/r%C3%A9flexion/</link>
+    <description>Recent content in réflexion on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 06 Nov 2012 13:13:17 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/r%C3%A9flexion/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Indépendance, me voici ;-)</title>
+      <link>https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/</link>
+      <pubDate>Tue, 06 Nov 2012 13:13:17 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/</guid>
+      <description>Une fois n&amp;rsquo;est pas coutume (quoique&amp;hellip;)&amp;hellip; cet article ne sert à rien&amp;hellip; mais a juste pour objectif d&amp;rsquo;annoncer que je quitte la société de service que j&amp;rsquo;ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l&amp;rsquo;indépendance&amp;hellip;
+Je quitte donc une société de service où j&amp;rsquo;ai eu la chance de rencontrer et côtoyer des personnes géniales (aussi bien humainement que professionnellement) et qui m&amp;rsquo;a donné ma chance pour essayer de suivre et de transmettre mon enthousiasme à mes joyeux camarades ;-)</description>
+    </item>
+    
+    <item>
+      <title>Découpage de projets : projet vs. modules</title>
+      <link>https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/</link>
+      <pubDate>Tue, 28 Aug 2012 10:47:11 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/</guid>
+      <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
+ le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
+    </item>
+    
+    <item>
+      <title>Petits retours sur Cassandra</title>
+      <link>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</link>
+      <pubDate>Tue, 13 Mar 2012 10:19:01 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</guid>
+      <description>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&amp;rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&amp;rsquo;ai aimé et ce que je n&amp;rsquo;ai pas aimé sur Apache Cassandra.
+Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle sur le produit et que je ne m&amp;rsquo;appuierai donc que sur sa documentation officielle en version 1.</description>
+    </item>
+    
+    <item>
+      <title>Sooner is better</title>
+      <link>https://blog.jetoile.fr/post/2010-06-14-sooner-is-better/</link>
+      <pubDate>Mon, 14 Jun 2010 11:34:55 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-06-14-sooner-is-better/</guid>
+      <description>Bon, voilà, cela fait un moment que je n&amp;rsquo;ai pas bloggé&amp;hellip; manque d&amp;rsquo;inspiration peut être&amp;hellip; manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard&amp;hellip;
+Dans cet article, je voudrais revenir sur un point que j&amp;rsquo;avais légèrement abordé dans ce post portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l&amp;rsquo;importance de s&amp;rsquo;intégrer aux processus de compilation et de livraison au plus tôt&amp;hellip; en fait, pour être plus précis, je n&amp;rsquo;avais pas vraiment abordé cette problématique mais cela vient du même constat&amp;hellip; ;-)</description>
+    </item>
+    
+    <item>
+      <title>RTFM ou de l&#39;importance de savoir lire une documentation</title>
+      <link>https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/</link>
+      <pubDate>Sat, 15 May 2010 11:24:47 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/</guid>
+      <description>Ce petit article est plus une tranche de vie ayant pour objectif de montrer l&#39;importance de savoir lire une documentation qu&#39;un &#34;vrai&#34; post intéressant... Il est vrai que savoir trouver son information s&amp;rsquo;applique énormément dans le monde Open Source où il est crucial de savoir fouiller (documentation, forum, &amp;hellip;) lorsqu&amp;rsquo;un fait technique (anomalie? framework incomplet? cas d&amp;rsquo;usage délirant? &amp;hellip;) a lieu mais cela s&amp;rsquo;applique aussi dans notre vie de programmeur de tous les jours.</description>
+    </item>
+    
+    <item>
+      <title>JMX ou comment administrer et superviser son système...</title>
+      <link>https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/</link>
+      <pubDate>Wed, 05 May 2010 11:07:07 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/</guid>
+      <description>Je n&amp;rsquo;ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu&amp;rsquo;il s&amp;rsquo;agit d&amp;rsquo;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &amp;ldquo;comment ça marche&amp;rdquo; ou je ne fournirai pas de tutoriaux. Il s&amp;rsquo;agit juste d&amp;rsquo;un petit coup de gueule parce que j&amp;rsquo;en ai marre d&amp;rsquo;entendre toujours les mêmes inepties sur JMX&amp;hellip;
+Bon, pourquoi JMX me direz-vous?</description>
+    </item>
+    
+  </channel>
+</rss>

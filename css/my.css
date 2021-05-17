@@ -1,0 +1,5 @@
+img[alt=left-small] {
+    float: left;
+    width: 350px;
+    padding: 15px;
+}

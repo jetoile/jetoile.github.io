@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jrebel on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/jrebel/</link>
+    <description>Recent content in jrebel on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 24 Feb 2010 23:19:33 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jrebel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JRebel ou comment accélérer le développement</title>
+      <link>https://blog.jetoile.fr/post/2010-02-24-jrebel-ou-comment-accelerer-le_24/</link>
+      <pubDate>Wed, 24 Feb 2010 23:19:33 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-02-24-jrebel-ou-comment-accelerer-le_24/</guid>
+      <description>Dans des posts précédents (ici et là), j&amp;rsquo;avais parlé d&amp;rsquo;une façon d&amp;rsquo;utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d&amp;rsquo;applications web avec Cargo. Cependant, afin d&amp;rsquo;optimiser le temps de développement, il est préférable, plutôt que d&amp;rsquo;avoir à redéployer l&amp;rsquo;application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n&amp;rsquo;avoir pas à le faire mais d&amp;rsquo;avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.</description>
+    </item>
+    
+  </channel>
+</rss>

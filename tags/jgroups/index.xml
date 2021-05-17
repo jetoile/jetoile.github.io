@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jgroups on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/jgroups/</link>
+    <description>Recent content in jgroups on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 24 Feb 2011 18:49:13 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jgroups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pour les gouverner tous - partie 3/3</title>
+      <link>https://blog.jetoile.fr/post/2011-02-24-pour-les-gouverner-tous-partie-33/</link>
+      <pubDate>Thu, 24 Feb 2011 18:49:13 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2011-02-24-pour-les-gouverner-tous-partie-33/</guid>
+      <description>Cet article fait suite à mes précédents posts (ici et là) et à pour objectif d&amp;rsquo;intégrer la partie JMX à mon petit POC JGroups afin d&amp;rsquo;offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d&amp;rsquo;une application distribuée (ie. d&amp;rsquo;aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d&amp;rsquo;une application d&amp;rsquo;obtenir la valeur d&amp;rsquo;une donnée offerte par les autres instances.</description>
+    </item>
+    
+    <item>
+      <title>Pour les gouverner tous - partie 2/3</title>
+      <link>https://blog.jetoile.fr/post/2011-02-20-pour-les-gouverner-tous-partie-23/</link>
+      <pubDate>Sun, 20 Feb 2011 18:41:34 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2011-02-20-pour-les-gouverner-tous-partie-23/</guid>
+      <description>Cet article fait suite à mon article précédent et a pour objectif de présenter un petit POC (Proof Of Concept) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d&amp;rsquo;utiliser JGroups pour permettre à plusieurs instances d&amp;rsquo;une même application de se partager les valeurs d&amp;rsquo;une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s&amp;rsquo;agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d&amp;rsquo;une donnée auprès des autres instance déjà présentes dans le système.</description>
+    </item>
+    
+    <item>
+      <title>Pour les gouverner tous - partie 1/3</title>
+      <link>https://blog.jetoile.fr/post/2011-01-31-pour-les-gouverner-tous-partie-13/</link>
+      <pubDate>Mon, 31 Jan 2011 18:37:27 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2011-01-31-pour-les-gouverner-tous-partie-13/</guid>
+      <description>Pour ceux qui l&amp;rsquo;auraient manqués (comment ça? Personne ne me suit&amp;hellip; :( ), j&amp;rsquo;ai annoncé dans un post précédent que j&amp;rsquo;avais ouvert un compte sur GitHub pour hoster du code. Bien sûr, il y avait une petite idée derrière&amp;hellip; ;-)
+En fait, l&amp;rsquo;idée est partie d&amp;rsquo;un constat assez simple : sur différent projet, à chaque fois que j&amp;rsquo;ai voulu mettre en place JMX, ce qui m&amp;rsquo;a toujours profondément attristé était de ne pas pouvoir regrouper l&amp;rsquo;ensemble des informations des MBeans à un même endroit, c&amp;rsquo;est-à-dire, qu&amp;rsquo;il me fallait me demander où se trouvait tel ou tel MBean dans mon système alors que j&amp;rsquo;aurais aimé pouvoir me connecter sur n&amp;rsquo;importe quelle instance de mon système et y trouver tous les MBeans présents dans mon système.</description>
+    </item>
+    
+    <item>
+      <title>JGroups : tour d&#39;horizon</title>
+      <link>https://blog.jetoile.fr/post/2010-12-28-jgroups-tour-d/</link>
+      <pubDate>Tue, 28 Dec 2010 17:42:18 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-12-28-jgroups-tour-d/</guid>
+      <description>Actuellement, le besoin de rendre les systèmes ou les applications interopérables est indéniable. Pour ce faire, de nombreuses technologies ont vues le jour. Il peut s&amp;rsquo;agir des MOM (Message-Oriented Middleware), des protocoles de communication entre les applications clientes et serveurs (REST, Soap, RMI, &amp;hellip;), de solutions propriétaires utilisées pour permettre la communication entre les serveurs pour des problématiques de réplication ou de synchronisation ou même de solutions basées sur le paradigme NoSQL.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>esb on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/esb/</link>
+    <description>Recent content in esb on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 07 Apr 2010 10:55:20 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/esb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Orchestration ou Routage?</title>
+      <link>https://blog.jetoile.fr/post/2010-04-07-orchestration-ou-routage/</link>
+      <pubDate>Wed, 07 Apr 2010 10:55:20 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2010-04-07-orchestration-ou-routage/</guid>
+      <description>Orchestration ou routage? Telle est la question qui se pose souvent&amp;hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s&amp;rsquo;agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?
+PEtALS Link vient de mettre à disposition un livre blanc traitant du sujet en proposant différentes pistes pour choisir la solution d&amp;rsquo;implémentation.</description>
+    </item>
+    
+  </channel>
+</rss>

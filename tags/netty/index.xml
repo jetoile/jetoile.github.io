@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>netty on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/netty/</link>
+    <description>Recent content in netty on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 24 Mar 2014 19:12:29 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/netty/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
+      <link>https://blog.jetoile.fr/post/2014-03-24-jaxrs-netty4-et-spring-integration-ils/</link>
+      <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-03-24-jaxrs-netty4-et-spring-integration-ils/</guid>
+      <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
+Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
+Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
+    </item>
+    
+    <item>
+      <title>JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</title>
+      <link>https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/</link>
+      <pubDate>Mon, 17 Mar 2014 08:43:12 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/</guid>
+      <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
+Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
+En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
+    </item>
+    
+    <item>
+      <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
+      <link>https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
+    </item>
+    
+  </channel>
+</rss>

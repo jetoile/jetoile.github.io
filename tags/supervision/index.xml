@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>supervision on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/supervision/</link>
+    <description>Recent content in supervision on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 07 Apr 2014 11:20:26 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/supervision/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Logstash : tour d&#39;horizon sur les stratégies de déploiement</title>
+      <link>https://blog.jetoile.fr/post/2014-04-07-logstash-petit-tour-dhorizon/</link>
+      <pubDate>Mon, 07 Apr 2014 11:20:26 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2014-04-07-logstash-petit-tour-dhorizon/</guid>
+      <description>Cet article fera un rapide tour d&amp;rsquo;horizon sur les différentes stratégies qui peuvent être utilisées pour Logstash.
+Pour ce faire, je m&amp;rsquo;appuierai sur le très bon livre officiel que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.
+Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</description>
+    </item>
+    
+  </channel>
+</rss>

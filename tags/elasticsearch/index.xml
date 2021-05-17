@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>elasticsearch on Jetoile</title>
+    <link>https://blog.jetoile.fr/tags/elasticsearch/</link>
+    <description>Recent content in elasticsearch on Jetoile</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 11 Jul 2017 10:05:51 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Des tests d&#39;intégration avec Elasticsearch</title>
+      <link>https://blog.jetoile.fr/post/2017-07-11-tester-avec-elasticsearch/</link>
+      <pubDate>Tue, 11 Jul 2017 10:05:51 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2017-07-11-tester-avec-elasticsearch/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://blog.jetoile.fr/images/logo-elastic.png&#34; alt=&#34;left-small&#34;&gt; La version 5.0.0-alpha4 a signé la fin du support du mode embedded d&amp;rsquo;Elasticsearch.&lt;/p&gt;
+&lt;p&gt;Cela a été annoncé &lt;a href=&#34;https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported&#34;&gt;là&lt;/a&gt; et la classe &lt;code&gt;NodeBuilder&lt;/code&gt; permettant de démarrer un noeud programmatiquement a été supprimée.&lt;/p&gt;
+&lt;p&gt;Cependant, même si la raison de l&amp;rsquo;arrêt du support de ce mode est compréhensible, cela pose le problème des tests d&amp;rsquo;intégration puisqu&amp;rsquo;il n&amp;rsquo;est plus possible de démarrer un Elasticsearch pendant la phase de test.&lt;/p&gt;
+&lt;p&gt;Oui, Elastic propose officiellement une &lt;a href=&#34;https://www.elastic.co/guide/en/elasticsearch/reference/current/testing-framework.html&#34;&gt;alternative&lt;/a&gt; via l&amp;rsquo;utilisation de ESIntegTestCase mais personnellement, je ne suis pas très fan de cette approche&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Cet article va tenter de dresser un panorama non exhaustif de ce que j&amp;rsquo;ai pu trouver d&amp;rsquo;intéressant pour permettre de réaliser des tests d&amp;rsquo;intégration avec Elasticsearch.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</title>
+      <link>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</link>
+      <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
+      
+      <guid>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</guid>
+      <description>Pour ceux qui l&amp;rsquo;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de Devoxx France.
+L&amp;rsquo;annonce avait été faite pendant la dernière édition de Devoxx &amp;ldquo;l&amp;rsquo;originale&amp;rdquo; à Anvers en Belgique qui fêtait pour l&amp;rsquo;occasion ses 10 ans.
+Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille vivement à tous les développeurs), j&amp;rsquo;ai écrit un petit compte rendu d&amp;rsquo;une des moultes conférences qui m&amp;rsquo;ont marquées aussi bien par sa qualité scénique que par son contenu.</description>
+    </item>
+    
+  </channel>
+</rss>

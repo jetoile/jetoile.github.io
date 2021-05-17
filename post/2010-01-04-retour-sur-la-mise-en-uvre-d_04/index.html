@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Retour sur la mise en oeuvre d&#39;un environnement de développement &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.frimg/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.frcss/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.frjs/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Retour sur la mise en oeuvre d&#39;un environnement de développement</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>04 Jan 2010, 20:17</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/cargo">cargo</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/jetspeed">jetspeed</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.frtags/maven">maven</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://maven.apache.org/images/maven-logo-2.gif" alt="left">
+Cet article présente la mise en œuvre que j&rsquo;ai appliquée lors de la mise en place d&rsquo;un environnement de développement devant s&rsquo;interfacer, dans une démarche pseudo-agile, avec des outils d&rsquo;intégration continue.</p>
+<p>Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&rsquo;ai tenté de répondre à ces problématiques que ce soit d&rsquo;un point de vue méthodologique que d&rsquo;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&rsquo;est aussi pour cela que j&rsquo;ai créé ce blog (afin de faire partager mon expérience et d&rsquo;avoir un retour) ;-)</p>
+<p>Il ne présentera ni l&rsquo;utilité des outils d&rsquo;intégration continue ni celle d&rsquo;une démarche agile (ce projet ne fonctionnait pas en agile mais mettait en œuvre quelques-unes de ses pratiques) qui sont très bien expliqués sur d&rsquo;autres sites ou blogs. Enfin, il est à noter que ce projet possédait un existant et que mon rôle n&rsquo;était pas de remettre en cause les solutions retenues.</p>
+<!-- more -->
+<p>#Présentation du contexte et des problématiques
+##Contexte
+Le projet concerné avait pour but, entre autre, de fournir un site web à destination du grand public. Il s&rsquo;appuyait sur le portail Jetspeed 2 (qui pour rappel est un portail permettant d&rsquo;héberger des portlets 2 - JSR 286 à l&rsquo;image de Liferay ou GateIn) dont les fonctionnalités d&rsquo;édition avaient été désactivées. Aussi, le portail Jetspeed n&rsquo;était utilisé que pour ses capacités à &ldquo;modularisé&rdquo; les composants d&rsquo;affichage à l&rsquo;aide de portlets qui étaient figés dans les pages. Des services web étaient également utilisés pour permettre de s&rsquo;interconnecter avec un progiciel utilisé pour implémenter le cœur du métier.</p>
+<p>Les outils de build utilisés étaient maven 2 et plus précisément le plugin Jetspeed fournit par ce dernier.</p>
+<p>Enfin, le cycle d&rsquo;itération des développements étaient de 2 semaines&hellip; 2 semaines qui incluaient la définition de ce qu&rsquo;allait embarquer la livraison (ou si on peut l&rsquo;appeler comme cela, ce qu&rsquo;il y aurait dans le sprint), les tests fonctionnels ainsi que la mise en production du livrable&hellip;</p>
+<p>L&rsquo;équipe incluait 12 développeurs et, dans la globalité, un environnement de développement hétérogène (la faute n&rsquo;incubant pas foncièrement aux développeurs mais plutôt à des délais beaucoup trop serrés ainsi qu&rsquo;à une très grosse charge de travail).</p>
+<p>##Problématiques
+Au vu du contexte, un certain nombre de constatation pouvait être fait rapidement :</p>
+<ul>
+<li>des cycles de développement très court,</li>
+<li>un grand nombre de développeurs dont il fallait intégrer le code,</li>
+<li>un environnement très hétérogène (eclipse, netbeans, intelliJ idea pour la partie IDE, des PCs sous Windows, des PCs sous Linux et des Macs pour la partie matérielle),</li>
+<li>une procédure de livraison difficile&hellip;</li>
+</ul>
+<p>En effet, pour revenir sur ce dernier point, les développeurs utilisaient, pour développer, pluto (le moteur de portlet de référence) en raison de machines pas suffisamment véloces et déployaient en local en utilisant directement le plugin mis à disposition par Jetspeed qui construisait le portail, créait sa base de données dans derby, associait son schéma et la peuplait à l&rsquo;aide de son mécanisme utilisant Torque. Les fichiers de configurations utilisés par les applications web et contenant des paramètres dépendant de l&rsquo;environnement où elles étaient déployées étaient embarqués dans les jars qui étaient eux-mêmes embarqués dans les applications web (portlets et services web) (ndlr : pour rappel, Jetspeed ainsi que ses portlets sont packagés sous forme de war).</p>
+<p>En outre, afin de permettre une meilleure évolutivité du système, les portlets n&rsquo;étaient pas déployés via le mécanisme préconisé par Jetspeed (qui est de les déposer dans son répertoire deploy) mais directement déployés comme une application web normale.</p>
+<p>En conséquence, la procédure de livraison sur le serveur de production incluait l&rsquo;utilisation d&rsquo;une base de données Derby, et une recompilation/redéploiement complet du portail et de ses portlets à l&rsquo;aide du plugin maven Jetspeed 2 effectués après récupération des sources de notre SCM, modification des fichiers de configuration et lancement du goal install de maven 2 :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd project
+mvn install
+mvn jetspeed:mvn -Pall
+</code></pre></div><p>#Méthodologie et objectifs
+Suite à ces constatations, mes objectifs étaient (par ordre de priorité) :</p>
+<ul>
+<li>Définir un environnement propre, c&rsquo;est-à-dire ne faisant plus de choses obscures (comme la modification des web.xml des portlets, le peuplement de la base de données derby ou l&rsquo;ajout dans notre conteneur de Servlets d&rsquo;un contexte où était déclarée la ressource jndi pour la base de données derby). Cela était un prérequis à la mise en place d&rsquo;outils d&rsquo;intégration continue.</li>
+<li>Externaliser les fichiers de configuration se trouvant dans les jars afin de permettre à notre équipe de production de ne pas avoir à recompiler et redéployer les jars à chaque fois qu&rsquo;une modification devait être effectuée sur ces derniers.</li>
+<li>Mettre en place un processus pour générer un livrable (par exemple sous forme de zip) à destination de notre équipe de production afin ne pas avoir à recompiler le projet (oui, oui, je sais&hellip; c&rsquo;est mal mais c&rsquo;est la vie! ;-) ) et surtout permettre la reproductivité de l&rsquo;installation des environnements.</li>
+<li>Fournir, via les outils d&rsquo;intégration continue, une photo journalière des développements de la veille déployées et opérationnelles (c&rsquo;est à dire avec une réinitialisation et une injection de données de contenu se trouvant dans une base de données type MySQL).</li>
+</ul>
+<p>De plus, en parallèle, j&rsquo;avais pour objectif de fournir aux développeurs un processus de travail plus rigoureux où chaque étape était distincte afin d&rsquo;avoir une meilleure maitrise des environnements :</p>
+<ul>
+<li>installation d&rsquo;un conteneur de servlet spécifique au projet (c&rsquo;est-à-dire avec les bon jars dans son classpath et sa configuration prédéfinie)</li>
+<li>création des bases de données, des schémas et injection des données</li>
+<li>déploiement de toutes les applications web de manière automatique</li>
+<li>au besoin, déploiement unitaire d&rsquo;une application web</li>
+</ul>
+<p>#Description de l&rsquo;arborescence Maven</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">parent
+   |-- portail
+   |-- portlets
+          |-- portlet1
+          |-- portlet2 
+   |-- ws
+          |-- ws1
+          |-- ws2
+   |-- config
+   |-- assembly
+   |-- src
+          |-- main
+          |-- resources
+                     |-- sql
+</code></pre></div><p>#Mise en oeuvre</p>
+<h2 id="un-environnement-de-développement-propre-avec-maven-2">Un environnement de développement &ldquo;propre&rdquo; avec Maven 2</h2>
+<p>Le but de ce point était de proposer une meilleure façon de faire pour générer les wars (ie. modules portail, portlet1, portlet2, ws1 et ws2), à savoir, n&rsquo;avoir à faire qu&rsquo;un mvn install pour avoir une application web qu&rsquo;il était possible de déployer automatiquement dans notre conteneur de Servlet (et non plus un obscur <code>mvn jetspeed:mvn -Pdeploy</code>). En effet, le plugin maven2 de Jetpseed permettait de compiler, générer les wars (le sien et les portlets), et de les déployer dans le conteneur de servlet indiqué. En outre, il permettait également de créer et peupler la base de données utile à son fonctionnement ; la base de données (ie. ses accès et son type) pouvant être indiquée via un fichier de configuration. Pour ce dernier point, le peuplement était fait via la mécanique interne de Jetspeed, à savoir, l&rsquo;utilisation du framework Torque.</p>
+<p>La première tache a été de dumper la base de données afin d&rsquo;obtenir un fichier sql pouvant être utilisé sur la base de données cible et afin de s&rsquo;abstraire de Torque.</p>
+<p>Une fois la base de données créée et peuplée à l&rsquo;aide de ce fichier sql, elle nécessitait d&rsquo;être renseignée dans le contexte de l&rsquo;application web du portail. Afin d&rsquo;éviter un couplage fort entre l&rsquo;application web et son contexte (et ainsi permettre un déploiement à chaud), la datasource a été renseignée directement dans le fichier conf/context.xml du conteneur de servlet tomcat (bon, pour ce coup, on a parlé implémentation parce que je ne sais pas si le fonctionnement est identique pour tous les conteneurs de Servlet&hellip;) partagé par l&rsquo;ensemble des applications web :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?--&gt;</span>
+<span style="color:#f92672">&lt;Context</span> <span style="color:#a6e22e">antiJARLocking=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#f92672">&lt;WatchedResource&gt;</span>WEB-INF/web.xml<span style="color:#f92672">&lt;/WatchedResource&gt;</span>
+ <span style="color:#f92672">&lt;resource</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jdbc/jetspeed&#34;</span> <span style="color:#a6e22e">auth=</span><span style="color:#e6db74">&#34;Container&#34;</span> <span style="color:#a6e22e">factory=</span><span style="color:#e6db74">&#34;org.apache.commons.dbcp.BasicDataSourceFactory&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;javax.sql.DataSource&#34;</span> <span style="color:#a6e22e">username=</span><span style="color:#e6db74">&#34;xxx&#34;</span> <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;xxx&#34;</span> <span style="color:#a6e22e">driverclassname=</span><span style="color:#e6db74">&#34;xxx&#34;</span> <span style="color:#a6e22e">url=</span><span style="color:#e6db74">&#34;jdbc:xxx://xxx:xxx/j2&#34;</span> <span style="color:#a6e22e">maxactive=</span><span style="color:#e6db74">&#34;100&#34;</span> <span style="color:#a6e22e">maxidle=</span><span style="color:#e6db74">&#34;30&#34;</span> <span style="color:#a6e22e">maxwait=</span><span style="color:#e6db74">&#34;10000&#34;</span><span style="color:#f92672">&gt;&lt;/resource&gt;</span>
+<span style="color:#f92672">&lt;/Context&gt;</span>
+</code></pre></div><p>Ce fichier a également été mis dans le module config dans le répertoire <code>src/main/resources</code>.</p>
+<p>La seconde tache a été de mettre le plugin Jetspeed dans le cycle de vie maven utilisé par défaut lors de l&rsquo;exécution du goal maven <code>compile</code> du module portail afin de générer un war qu&rsquo;il était possible de copier directement dans le répertoire adéquate du conteneur de Servlet afin de permettre son déploiement :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+ <span style="color:#f92672">&lt;parent&gt;</span>
+  ...
+ <span style="color:#f92672">&lt;/parent&gt;</span>
+ 
+ <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+ <span style="color:#f92672">&lt;prerequisites&gt;</span>
+  <span style="color:#f92672">&lt;maven&gt;</span>2.0.9<span style="color:#f92672">&lt;/maven&gt;</span>
+ <span style="color:#f92672">&lt;/prerequisites&gt;</span>
+ <span style="color:#f92672">&lt;groupId&gt;</span>com.xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+ <span style="color:#f92672">&lt;artifactId&gt;</span>portail<span style="color:#f92672">&lt;/artifactId&gt;</span>
+ <span style="color:#f92672">&lt;name&gt;</span>${project.artifactId}<span style="color:#f92672">&lt;/name&gt;</span>
+ <span style="color:#f92672">&lt;url&gt;</span>${urlRacineSite}/${project.artifactId}<span style="color:#f92672">&lt;/url&gt;</span>
+ <span style="color:#f92672">&lt;version&gt;</span>0.0.1<span style="color:#f92672">&lt;/version&gt;</span>
+ <span style="color:#f92672">&lt;packaging&gt;</span>war<span style="color:#f92672">&lt;/packaging&gt;</span>
+ 
+ <span style="color:#f92672">&lt;dependencies&gt;</span>
+  <span style="color:#75715e">&lt;!-- jetspeed war dependencies --&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed-dependencies<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${org.apache.portals.jetspeed.version}<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;type&gt;</span>pom<span style="color:#f92672">&lt;/type&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${org.apache.portals.jetspeed.version}<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${org.apache.portals.jetspeed.version}<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+  <span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.pluto<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>pluto-container-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>${org.apache.pluto.version}<span style="color:#f92672">&lt;/version&gt;</span>
+   <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+  <span style="color:#f92672">&lt;/dependency&gt;</span>
+ <span style="color:#f92672">&lt;/dependencies&gt;</span>
+ 
+ <span style="color:#f92672">&lt;build&gt;</span>
+  <span style="color:#f92672">&lt;finalName&gt;</span>${project.artifactId}<span style="color:#f92672">&lt;/finalName&gt;</span>
+  <span style="color:#f92672">&lt;plugins&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-war-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed-deploy-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>${org.apache.portals.jetspeed.version}<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>deploy-jetspeed-layouts<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>deploy<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;targetBaseDir&gt;</span>
+        ${project.build.directory}/${project.build.finalName}<span style="color:#f92672">&lt;/targetBaseDir&gt;</span>
+       <span style="color:#f92672">&lt;destinations&gt;</span>
+        <span style="color:#f92672">&lt;local&gt;</span>WEB-INF/deploy/local<span style="color:#f92672">&lt;/local&gt;</span>
+       <span style="color:#f92672">&lt;/destinations&gt;</span>
+       <span style="color:#f92672">&lt;deployments&gt;</span>
+        <span style="color:#f92672">&lt;deployment&gt;</span>
+         <span style="color:#f92672">&lt;artifact&gt;</span>
+          org.apache.portals.jetspeed-2:jetspeed-layouts:war
+         <span style="color:#f92672">&lt;/artifact&gt;</span>
+         <span style="color:#f92672">&lt;destination&gt;</span>local<span style="color:#f92672">&lt;/destination&gt;</span>
+        <span style="color:#f92672">&lt;/deployment&gt;</span>
+       <span style="color:#f92672">&lt;/deployments&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+    <span style="color:#f92672">&lt;dependencies&gt;</span>
+     <span style="color:#f92672">&lt;dependency&gt;</span>
+      <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed-layouts<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;version&gt;</span>${org.apache.portals.jetspeed.version}<span style="color:#f92672">&lt;/version&gt;</span>
+      <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+     <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-war-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;warName&gt;</span>${pom.artifactId}<span style="color:#f92672">&lt;/warName&gt;</span>
+     <span style="color:#f92672">&lt;overlays&gt;</span>
+      <span style="color:#f92672">&lt;overlay&gt;</span>
+       <span style="color:#f92672">&lt;id&gt;</span>jetspeed1<span style="color:#f92672">&lt;/id&gt;</span>
+       <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+       <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;/overlay&gt;</span>
+      <span style="color:#f92672">&lt;overlay&gt;</span>
+       <span style="color:#f92672">&lt;id&gt;</span>jetspeed2<span style="color:#f92672">&lt;/id&gt;</span>
+       <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.portals.jetspeed-2<span style="color:#f92672">&lt;/groupId&gt;</span>
+       <span style="color:#f92672">&lt;artifactId&gt;</span>jetspeed<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;/overlay&gt;</span>
+     <span style="color:#f92672">&lt;/overlays&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+  <span style="color:#f92672">&lt;/plugins&gt;</span>
+ <span style="color:#f92672">&lt;/build&gt;</span>
+<span style="color:#f92672">&lt;/project&gt;</span>
+</code></pre></div><p>De la même manière, les portlets (et donc les modules portlet1 et portlet2) devaient pouvoir être générés avec l&rsquo;exécution du goal maven2 <code>compile</code> (n&rsquo;oublions pas que les portlets devaient pouvoir être enregistrés dans le portail Jetspeed sans avoir à être déposés dans son répertoire deploy mais juste dans le répertoire de déploiement du conteneur de Servlet). Pour ce faire, le projet maven n&rsquo;avait qu&rsquo;à être indiqué comme étant un type war et le web.xml contenu dans le répertoire <code>src/main/webapps/WEB-INF</code> n&rsquo;avait qu&rsquo;à être renseigné comme utilisant le Servlet controleur de Jetspeed :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;!--?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?--&gt;</span>
+<span style="color:#f92672">&lt;web-app</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee
+</span><span style="color:#e6db74">http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.5&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/javaee&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">&gt;</span>
+ 
+ <span style="color:#f92672">&lt;filter-mapping&gt;</span>
+  <span style="color:#f92672">&lt;filter-name&gt;</span>encoding-filter<span style="color:#f92672">&lt;/filter-name&gt;</span>
+  <span style="color:#f92672">&lt;url-pattern&gt;</span>/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+ <span style="color:#f92672">&lt;/filter-mapping&gt;</span>
+ 
+ <span style="color:#f92672">&lt;servlet&gt;</span>
+  <span style="color:#f92672">&lt;description&gt;</span>
+   MVC Servlet for Jetspeed Portlet Applications
+  <span style="color:#f92672">&lt;/description&gt;</span>
+  <span style="color:#f92672">&lt;display-name&gt;</span>Jetspeed Container<span style="color:#f92672">&lt;/display-name&gt;</span>
+  <span style="color:#f92672">&lt;servlet-name&gt;</span>JetspeedContainer<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+ 
+  <span style="color:#f92672">&lt;servlet-class&gt;</span>
+   org.apache.jetspeed.container.JetspeedContainerServlet
+  <span style="color:#f92672">&lt;/servlet-class&gt;</span>
+ 
+  <span style="color:#f92672">&lt;init-param&gt;</span>
+   <span style="color:#f92672">&lt;param-name&gt;</span>contextName<span style="color:#f92672">&lt;/param-name&gt;&lt;param-value&gt;</span>xxx<span style="color:#f92672">&lt;/param-value&gt;&lt;/init-param&gt;</span>
+  <span style="color:#f92672">&lt;load-on-startup&gt;</span>0<span style="color:#f92672">&lt;/load-on-startup&gt;</span>
+ <span style="color:#f92672">&lt;/servlet&gt;</span>
+ 
+ <span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+  <span style="color:#f92672">&lt;servlet-name&gt;</span>JetspeedContainer<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+  <span style="color:#f92672">&lt;url-pattern&gt;</span>/container/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+ <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
+ 
+ <span style="color:#f92672">&lt;jsp-config&gt;</span>
+  <span style="color:#f92672">&lt;taglib&gt;</span>
+   <span style="color:#f92672">&lt;taglib-uri&gt;</span>http://java.sun.com/portlet<span style="color:#f92672">&lt;/taglib-uri&gt;</span>
+   <span style="color:#f92672">&lt;taglib-location&gt;</span>/WEB-INF/tld/portlet.tld<span style="color:#f92672">&lt;/taglib-location&gt;</span>
+  <span style="color:#f92672">&lt;/taglib&gt;</span>
+  <span style="color:#f92672">&lt;taglib&gt;</span>
+   <span style="color:#f92672">&lt;taglib-uri&gt;</span>http://java.sun.com/portlet_2_0<span style="color:#f92672">&lt;/taglib-uri&gt;</span>
+   <span style="color:#f92672">&lt;taglib-location&gt;</span>
+    /WEB-INF/tld/portlet_2_0.tld
+   <span style="color:#f92672">&lt;/taglib-location&gt;</span>
+  <span style="color:#f92672">&lt;/taglib&gt;</span>
+ <span style="color:#f92672">&lt;/jsp-config&gt;</span>
+<span style="color:#f92672">&lt;/web-app&gt;</span>
+</code></pre></div><p>Grâce à ces actions simples, la simple exécution du goal maven <code>compile</code> était suffisant pour générer les war directement exploitables dans le conteneur de Servlet.</p>
+<p>Il est à noter que la base de données originellement peuplée par le portail ne l&rsquo;est pas ici. Ce point est traité par le paragraphe suivant.</p>
+<p>##Une gestion maitrisée des bases de données
+Comme il a été indiqué dans le paragraphe précédent la base de données utilisée par Jetspeed a été dissociée de son processus de génération. Afin de permettre sa création et son peuplement simplement, le plugin maven sql associé à un <em>profile</em> particulié a été utilisé :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profile&gt;</span>
+ <span style="color:#f92672">&lt;id&gt;</span>initdb<span style="color:#f92672">&lt;/id&gt;</span>
+ <span style="color:#f92672">&lt;build&gt;</span>
+  <span style="color:#f92672">&lt;plugins&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>sql-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;dependencies&gt;</span>
+     <span style="color:#75715e">&lt;!-- specify the dependent jdbc driver here --&gt;</span>
+     <span style="color:#f92672">&lt;dependency&gt;</span>
+      <span style="color:#f92672">&lt;groupId&gt;</span>xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;artifactId&gt;</span>xxx<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;version&gt;</span>${xxx.version}<span style="color:#f92672">&lt;/version&gt;</span>
+     <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;driver&gt;</span>xxx.Driver<span style="color:#f92672">&lt;/driver&gt;</span>
+     <span style="color:#f92672">&lt;url&gt;</span>jdbc:xxx://xxx:xxxx<span style="color:#f92672">&lt;/url&gt;</span>
+     <span style="color:#f92672">&lt;username&gt;</span>xxx<span style="color:#f92672">&lt;/username&gt;</span>
+     <span style="color:#f92672">&lt;password&gt;</span>xxx<span style="color:#f92672">&lt;/password&gt;</span>
+     <span style="color:#f92672">&lt;settingsKey&gt;</span>sensibleKey<span style="color:#f92672">&lt;/settingsKey&gt;</span>
+     <span style="color:#75715e">&lt;!--all executions are ignored if -Dmaven.test.skip=true --&gt;</span>
+     <span style="color:#f92672">&lt;skip&gt;</span>${maven.test.skip}<span style="color:#f92672">&lt;/skip&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>drop-db-after-test-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test-compile<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;sqlCommand&gt;</span>drop database j2<span style="color:#f92672">&lt;/sqlCommand&gt;</span>
+       <span style="color:#f92672">&lt;onError&gt;</span>continue<span style="color:#f92672">&lt;/onError&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-db-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:xxx://xxx:xxxx:j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;sqlCommand&gt;</span>create database j2<span style="color:#f92672">&lt;/sqlCommand&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-schema-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:xxx://xxx:xxxx/j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;srcFiles&gt;</span>
+        <span style="color:#f92672">&lt;srcFile&gt;</span>src/sql/create-schema.sql<span style="color:#f92672">&lt;/srcFile&gt;</span>
+       <span style="color:#f92672">&lt;/srcFiles&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-data-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:xxx://xxx:xxxx/j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;srcFiles&gt;</span>
+        <span style="color:#f92672">&lt;srcFile&gt;</span>src/sql/create-data.sql<span style="color:#f92672">&lt;/srcFile&gt;</span>
+       <span style="color:#f92672">&lt;/srcFiles&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+  <span style="color:#f92672">&lt;/plugins&gt;</span>
+ <span style="color:#f92672">&lt;/build&gt;</span>
+<span style="color:#f92672">&lt;/profile&gt;</span>
+</code></pre></div><p>Ici, les fichiers sql utilisés pour peupler la base de données Jetspeed sont issus du dump de la base alors que les fichiers de création du schéma sont issus des sources de Jetspeed (à noter qu&rsquo;il aurait également été possible de les dumper) et ont été mis dans le répertoire src/main/sql du module parent.</p>
+<p>Il est à noter également que différentes phases du cycle de vie ont été utilisés et qu&rsquo;elles ne sont pas foncièrement très logique&hellip; (une création d&rsquo;une base de données sur la phase test n&rsquo;est pas très adéquate&hellip;). Cependant, cela a été fait en raison d&rsquo;un bug sur maven qui indique qu&rsquo;il n&rsquo;est pas possible de prédire  l&rsquo;ordonnancement de l&rsquo;exécution des plugins dans une même phase. Il s&rsquo;agit donc d&rsquo;un contournement (certes pas très propre mais qui fonctionne&hellip; ;-) ).</p>
+<p>##Un déploiement automatisé avec Cargo</p>
+<p>Le plugin Jetspeed permettait un déploiement automatique dans le conteneur de Servlet indiqué. Afin de fournir un comportement plus ou moins iso-fonctionnel, j&rsquo;ai utilisé le plugin maven Cargo pour permettre un déploiement sur le conteneur de Servlet cible (dans notre cas, en local). Pour ce faire, un <em>profile</em> maven a été utilisé :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
+ <span style="color:#f92672">&lt;profile&gt;</span>
+  <span style="color:#f92672">&lt;id&gt;</span>deployer<span style="color:#f92672">&lt;/id&gt;</span>
+  <span style="color:#f92672">&lt;build&gt;</span>
+   <span style="color:#f92672">&lt;plugins&gt;</span>
+ 
+    <span style="color:#f92672">&lt;plugin&gt;</span>
+     <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.cargo<span style="color:#f92672">&lt;/groupId&gt;</span>
+     <span style="color:#f92672">&lt;artifactId&gt;</span>cargo-maven2-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+     <span style="color:#f92672">&lt;version&gt;</span>1.0<span style="color:#f92672">&lt;/version&gt;</span>
+     <span style="color:#f92672">&lt;executions&gt;</span>
+      <span style="color:#f92672">&lt;execution&gt;</span>
+       <span style="color:#f92672">&lt;id&gt;</span>undeploy<span style="color:#f92672">&lt;/id&gt;</span>
+       <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+       <span style="color:#f92672">&lt;goals&gt;</span>
+        <span style="color:#f92672">&lt;goal&gt;</span>undeploy<span style="color:#f92672">&lt;/goal&gt;</span>
+       <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+      <span style="color:#f92672">&lt;execution&gt;</span>
+       <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
+       <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+       <span style="color:#f92672">&lt;goals&gt;</span>
+        <span style="color:#f92672">&lt;goal&gt;</span>deploy<span style="color:#f92672">&lt;/goal&gt;</span>
+       <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;/executions&gt;</span>
+ 
+     <span style="color:#f92672">&lt;configuration&gt;</span>
+      <span style="color:#f92672">&lt;wait&gt;</span>true<span style="color:#f92672">&lt;/wait&gt;</span>
+      <span style="color:#f92672">&lt;container&gt;</span>
+       <span style="color:#f92672">&lt;containerId&gt;</span>xxx<span style="color:#f92672">&lt;/containerId&gt;</span>
+       <span style="color:#f92672">&lt;type&gt;</span>remote<span style="color:#f92672">&lt;/type&gt;</span>
+      <span style="color:#f92672">&lt;/container&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;type&gt;</span>runtime<span style="color:#f92672">&lt;/type&gt;</span>
+       <span style="color:#f92672">&lt;properties&gt;</span>
+        <span style="color:#f92672">&lt;cargo.remote.username&gt;</span>xxx<span style="color:#f92672">&lt;/cargo.remote.username&gt;</span>
+        <span style="color:#f92672">&lt;cargo.remote.password&gt;</span>xxx<span style="color:#f92672">&lt;/cargo.remote.password&gt;</span>
+       <span style="color:#f92672">&lt;/properties&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+ 
+      <span style="color:#f92672">&lt;deployer&gt;</span>
+       <span style="color:#f92672">&lt;type&gt;</span>remote<span style="color:#f92672">&lt;/type&gt;</span>
+       <span style="color:#f92672">&lt;deployables&gt;</span>
+        <span style="color:#f92672">&lt;deployable&gt;</span>
+         <span style="color:#f92672">&lt;groupId&gt;</span>xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+         <span style="color:#f92672">&lt;artifactId&gt;</span>xxx<span style="color:#f92672">&lt;/artifactId&gt;</span>
+         <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+         <span style="color:#f92672">&lt;properties&gt;</span>
+          <span style="color:#f92672">&lt;context&gt;</span>xxx<span style="color:#f92672">&lt;/context&gt;</span>
+         <span style="color:#f92672">&lt;/properties&gt;</span>
+        <span style="color:#f92672">&lt;/deployable&gt;</span>
+       <span style="color:#f92672">&lt;/deployables&gt;</span>
+      <span style="color:#f92672">&lt;/deployer&gt;</span>
+     <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;/plugins&gt;</span>
+  <span style="color:#f92672">&lt;/build&gt;</span>
+ <span style="color:#f92672">&lt;/profile&gt;</span>
+<span style="color:#f92672">&lt;/profiles&gt;</span>
+</code></pre></div><p>Suite à ces actions, le portail, les portlets et les autres applications web étaient déployables via les commandes :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn install -Pinitdb
+mvn install -Pdeployer
+</code></pre></div><p>En outre, la commande mvn install permettait également de générer un war directement exploitable par un conteneur de Servlet (et donc directement utilisable dans un livrable à destination de la production).
+#Externaliser les fichiers de configuration</p>
+<p>Comme il a été indiqué dans l&rsquo;introduction, les fonctions métiers (disponible au travers de jars fournis via des modules maven) utilisées par les applications web étaient dépendantes de variables liées à l&rsquo;environnement, ces variables étant contenues dans un fichier de configuration présent dans le jar. Afin de permettre une meilleure maitrise et une meilleure évolutivité du système, il était indispensable de sortir ces fichiers de configuration des jars et même des applications web.</p>
+<p>Pour ce faire, il a été décidé de les mettre dans le classpath serveur. Cependant, Tomcat 6.0 (arf, pour ce coup, je vais devoir parler implémentation&hellip; ;-) ) semble avoir désactivé par défaut cette fonctionnalité. Aussi, il a été nécessaire d&rsquo;éditer le fichier catalina.properties se trouvant dans le répertoire conf de notre Tomcat et d&rsquo;indiquer comme valeur à la clé shared.loader l&rsquo;emplacement de nos fichiers de configuration (ici, ${catalina.home}/lib/conf).</p>
+<p>Ces fichiers ont, bien sûr, été sortis des jars (et mis dans le répertoire src/main/resources du module config) et ont été templatisés pour permettre de modifier facilement leur contenu en fonction de l&rsquo;environnement d&rsquo;exécution.</p>
+<p>En outre, les fichiers utilisés par l&rsquo;application et par les tests unitaires mais dont le contenu ne pouvait pas être templatisé simplement (par exemple, la déclaration de la datasource utilisant, lorsque les jars étaient exécutés au sein du conteneur de Servlet, une référence à un annuaire jndi -et donc une ligne de configuration- et, lorsque les jars étaient utilisés unitairement, une référence directe -et donc 4 lignes de configuration-) ont été dupliqués (modulo les modifications adéquates) dans le répertoire src/test/resources du module config. Cela a permis de créer une dépendance de scope test pour les projets qui avait besoin de cette configuration pour exécuter les tests unitaires :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+ <span style="color:#f92672">&lt;groupId&gt;</span>com.xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+ <span style="color:#f92672">&lt;artifactId&gt;</span>config<span style="color:#f92672">&lt;/artifactId&gt;</span>
+ <span style="color:#f92672">&lt;classifier&gt;</span>tests<span style="color:#f92672">&lt;/classifier&gt;</span>
+ <span style="color:#f92672">&lt;type&gt;</span>test-jar<span style="color:#f92672">&lt;/type&gt;</span>
+ <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>Afin de <em>templatiser</em> ces fichiers de configuration, la fonctionnalité de filtrage de maven a été utilisée en complément de l&rsquo;utilisation de profiles maven :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+ <span style="color:#f92672">&lt;resources&gt;</span>
+  <span style="color:#f92672">&lt;resource&gt;</span>
+   <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
+   <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
+  <span style="color:#f92672">&lt;/resource&gt;</span>
+ <span style="color:#f92672">&lt;/resources&gt;</span>
+ <span style="color:#f92672">&lt;filters&gt;</span>
+  <span style="color:#f92672">&lt;filter&gt;</span>src/main/filters/filter-${environment}.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+ <span style="color:#f92672">&lt;/filters&gt;</span>
+ ...
+<span style="color:#f92672">&lt;/build&gt;</span>
+</code></pre></div><p>où les profiles étaient :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
+ <span style="color:#f92672">&lt;profile&gt;</span>
+  <span style="color:#f92672">&lt;id&gt;</span>dev<span style="color:#f92672">&lt;/id&gt;</span>
+  <span style="color:#f92672">&lt;activation&gt;</span>
+   <span style="color:#f92672">&lt;activeByDefault&gt;</span>true<span style="color:#f92672">&lt;/activeByDefault&gt;</span>
+  <span style="color:#f92672">&lt;/activation&gt;</span>
+  <span style="color:#f92672">&lt;properties&gt;</span>
+   <span style="color:#f92672">&lt;environment&gt;</span>dev<span style="color:#f92672">&lt;/environment&gt;</span>
+  <span style="color:#f92672">&lt;/properties&gt;</span>
+ <span style="color:#f92672">&lt;/profile&gt;</span>
+ 
+ <span style="color:#f92672">&lt;profile&gt;</span>
+  <span style="color:#f92672">&lt;id&gt;</span>dev-integ<span style="color:#f92672">&lt;/id&gt;</span>
+  <span style="color:#f92672">&lt;properties&gt;</span>
+   <span style="color:#f92672">&lt;environment&gt;</span>dev-integ<span style="color:#f92672">&lt;/environment&gt;</span>
+  <span style="color:#f92672">&lt;/properties&gt;</span>
+ <span style="color:#f92672">&lt;/profile&gt;</span>
+<span style="color:#f92672">&lt;/profiles&gt;</span>
+</code></pre></div><p>et où les fichiers src/main/filters/filter-${environment}.properties contenaient les association clé/valeur en fonction de l&rsquo;environnement.</p>
+<p>##Mise en place d&rsquo;un livrable
+Suite au travail décrit dans les paragraphes précédents, cela avait permis de mettre en place un environnement de développement et de build propre. Une réflexion sur la génération d&rsquo;un livrable à destination de la production était désormais possible.</p>
+<p>Pour cela, nous avons décidé d&rsquo;utiliser le plugin assembly de maven en créant un module supplémentaire (module assembly) et dont le rôle était de générer notre livrable.</p>
+<p>Ci-joint notre fichier assembly se trouvant dans le répertoire <code>src/main/assembly</code> du module <code>assembly</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;assembly&gt;</span>
+ <span style="color:#f92672">&lt;id&gt;</span>1.0<span style="color:#f92672">&lt;/id&gt;</span>
+ <span style="color:#f92672">&lt;formats&gt;</span>
+  <span style="color:#f92672">&lt;format&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
+ <span style="color:#f92672">&lt;/formats&gt;</span>
+ <span style="color:#f92672">&lt;includeBaseDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeBaseDirectory&gt;</span>
+ <span style="color:#f92672">&lt;dependencySets&gt;</span>
+ 
+  <span style="color:#f92672">&lt;dependencySet&gt;</span>
+   <span style="color:#f92672">&lt;outputDirectory&gt;</span>webapps<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+   <span style="color:#f92672">&lt;outputFileNameMapping&gt;</span>
+    ${artifact.artifactId}.${artifact.extension}
+   <span style="color:#f92672">&lt;/outputFileNameMapping&gt;</span>
+   <span style="color:#f92672">&lt;includes&gt;</span>
+    <span style="color:#f92672">&lt;include&gt;</span>
+     *:war
+    <span style="color:#f92672">&lt;/include&gt;</span>
+   <span style="color:#f92672">&lt;/includes&gt;</span>
+  <span style="color:#f92672">&lt;/dependencySet&gt;</span>
+ 
+  <span style="color:#f92672">&lt;dependencySet&gt;</span>
+   <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+   <span style="color:#75715e">&lt;!-- notre pom déclarait les jars à mettre dans le classpath serveur avec 
+</span><span style="color:#75715e">    un scope provided --&gt;</span>
+   <span style="color:#f92672">&lt;useProjectArtifact&gt;</span>false<span style="color:#f92672">&lt;/useProjectArtifact&gt;</span>
+   <span style="color:#f92672">&lt;useTransitiveDependencies&gt;</span>false<span style="color:#f92672">&lt;/useTransitiveDependencies&gt;</span>
+   <span style="color:#f92672">&lt;outputDirectory&gt;</span>tomcat_bin/lib<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+   <span style="color:#f92672">&lt;includes&gt;</span>
+    <span style="color:#f92672">&lt;include&gt;</span>
+     *:jar
+    <span style="color:#f92672">&lt;/include&gt;</span>
+   <span style="color:#f92672">&lt;/includes&gt;</span>
+  <span style="color:#f92672">&lt;/dependencySet&gt;</span>
+ <span style="color:#f92672">&lt;/dependencySets&gt;</span>
+ <span style="color:#f92672">&lt;fileSets&gt;</span>
+  <span style="color:#f92672">&lt;fileSet&gt;</span>
+   <span style="color:#f92672">&lt;directory&gt;</span>../config/target/classes<span style="color:#f92672">&lt;/directory&gt;</span>
+   <span style="color:#f92672">&lt;outputDirectory&gt;</span>tomcat_parameters/lib/conf<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+   <span style="color:#f92672">&lt;includes&gt;</span>
+    <span style="color:#f92672">&lt;include&gt;</span>
+     **
+    <span style="color:#f92672">&lt;/include&gt;</span>
+   <span style="color:#f92672">&lt;/includes&gt;</span>
+  <span style="color:#f92672">&lt;/fileSet&gt;</span>
+ 
+  <span style="color:#f92672">&lt;fileSet&gt;</span>
+   <span style="color:#f92672">&lt;directory&gt;</span>../src/main/sql/j2<span style="color:#f92672">&lt;/directory&gt;</span>
+   <span style="color:#f92672">&lt;outputDirectory&gt;</span>portal-sql-db<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+   <span style="color:#f92672">&lt;includes&gt;</span>
+    <span style="color:#f92672">&lt;include&gt;</span>
+     **
+    <span style="color:#f92672">&lt;/include&gt;</span>
+   <span style="color:#f92672">&lt;/includes&gt;</span>
+  <span style="color:#f92672">&lt;/fileSet&gt;</span>
+ <span style="color:#f92672">&lt;/fileSets&gt;</span>
+<span style="color:#f92672">&lt;/assembly&gt;</span>
+</code></pre></div><p>et où le <code>pom.xml</code> utilisant le plugin était :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+ <span style="color:#f92672">&lt;plugins&gt;</span>
+  <span style="color:#f92672">&lt;plugin&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;configuration&gt;</span>
+    <span style="color:#f92672">&lt;descriptors&gt;</span>
+     <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/src.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+    <span style="color:#f92672">&lt;/descriptors&gt;</span>
+   <span style="color:#f92672">&lt;/configuration&gt;</span>
+   <span style="color:#f92672">&lt;executions&gt;</span>
+    <span style="color:#f92672">&lt;execution&gt;</span>
+     <span style="color:#f92672">&lt;id&gt;</span>make-assembly<span style="color:#f92672">&lt;/id&gt;</span>
+     <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+     <span style="color:#f92672">&lt;goals&gt;</span>
+      <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+     <span style="color:#f92672">&lt;/goals&gt;</span>
+    <span style="color:#f92672">&lt;/execution&gt;</span>
+   <span style="color:#f92672">&lt;/executions&gt;</span>
+  <span style="color:#f92672">&lt;/plugin&gt;</span>
+ <span style="color:#f92672">&lt;/plugins&gt;</span>
+<span style="color:#f92672">&lt;/build&gt;</span>
+</code></pre></div><p>##Compilation, génération et déploiement automatisé
+Cette phase faisait suite aux travaux décrits dans les paragraphes précédents et avait pour objectif de fournir une version de la veille de ce qui était présent sur le trunk du SCM, et cela, dans l&rsquo;idée de permettre aux développeurs de se voir avancer et de tester de manière intégré leur code.</p>
+<p>Pour ce faire, le plugin maven cargo a été utilisé conjointement à un profile particulier. En outre, c&rsquo;est le mode remote qui a été choisi afin de permettre un déploiement des applications web au sein du conteneur de servlet local, ce conteneur de servlet ayant préalablement été modifié afin d&rsquo;avoir en son sein les variables de configuration dans son classpath ainsi que ses fichiers de configuration modifiés.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profile&gt;</span>
+ <span style="color:#f92672">&lt;id&gt;</span>dev-integ<span style="color:#f92672">&lt;/id&gt;</span>
+ <span style="color:#f92672">&lt;build&gt;</span>
+  <span style="color:#f92672">&lt;plugins&gt;</span>
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-antrun-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>stop-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>generate-test-sources<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;tasks&gt;</span>
+        <span style="color:#f92672">&lt;exec</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;/home/dev/tomcat/bin&#34;</span> <span style="color:#a6e22e">executable=</span><span style="color:#e6db74">&#34;sh&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;arg</span> <span style="color:#a6e22e">line=</span><span style="color:#e6db74">&#34;shutdown.sh&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;/arg&gt;</span>
+         <span style="color:#f92672">&lt;sleep</span> <span style="color:#a6e22e">seconds=</span><span style="color:#e6db74">&#34;20&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;/sleep&gt;</span>
+        <span style="color:#f92672">&lt;/exec&gt;</span>
+       <span style="color:#f92672">&lt;/tasks&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>start-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;tasks&gt;</span>
+        <span style="color:#f92672">&lt;exec</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;/home/dev/tomcat/bin&#34;</span> <span style="color:#a6e22e">executable=</span><span style="color:#e6db74">&#34;sh&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;arg</span> <span style="color:#a6e22e">line=</span><span style="color:#e6db74">&#34;startup.sh&#34;</span><span style="color:#f92672">&gt;</span>
+         <span style="color:#f92672">&lt;/arg&gt;</span>
+        <span style="color:#f92672">&lt;/exec&gt;</span>
+       <span style="color:#f92672">&lt;/tasks&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>sql-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;dependencies&gt;</span>
+     <span style="color:#f92672">&lt;dependency&gt;</span>
+      <span style="color:#f92672">&lt;groupId&gt;</span>bdd<span style="color:#f92672">&lt;/groupId&gt;</span>
+      <span style="color:#f92672">&lt;artifactId&gt;</span>bdd<span style="color:#f92672">&lt;/artifactId&gt;</span>
+      <span style="color:#f92672">&lt;version&gt;</span>${bdd.version}<span style="color:#f92672">&lt;/version&gt;</span>
+     <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+ 
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;driver&gt;</span>org.bdd.Driver<span style="color:#f92672">&lt;/driver&gt;</span>
+     <span style="color:#f92672">&lt;url&gt;</span>jdbc:xxx://localhost:xxx<span style="color:#f92672">&lt;/url&gt;</span>
+     <span style="color:#f92672">&lt;username&gt;</span>xxx<span style="color:#f92672">&lt;/username&gt;</span>
+     <span style="color:#f92672">&lt;password&gt;</span>xxx<span style="color:#f92672">&lt;/password&gt;</span>
+     <span style="color:#f92672">&lt;settingsKey&gt;</span>sensibleKey<span style="color:#f92672">&lt;/settingsKey&gt;</span>
+     <span style="color:#f92672">&lt;skip&gt;</span>${maven.test.skip}<span style="color:#f92672">&lt;/skip&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+ 
+    <span style="color:#f92672">&lt;executions&gt;</span>
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>drop-db-after-test-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test-compile<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;sqlCommand&gt;</span>drop database j2<span style="color:#f92672">&lt;/sqlCommand&gt;</span>
+       <span style="color:#f92672">&lt;onError&gt;</span>continue<span style="color:#f92672">&lt;/onError&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-db-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:postgresql://localhost:xxx:j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;sqlCommand&gt;</span>create database j2<span style="color:#f92672">&lt;/sqlCommand&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-schema-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:postgresql://localhost:xxx/j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;srcFiles&gt;</span>
+        <span style="color:#f92672">&lt;srcFile&gt;</span>
+         ${project.basedir}/../src/main/sql/j2/create-schema.sql
+        <span style="color:#f92672">&lt;/srcFile&gt;</span>
+       <span style="color:#f92672">&lt;/srcFiles&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>create-data-j2<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>execute<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+      <span style="color:#f92672">&lt;configuration&gt;</span>
+       <span style="color:#f92672">&lt;url&gt;</span>jdbc:postgresql://localhost:5432/j2<span style="color:#f92672">&lt;/url&gt;</span>
+       <span style="color:#f92672">&lt;autocommit&gt;</span>true<span style="color:#f92672">&lt;/autocommit&gt;</span>
+       <span style="color:#f92672">&lt;srcFiles&gt;</span>
+        <span style="color:#f92672">&lt;srcFile&gt;</span>
+         ${project.basedir}/../src/main/sql/j2/postgresql-data.sql
+        <span style="color:#f92672">&lt;/srcFile&gt;</span>
+       <span style="color:#f92672">&lt;/srcFiles&gt;</span>
+      <span style="color:#f92672">&lt;/configuration&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+ 
+   <span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.cargo<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>cargo-maven2-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.0<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>undeploy<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>undeploy<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+ 
+     <span style="color:#f92672">&lt;execution&gt;</span>
+      <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
+      <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+      <span style="color:#f92672">&lt;goals&gt;</span>
+       <span style="color:#f92672">&lt;goal&gt;</span>deploy<span style="color:#f92672">&lt;/goal&gt;</span>
+      <span style="color:#f92672">&lt;/goals&gt;</span>
+     <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+ 
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+     <span style="color:#f92672">&lt;wait&gt;</span>true<span style="color:#f92672">&lt;/wait&gt;</span>
+     <span style="color:#f92672">&lt;container&gt;</span>
+      <span style="color:#f92672">&lt;containerId&gt;</span>tomcat6x<span style="color:#f92672">&lt;/containerId&gt;</span>
+      <span style="color:#f92672">&lt;type&gt;</span>remote<span style="color:#f92672">&lt;/type&gt;</span>
+     <span style="color:#f92672">&lt;/container&gt;</span>
+ 
+     <span style="color:#f92672">&lt;configuration&gt;</span>
+      <span style="color:#f92672">&lt;type&gt;</span>runtime<span style="color:#f92672">&lt;/type&gt;</span>
+      <span style="color:#f92672">&lt;properties&gt;</span>
+       <span style="color:#f92672">&lt;cargo.remote.username&gt;</span>xxx<span style="color:#f92672">&lt;/cargo.remote.username&gt;</span>
+       <span style="color:#f92672">&lt;cargo.remote.password&gt;</span>xxx<span style="color:#f92672">&lt;/cargo.remote.password&gt;</span>
+      <span style="color:#f92672">&lt;/properties&gt;</span>
+     <span style="color:#f92672">&lt;/configuration&gt;</span>
+ 
+     <span style="color:#f92672">&lt;deployer&gt;</span>
+      <span style="color:#f92672">&lt;type&gt;</span>remote<span style="color:#f92672">&lt;/type&gt;</span>
+      <span style="color:#f92672">&lt;deployables&gt;</span>
+       <span style="color:#f92672">&lt;deployable&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>portail<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+       <span style="color:#f92672">&lt;/deployable&gt;</span>
+       <span style="color:#f92672">&lt;deployable&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>portlet1<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+       <span style="color:#f92672">&lt;/deployable&gt;</span>
+       <span style="color:#f92672">&lt;deployable&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>xxx<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>ws1<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+       <span style="color:#f92672">&lt;/deployable&gt;</span>
+       ...
+      <span style="color:#f92672">&lt;/deployables&gt;</span>
+     <span style="color:#f92672">&lt;/deployer&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+   <span style="color:#f92672">&lt;/plugin&gt;</span>
+  <span style="color:#f92672">&lt;/plugins&gt;</span>
+ <span style="color:#f92672">&lt;/build&gt;</span>
+<span style="color:#f92672">&lt;/profile&gt;</span>
+</code></pre></div><p>Il est à noter qu&rsquo;ici, les phases utilisés ne sont pas foncièrement cohérente&hellip; en effet, j&rsquo;ai supprimé quelques petites actions afin de ne pas géner à la visibilité ;-)</p>
+<p>#Conclusion</p>
+<p>Il a été vu dans les paragraphes précédents que maven 2 a servi de point central à la mise en place de l&rsquo;environnement de développement même s&rsquo;il est vrai que je n&rsquo;ai pas utilisé pleinement ses fonctionnalités (les goals <code>deploy</code> ou <code>release</code> par exemple)&hellip;</p>
+<p>En outre, je n&rsquo;ai pas mentionné les outils d&rsquo;intégration continue qui, bien sûr, exécutait périodiquement certaines de ces phases ainsi qu&rsquo;une phase transverse où était exécutés des tests d&rsquo;intégration et d&rsquo;acceptance sur une instance de type <em>embedded</em> déployée via le plugin cargo.</p>
+<p>De même, les outils mis en place de type Sonar n&rsquo;ont pas été mentionnés ici : cet article n&rsquo;avait pour but que de présenter une mise en oeuvre d&rsquo;un environnement de développement (bonne ou mauvaise, je vous laisse en juger&hellip;) qui j&rsquo;espère donnera quelques idées&hellip;</p>
+<p>#Pour aller plus loin&hellip;</p>
+<ul>
+<li><strong>Apache Maven</strong> de N. De Loof, A. Héritier chez Pearson</li>
+<li>Better Builds with Maven : <a href="http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf">http://repo.exist.com/dist/maestro/1.7.0/BetterBuildsWithMaven.pdf</a></li>
+<li>Maven. Definitive Guide : <a href="http://www.sonatype.com/products/maven/documentation/book-defguide">http://www.sonatype.com/products/maven/documentation/book-defguide</a></li>
+<li>Site de maven : <a href="http://maven.apache.org/">http://maven.apache.org/</a></li>
+<li>Site de Cargo : <a href="http://cargo.codehaus.org/Maven2+plugin">http://cargo.codehaus.org/Maven2+plugin</a></li>
+<li>Site du plugin SQL maven : <a href="http://mojo.codehaus.org/sql-maven-plugin/">http://mojo.codehaus.org/sql-maven-plugin/</a></li>
+<li>Site de Tomcat : <a href="http://tomcat.apache.org/">http://tomcat.apache.org/</a></li>
+<li>Site de Jetspeed 2 : <a href="http://portals.apache.org/jetspeed-2/">http://portals.apache.org/jetspeed-2/</a></li>
+<li>Blog de Xebia sur Cargo et Maven : <a href="http://blog.xebia.fr/2008/11/05/lintegration-continue-avec-cargo/">http://blog.xebia.fr/2008/11/05/lintegration-continue-avec-cargo/</a></li>
+<li>Article sur Cargo : <a href="http://www.waltercedric.com/java-j2ee-mainmenu-53/361-maven-build-system/1555-deploy-to-tomcat-6-using-maven.html">http://www.waltercedric.com/java-j2ee-mainmenu-53/361-maven-build-system/1555-deploy-to-tomcat-6-using-maven.html</a></li>
+<li>Présentation de Maven 2 par le BreizhJUG : <a href="http://sites.google.com/a/breizhjug.org/home/2008/Maven">http://sites.google.com/a/breizhjug.org/home/2008/Maven</a></li>
+<li>Présentation de l&rsquo;intégration continue par le BreizhJUG : <a href="http://sites.google.com/a/breizhjug.org/home/2008/IntegrationContinue">http://sites.google.com/a/breizhjug.org/home/2008/IntegrationContinue</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2fpost%2f2010-01-04-retour-sur-la-mise-en-uvre-d_04%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/post/2009-12-13-eip-quest-ce-que-cest/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/post/2009-12-13-eip-quest-ce-que-cest/">EIP : Qu&#39;est ce que c&#39;est</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/post/2010-01-26-ouvrages-recommandes/">Ouvrages recommandés</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/post/2010-01-26-ouvrages-recommandes/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.frjs/ui.js"></script>
+<script src="https://blog.jetoile.frjs/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

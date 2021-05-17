@@ -11,6 +11,9 @@ paginate = 10
   tag = "tags"
   topic = "topics"
 
+[permalinks]
+  post = "/:year/:month/:filename/"
+
 [params]
   # Shown in the home page
   subtitle = ""

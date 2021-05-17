@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 21 Nov 2012 15:12:51 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/devoxx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud</title>
-      <link>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</link>
+      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans/</link>
       <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans/</guid>
       <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
 Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
  Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
@@ -21,10 +21,10 @@ Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioni
     
     <item>
       <title>Devoxx 2012 : c&#39;est fini...</title>
-      <link>https://blog.jetoile.fr/post/2012-11-19-devoxx-2012-cest-fini/</link>
+      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini/</link>
       <pubDate>Mon, 19 Nov 2012 13:15:30 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-19-devoxx-2012-cest-fini/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini/</guid>
       <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;(
 Pour ceux qui ne le sauraient pas encore, Devoxx est L’évènement à ne pas manquer.
 Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa 11ième édition et qui a lieu à Anvers (Belgique). Elle a également fait récemment de nombreux petits avec Devoxx France qui en est à sa 2ième édition et qui aura lieu cette année du 27 au 29 mars 2013 à Paris mais également avec le petit nouveau : Devoxx UK (du 25 au 26 mars 2013 à Londres).</description>
@@ -32,10 +32,10 @@ Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa
     
     <item>
       <title>Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</title>
-      <link>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</link>
+      <link>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</link>
       <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</guid>
+      <guid>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de Devoxx France.
 L&amp;rsquo;annonce avait été faite pendant la dernière édition de Devoxx &amp;ldquo;l&amp;rsquo;originale&amp;rdquo; à Anvers en Belgique qui fêtait pour l&amp;rsquo;occasion ses 10 ans.
 Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille vivement à tous les développeurs), j&amp;rsquo;ai écrit un petit compte rendu d&amp;rsquo;une des moultes conférences qui m&amp;rsquo;ont marquées aussi bien par sa qualité scénique que par son contenu.</description>
@@ -43,10 +43,10 @@ Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille
     
     <item>
       <title>Devoxx 2011 - What&#39;s probably coming in Java Message Service 2.0</title>
-      <link>https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/</link>
+      <link>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in/</link>
       <pubDate>Sun, 20 Nov 2011 22:49:24 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/</guid>
+      <guid>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in/</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;aller à Devoxx en Belgique à Anvers.
 Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : http://www.devoxx.com/ et même à vous y inscrire l&amp;rsquo;année prochaine et/ou même mieux&amp;hellip; d&amp;rsquo;aller assister à Devoxx France!!
  Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de Nigel Deakin présentée à Devoxx 2011 et à laquelle j&amp;rsquo;ai assisté.</description>

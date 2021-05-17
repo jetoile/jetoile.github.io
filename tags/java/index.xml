@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 07 Oct 2015 17:33:08 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Template de projets REST</title>
-      <link>https://blog.jetoile.fr/post/2015-10-07-template-de-projets-rest/</link>
+      <link>https://blog.jetoile.fr/2015/10/template-de-projets-rest/</link>
       <pubDate>Wed, 07 Oct 2015 17:33:08 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2015-10-07-template-de-projets-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/10/template-de-projets-rest/</guid>
       <description>Il y a déjà un long moment, j&amp;rsquo;avais posté une série d&amp;rsquo;article expliquant comment il était possible de faire des web service de type REST de manière simple via RestEasy-Netty ou via Undertow.
 Dans la continuité de cette course au plus léger, je me suis dit que cela pouvait être intéressant de faire une petite étude un peu plus exhaustive des solutions légères qui existaient.
 L&amp;rsquo;objectif étant extraire une sorte de bench un peu naïf et un peu out of the box.</description>
@@ -21,10 +21,10 @@ L&amp;rsquo;objectif étant extraire une sorte de bench un peu naïf et un peu o
     
     <item>
       <title>Undertow pour booster vos services REST</title>
-      <link>https://blog.jetoile.fr/post/2015-06-23-undertow-pour-booster-vos-services-rest/</link>
+      <link>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</link>
       <pubDate>Tue, 23 Jun 2015 14:51:56 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2015-06-23-undertow-pour-booster-vos-services-rest/</guid>
+      <guid>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest/</guid>
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
@@ -33,10 +33,10 @@ Au niveau des besoins, ils seront identiques ie. :
     
     <item>
       <title>Breizhcamp 2014 - Présentations en ligne</title>
-      <link>https://blog.jetoile.fr/post/2014-06-12-breizhcamp-2014-presentation-en-ligne/</link>
+      <link>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne/</link>
       <pubDate>Thu, 12 Jun 2014 08:28:38 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-06-12-breizhcamp-2014-presentation-en-ligne/</guid>
+      <guid>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne/</guid>
       <description>Pour ceux qui auraient manqué l&amp;rsquo;information, le BreizhCamp s&amp;rsquo;est déroulé en mai dernier et j&amp;rsquo;y avais la chance d&amp;rsquo;y présenter un talk sur un retour d&amp;rsquo;expérience concernant le passage à l&amp;rsquo;échelle d&amp;rsquo;un SI afin de lui permettre de supporter 4 millions d&amp;rsquo;utilisateurs.
 Le synopsis était le suivant :
  De 20 000 à 4 millions d&amp;rsquo;utilisateurs
@@ -45,10 +45,10 @@ Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de 
     
     <item>
       <title>Lecture et traitement de fichiers : comment faire simple?</title>
-      <link>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</link>
+      <link>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple/</link>
       <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-04-10-lecture-et-traitement-de-fichiers-comment-faire-simple/</guid>
+      <guid>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple/</guid>
       <description>De nombreuses applications ou systèmes d&amp;rsquo;informations nécessitent le chargement de données issues de fichiers.
 Bien souvent, cet import est exécuté par batch, mais il peut aussi être intéressant de faire cet import au fil de l&amp;rsquo;eau.
 En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&amp;rsquo;il n&amp;rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&amp;rsquo;est à dire avec, au minimum, le temps de traitement d&amp;rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code.</description>
@@ -56,10 +56,10 @@ En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient v
     
     <item>
       <title>Logstash : tour d&#39;horizon sur les stratégies de déploiement</title>
-      <link>https://blog.jetoile.fr/post/2014-04-07-logstash-petit-tour-dhorizon/</link>
+      <link>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon/</link>
       <pubDate>Mon, 07 Apr 2014 11:20:26 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-04-07-logstash-petit-tour-dhorizon/</guid>
+      <guid>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon/</guid>
       <description>Cet article fera un rapide tour d&amp;rsquo;horizon sur les différentes stratégies qui peuvent être utilisées pour Logstash.
 Pour ce faire, je m&amp;rsquo;appuierai sur le très bon livre officiel que je me suis procuré (moyennant environ 10€) et qui fournit une très bonne vision sur ce qui est possible de faire ainsi que sur les différents concepts mais également sur les différentes stratégies de déploiement.
 Même si je résumerai succinctement quelques-uns des concepts afin que cet article soit un minimum compréhensible, cet article traitera surtout sur la façon dont il est possible de déployer les agents Logstash.</description>
@@ -67,10 +67,10 @@ Même si je résumerai succinctement quelques-uns des concepts afin que cet arti
     
     <item>
       <title>Changement du flux RSS</title>
-      <link>https://blog.jetoile.fr/post/2014-03-31-changement-flux-rss/</link>
+      <link>https://blog.jetoile.fr/2014/03/changement-flux-rss/</link>
       <pubDate>Mon, 31 Mar 2014 18:54:22 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-31-changement-flux-rss/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/changement-flux-rss/</guid>
       <description>Comme certain ont pu le constater, le look &amp;amp; feel du blog a évolué et j&amp;rsquo;espère qu&amp;rsquo;il vous plait.
 Normalement, en plus d&amp;rsquo;un meilleur confort pour moi lorsque j&amp;rsquo;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&amp;rsquo;un allègement de ces dernières.
 Cependant, en raison d&amp;rsquo;une limitation de feedburner sur la taille du fichier atom.xml, j&amp;rsquo;ai été obligé de ne faire pointer que la catégorie Java (je n&amp;rsquo;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&amp;rsquo;article ou juste le titre&amp;hellip;).</description>
@@ -78,10 +78,10 @@ Cependant, en raison d&amp;rsquo;une limitation de feedburner sur la taille du f
     
     <item>
       <title>Changement de look et d&#39;hébergeur</title>
-      <link>https://blog.jetoile.fr/post/2014-03-28-changement-de-look-et-dhebergeur/</link>
+      <link>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur/</link>
       <pubDate>Fri, 28 Mar 2014 10:00:03 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-28-changement-de-look-et-dhebergeur/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur/</guid>
       <description>Cet article n&amp;rsquo;a rien à voir avec Java et il est plus à titre informatif.
 En effet, j&amp;rsquo;ai décidé de passer de Blogger pour l&amp;rsquo;hébergement de mon blog à une solution basée sur Octopress et un hébergement sur github.io.
 Pourquoi ce choix?
@@ -91,10 +91,10 @@ Et ben, en fait, pour plusieurs raisons :
     
     <item>
       <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
-      <link>https://blog.jetoile.fr/post/2014-03-24-jaxrs-netty4-et-spring-integration-ils/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</link>
       <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-24-jaxrs-netty4-et-spring-integration-ils/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/</guid>
       <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
@@ -102,10 +102,10 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
     
     <item>
       <title>JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</title>
-      <link>https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</link>
       <pubDate>Mon, 17 Mar 2014 08:43:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-17-jaxrs-netty-4-jackon-2-les-memes-mais/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/</guid>
       <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
 Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
 En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
@@ -113,38 +113,38 @@ En fait, les seuls points qui diffèrent, par rapport au code précédent, touch
     
     <item>
       <title>JAXRS, Netty et bien plus encore... mode d&#39;emploi...</title>
-      <link>https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</link>
       <pubDate>Mon, 10 Mar 2014 08:03:49 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-10-jaxrs-netty-et-bien-plus-encore-mode/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode/</guid>
       <description>L&amp;rsquo;informatique évolue constamment et c&amp;rsquo;est également le cas des architectures qui ont tendance à s&amp;rsquo;orienter de plus en plus vers l&amp;rsquo;utilisation de services REST. Ces services REST doivent, en outre, être de plus en plus véloces afin de pouvoir répondre à une charge de plus en plus forte (que ce soit d&amp;rsquo;un point de vue temps de réponse mais également d&amp;rsquo;un point de vue charge suportée). C&amp;rsquo;est dans ce contexte que des solutions comme Restlet ou RestX (pour n&amp;rsquo;en citer que quelques-unes) ont vu le jour.</description>
     </item>
     
     <item>
       <title>Jolokia : le piment qui vous veut du bien </title>
-      <link>https://blog.jetoile.fr/post/2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien/</link>
+      <link>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</link>
       <pubDate>Tue, 04 Mar 2014 00:30:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-04-jolokia-le-piment-qui-vous-veut-du-bien/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien/</guid>
       <description>Dans des articles précédents, je m&amp;rsquo;étais déjà exprimé sur le fait que je trouvais qu&amp;rsquo;il était important de monitorer son application (qu&amp;rsquo;il s&amp;rsquo;agisse d&amp;rsquo;une application web, d&amp;rsquo;un batch ou d&amp;rsquo;une application standalone) (cf. ici). J&amp;rsquo;avais même creusé un peu la spécification JMX (cf. là).
 Pour faire suite à ce besoin, je vais, dans cet article, faire un focus sur un outils que j&amp;rsquo;ai découvert récemment (merci Romain ;-) ) mais qui existe depuis un moment (la version 1.</description>
     </item>
     
     <item>
       <title>Industrialiser la récolte de métriques Web</title>
-      <link>https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/</link>
+      <link>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques/</link>
       <pubDate>Thu, 25 Apr 2013 21:01:09 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques/</guid>
       <description>A l&amp;rsquo;origine, une des principales raisons à la mise en place d&amp;rsquo;un serveur d&amp;rsquo;intégration continue était l&amp;rsquo;automatisation des processus qui, fait manuellement, étaient souvent consommateur de temps et générateur d&amp;rsquo;erreurs humaines. Petit à petit, ce dernier s&amp;rsquo;est imposé comme l&amp;rsquo;orchestrateur de tous les processus et est devenu un des points central de l&amp;rsquo;usine de développement. En effet, en plus de ses capacités à compiler, packager, faire passer les tests unitaires, d&amp;rsquo;intégration et d&amp;rsquo;acceptance, il est souvent utilisé pour livrer mais également pour effectuer des tests de non régression.</description>
     </item>
     
     <item>
       <title>FluentLenium et Cucumber JVM... complément et precision</title>
-      <link>https://blog.jetoile.fr/post/2013-04-11-fluentlenium-et-cucumber-jvm-complement/</link>
+      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</link>
       <pubDate>Thu, 11 Apr 2013 20:38:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-04-11-fluentlenium-et-cucumber-jvm-complement/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</guid>
       <description>Dans mon article précédent, j&amp;rsquo;avais tenté d&amp;rsquo;expliquer comment il était possible d&amp;rsquo;intégrer les frameworks Cucumber JVM et Selenium au travers de FluentLenium.
 En effet, pour rappel, FluentLenium permettait d&amp;rsquo;abstraire Selenium en lui offrant une API plus fluent mais également en lui apportant nativement ce qu&amp;rsquo;il préconise, à savoir le Page Object Design Pattern.
 Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation de l&amp;rsquo;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&amp;rsquo;injection de Cucumber JVM.</description>
@@ -152,20 +152,20 @@ Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation d
     
     <item>
       <title>FluentLenium et Cucumber JVM sont sur un bateau...</title>
-      <link>https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/</link>
+      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</link>
       <pubDate>Thu, 14 Mar 2013 16:39:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</guid>
       <description>Dans un article précédent, j&amp;rsquo;avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n&amp;rsquo;a pas été fait que pour l&amp;rsquo;exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d&amp;rsquo;acceptance en mode boite noire sur l&amp;rsquo;application.
 Pour faire les tests d&amp;rsquo;acceptance, le choix de Cucumber JVM a été fait afin de permettre l&amp;rsquo;expression de tests d&amp;rsquo;acceptance avec une sémantique utilisant le pattern Given/When/Then mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.</description>
     </item>
     
     <item>
       <title>Démarrer une webapp en mode embedded avec Maven</title>
-      <link>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</link>
+      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</link>
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</guid>
       <description>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&amp;rsquo;il doit disposer de tests, qu&amp;rsquo;ils soient unitaire, d&amp;rsquo;intégration, fonctionnel ou d&amp;rsquo;acceptance.
 Pour adresser le problème des tests d&amp;rsquo;intégration, il est souvent utile de démarrer l&amp;rsquo;application cible de manière embedded.
 Cette article montrera comment il est possible de faire pour un contexte donné.</description>
@@ -173,10 +173,10 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
     
     <item>
       <title>Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud</title>
-      <link>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</link>
+      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans/</link>
       <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-21-devoxx-2012-versionner-son-service-dans/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans/</guid>
       <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
 Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
  Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
@@ -184,10 +184,10 @@ Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioni
     
     <item>
       <title>Devoxx 2012 : c&#39;est fini...</title>
-      <link>https://blog.jetoile.fr/post/2012-11-19-devoxx-2012-cest-fini/</link>
+      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini/</link>
       <pubDate>Mon, 19 Nov 2012 13:15:30 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-19-devoxx-2012-cest-fini/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini/</guid>
       <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;(
 Pour ceux qui ne le sauraient pas encore, Devoxx est L’évènement à ne pas manquer.
 Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa 11ième édition et qui a lieu à Anvers (Belgique). Elle a également fait récemment de nombreux petits avec Devoxx France qui en est à sa 2ième édition et qui aura lieu cette année du 27 au 29 mars 2013 à Paris mais également avec le petit nouveau : Devoxx UK (du 25 au 26 mars 2013 à Londres).</description>
@@ -195,20 +195,20 @@ Pour faire court, Devoxx est une conférence Java indépendante qui en est à sa
     
     <item>
       <title>Précompiler ses jsp</title>
-      <link>https://blog.jetoile.fr/post/2012-11-05-precompiler-ses-jsp/</link>
+      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</link>
       <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-05-precompiler-ses-jsp/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</guid>
       <description>Parce qu&amp;rsquo;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&amp;rsquo;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</description>
     </item>
     
     <item>
       <title>Test de charge : mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/post/2012-10-17-test-de-charge-mode-demploi/</link>
+      <link>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi/</link>
       <pubDate>Wed, 17 Oct 2012 12:29:39 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-10-17-test-de-charge-mode-demploi/</guid>
+      <guid>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi/</guid>
       <description>Au cours de la vie d&amp;rsquo;un projet, il est courant d&amp;rsquo;avoir recours à des tests de charge.
 Cependant, je me suis rendu compte que, trop souvent, le sujet est mal maîtrisé et donc malheureusement mal traité.
 En effet, combien de fois n&amp;rsquo;ai-je pas vu un test de charge effectué avec la méthodologie &amp;ldquo;clic clic partout&amp;rdquo;, l&amp;rsquo;utilisation de Selenium, la commande curl, ou, dans le meilleur des cas, avec quelques scénarii JMeter issus de l&amp;rsquo;utilisation du recorder de ce dernier.</description>
@@ -216,30 +216,30 @@ En effet, combien de fois n&amp;rsquo;ai-je pas vu un test de charge effectué a
     
     <item>
       <title>Découpage de projets : projet vs. modules</title>
-      <link>https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/</link>
+      <link>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules/</link>
       <pubDate>Tue, 28 Aug 2012 10:47:11 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-08-28-decoupage-de-projets-projet-vs-modules/</guid>
+      <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules/</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
  le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
       <title>Maven : créer une branche - Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/post/2012-08-13-maven-creer-une-branche-mode-demloi/</link>
+      <link>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi/</link>
       <pubDate>Mon, 13 Aug 2012 10:40:31 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-08-13-maven-creer-une-branche-mode-demloi/</guid>
+      <guid>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi/</guid>
       <description>Il y a un moment déjà, j&amp;rsquo;avais fait un article sur le plugin release oh combien pratique dans notre utilisation de maven. J&amp;rsquo;y avais mentionné les 2 goals prepare et perform qui sont les plus connus et qui, pour rappel, permettent de :
  vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
     </item>
     
     <item>
       <title>Devoxx 2012 - ElasticSearch : moteur de recherche NoSQL/REST/JSON taillé pour le cloud</title>
-      <link>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</link>
+      <link>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</link>
       <pubDate>Tue, 22 May 2012 10:37:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-05-22-devoxx-2012-elasticsearch-moteur-de/</guid>
+      <guid>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de/</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, du 18 au 20 avril 2012 dernier a eu lieu la toute première édition de Devoxx France.
 L&amp;rsquo;annonce avait été faite pendant la dernière édition de Devoxx &amp;ldquo;l&amp;rsquo;originale&amp;rdquo; à Anvers en Belgique qui fêtait pour l&amp;rsquo;occasion ses 10 ans.
 Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille vivement à tous les développeurs), j&amp;rsquo;ai écrit un petit compte rendu d&amp;rsquo;une des moultes conférences qui m&amp;rsquo;ont marquées aussi bien par sa qualité scénique que par son contenu.</description>
@@ -247,20 +247,20 @@ Ayant eu l&amp;rsquo;opportunité d&amp;rsquo;y assister (chose que je conseille
     
     <item>
       <title>Petits retours sur Cassandra</title>
-      <link>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</link>
+      <link>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra/</link>
       <pubDate>Tue, 13 Mar 2012 10:19:01 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-03-13-petits-retours-sur-cassandra/</guid>
+      <guid>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra/</guid>
       <description>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&amp;rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&amp;rsquo;ai aimé et ce que je n&amp;rsquo;ai pas aimé sur Apache Cassandra.
 Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle sur le produit et que je ne m&amp;rsquo;appuierai donc que sur sa documentation officielle en version 1.</description>
     </item>
     
     <item>
       <title>Petit focus sur 2 plugins Maven</title>
-      <link>https://blog.jetoile.fr/post/2012-02-28-petit-focus-sur-2-plugins-maven/</link>
+      <link>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven/</link>
       <pubDate>Tue, 28 Feb 2012 23:09:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-02-28-petit-focus-sur-2-plugins-maven/</guid>
+      <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven/</guid>
       <description>Bon, ça fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; je n&amp;rsquo;ai pas foncièrement d&amp;rsquo;excuses si ce n&amp;rsquo;est que j&amp;rsquo;ai été pas mal occupé sur un projet sur lequel j&amp;rsquo;essaierai de faire un petit retour dans un futur proche&amp;hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&amp;rdquo; plugins maven que j&amp;rsquo;ai eu l&amp;rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
  Olivier Lamy (http://olamy.</description>
@@ -268,10 +268,10 @@ En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&am
     
     <item>
       <title>Devoxx 2011 - What&#39;s probably coming in Java Message Service 2.0</title>
-      <link>https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/</link>
+      <link>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in/</link>
       <pubDate>Sun, 20 Nov 2011 22:49:24 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-11-20-devoxx-2011-whats-probably-coming-in/</guid>
+      <guid>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in/</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;aller à Devoxx en Belgique à Anvers.
 Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : http://www.devoxx.com/ et même à vous y inscrire l&amp;rsquo;année prochaine et/ou même mieux&amp;hellip; d&amp;rsquo;aller assister à Devoxx France!!
  Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de Nigel Deakin présentée à Devoxx 2011 et à laquelle j&amp;rsquo;ai assisté.</description>
@@ -279,10 +279,10 @@ Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pê
     
     <item>
       <title>Petite découverte de CloudBees</title>
-      <link>https://blog.jetoile.fr/post/2011-11-14-petite-decouverte-de-cloudbees/</link>
+      <link>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees/</link>
       <pubDate>Mon, 14 Nov 2011 22:40:16 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-11-14-petite-decouverte-de-cloudbees/</guid>
+      <guid>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees/</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;assister à un atelier sur CloudBees chez nos amis de Xebia.
 Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique pour éviter tout favoritisme ;-) ) :
  Eric Briand Simon Caplette Nicolas De Loof Cyrille Leclerc Olivier Michallat Jean-Louis Rigau Emmanuel Servent  Comme d&amp;rsquo;habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n&amp;rsquo;est pas le but de mon article&amp;hellip;</description>
@@ -290,10 +290,10 @@ Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique p
     
     <item>
       <title>FuseSource Community Day 2011</title>
-      <link>https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/</link>
+      <link>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011/</link>
       <pubDate>Thu, 20 Oct 2011 22:32:52 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/</guid>
+      <guid>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011/</guid>
       <description>Ce jeudi 13 octobre dernier a eu lieu la troisième édition du FuseSource Community Day à la Défense. Pour ceux qui ne connaissent pas la société FuseSource, il s&amp;rsquo;agit, en fait, du nouveau nom de Iona et c&amp;rsquo;est une société spécialisée dans l&amp;rsquo;open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation Apache.
 Parmi ces produits, on peut y trouver :
  Apache CXF (Fuse Service Framework) Apache ServiceMix (Fuse ESB) Apache ActiveMQ (Fuse Message Broker) Apache Camel (Fuse Mediation Router)  En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l&amp;rsquo;accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.</description>
@@ -301,20 +301,20 @@ Parmi ces produits, on peut y trouver :
     
     <item>
       <title>Jetty, Maven et JMX</title>
-      <link>https://blog.jetoile.fr/post/2011-09-26-jetty-maven-et-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</link>
       <pubDate>Mon, 26 Sep 2011 22:19:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-26-jetty-maven-et-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</guid>
       <description>Vous avez peut être remarqué que ces derniers temps, j&amp;rsquo;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&amp;hellip; Maven et de JMX.
 Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</description>
     </item>
     
     <item>
       <title>Présentation sur les problématiques liées à une architecture distribuée</title>
-      <link>https://blog.jetoile.fr/post/2011-09-23-presentation-aux-problematiques-dune/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune/</link>
       <pubDate>Fri, 23 Sep 2011 22:17:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-23-presentation-aux-problematiques-dune/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune/</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur les problématiques liées aux architectures distribuées. Pour information, c&amp;rsquo;est un retour d&amp;rsquo;expérience d&amp;rsquo;une mission qui date un peu puisque c&amp;rsquo;était en 2007 mais les préconisations restent identiques à ce jour.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Introduction sur les problématiques d&#39;une architecture distribuée  View more presentations from jetoile  </description>
@@ -322,10 +322,10 @@ Introduction sur les problématiques d&#39;une architecture distribuée  View mo
     
     <item>
       <title>Présentation sur un retour d&#39;expérience pour la mise en oeuvre de Maven 2</title>
-      <link>https://blog.jetoile.fr/post/2011-09-23-presentation-et-retour-dexperience-sur/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</link>
       <pubDate>Fri, 23 Sep 2011 22:14:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-23-presentation-et-retour-dexperience-sur/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur/</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>
@@ -333,20 +333,20 @@ Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentat
     
     <item>
       <title>JugSummerCamp 2011 : C&#39;est fini...</title>
-      <link>https://blog.jetoile.fr/post/2011-09-18-jugsummercamp-2011-cest-fini/</link>
+      <link>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini/</link>
       <pubDate>Sun, 18 Sep 2011 22:10:30 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-18-jugsummercamp-2011-cest-fini/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini/</guid>
       <description>Voilà, pour ceux qui l&amp;rsquo;auraient manquée ou qui ne le savaient pas (ouh!!!), le JugSummerCamp a fermé ses portes ce vendredi 16 septembre 2011.
 Ce fut une journée bien remplie, fatigante mais que du bonheur : des sessions intéressantes, des speakers compétents mais également une super organisation (merci au Poitou-Charente Java User Group mais également à tous les sponsors de l&amp;rsquo;évènement sans qui rien n&amp;rsquo;aurait été possible&amp;hellip; (on les oublie tout le temps&amp;hellip; ;-) ))!</description>
     </item>
     
     <item>
       <title>Retour sur le BreizhCamp 2011</title>
-      <link>https://blog.jetoile.fr/post/2011-07-29-retour-sur-le-breizhcamp-2011/</link>
+      <link>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011/</link>
       <pubDate>Fri, 29 Jul 2011 22:06:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-07-29-retour-sur-le-breizhcamp-2011/</guid>
+      <guid>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011/</guid>
       <description>Cela fait un petit moment (plus d&amp;rsquo;un mois déjà&amp;hellip;) qu&amp;rsquo;a eu lieu le BreizhCamp.
 Pour les néophytes, BreizhCamp est une journée de conférence sur diverses technologies allant de Python, en passant par .Net pour, finalement finir sur Java.
 Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l’ISTIC et a été organisée par l’équipe du BreizhJug qui comprend :
@@ -355,10 +355,10 @@ Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l�
     
     <item>
       <title>Maven pour les nuls... les archetypes</title>
-      <link>https://blog.jetoile.fr/post/2011-06-05-maven-pour-les-nuls-les-archetypes/</link>
+      <link>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes/</link>
       <pubDate>Sun, 05 Jun 2011 21:48:02 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-06-05-maven-pour-les-nuls-les-archetypes/</guid>
+      <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes/</guid>
       <description>Dans le cadre d&amp;rsquo;une problématique d&amp;rsquo;une usine logiciel, il peut s&amp;rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &amp;ldquo;bonnes&amp;rdquo; pratiques que doivent respecter l&amp;rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
  la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
@@ -366,56 +366,56 @@ Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cep
     
     <item>
       <title>MicroBenchmark : par la pratique</title>
-      <link>https://blog.jetoile.fr/post/2011-03-22-microbenchmark-par-la-pratique/</link>
+      <link>https://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique/</link>
       <pubDate>Tue, 22 Mar 2011 19:17:28 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-03-22-microbenchmark-par-la-pratique/</guid>
+      <guid>https://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique/</guid>
       <description>Cet article fait suite à mon article précédent afin de donner mon rapide retour d&amp;rsquo;expérience sur quelques écueils qui peuvent être commis lors de l&amp;rsquo;écriture d&amp;rsquo;un microBenchmark et dans lesquels je suis, bien sûr, tombé :(. Pour remettre dans le contexte, c&amp;rsquo;est l&amp;rsquo;écriture de ce benchmark qui a entrainé l&amp;rsquo;écriture de mon article précédent suite aux résultats que j&amp;rsquo;ai pu constater et pour lesquels j&amp;rsquo;ai eu l&amp;rsquo;aide de mes camarades.</description>
     </item>
     
     <item>
       <title>MicroBenchmark : mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/post/2011-03-18-microbenchmark-mode-d/</link>
+      <link>https://blog.jetoile.fr/2011/03/microbenchmark-mode-d/</link>
       <pubDate>Fri, 18 Mar 2011 19:04:33 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-03-18-microbenchmark-mode-d/</guid>
+      <guid>https://blog.jetoile.fr/2011/03/microbenchmark-mode-d/</guid>
       <description>Cet article fait suite à une petite discussion que j&amp;rsquo;ai eue récemment avec un collègue sur qui était le plus fort entre le for et le foreach. Question qui peut paraitre, au premier abord, stupide mais qui m&amp;rsquo;a fait pas mal me creuser les neurones sur des points qui n&amp;rsquo;ont pas grand chose à voir avec le problème initial&amp;hellip; (mais là, je m&amp;rsquo;avance un peu sur mon article&amp;hellip; ;-) ).</description>
     </item>
     
     <item>
       <title>Pour les gouverner tous - partie 3/3</title>
-      <link>https://blog.jetoile.fr/post/2011-02-24-pour-les-gouverner-tous-partie-33/</link>
+      <link>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/</link>
       <pubDate>Thu, 24 Feb 2011 18:49:13 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-02-24-pour-les-gouverner-tous-partie-33/</guid>
+      <guid>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/</guid>
       <description>Cet article fait suite à mes précédents posts (ici et là) et à pour objectif d&amp;rsquo;intégrer la partie JMX à mon petit POC JGroups afin d&amp;rsquo;offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d&amp;rsquo;une application distribuée (ie. d&amp;rsquo;aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d&amp;rsquo;une application d&amp;rsquo;obtenir la valeur d&amp;rsquo;une donnée offerte par les autres instances.</description>
     </item>
     
     <item>
       <title>Pour les gouverner tous - partie 2/3</title>
-      <link>https://blog.jetoile.fr/post/2011-02-20-pour-les-gouverner-tous-partie-23/</link>
+      <link>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23/</link>
       <pubDate>Sun, 20 Feb 2011 18:41:34 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-02-20-pour-les-gouverner-tous-partie-23/</guid>
+      <guid>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23/</guid>
       <description>Cet article fait suite à mon article précédent et a pour objectif de présenter un petit POC (Proof Of Concept) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d&amp;rsquo;utiliser JGroups pour permettre à plusieurs instances d&amp;rsquo;une même application de se partager les valeurs d&amp;rsquo;une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s&amp;rsquo;agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d&amp;rsquo;une donnée auprès des autres instance déjà présentes dans le système.</description>
     </item>
     
     <item>
       <title>Pour les gouverner tous - partie 1/3</title>
-      <link>https://blog.jetoile.fr/post/2011-01-31-pour-les-gouverner-tous-partie-13/</link>
+      <link>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/</link>
       <pubDate>Mon, 31 Jan 2011 18:37:27 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-01-31-pour-les-gouverner-tous-partie-13/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/</guid>
       <description>Pour ceux qui l&amp;rsquo;auraient manqués (comment ça? Personne ne me suit&amp;hellip; :( ), j&amp;rsquo;ai annoncé dans un post précédent que j&amp;rsquo;avais ouvert un compte sur GitHub pour hoster du code. Bien sûr, il y avait une petite idée derrière&amp;hellip; ;-)
 En fait, l&amp;rsquo;idée est partie d&amp;rsquo;un constat assez simple : sur différent projet, à chaque fois que j&amp;rsquo;ai voulu mettre en place JMX, ce qui m&amp;rsquo;a toujours profondément attristé était de ne pas pouvoir regrouper l&amp;rsquo;ensemble des informations des MBeans à un même endroit, c&amp;rsquo;est-à-dire, qu&amp;rsquo;il me fallait me demander où se trouvait tel ou tel MBean dans mon système alors que j&amp;rsquo;aurais aimé pouvoir me connecter sur n&amp;rsquo;importe quelle instance de mon système et y trouver tous les MBeans présents dans mon système.</description>
     </item>
     
     <item>
       <title>Ouverture d&#39;un compte GitHub</title>
-      <link>https://blog.jetoile.fr/post/2011-01-30-ouverture-dun-compte-github/</link>
+      <link>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github/</link>
       <pubDate>Sun, 30 Jan 2011 18:36:04 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-01-30-ouverture-dun-compte-github/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github/</guid>
       <description>Voilà, ça fait quelques jours que je travaille sur un petit projet perso.
 Aussi, afin de pouvoir le hoster, je me suis créé un compte sur GitHub : https://github.com/jetoile.
 ~~Pour toutes informations sur Git, je vous renvoie sur le site : http://blog.gitfr.net/~~
@@ -425,10 +425,10 @@ Rester à l&amp;rsquo;écoute ;-)</description>
     
     <item>
       <title>Petites astuces avec JMX</title>
-      <link>https://blog.jetoile.fr/post/2011-01-23-petites-astuces-avec-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/</link>
       <pubDate>Sun, 23 Jan 2011 18:27:07 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-01-23-petites-astuces-avec-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/</guid>
       <description>Ce rapide article fournit un petit retour d&amp;rsquo;expérience de quelques galères que j&amp;rsquo;ai pu avoir avec JMX (Java Management eXtension), galères certes stupides mais qui pourront peut être servir à d&amp;rsquo;autres&amp;hellip; ;-)
 Seront donc abordés deux points :
  Erreur lors de l&amp;rsquo;arrêt de tomcat configuré avec JMX Impossibilité de se connecter à l&amp;rsquo;agent JMX  Message d&amp;rsquo;erreur lors de l&amp;rsquo;arrêt d&amp;rsquo;Apache Tomcat? Cas d&amp;rsquo;usage Les options permettant d&amp;rsquo;activer JMX sur la JVM ont été passées via la variable JAVA_OPTS ou autre (via le catalina.</description>
@@ -436,67 +436,67 @@ Seront donc abordés deux points :
     
     <item>
       <title>JGroups : tour d&#39;horizon</title>
-      <link>https://blog.jetoile.fr/post/2010-12-28-jgroups-tour-d/</link>
+      <link>https://blog.jetoile.fr/2010/12/jgroups-tour-d/</link>
       <pubDate>Tue, 28 Dec 2010 17:42:18 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-12-28-jgroups-tour-d/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jgroups-tour-d/</guid>
       <description>Actuellement, le besoin de rendre les systèmes ou les applications interopérables est indéniable. Pour ce faire, de nombreuses technologies ont vues le jour. Il peut s&amp;rsquo;agir des MOM (Message-Oriented Middleware), des protocoles de communication entre les applications clientes et serveurs (REST, Soap, RMI, &amp;hellip;), de solutions propriétaires utilisées pour permettre la communication entre les serveurs pour des problématiques de réplication ou de synchronisation ou même de solutions basées sur le paradigme NoSQL.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les connecteurs - Partie 8</title>
-      <link>https://blog.jetoile.fr/post/2010-12-20-jmx-pour-les-nuls-les-connecteurs/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/</link>
       <pubDate>Mon, 20 Dec 2010 17:25:15 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-12-20-jmx-pour-les-nuls-les-connecteurs/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/</guid>
       <description>Ce huitième et dernier article sur JMX clôture cette petite série de posts sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base, partie 5 sur le MBeanServer, partie 6 sur le chargement dynamique des MBeans et partie 7 sur les services JMX). Il abordera succinctement la notion de connecteur.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les services JMX - Partie 7</title>
-      <link>https://blog.jetoile.fr/post/2010-12-13-jmx-pour-les-nuls-les-services-jmx/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx/</link>
       <pubDate>Mon, 13 Dec 2010 17:01:18 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-12-13-jmx-pour-les-nuls-les-services-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx/</guid>
       <description>Ce septième et avant dernier article sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base, partie 5 sur le MBeanServer et partie 6 sur le chargement dynamique des MBeans) abordera les différents types de services JMX.
 Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se présente sous forme de services JMX (ie.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Chargement dynamique de MBeans - Partie 6</title>
-      <link>https://blog.jetoile.fr/post/2010-12-06-jmx-pour-les-nuls-chargement-dynamique/</link>
+      <link>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique/</link>
       <pubDate>Mon, 06 Dec 2010 16:40:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-12-06-jmx-pour-les-nuls-chargement-dynamique/</guid>
+      <guid>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique/</guid>
       <description>Cet article toujours dans la lignée de ma petite série d&amp;rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX, partie 4 sur les classes de base et partie 5 sur le MBeanServer) sera plus accès sur les capacités de chargement dynamique des MBeans. Cependant, il n&amp;rsquo;abordera que succinctement cette partie car il est nécessaire d&amp;rsquo;avoir une très bonne connaissance du fonctionnement du classloader et qu&amp;rsquo;un simple article ne saurait l&amp;rsquo;aborder comme il se doit.</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Le MBean Server - Partie 5</title>
-      <link>https://blog.jetoile.fr/post/2010-11-29-jmx-pour-les-nuls-le-mbean-server/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server/</link>
       <pubDate>Mon, 29 Nov 2010 16:27:13 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-11-29-jmx-pour-les-nuls-le-mbean-server/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server/</guid>
       <description>Cet article reste dans la lignée de ma petite série d&amp;rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX et partie 4 sur les classes de base) et portera sur le MBean Server.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les classes de base - Partie 4</title>
-      <link>https://blog.jetoile.fr/post/2010-11-21-jmx-pour-les-nuls-les-classes-de-base/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base/</link>
       <pubDate>Sun, 21 Nov 2010 16:03:56 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-11-21-jmx-pour-les-nuls-les-classes-de-base/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base/</guid>
       <description>Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification et partie 3 sur les agents JMX) permettra de présenter les classes de bases de JMX c&amp;rsquo;est-à-dire les classes qui sont manipulées en interne par les API de JMX à savoir :
  ObjectName ObjectInstance Attribute AttributeList  Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Les agents JMX - Partie 3</title>
-      <link>https://blog.jetoile.fr/post/2010-11-08-jmx-pour-les-nuls-les-agents-jmx-partie/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/</link>
       <pubDate>Mon, 08 Nov 2010 15:50:22 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-11-08-jmx-pour-les-nuls-les-agents-jmx-partie/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/</guid>
       <description>Cette troisième partie sur JMX reste dans la continuité de la série d&amp;rsquo;article sur ce sujet (cf. introduction, partie 1 portant sur les généralités et partie 2 portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&amp;rsquo;est un agent JMX et à quoi il sert.
 Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
@@ -504,10 +504,10 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     
     <item>
       <title>JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2</title>
-      <link>https://blog.jetoile.fr/post/2010-11-03-jmx-pour-les-nuls-les-differents-mbeans/</link>
+      <link>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans/</link>
       <pubDate>Wed, 03 Nov 2010 14:09:21 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-11-03-jmx-pour-les-nuls-les-differents-mbeans/</guid>
+      <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans/</guid>
       <description>Mon précédent article portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.
 Ainsi, cette partie traitera des différents MBeans et du concept notification.
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
@@ -515,77 +515,77 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralit�
     
     <item>
       <title>JMX pour les nuls... - Les concepts - Partie 1</title>
-      <link>https://blog.jetoile.fr/post/2010-10-27-jmx-pour-les-nuls-les-concepts-partie-1/</link>
+      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/</link>
       <pubDate>Wed, 27 Oct 2010 12:01:35 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-10-27-jmx-pour-les-nuls-les-concepts-partie-1/</guid>
+      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/</guid>
       <description>Comme promis lors de mon article précédent (et pour éviter de vous faire languir ;-) ) la première partie de cette série d&amp;rsquo;article sur JMX!
 Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs    JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
       <title>JMX pour les nuls... - Introduction</title>
-      <link>https://blog.jetoile.fr/post/2010-10-26-jmx-pour-les-nuls-introduction/</link>
+      <link>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction/</link>
       <pubDate>Tue, 26 Oct 2010 11:52:53 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-10-26-jmx-pour-les-nuls-introduction/</guid>
+      <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction/</guid>
       <description>Certains l&amp;rsquo;auront peut être remarqué mais cela fait un moment que je n&amp;rsquo;ai rien posté sur mon blog. En fait, j&amp;rsquo;ai été un peu occupé à faire quelque chose qui me tenait à coeur depuis un moment&amp;hellip; : la lecture complète des spécifications JMX (ouais, ça va, on s&amp;rsquo;amuse comme on veut/peut&amp;hellip; ;-) ). Du coup, je me suis dit que cela pouvait également intéresser d&amp;rsquo;autres personnes qui aurait pu être découragées par la version agrégée de la spécification (ie.</description>
     </item>
     
     <item>
       <title>NoSQL au Paris JUG</title>
-      <link>https://blog.jetoile.fr/post/2010-09-08-nosql-au-paris-jug/</link>
+      <link>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug/</link>
       <pubDate>Wed, 08 Sep 2010 11:38:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-09-08-nosql-au-paris-jug/</guid>
+      <guid>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug/</guid>
       <description>Voilà! C&amp;rsquo;est la rentrée!&amp;hellip; et c&amp;rsquo;est aussi la rentrée de tous les User Group : cela annonce une année bien chargée en conférences (et donc en émotion ;-) ) et il est probable qu&amp;rsquo;il y en ait pour tous les goûts! Donc plus aucune excuse pour ne pas trouver chaussure à son pied!
 A titre d&amp;rsquo;exemple, et pour n&amp;rsquo;en citer que quelques-unes (désolé pour celles que j&amp;rsquo;aurais oubliées mais il y en a trop et cela me prendrait trop de place pour toutes les mettre (ainsi que les logos)&amp;hellip;), voilà un petit aperçu de ce qui nous attend en ce mois de septembre 2010 :</description>
     </item>
     
     <item>
       <title>RTFM ou de l&#39;importance de savoir lire une documentation</title>
-      <link>https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/</link>
+      <link>https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une/</link>
       <pubDate>Sat, 15 May 2010 11:24:47 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-05-15-rtfm-ou-de-l-de-savoir-lire-une/</guid>
+      <guid>https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une/</guid>
       <description>Ce petit article est plus une tranche de vie ayant pour objectif de montrer l&#39;importance de savoir lire une documentation qu&#39;un &#34;vrai&#34; post intéressant... Il est vrai que savoir trouver son information s&amp;rsquo;applique énormément dans le monde Open Source où il est crucial de savoir fouiller (documentation, forum, &amp;hellip;) lorsqu&amp;rsquo;un fait technique (anomalie? framework incomplet? cas d&amp;rsquo;usage délirant? &amp;hellip;) a lieu mais cela s&amp;rsquo;applique aussi dans notre vie de programmeur de tous les jours.</description>
     </item>
     
     <item>
       <title>JMX et Firewall</title>
-      <link>https://blog.jetoile.fr/post/2010-05-13-jmx-et-firewall/</link>
+      <link>https://blog.jetoile.fr/2010/05/jmx-et-firewall/</link>
       <pubDate>Thu, 13 May 2010 11:16:06 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-05-13-jmx-et-firewall/</guid>
+      <guid>https://blog.jetoile.fr/2010/05/jmx-et-firewall/</guid>
       <description>Cet article fait suite à mon post précédent qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu&amp;rsquo;à la fin ;-), avait pour objectif de rappeler en quoi JMX (Java Management eXtension) pouvait être une bonne réponse aux problématiques de supervision et d&amp;rsquo;administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall.</description>
     </item>
     
     <item>
       <title>JMX ou comment administrer et superviser son système...</title>
-      <link>https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/</link>
+      <link>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et/</link>
       <pubDate>Wed, 05 May 2010 11:07:07 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-05-05-jmx-ou-comment-administrer-et/</guid>
+      <guid>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et/</guid>
       <description>Je n&amp;rsquo;ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu&amp;rsquo;il s&amp;rsquo;agit d&amp;rsquo;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &amp;ldquo;comment ça marche&amp;rdquo; ou je ne fournirai pas de tutoriaux. Il s&amp;rsquo;agit juste d&amp;rsquo;un petit coup de gueule parce que j&amp;rsquo;en ai marre d&amp;rsquo;entendre toujours les mêmes inepties sur JMX&amp;hellip;
 Bon, pourquoi JMX me direz-vous?</description>
     </item>
     
     <item>
       <title>Le plugin release (un peu) démystifié</title>
-      <link>https://blog.jetoile.fr/post/2010-04-01-le-plugin-release-un-peu-demystifie/</link>
+      <link>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie/</link>
       <pubDate>Thu, 01 Apr 2010 10:39:26 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-04-01-le-plugin-release-un-peu-demystifie/</guid>
+      <guid>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie/</guid>
       <description>J&amp;rsquo;ai déjà longuement parlé de maven 2 dans des posts précédents (Petites astuces avec maven 2, De l&amp;rsquo;art du livrable et Retour sur la mise en œuvre d&amp;rsquo;un environnement de développement). Ici, je vais revenir sur le plugin release en version 2.0 en explicitant ce que font ses goals prepare et perform plus concrètement.
 En effet, il peut être utile de vouloir savoir quels sont les actions appelées et comment il est possible d&amp;rsquo;y ajouter son petit grain de sel&amp;hellip; ;-)</description>
     </item>
     
     <item>
       <title>Spring Integration vs. Apache Camel</title>
-      <link>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</link>
+      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel/</link>
       <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel/</guid>
       <description>Lors d&amp;rsquo;un post précédent, j&amp;rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&amp;rsquo;il s&amp;rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
 Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
 En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&amp;rsquo;en ai ainsi que la façon dont je les ai compris.</description>
@@ -593,19 +593,19 @@ En fait, pour être plus précis, je vais plutôt tenter de présenter la vision
     
     <item>
       <title>JRebel ou comment accélérer le développement</title>
-      <link>https://blog.jetoile.fr/post/2010-02-24-jrebel-ou-comment-accelerer-le_24/</link>
+      <link>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24/</link>
       <pubDate>Wed, 24 Feb 2010 23:19:33 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-02-24-jrebel-ou-comment-accelerer-le_24/</guid>
+      <guid>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24/</guid>
       <description>Dans des posts précédents (ici et là), j&amp;rsquo;avais parlé d&amp;rsquo;une façon d&amp;rsquo;utiliser maven 2 pour fournir, entre autre, une solution pour accélérer le déploiement d&amp;rsquo;applications web avec Cargo. Cependant, afin d&amp;rsquo;optimiser le temps de développement, il est préférable, plutôt que d&amp;rsquo;avoir à redéployer l&amp;rsquo;application web à chaque modification de son contenu (que ce soit sa vue, son contrôleur ou son modèle) ou de ses librairies tierces (ce qui est connu pour être un anti-pattern), de n&amp;rsquo;avoir pas à le faire mais d&amp;rsquo;avoir plutôt un mécanisme permettant de prendre les modifications à chaud afin de pouvoir tester le plus rapidement possible.</description>
     </item>
     
     <item>
       <title>De l&#39;art du livrable</title>
-      <link>https://blog.jetoile.fr/post/2010-02-21-de-l-du-livrable/</link>
+      <link>https://blog.jetoile.fr/2010/02/de-l-du-livrable/</link>
       <pubDate>Mon, 22 Feb 2010 21:08:47 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-02-21-de-l-du-livrable/</guid>
+      <guid>https://blog.jetoile.fr/2010/02/de-l-du-livrable/</guid>
       <description>Au cours de certaines missions, je suis arrivé à un constat qui était que le processus de génération d&amp;rsquo;un livrable était souvent délaissé au profit de l&amp;rsquo;effort de développement de l&amp;rsquo;application.
 C&amp;rsquo;est vrai qu&amp;rsquo;il peut être concevable qu&amp;rsquo;il ne s&amp;rsquo;agit que de la dernière étape d&amp;rsquo;un processus de développement, cependant, avec l&amp;rsquo;introduction de cycles courts (agilité, &amp;hellip;), pouvoir fournir rapidement un livrable de qualité au client est primordial.
 Dans un post précédent, j&amp;rsquo;avais parler de la façon dont j&amp;rsquo;avais en place maven dans un processus d&amp;rsquo;usine logicielle.</description>
@@ -613,20 +613,20 @@ Dans un post précédent, j&amp;rsquo;avais parler de la façon dont j&amp;rsquo
     
     <item>
       <title>Retour sur la mise en oeuvre d&#39;un environnement de développement</title>
-      <link>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</link>
+      <link>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</link>
       <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</guid>
       <description>Cet article présente la mise en œuvre que j&amp;rsquo;ai appliquée lors de la mise en place d&amp;rsquo;un environnement de développement devant s&amp;rsquo;interfacer, dans une démarche pseudo-agile, avec des outils d&amp;rsquo;intégration continue.
 Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&amp;rsquo;ai tenté de répondre à ces problématiques que ce soit d&amp;rsquo;un point de vue méthodologique que d&amp;rsquo;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&amp;rsquo;est aussi pour cela que j&amp;rsquo;ai créé ce blog (afin de faire partager mon expérience et d&amp;rsquo;avoir un retour) ;-)</description>
     </item>
     
     <item>
       <title>JBI : Qu&#39;est ce que c&#39;est?</title>
-      <link>https://blog.jetoile.fr/post/2009-12-07-jbi-une-solution-enterree/</link>
+      <link>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree/</link>
       <pubDate>Mon, 07 Dec 2009 09:58:58 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2009-12-07-jbi-une-solution-enterree/</guid>
+      <guid>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree/</guid>
       <description>Voilà mon premier article. Il a pour objectif de présenter JBI (Java Business Service) aussi connue sous le doux nom de JSR 208 (Java Specification Release).
 Pourquoi un article sur JBI? Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j&amp;rsquo;aime bien cette spécification et je trouve qu&amp;rsquo;elle a du potentiel et qu&amp;rsquo;elle est sous exploitée.
 Bien sûr, me direz-vous, en tant qu&amp;rsquo;utilisateur d&amp;rsquo;un PEtALS ou ServiceMix, pourquoi devrais-je comprendre la technologie sous-jacente?</description>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Pour les gouverner tous - partie 2/3 &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Pour les gouverner tous - partie 2/3</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Feb 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jgroups">jgroups</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small"></p>
+<p>Cet article fait suite à mon <a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">article précédent</a> et a pour objectif de présenter un petit POC (<em>Proof Of Concept</em>) simplicime mettant en oeuvre JGroups en version 2.11.0.GA (la dernière version stable à ce jour). Le principe est de montrer comment il est possible d&rsquo;utiliser JGroups pour permettre à plusieurs instances d&rsquo;une même application de se partager les valeurs d&rsquo;une donnée. Enfin, pour être plus précis, cet objet partagé ne le sera pas vraiment (ndlr : partagé) par toutes les instances mais il s&rsquo;agira plutôt de permettre à chaque nouvelle instance de récupérer la valeur d&rsquo;une donnée auprès des autres instance déjà présentes dans le système. En outre, les autres instances déjà présentes devront recevoir directement la valeur de la donnée de la nouvelle instance.</p>
+<p>L&rsquo;autre raison d&rsquo;être de cet article permettra d&rsquo;introduire la couche protocolaire utilisée par mon petit POC qui permet de rendre distribuable un agent JMX dans une architecture distribuée.</p>
+<!-- more -->
+<h1 id="spécification-des-besoinspré-requis">Spécification des besoins/pré-requis</h1>
+<p>Ce projet s&rsquo;appuiera sur les pré-requis suivant :</p>
+<ul>
+<li><a href="http://www.slf4j.org/">slf4j</a>/<a href="http://logback.qos.ch/">logback</a> pour la partie log</li>
+<li><a href="http://maven.apache.org/index.html">maven 3</a> (ou 2 au choix) pour la partie build</li>
+<li>et&hellip; <a href="http://www.jgroups.org/">JGroups</a> dans sa version 2.11.0.GA ;-)</li>
+</ul>
+<p>Coté tests unitaires, je m&rsquo;excuse préalablement auprès de vous, mais il n&rsquo;y en aura pas&hellip; et cela pour deux raisons que je vous laisse choisir :</p>
+<ul>
+<li>je suis flemmard ;-) mais surtout, je n&rsquo;ai pas envie de mocker la terre entière.</li>
+<li>ce petit programme est plus une utilisation basique de JGroups et, le produit fonctionnant bien, je ne vois pas l&rsquo;intérêt de le retester. En outre, ici, il est plus intéressant de tester de manière intégrée que de manière unitaire en raison de l&rsquo;aspect distribué de l&rsquo;application.</li>
+</ul>
+<p>Comme je l&rsquo;ai mentionné précédemment dans l&rsquo;introduction, le but de cet article est simple : une application dispose de plusieurs instances qui se trouvent sur des JVM distinctes (il peut donc s&rsquo;agir d&rsquo;instances exécutées sur une ou plusieurs machines).</p>
+<ul>
+<li>Si une nouvelle instance est démarrée, elle doit pouvoir demander à toutes les autres instances de l&rsquo;application la valeur d&rsquo;une donnée X afin, par exemple, de connaître leur état.</li>
+<li>De plus, toutes les instances déjà existantes dans le système doivent pouvoir être notifiées de l&rsquo;arrivée d&rsquo;une nouvelle instance et, par la même occasion, recevoir sa valeur courante de la donnée X.</li>
+<li>Enfin, si une instance disparait du sytème (arrêt, &hellip;), toutes les instances doivent automatiquement supprimer en leur sein la valeur de la donnée de l&rsquo;instance incriminée.</li>
+</ul>
+<p>Coté configuration de JGroups, cet article s&rsquo;appuiera sur une configuration par défaut, c&rsquo;est à dire une configuration en UDP.</p>
+<h1 id="architecture-de-lapplication">Architecture de l&rsquo;application</h1>
+<p>Comme vous pouvez vous en douter, l&rsquo;architecture de l&rsquo;application sera simple puisque JGroups fournit nativement de nombreuses possibilités. Aussi, je ne présenterai pas de super conception.</p>
+<p>Par contre, si les termes <strong>ReceiverAdapter</strong>, <strong>MembershipListener</strong> ou <strong>View</strong> ne vous parlent pas, je vous renverrai :</p>
+<ul>
+<li>soit, à mon <a href="http://jetoile.blogspot.com/2010/12/jgroups-tour-d.html">article</a> sur JGroups ;-)</li>
+<li>soit (mieux), à la <a href="http://www.jgroups.org/ug.html">documentation</a> officielle de ce dernier.</li>
+</ul>
+<p>Notre application sera composée de trois parties :</p>
+<ul>
+<li>La partie donnée : la classe <code>Data</code> représentera la donnée à faire transiter. Il s&rsquo;agira d&rsquo;un simple POJO qui sera, bien sûr, sérialisable.</li>
+<li>La partie notification de changement de l&rsquo;infrastructure (ie. arrivé ou arrêt d&rsquo;une instance dans le système) : la classe <code>ChangeInfraListener</code> qui implémentera l&rsquo;interface <code>MembershipListener</code> et donc la méthode <code>viewAccepted()</code> <em>call-backé</em> par JGroups pour notifier d&rsquo;un changement au niveau d&rsquo;une des ses vues.</li>
+<li>La partie qui aura à sa charge l&rsquo;exposition de la donnée représentée par la classe <code>Data</code> et qui aura initialisera l&rsquo;application : la classe <code>JGroupsClient</code> qui étendra la classe <code>ReceiverAdapter</code> afin de permettre aux autres instances d&rsquo;interargir avec.</li>
+</ul>
+<p>Coté canaux, l&rsquo;application en utilisera un seul canal : le canal <em>&ldquo;channel&rdquo;</em> qui sera utilisé pour être être notifié de changement d&rsquo;état sur la vue (il sera donc connecté à la classe implémentant l&rsquo;interface <code>MembershipListener</code> (ie. <code>ChangeInfraListener</code>) et qui sera également utilisé pour la communication point à point entre les différentes instances : pour rappel, à un membre d&rsquo;une vue est associée une adresse unique et une vue contient l&rsquo;ensemble des membres de cette dernière.</p>
+<p>A noter que pour la récupération de la donnée au démarrage d&rsquo;une instance, il aurait également été possible d&rsquo;implémenter les méthodes <code>getState()</code> et <code>setState()</code> (en combinaison de l&rsquo;utilisation de la méthode <code>connect(&lt;String&gt; , &lt;Address&gt;, &lt;String&gt;, &lt;long&gt;)</code> sur l&rsquo;instance de <code>Channel</code> utilisée). Cependant, il était, quand même nécessaire d&rsquo;implémenter la méthode <code>viewAccepted()</code> afin d&rsquo;être notifié du démarrage ou de l&rsquo;arrêt d&rsquo;une instances dans le système et cela aurait été redondant avec les notifications reçues (en effet, récupérer l&rsquo;état des autres instances des membres de la vue ne dispense pas de recevoir l&rsquo;état de la vue via la méthode <code>viewAccepted()</code>). Aussi, je n&rsquo;ai pas utilisé cette fonctionnalité de JGroups.</p>
+<p>Diagramme de séquence lors de la connexion d&rsquo;une nouvelle instance de l&rsquo;application au système, coté nouvelle instance mais aussi coté instances déjà présentes dans le système :</p>
+<p><img src="http://4.bp.blogspot.com/-DsKcW_KWIZM/TWFDF_0MbsI/AAAAAAAAAUw/EAXva9PJsm8/s1600/jgroups_seq_diagram.png" alt="medium"></p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<p>A noter que le code écrit ici ne contiendra pas les imports par souci de lisibilité.</p>
+<h2 id="la-classe-jgroupsclient">La classe JGroupsClient</h2>
+<p>Commençons donc par la mise en oeuvre de la classe <code>JGroupsClient</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.jetoile.jgroups.sample<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JGroupsClient</span> <span style="color:#66d9ef">extends</span> ReceiverAdapter <span style="color:#f92672">{</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>JGroupsClient<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> Data data <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Data<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">private</span> RpcDispatcher rpcDispatcher<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> Channel channel<span style="color:#f92672">;</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JGroupsClient</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String data<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setData</span><span style="color:#f92672">(</span>data<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> ChannelException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JChannel<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;default-udp.xml&#34;</span><span style="color:#f92672">);</span>
+ 
+        <span style="color:#66d9ef">final</span> ChangeInfraListener changeSetListener <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ChangeInfraListener<span style="color:#f92672">(</span>channel<span style="color:#f92672">);</span>
+        rpcDispatcher <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RpcDispatcher<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> changeSetListener<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+        changeSetListener<span style="color:#f92672">.</span><span style="color:#a6e22e">setRpcDispatcher</span><span style="color:#f92672">(</span>rpcDispatcher<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;privateChannel&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setAddress</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getAddress</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> Data <span style="color:#a6e22e">getData</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Dans cette classe, on observe donc que l&rsquo;on a :</p>
+<ul>
+<li>la méthode <code>start()</code> qui a à sa charge la partie connexion à JGroups,</li>
+<li>la méthode <code>getData()</code> qui correspond à la méthode exposée utilisée pour transmettre la valeur de la donnée aux autres instances.</li>
+</ul>
+<h2 id="la-classe-changeinfralistener">La classe ChangeInfraListener</h2>
+<p>Pour la classe <code>ChangeInfraListener</code>, nous aurons :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.jetoile.jgroups.sample<span style="color:#f92672">;</span>
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ChangeInfraListener</span> <span style="color:#66d9ef">implements</span> MembershipListener <span style="color:#f92672">{</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>ChangeInfraListener<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> dataCache <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;();</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> Channel privateChannel<span style="color:#f92672">;</span>
+ 
+    <span style="color:#66d9ef">private</span> RpcDispatcher rpcDispatcher<span style="color:#f92672">;</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ChangeInfraListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Channel privateChannel<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">privateChannel</span> <span style="color:#f92672">=</span> privateChannel<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRpcDispatcher</span><span style="color:#f92672">(</span>RpcDispatcher rpcDispatcher<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rpcDispatcher</span> <span style="color:#f92672">=</span> rpcDispatcher<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">viewAccepted</span><span style="color:#f92672">(</span>View new_view<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// when a new member is up
+</span><span style="color:#75715e"></span>        List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> newAddresses <span style="color:#f92672">=</span> getNewAddresses<span style="color:#f92672">(</span>new_view<span style="color:#f92672">.</span><span style="color:#a6e22e">getMembers</span><span style="color:#f92672">());</span>
+ 
+        newAddresses<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>privateChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">getAddress</span><span style="color:#f92672">());</span>
+ 
+        List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> ads <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;();</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Address ad <span style="color:#f92672">:</span> newAddresses<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>dataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>ad<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                ads<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>ad<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+ 
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>ads<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            MethodCall methodCall <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MethodCall<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;getData&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[]</span> <span style="color:#f92672">{},</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[]</span> <span style="color:#f92672">{});</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;invoke remote getData on: {}&#34;</span><span style="color:#f92672">,</span> ads<span style="color:#f92672">);</span>
+ 
+            RspList resps <span style="color:#f92672">=</span> rpcDispatcher<span style="color:#f92672">.</span><span style="color:#a6e22e">callRemoteMethods</span><span style="color:#f92672">(</span>ads<span style="color:#f92672">,</span> methodCall<span style="color:#f92672">,</span> RequestOptions<span style="color:#f92672">.</span><span style="color:#a6e22e">SYNC</span><span style="color:#f92672">);</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;after invoke getData - nb result {}&#34;</span><span style="color:#f92672">,</span> resps<span style="color:#f92672">.</span><span style="color:#a6e22e">numReceived</span><span style="color:#f92672">());</span>
+ 
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>resps<span style="color:#f92672">.</span><span style="color:#a6e22e">numReceived</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;retry...&#34;</span><span style="color:#f92672">);</span>
+                resps <span style="color:#f92672">=</span> rpcDispatcher<span style="color:#f92672">.</span><span style="color:#a6e22e">callRemoteMethods</span><span style="color:#f92672">(</span>ads<span style="color:#f92672">,</span> methodCall<span style="color:#f92672">,</span> RequestOptions<span style="color:#f92672">.</span><span style="color:#a6e22e">SYNC</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+ 
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Object resp <span style="color:#f92672">:</span> resps<span style="color:#f92672">.</span><span style="color:#a6e22e">getResults</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                Data data <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Data<span style="color:#f92672">)</span> resp<span style="color:#f92672">;</span>
+                LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;new data: {}&#34;</span><span style="color:#f92672">,</span> data<span style="color:#f92672">);</span>
+                dataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>data<span style="color:#f92672">.</span><span style="color:#a6e22e">getAddress</span><span style="color:#f92672">(),</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">getData</span><span style="color:#f92672">());</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+ 
+        List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> olds <span style="color:#f92672">=</span> getObsoleteAddresses<span style="color:#f92672">(</span>new_view<span style="color:#f92672">.</span><span style="color:#a6e22e">getMembers</span><span style="color:#f92672">());</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Address old <span style="color:#f92672">:</span> olds<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;remove data: {}&#34;</span><span style="color:#f92672">,</span> old<span style="color:#f92672">);</span>
+            dataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>old<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">suspect</span><span style="color:#f92672">(</span>Address suspected_mbr<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// NOTHING TO DO
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">block</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// NOTHING TO DO
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+ 
+    List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getNewAddresses</span><span style="color:#f92672">(</span>Vector<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> newMembers<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;();</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Address address <span style="color:#f92672">:</span> newMembers<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">dataCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>address<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>address<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+ 
+    List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getObsoleteAddresses</span><span style="color:#f92672">(</span>Vector<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> newMembers<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        List<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>Address<span style="color:#f92672">&gt;();</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Address address <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">dataCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">keySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>newMembers<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>address<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>address<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Dans cette classe, on observe que la méthode <code>viewAccepted()</code> (qui est la méthode <em>call-backé</em> par JGroups lors d&rsquo;une modification de la vue (ie. lors de la connexion ou de la déconnexion d&rsquo;un autre membre du groupe)), invoque, si un nouveau membre est apparu, l&rsquo;appel de la méthode distante <code>getData()</code> sur la nouvelle instance en question.</p>
+<p>Il est intéressant de noter l&rsquo;utilisation qui est faite de la classe <code>RequestOptions</code> mais également le fait que les méthode <code>block()</code> et <code>suspect()</code> n&rsquo;ont pas été spécifiées dans notre cas d&rsquo;utilisation.</p>
+<h2 id="la-classe-data">La classe Data</h2>
+<p>Enfin, la classe <code>Data</code> qui sera utilisée est la suivante (par souci de lisibilité, les méthodes <code>equals()</code> et <code>hashCode()</code> ne sont pas détaillées ici) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.jetoile.jgroups.sample<span style="color:#f92672">;</span>
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Data</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+ <span style="color:#66d9ef">private</span> Address address<span style="color:#f92672">;</span>
+ <span style="color:#66d9ef">private</span> String data<span style="color:#f92672">;</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Data</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> Address <span style="color:#a6e22e">getAddress</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> address<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAddress</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Address address<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">address</span> <span style="color:#f92672">=</span> address<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getData</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> data<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setData</span><span style="color:#f92672">(</span>String data<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> data<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hashCode</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// cf. gitHub
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Object obj<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// cf. gitHub
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Data [address=&#34;</span> <span style="color:#f92672">+</span> address <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, data=&#34;</span> <span style="color:#f92672">+</span> data <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Cette classe, comme on peut le remarquer, n&rsquo;a rien de particulier, si ce n&rsquo;est qu&rsquo;elle est sérialisable.</p>
+<p>Ainsi, on peut voir que l&rsquo;implémentation est très simple (je ne commenterai donc pas ce qui est fait ici&hellip;).</p>
+<h1 id="exécution-et-utilisation">Exécution et utilisation</h1>
+<p>L&rsquo;exécution, quant à elle, pourra se faire avec une classe de type :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.jetoile.jgroups.sample.sample<span style="color:#f92672">;</span>
+ 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JGroupsClientTest</span> <span style="color:#f92672">{</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ChannelException <span style="color:#f92672">{</span>
+  JGroupsClient jgroupsClient <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JGroupsClient<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;toto&#34;</span><span style="color:#f92672">);</span>
+  jgroupsClient<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>A noter que si les différentes instances venaient à ne pas se voir, cela peut provenir d&rsquo;un souci avec la configuration réseau et qu&rsquo;il est possible de palier à ce problème en forçant l&rsquo;utilisation d&rsquo;adresse IPV4 avec l&rsquo;option JVM suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">-Djava.net.preferIPv4Stack<span style="color:#f92672">=</span>true
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>On a vu ici que permettre la communication d&rsquo;instances d&rsquo;une application de manière distribuée était aisée avec JGroups. Bien sûr (et comme je l&rsquo;ai fait remarqué précédemment), la notion de <em>tuning</em> de JGroups (ie. la configuration de la couche protocolaire - cf. mon <a href="https://blog.jetoile.fr/2010/12/jgroups-tour-d.html#protocoles">article précédent</a>) n&rsquo;a pas été abordée, mais cela doit être fait en fonction des besoins de l&rsquo;infrastructure (trafic réseau, firewall, sécurité, &hellip;) et je laisse donc ce point à la convenance de chacun ;-).</p>
+<p>Ici se clôture donc la partie JGroups de notre petit POC jmanager4all qui nous a permis de voir comment JGroups répondait à notre besoin mais également comment il allait être utilisé par la suite.</p>
+<p>Le prochain article s&rsquo;attaquera donc à la partie interopérabilité avec JMX.</p>
+<p>A oui&hellip; j&rsquo;oubliais&hellip; le code de se petit POC se trouve sur GitHub : <a href="https://github.com/jetoile/jgroups-sample">https://github.com/jetoile/jgroups-sample</a></p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-23%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13/">Pour les gouverner tous - partie 1/3</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/">Pour les gouverner tous - partie 3/3</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

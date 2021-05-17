@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 13 Jun 2013 00:27:32 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/selenium/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>BreizhCamp 2013</title>
-      <link>https://blog.jetoile.fr/post/2013-06-13-breizhcamp-2013/</link>
+      <link>https://blog.jetoile.fr/2013/06/breizhcamp-2013/</link>
       <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-06-13-breizhcamp-2013/</guid>
+      <guid>https://blog.jetoile.fr/2013/06/breizhcamp-2013/</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, le BreizhCamp dans sa version 2013 a actuellement lieu.
 Etant un grand amoureux de la Bretagne, je ne pouvais manquer le cru de cette année&amp;hellip;
 En outre, j&amp;rsquo;ai eu la chance d&amp;rsquo;y présenter un Tools In Action d&#39;1/2 heure sur le sujet des tests d&amp;rsquo;acceptance et plus précisément sur la façon dont il est possible d&amp;rsquo;intégrer Cucumber JVM, Selenium et FluentLenium.
@@ -22,19 +22,19 @@ Les slides sont dès à présent disponibles :</description>
     
     <item>
       <title>Industrialiser la récolte de métriques Web</title>
-      <link>https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/</link>
+      <link>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques/</link>
       <pubDate>Thu, 25 Apr 2013 21:01:09 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-04-25-industrialiser-la-recolte-de-metriques/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques/</guid>
       <description>A l&amp;rsquo;origine, une des principales raisons à la mise en place d&amp;rsquo;un serveur d&amp;rsquo;intégration continue était l&amp;rsquo;automatisation des processus qui, fait manuellement, étaient souvent consommateur de temps et générateur d&amp;rsquo;erreurs humaines. Petit à petit, ce dernier s&amp;rsquo;est imposé comme l&amp;rsquo;orchestrateur de tous les processus et est devenu un des points central de l&amp;rsquo;usine de développement. En effet, en plus de ses capacités à compiler, packager, faire passer les tests unitaires, d&amp;rsquo;intégration et d&amp;rsquo;acceptance, il est souvent utilisé pour livrer mais également pour effectuer des tests de non régression.</description>
     </item>
     
     <item>
       <title>FluentLenium et Cucumber JVM... complément et precision</title>
-      <link>https://blog.jetoile.fr/post/2013-04-11-fluentlenium-et-cucumber-jvm-complement/</link>
+      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</link>
       <pubDate>Thu, 11 Apr 2013 20:38:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-04-11-fluentlenium-et-cucumber-jvm-complement/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement/</guid>
       <description>Dans mon article précédent, j&amp;rsquo;avais tenté d&amp;rsquo;expliquer comment il était possible d&amp;rsquo;intégrer les frameworks Cucumber JVM et Selenium au travers de FluentLenium.
 En effet, pour rappel, FluentLenium permettait d&amp;rsquo;abstraire Selenium en lui offrant une API plus fluent mais également en lui apportant nativement ce qu&amp;rsquo;il préconise, à savoir le Page Object Design Pattern.
 Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation de l&amp;rsquo;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&amp;rsquo;injection de Cucumber JVM.</description>
@@ -42,10 +42,10 @@ Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation d
     
     <item>
       <title>FluentLenium et Cucumber JVM sont sur un bateau...</title>
-      <link>https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/</link>
+      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</link>
       <pubDate>Thu, 14 Mar 2013 16:39:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-03-14-fluentlenium-et-cucumber-jvm-sont-sur/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur/</guid>
       <description>Dans un article précédent, j&amp;rsquo;avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n&amp;rsquo;a pas été fait que pour l&amp;rsquo;exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d&amp;rsquo;acceptance en mode boite noire sur l&amp;rsquo;application.
 Pour faire les tests d&amp;rsquo;acceptance, le choix de Cucumber JVM a été fait afin de permettre l&amp;rsquo;expression de tests d&amp;rsquo;acceptance avec une sémantique utilisant le pattern Given/When/Then mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.</description>
     </item>

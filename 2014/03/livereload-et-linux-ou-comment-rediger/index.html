@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Livereload et Linux ou comment rédiger du html simplement &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Livereload et Linux ou comment rédiger du html simplement</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Mar 2014</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/html">html</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://3.bp.blogspot.com/-iICRkMH0vhY/UxnsLscNtII/AAAAAAAABRA/uXMjhVZjOBg/s1600/ubuntu_livereload.png" alt="left-small"></p>
+<p>Cet article n&rsquo;a rien à voir avec le monde Java.</p>
+<p>Il s&rsquo;agit plus d&rsquo;un petit tutoriel surtout destiné&hellip; à moi-même&hellip; ;-)</p>
+<p>En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&rsquo;avoir une idée de l&rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&rsquo;énerver.</p>
+<p>Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l&rsquo;utiliser.</p>
+<p>Cependant, j&rsquo;avoue avoir subi un échec cuisant (je suis sous un environnement linux et je tiens à préciser que je ne suis pas des plus à l&rsquo;aise avec le monde nodejs ou ruby - ceci explique aussi cela&hellip; ;-) ) et cela malgré avoir mes multiples tentatives (à coup de gem install) et recherche sur mon ami Google (enfin, quand on n&rsquo;est pas doué, on n&rsquo;est pas doué&hellip; :'( )</p>
+<p>Du coup, j&rsquo;ai pris l&rsquo;option :</p>
+<blockquote>
+<p>&ldquo;J&rsquo;appelle un ami&rdquo;</p>
+</blockquote>
+<p>Dans mon cas, je remercie <a href="https://twitter.com/hcapitaine">Harold</a> pour son aide.</p>
+<p>Il m&rsquo;a conseillé de me jeter un oeil sur <a href="http://gruntjs.com/">Grunt</a> qui gérait nativement livereload (bon, pour ma défense, je n&rsquo;avais pas prévu de partir sur Grunt&hellip; ;-) ).</p>
+<p>Cet article présentera donc comment j&rsquo;ai réussi à faire fonctionner le bouzin avec, en prime, la possibilité d&rsquo;utiliser Markdown.</p>
+<p>Concernant l&rsquo;environnement, il s&rsquo;agit d&rsquo;Ubuntu 13.10 (sur Mac, je ne doute pas que cela aurait été plus simple mais bon&hellip;)</p>
+<p>[NDLR : encore une fois, je précise que je ne suis pas du tout expert dans ce domaine, il est donc inutile de me poser des questions. Par contre, toutes propositions d&rsquo;amélioration est la bienvenue ;-)]</p>
+<p>A titre informatifs, les fichiers se trouvent sur <a href="https://github.com/jetoile/livereload-grunt">Github</a>.</p>
+<!-- more -->
+<h1 id="installation-de-nodejs-de-npm-et-de-grunt">Installation de nodejs, de npm et de grunt</h1>
+<p>Dans un premier temps, il convient d&rsquo;installer tout le strict minimum afin de permettre à Grunt de fonctionner.</p>
+<p>Installation de NodeJS :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install nodejs
+</code></pre></div><p>Installation de Npm :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install npm
+</code></pre></div><p>Installation de Grunt (de manière global au système) :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo npm install -g grunt-cli
+</code></pre></div><p>Installer le <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">plugin</a> livereload sur Chrome ou Firefox.</p>
+<p>Dans le cas de Chrome, pensez à modifier sa configuration pour qu&rsquo;il autorise l&rsquo;accès aux URLs de fichiers.
+<img src="http://1.bp.blogspot.com/-jg_Pm58wTpc/Uxno8Z2A74I/AAAAAAAABQo/zUsVZpiPSz4/s1600/chrome-config.png" alt="medium"></p>
+<h1 id="configuration-de-grunt">Configuration de Grunt</h1>
+<p>Par la suite, toutes les opérations seront effectué dans le répertoire <code>$HOME/tmp</code>.</p>
+<p>Une fois tous les logiciels installés, il ne reste qu&rsquo;à créer les fichiers nécessaires au bon fonctionnement de Grunt :</p>
+<ul>
+<li><code>package.json</code> qui permet de télécharger les modules et de les installer localement dans répertoire courant (un peu comme la rubrique dependencies de Maven),</li>
+<li><code>gruntfile.js</code> qui permet de configurer les différents modules précédemment installés par la commande npm install (un peu comme la rubrique build/plugins de Maven).</li>
+</ul>
+<p><code>$HOME/tmp/package.json</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+  <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;yo&#34;</span>,
+  <span style="color:#e6db74">&#34;version&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;0.0.0&#34;</span>,
+  <span style="color:#e6db74">&#34;dependencies&#34;</span><span style="color:#f92672">:</span> {},
+  <span style="color:#e6db74">&#34;devDependencies&#34;</span><span style="color:#f92672">:</span> {
+    <span style="color:#e6db74">&#34;grunt&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.4.1&#34;</span>,
+    <span style="color:#e6db74">&#34;matchdep&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.1.2&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-express&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~1.0.0-beta2&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-contrib-watch&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.5.1&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-open&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.2.1&#34;</span>
+  },
+  <span style="color:#e6db74">&#34;engines&#34;</span><span style="color:#f92672">:</span> {
+    <span style="color:#e6db74">&#34;node&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;&gt;=0.8.0&#34;</span>
+  }
+}
+</code></pre></div><p>Il convient maintenant de lancer le téléchargement et l&rsquo;installation des modules en exécutant la commande suivante :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install
+</code></pre></div><p>Ne reste plus qu&rsquo;à configurer les modules via le fichier Gruntfile.js.</p>
+<p><code>$HOME/tmp/Gruntfile.js</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">grunt</span>) {
+
+  <span style="color:#75715e">// Load Grunt tasks declared in the package.json file
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;matchdep&#39;</span>).<span style="color:#a6e22e">filterDev</span>(<span style="color:#e6db74">&#39;grunt-*&#39;</span>).<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">loadNpmTasks</span>);
+
+  <span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">initConfig</span>({
+
+    <span style="color:#75715e">// grunt-express will serve the files from the folders listed in `bases` on specified `port` and `hostname`
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">express</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> {
+          <span style="color:#a6e22e">port</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">9000</span>,
+          <span style="color:#a6e22e">hostname</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>,
+          <span style="color:#a6e22e">bases</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;html&#39;</span>], <span style="color:#75715e">// Replace with the directory you want the files served from
+</span><span style="color:#75715e"></span>                              <span style="color:#75715e">// Make sure you don&#39;t use `.` or `..` in the path as Express
+</span><span style="color:#75715e"></span>                              <span style="color:#75715e">// is likely to return 403 Forbidden responses if you do
+</span><span style="color:#75715e"></span>                              <span style="color:#75715e">// http://stackoverflow.com/questions/14594121/express-res-sendfile-throwing-forbidden-error
+</span><span style="color:#75715e"></span>          <span style="color:#a6e22e">livereload</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+        }
+      }
+    },
+
+    <span style="color:#75715e">// grunt-watch will monitor the projects files
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">watch</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">files</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;*.html&#39;</span>,
+        <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> {
+          <span style="color:#a6e22e">livereload</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+        }
+      }
+    },
+
+    <span style="color:#75715e">// grunt-open will open your browser at the project&#39;s URL
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">open</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
+      }
+    }
+  });
+
+  <span style="color:#75715e">// Creates the `server` task
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">registerTask</span>(<span style="color:#e6db74">&#39;default&#39;</span>, [
+    <span style="color:#e6db74">&#39;express&#39;</span>,
+    <span style="color:#e6db74">&#39;open&#39;</span>,
+    <span style="color:#e6db74">&#39;watch&#39;</span>
+  ]);
+</code></pre></div><p>Cette configuration est fonctionnelle avec l&rsquo;arborescence suivante :</p>
+<p><img src="http://4.bp.blogspot.com/-yzXs78VTiFw/Uxnor5jGo_I/AAAAAAAABQY/01_s7DCQHT4/s1600/arbo01.png" alt="center"></p>
+<p>Dans cette dernière et avec cette configuration, tous les fichiers du répertoire <code>html</code> avec l&rsquo;extension .html seront suivis par livereload. Aussi, il suffit de créer un fichier html dans le répertoire <code>html</code> (par exemple html/sample.html) et de lancer la commande :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">grunt
+</code></pre></div><p>Le navigateur par défaut s&rsquo;ouvrira alors avec l&rsquo;url : http://localhost:9000/. Il suffit d&rsquo;y ajouter la page voulu (dans notre exemple http://localhost:9000/sample.html) et d&rsquo;activer le plugin <code>livereload</code>.</p>
+<p><img src="http://1.bp.blogspot.com/-edBGc5pdGLg/UxnpKGFtjsI/AAAAAAAABQw/E6maHZkgGcs/s1600/icon_livereload.png" alt="center"></p>
+<p>Il ne reste plus qu&rsquo;à modifier le fichier html et lors de sa sauvegarde, la page sera automatiquement mis à jour dans le navigateur!</p>
+<p>Si l&rsquo;erreur suivante apparait :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/usr/bin/env: node: Aucun fichier ou dossier de ce type
+</code></pre></div><p>Il faut installer <code>nodejs-legacy</code> (cf. <a href="https://github.com/volojs/volo/issues/154">ici</a>)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install nodejs-legacy
+</code></pre></div><h1 id="configuration-de-grunt-pour-lintégration-de-markdown">Configuration de Grunt pour l&rsquo;intégration de Markdown</h1>
+<p>L&rsquo;intégration de Markdown se fait de la même manière que précédemment.</p>
+<p>Les fichiers <code>package.json</code> et <code>Gruntfile.js</code> se voient juste ajouter le module <code>grunt-markdown</code>.</p>
+<p><code>package.json</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
+  <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;yo&#34;</span>,
+  <span style="color:#e6db74">&#34;version&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;0.0.0&#34;</span>,
+  <span style="color:#e6db74">&#34;dependencies&#34;</span><span style="color:#f92672">:</span> {},
+  <span style="color:#e6db74">&#34;devDependencies&#34;</span><span style="color:#f92672">:</span> {
+    <span style="color:#e6db74">&#34;grunt&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.4.1&#34;</span>,
+    <span style="color:#e6db74">&#34;matchdep&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.1.2&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-express&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~1.0.0-beta2&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-contrib-watch&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.5.1&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-open&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.2.1&#34;</span>,
+    <span style="color:#e6db74">&#34;grunt-markdown&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;~0.5.0&#34;</span>
+  },
+  <span style="color:#e6db74">&#34;engines&#34;</span><span style="color:#f92672">:</span> {
+    <span style="color:#e6db74">&#34;node&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;&gt;=0.8.0&#34;</span>
+  }
+}
+</code></pre></div><p><code>Gruntfile.js</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">odule</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">grunt</span>) {
+  <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;matchdep&#39;</span>).<span style="color:#a6e22e">filterDev</span>(<span style="color:#e6db74">&#39;grunt-*&#39;</span>).<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">loadNpmTasks</span>);
+
+  <span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">initConfig</span>({
+
+     <span style="color:#a6e22e">markdown</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">files</span><span style="color:#f92672">:</span> [
+          {
+            <span style="color:#a6e22e">expand</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>,
+            <span style="color:#a6e22e">src</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;*.md&#39;</span>,
+            <span style="color:#a6e22e">dest</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;html/&#39;</span>,
+            <span style="color:#a6e22e">ext</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;.html&#39;</span>
+          }
+        ]
+      }
+    },
+
+    <span style="color:#a6e22e">express</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> {
+          <span style="color:#a6e22e">port</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">9000</span>,
+          <span style="color:#a6e22e">hostname</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>,
+          <span style="color:#a6e22e">bases</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;html&#39;</span>], 
+          <span style="color:#a6e22e">livereload</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+        }
+      }
+    },
+
+    <span style="color:#a6e22e">watch</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">files</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;*.md&#39;</span>,<span style="color:#e6db74">&#39;*.html&#39;</span>],
+        <span style="color:#a6e22e">tasks</span> <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;markdown&#39;</span>],
+        <span style="color:#a6e22e">options</span><span style="color:#f92672">:</span> {
+          <span style="color:#a6e22e">livereload</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+        }
+      }
+    },
+
+    <span style="color:#a6e22e">open</span><span style="color:#f92672">:</span> {
+      <span style="color:#a6e22e">all</span><span style="color:#f92672">:</span> {
+        <span style="color:#a6e22e">path</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;http://localhost:&lt;%= express.all.options.port%&gt;&#39;</span>
+      }
+    }
+  });
+
+  <span style="color:#a6e22e">grunt</span>.<span style="color:#a6e22e">registerTask</span>(<span style="color:#e6db74">&#39;default&#39;</span>, [
+    <span style="color:#e6db74">&#39;markdown&#39;</span>,
+    <span style="color:#e6db74">&#39;express&#39;</span>,
+    <span style="color:#e6db74">&#39;open&#39;</span>,
+    <span style="color:#e6db74">&#39;watch&#39;</span>
+  ]);
+};
+</code></pre></div><p>Suite à la modification de ces fichiers (attention à penser de faire un <code>npm install</code> après modification du fichier <code>package.json</code>), il est alors possible d&rsquo;écrire son document en Markdown.</p>
+<p>L&rsquo;arborescence à respecter par rapport à la configuration est la suivante :
+<img src="http://2.bp.blogspot.com/-kgC6a8jRwG8/Uxno29Sr9EI/AAAAAAAABQg/lf3W_rnDAvU/s1600/arbo02.png" alt="center"></p>
+<p>Lors de la modification du fichier .md, son pendant html sera automatiquement créé (ou modifié) et pris en compte par un rechargement du navigateur.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Comme on a pu le voir, au final, configurer livereload pour permettre un rechargement automatique lors de la modification d&rsquo;un fichier HTML ou Markdown n&rsquo;est pas si compliquée une fois que l&rsquo;on a tous les fichiers et les bons modules configurés.</p>
+<p>D&rsquo;ailleurs, cet article est le premier écrit en Markdown (quand je disais que ce n&rsquo;était pas ma tasse de thé&hellip;).</p>
+<p>En espérant qu&rsquo;il pourra être utile à d&rsquo;autres lecteurs et en m&rsquo;excusant par avance si des informations sont approximatives&hellip;</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
+<ul>
+<li><a href="http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/">http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/</a></li>
+<li><a href="http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/">http://justinklemm.com/grunt-watch-livereload-javascript-less-sass-compilation/</a></li>
+<li><a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-</a></li>
+<li><a href="http://blog.roddet.com/2013/12/nantesjs-gruntjs/">http://blog.roddet.com/2013/12/nantesjs-gruntjs/</a></li>
+<li><a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists">https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#wiki-lists</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f03%2flivereload-et-linux-ou-comment-rediger%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais/">JAXRS, Netty 4, Jackon 2... les mêmes mais en mieux...</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/">JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

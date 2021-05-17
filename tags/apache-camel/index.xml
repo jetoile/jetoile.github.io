@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 15 Mar 2010 23:29:48 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/apache-camel/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Spring Integration vs. Apache Camel</title>
-      <link>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</link>
+      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel/</link>
       <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-03-15-spring-integration-vs-apache-camel/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel/</guid>
       <description>Lors d&amp;rsquo;un post précédent, j&amp;rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&amp;rsquo;il s&amp;rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
 Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
 En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&amp;rsquo;en ai ainsi que la façon dont je les ai compris.</description>

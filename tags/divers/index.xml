@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 31 Mar 2014 18:54:22 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/divers/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Changement du flux RSS</title>
-      <link>https://blog.jetoile.fr/post/2014-03-31-changement-flux-rss/</link>
+      <link>https://blog.jetoile.fr/2014/03/changement-flux-rss/</link>
       <pubDate>Mon, 31 Mar 2014 18:54:22 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-31-changement-flux-rss/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/changement-flux-rss/</guid>
       <description>Comme certain ont pu le constater, le look &amp;amp; feel du blog a évolué et j&amp;rsquo;espère qu&amp;rsquo;il vous plait.
 Normalement, en plus d&amp;rsquo;un meilleur confort pour moi lorsque j&amp;rsquo;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&amp;rsquo;un allègement de ces dernières.
 Cependant, en raison d&amp;rsquo;une limitation de feedburner sur la taille du fichier atom.xml, j&amp;rsquo;ai été obligé de ne faire pointer que la catégorie Java (je n&amp;rsquo;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&amp;rsquo;article ou juste le titre&amp;hellip;).</description>
@@ -21,10 +21,10 @@ Cependant, en raison d&amp;rsquo;une limitation de feedburner sur la taille du f
     
     <item>
       <title>Changement de look et d&#39;hébergeur</title>
-      <link>https://blog.jetoile.fr/post/2014-03-28-changement-de-look-et-dhebergeur/</link>
+      <link>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur/</link>
       <pubDate>Fri, 28 Mar 2014 10:00:03 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-28-changement-de-look-et-dhebergeur/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur/</guid>
       <description>Cet article n&amp;rsquo;a rien à voir avec Java et il est plus à titre informatif.
 En effet, j&amp;rsquo;ai décidé de passer de Blogger pour l&amp;rsquo;hébergement de mon blog à une solution basée sur Octopress et un hébergement sur github.io.
 Pourquoi ce choix?
@@ -34,10 +34,10 @@ Et ben, en fait, pour plusieurs raisons :
     
     <item>
       <title>Livereload et Linux ou comment rédiger du html simplement</title>
-      <link>https://blog.jetoile.fr/post/2014-03-20-livereload-et-linux-ou-comment-rediger/</link>
+      <link>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger/</link>
       <pubDate>Thu, 20 Mar 2014 11:24:11 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2014-03-20-livereload-et-linux-ou-comment-rediger/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger/</guid>
       <description>Cet article n&amp;rsquo;a rien à voir avec le monde Java.
 Il s&amp;rsquo;agit plus d&amp;rsquo;un petit tutoriel surtout destiné&amp;hellip; à moi-même&amp;hellip; ;-)
 En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&amp;rsquo;avoir une idée de l&amp;rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&amp;rsquo;énerver.
@@ -46,30 +46,30 @@ Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que c
     
     <item>
       <title>Indépendance, me voici ;-)</title>
-      <link>https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/</link>
+      <link>https://blog.jetoile.fr/2012/11/independance-me-voici/</link>
       <pubDate>Tue, 06 Nov 2012 13:13:17 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-06-independance-me-voici/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/independance-me-voici/</guid>
       <description>Une fois n&amp;rsquo;est pas coutume (quoique&amp;hellip;)&amp;hellip; cet article ne sert à rien&amp;hellip; mais a juste pour objectif d&amp;rsquo;annoncer que je quitte la société de service que j&amp;rsquo;ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l&amp;rsquo;indépendance&amp;hellip;
 Je quitte donc une société de service où j&amp;rsquo;ai eu la chance de rencontrer et côtoyer des personnes géniales (aussi bien humainement que professionnellement) et qui m&amp;rsquo;a donné ma chance pour essayer de suivre et de transmettre mon enthousiasme à mes joyeux camarades ;-)</description>
     </item>
     
     <item>
       <title>Resign Patterns : les nouveaux patterns</title>
-      <link>https://blog.jetoile.fr/post/2011-12-02-resign-patterns-les-nouveaux-patterns/</link>
+      <link>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns/</link>
       <pubDate>Fri, 02 Dec 2011 23:04:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-12-02-resign-patterns-les-nouveaux-patterns/</guid>
+      <guid>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns/</guid>
       <description>Cet article est une traduction &amp;ldquo;libre&amp;rdquo; de l&amp;rsquo;excellent papier de Michael Duell qui se nomme &amp;ldquo;Resign Patterns&amp;rdquo; Ailments of Unsuitable Project-Disoriented Software.
 En fait, Resign Patterns reprend le principe des Design Patterns tels que décrit par the Gang Of Four mais en proposant un tout autres types de Patterns&amp;hellip; Je vous laisse juger de leur véracité&amp;hellip; Je pense qu&amp;rsquo;ils ont suffisamment fait leurs preuves pour ne pas avoir droit, eux aussi, à leur gloire&amp;hellip; ;-)</description>
     </item>
     
     <item>
       <title>FuseSource Community Day 2011</title>
-      <link>https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/</link>
+      <link>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011/</link>
       <pubDate>Thu, 20 Oct 2011 22:32:52 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-10-20-fusesource-community-day-2011/</guid>
+      <guid>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011/</guid>
       <description>Ce jeudi 13 octobre dernier a eu lieu la troisième édition du FuseSource Community Day à la Défense. Pour ceux qui ne connaissent pas la société FuseSource, il s&amp;rsquo;agit, en fait, du nouveau nom de Iona et c&amp;rsquo;est une société spécialisée dans l&amp;rsquo;open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation Apache.
 Parmi ces produits, on peut y trouver :
  Apache CXF (Fuse Service Framework) Apache ServiceMix (Fuse ESB) Apache ActiveMQ (Fuse Message Broker) Apache Camel (Fuse Mediation Router)  En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l&amp;rsquo;accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.</description>
@@ -77,20 +77,20 @@ Parmi ces produits, on peut y trouver :
     
     <item>
       <title>JugSummerCamp 2011 : C&#39;est fini...</title>
-      <link>https://blog.jetoile.fr/post/2011-09-18-jugsummercamp-2011-cest-fini/</link>
+      <link>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini/</link>
       <pubDate>Sun, 18 Sep 2011 22:10:30 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-18-jugsummercamp-2011-cest-fini/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini/</guid>
       <description>Voilà, pour ceux qui l&amp;rsquo;auraient manquée ou qui ne le savaient pas (ouh!!!), le JugSummerCamp a fermé ses portes ce vendredi 16 septembre 2011.
 Ce fut une journée bien remplie, fatigante mais que du bonheur : des sessions intéressantes, des speakers compétents mais également une super organisation (merci au Poitou-Charente Java User Group mais également à tous les sponsors de l&amp;rsquo;évènement sans qui rien n&amp;rsquo;aurait été possible&amp;hellip; (on les oublie tout le temps&amp;hellip; ;-) ))!</description>
     </item>
     
     <item>
       <title>Retour sur le BreizhCamp 2011</title>
-      <link>https://blog.jetoile.fr/post/2011-07-29-retour-sur-le-breizhcamp-2011/</link>
+      <link>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011/</link>
       <pubDate>Fri, 29 Jul 2011 22:06:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-07-29-retour-sur-le-breizhcamp-2011/</guid>
+      <guid>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011/</guid>
       <description>Cela fait un petit moment (plus d&amp;rsquo;un mois déjà&amp;hellip;) qu&amp;rsquo;a eu lieu le BreizhCamp.
 Pour les néophytes, BreizhCamp est une journée de conférence sur diverses technologies allant de Python, en passant par .Net pour, finalement finir sur Java.
 Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l’ISTIC et a été organisée par l’équipe du BreizhJug qui comprend :
@@ -99,20 +99,20 @@ Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l�
     
     <item>
       <title>Ubuntu 11.04</title>
-      <link>https://blog.jetoile.fr/post/2011-06-11-ubuntu-1104-probleme-de-completion/</link>
+      <link>https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion/</link>
       <pubDate>Sat, 11 Jun 2011 21:59:50 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-06-11-ubuntu-1104-probleme-de-completion/</guid>
+      <guid>https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion/</guid>
       <description>Ubuntu 11.04 est sorti depuis le 28 avril 2011. Je ne reviendrai pas ni sur son ergonomie ni sur ses ajouts puisque cela a déjà été débattu sur de nombreux sites/blogs. Cependant, depuis la mise à jour, un point avait tendance à m&amp;rsquo;agacer.
 En effet, dans un shell bash, sur la complétion de la commande ls (entre autre) avec des répertoires contenant des espaces, il ne m&amp;rsquo;échappait plus ces derniers. Du coup, obligation d&amp;rsquo;aller les échapper manuellement mais chose encore plus embêtante était qu&amp;rsquo;il ne me proposait plus le contenu de mon répertoire.</description>
     </item>
     
     <item>
       <title>Ouverture d&#39;un compte GitHub</title>
-      <link>https://blog.jetoile.fr/post/2011-01-30-ouverture-dun-compte-github/</link>
+      <link>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github/</link>
       <pubDate>Sun, 30 Jan 2011 18:36:04 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-01-30-ouverture-dun-compte-github/</guid>
+      <guid>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github/</guid>
       <description>Voilà, ça fait quelques jours que je travaille sur un petit projet perso.
 Aussi, afin de pouvoir le hoster, je me suis créé un compte sur GitHub : https://github.com/jetoile.
 ~~Pour toutes informations sur Git, je vous renvoie sur le site : http://blog.gitfr.net/~~
@@ -122,20 +122,20 @@ Rester à l&amp;rsquo;écoute ;-)</description>
     
     <item>
       <title>NoSQL au Paris JUG</title>
-      <link>https://blog.jetoile.fr/post/2010-09-08-nosql-au-paris-jug/</link>
+      <link>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug/</link>
       <pubDate>Wed, 08 Sep 2010 11:38:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-09-08-nosql-au-paris-jug/</guid>
+      <guid>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug/</guid>
       <description>Voilà! C&amp;rsquo;est la rentrée!&amp;hellip; et c&amp;rsquo;est aussi la rentrée de tous les User Group : cela annonce une année bien chargée en conférences (et donc en émotion ;-) ) et il est probable qu&amp;rsquo;il y en ait pour tous les goûts! Donc plus aucune excuse pour ne pas trouver chaussure à son pied!
 A titre d&amp;rsquo;exemple, et pour n&amp;rsquo;en citer que quelques-unes (désolé pour celles que j&amp;rsquo;aurais oubliées mais il y en a trop et cela me prendrait trop de place pour toutes les mettre (ainsi que les logos)&amp;hellip;), voilà un petit aperçu de ce qui nous attend en ce mois de septembre 2010 :</description>
     </item>
     
     <item>
       <title>Articles disponibles sur mon retour du Salon Linux Open Source 2010</title>
-      <link>https://blog.jetoile.fr/post/2010-03-25-articles-disponibles-sur-mon-retour-du/</link>
+      <link>https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du/</link>
       <pubDate>Thu, 25 Mar 2010 23:50:56 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-03-25-articles-disponibles-sur-mon-retour-du/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du/</guid>
       <description>Dans mon précédent post, j&amp;rsquo;avais annoncé la mise à disposition prochaine d&amp;rsquo;une série d&amp;rsquo;articles sur le Salon Linux Open Source qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
 C&amp;rsquo;est désormais chose faite et les articles sont disponibles sur le blog de So@t.
 Il est donc possible d&amp;rsquo;y retrouver les 6 articles suivants :
@@ -144,29 +144,29 @@ Il est donc possible d&amp;rsquo;y retrouver les 6 articles suivants :
     
     <item>
       <title>Retour sur le salon Linux Open Source</title>
-      <link>https://blog.jetoile.fr/post/2010-03-21-salon-linux-open-source/</link>
+      <link>https://blog.jetoile.fr/2010/03/salon-linux-open-source/</link>
       <pubDate>Sun, 21 Mar 2010 23:43:31 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-03-21-salon-linux-open-source/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/salon-linux-open-source/</guid>
       <description>Voilà, le salon Linux Open Source a fermé ses portes. Résultat des courses, 3 jours bien remplis où j&amp;rsquo;ai pu assister à pas mal de conférences sur divers sujets tels que :
  l&amp;rsquo;atelier sur &amp;ldquo;Développement logiciel collaboratif : bonnes pratiques, premiers bilans&amp;rdquo; la keynote sur &amp;ldquo;Oracle et l&amp;rsquo;Open Source :stratégie et initiatives - de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc&amp;rdquo; la table ronde sur &amp;ldquo;Interopérabilité : les standards ouverts à la base des architectures&amp;rdquo; la table ronde sur &amp;ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&amp;rdquo; la table ronde sur &amp;ldquo;Virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&amp;rdquo; et le cycle OW2 : &amp;ldquo;Optimiser votre infrastructure d&amp;rsquo;entreprise avec les solutions innovantes du Consortium OW2&amp;rdquo; où j&amp;rsquo;ai plus précisément assisté aux présentations suivantes :  &amp;ldquo;Prenez de l&amp;rsquo;avance avec la nouvelle génération du décisionnel Open Source grâce à l&amp;rsquo;initiative OW2 Business Intelligence&amp;rdquo; &amp;ldquo;Gestion autonomique des infrastructures du nuage pour le PaaS avec JASMINe : état des lieux et perspectives&amp;rdquo; &amp;ldquo;Mettez la Data Integration dans votre ESB avec Talend et PEtALS&amp;rdquo; &amp;ldquo;Comment gérer efficacement vos documents avec eXo DMS et la solutions BPM Bonita&amp;rdquo; &amp;ldquo;Outils d&amp;rsquo;audit et diagnostic pour les développeurs et administrateurs d&amp;rsquo;applications Java EE&amp;rdquo;    La rédaction de CRs est en cours et ils seront disponibles sur le blog de So@t d&amp;rsquo;ici peu.</description>
     </item>
     
     <item>
       <title>Je pense donc je code... ou je code donc je pense</title>
-      <link>https://blog.jetoile.fr/post/2010-01-26-je-pense-donc-je-code-ou-je-code-donc/</link>
+      <link>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc/</link>
       <pubDate>Tue, 26 Jan 2010 22:53:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-01-26-je-pense-donc-je-code-ou-je-code-donc/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc/</guid>
       <description>Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c&#39;est [Yukihiro Matsumoto](http://en.wikipedia.org/wiki/Yukihiro_Matsumoto) (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu...) qui l&#39;a tenue. Il nous a expliqué ce qui l&amp;rsquo;avait amené à créer le langage Ruby : écrire du code dans un langage qui correspond à notre façon de penser; mais il a aussi tenté de nous démontrer pourquoi on devrait utiliser Ruby (chose difficile devant un public de Javaistes&amp;hellip;) : utiliser Ruby fluidifierait notre façon de penser.</description>
     </item>
     
     <item>
       <title>Ouvrages recommandés</title>
-      <link>https://blog.jetoile.fr/post/2010-01-26-ouvrages-recommandes/</link>
+      <link>https://blog.jetoile.fr/2010/01/ouvrages-recommandes/</link>
       <pubDate>Tue, 26 Jan 2010 22:26:44 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-01-26-ouvrages-recommandes/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/ouvrages-recommandes/</guid>
       <description>Ce post présente les ouvrages (techniques) que je recommande vivement&amp;hellip; cependant, certaines références ne sont plus disponibles puisque l&amp;rsquo;éditeur O&amp;rsquo;Reilly a décidé de fermer sa branche française&amp;hellip; dommage&amp;hellip; mais les éditions anglaises sont toujours là!
 A lire absoluement Apache Maven de N. De Loof et A. Héritier chez Pearson Ce livre, qui ne se veut pas une bible maven, raconte la mise en place de maven avec un modèle &amp;ldquo;essai successif&amp;rdquo;, c&amp;rsquo;est à dire en prenant en compte les besoins d&amp;rsquo;un projet fictif au sens gestion de configuration et en suivant le raisonnement des acteurs pour arriver à construire un projet pérenne qui prend en considération la gestion de différentes sources, les tests, l&amp;rsquo;intégration, la mise en production, la gestion du SCM&amp;hellip; en gros tout ce qu&amp;rsquo;un projet à besoin.</description>
     </item>

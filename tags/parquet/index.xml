@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 28 Nov 2016 11:15:19 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/parquet/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sqoop et Parquet : Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/post/2016-11-28-sqoop-et-parquet-mode-demploi/</link>
+      <link>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi/</link>
       <pubDate>Mon, 28 Nov 2016 11:15:19 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2016-11-28-sqoop-et-parquet-mode-demploi/</guid>
+      <guid>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://blog.jetoile.fr/images/apache_Sqoop_logo.png&#34; alt=&#34;left-small&#34;&gt; Dans le monde du &lt;em&gt;BigData&lt;/em&gt; (en l&amp;rsquo;occurence avec Hadoop), il est parfois utile de pouvoir importer le contenu d&amp;rsquo;une base de données dans son Datalake.&lt;/p&gt;
 &lt;p&gt;Pour ce faire, &lt;a href=&#34;http://sqoop.apache.org/&#34;&gt;Apache Sqoop&lt;/a&gt; est une des alternatives pour le faire (peut être pas la meilleure mais bon&amp;hellip;).&lt;/p&gt;
 &lt;p&gt;En effet, Sqoop permet d&amp;rsquo;importer (et exporter également) les données d&amp;rsquo;une base de données dans :&lt;/p&gt;

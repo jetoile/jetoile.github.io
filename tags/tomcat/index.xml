@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 06 Mar 2013 15:26:29 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/tomcat/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Démarrer une webapp en mode embedded avec Maven</title>
-      <link>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</link>
+      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</link>
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</guid>
       <description>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&amp;rsquo;il doit disposer de tests, qu&amp;rsquo;ils soient unitaire, d&amp;rsquo;intégration, fonctionnel ou d&amp;rsquo;acceptance.
 Pour adresser le problème des tests d&amp;rsquo;intégration, il est souvent utile de démarrer l&amp;rsquo;application cible de manière embedded.
 Cette article montrera comment il est possible de faire pour un contexte donné.</description>
@@ -21,10 +21,10 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
     
     <item>
       <title>Précompiler ses jsp</title>
-      <link>https://blog.jetoile.fr/post/2012-11-05-precompiler-ses-jsp/</link>
+      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</link>
       <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2012-11-05-precompiler-ses-jsp/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp/</guid>
       <description>Parce qu&amp;rsquo;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&amp;rsquo;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</description>
     </item>

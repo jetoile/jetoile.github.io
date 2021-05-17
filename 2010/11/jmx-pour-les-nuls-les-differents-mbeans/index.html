@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2 &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JMX pour les nuls... - Les différents MBeans et la notion de Notification - Partie 2</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>03 Nov 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TMdPuTpRY8I/AAAAAAAAALQ/R_w0PiLpvwo/s200/jmx-cover.png" alt="left">
+Mon <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html">précédent article</a> portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.</p>
+<p>Ainsi, cette partie traitera des différents MBeans et du concept notification.</p>
+<!-- more -->
+<h1 id="table-des-matières">Table des matières</h1>
+<ul>
+<li>JMX, qu&rsquo;est ce que c&rsquo;est?
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#generalite">Généralités</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#architecture">Architecture JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#instrumentation">Niveau instrumentation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#agent">Niveau agent</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#distribue">Niveau service distribué</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#composant">Composants JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#mbean">MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#notification">Modèle de notifications</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#metadonnee">Classe de métadonnées de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#serveur">Serveur de MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html#service">Service d&rsquo;agents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spécifications
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html">JMX Instrumentation</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean">MBean</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_standard">MBean Standard</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_dynamic">Dynamic MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#notification">Notification</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_open">Open MBean</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html#mbean_model">Model MBean</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html#agent">Agent JMX</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html">Concepts</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectName">ObjectName</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#objectInstance">ObjectInstance</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#attribute">Attribute et AttributeList</a></li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html#exception">Les Exceptions</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html#mbean_server">MBean Server</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html#mbean_dynamic">Chargement dynamique des MBeans</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html">Les services JMX</a>
+<ul>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#monitoring">Service Monitoring</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#timer">Service Timer</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#relation">Service Relation</a></li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html#securite">Service Sécurité</a></li>
+</ul>
+</li>
+<li><a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html#connector">Les Connecteurs</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="mbean"></a></p>
+<h1 id="mbean">MBean</h1>
+<p>Un MBean est une classe java concrète qui :</p>
+<ul>
+<li>doit implémenter sa propre interface MBean ou implémenter l’interface <code>DynamicMBean</code>,</li>
+<li>peut implémenter l’interface <code>NotificationBroacaster</code></li>
+</ul>
+<p>Une classe qui implémente sa propre interface de <code>MBean</code> est un MBean Standard. Cette manière de procéder est la plus simple. Dans ce cas, les opérations et attributs accessibles sont déterminés statiquement grâce à l’introspection de l’interface du MBean.</p>
+<p>Pour un Dynamic MBean (et donc une classe implémentant l’interface <code>DynamicMBean</code>), les opérations et les attributs sont exposés de manière indirecte à l’agent JMX qui invoque alors des méthodes pour déterminer le nom et la nature des opérations et attributs.</p>
+<p>Un MBean n’est pas obligatoirement une classe publique Java. Cependant, elle doit implémenter une interface publique (que ce soit ses propres opérations pour un MBean standard ou l’interface <code>DynamicMBean</code> pour un MBean dynamique).</p>
+<p>En outre, le MBean peut avoir plusieurs constructeurs qui doivent être publiques s’il doit être instancié par un agent.</p>
+<p><a name="mbean_standard"></a></p>
+<h2 id="mbean-standard">MBean Standard</h2>
+<p>Comme il a été vu précédemment que, pour être gérable via un agent JMX, un MBean Standard doit explicitement définir son interface de gestion et doit être conforme à certaines règles de nommage qui sont inspirées du modèle des JavaBean.</p>
+<p>Ainsi, l’interface de gestion d’un MBean Standard peut être composée de :</p>
+<ul>
+<li>ses constructeurs : seuls les constructeurs publics sont exposés,</li>
+<li>ses attributs : les propriétés qui sont exposées le sont au travers des getter et setter,</li>
+<li>ses opérations : les méthodes qui sont exposées sont toutes les méthodes qui ne sont pas des getter ou des setter,</li>
+<li>ses notifications.</li>
+</ul>
+<p>En outre, l’interface qui est implémenté par le MBean doit porter le même nom que ce dernier mais avec le suffixe <code>MBean</code> (par exemple, si la classe à gérer se nomme <code>MyClass</code>, alors l’interface devra se nommer <code>MyClassMBean</code>).</p>
+<p>Une classe peut aussi être administrable par son héritage si elle respecte un des modèles suivants :</p>
+<table>
+<thead>
+<tr>
+<th>Modèles</th>
+<th>Commentaires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCNQHfzV3I/AAAAAAAAALc/YTeLXLYZLSM/s1600/jmx02.png" alt="small"></td>
+<td>Les opérations exposées sont a1 et a2.</td>
+</tr>
+<tr>
+<td><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCNQQW_w2I/AAAAAAAAALg/shMqH7XIyfk/s200/jmx03.png" alt="small"></td>
+<td>Si B étend A sans implémenter sa propre interface, alors B hérite de l’interface de management AMBean et les opérations exposées sont a1 et a2.</td>
+</tr>
+<tr>
+<td><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCNQpfTdAI/AAAAAAAAALk/aXy_rHOAVbY/s1600/jmx04.png" alt="small"></td>
+<td>B hérite de A et implémente sa propre interface de management BMBean. L’opération exposée est b2.</td>
+</tr>
+<tr>
+<td><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCNRII-pTI/AAAAAAAAALo/P97HDUlqIYw/s200/jmx05.png" alt="small"></td>
+<td>B hérite de A et implémente son interface de management qui hérite de celle de A. Les opérations exposées sont a1, a2 et b2. A noter que si B n’étendait pas A, les opérations exposées seraient similaires.</td>
+</tr>
+<tr>
+<td><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCNR6tYsnI/AAAAAAAAALw/2vLb7jJai6s/s1600/jmx07.png" alt="small"></td>
+<td>B implémente son interface de management qui hérite de l’interface AMBean. Les opérations exposées sont a1, a2 et b2.</td>
+</tr>
+</tbody>
+</table>
+<p>Les attributs sont les champs ou les propriétés des MBean implémentés (ou étendus). Ils sont déterminés par leurs noms (la méthode <code>Character.isJavaIdentifierStart</code> (resp. <code>Character.isJavaIdentifierPart</code>) doit renvoyer vrai pour sa première lettre (resp. ses autres lettres)) et par leurs types et sont accédés au travers de leurs accesseurs. Aussi, si un attribut n’a pas d’accesseurs, il ne sera pas visible puisque, pour rappel, ses accesseurs permettent également de déterminer son niveau d’accessibilité (lecture seule, écriture seule ou lecture-écriture). Cependant, il est à noter qu’un attribut ne doit avoir qu’un seul <em>getter</em> et/ou <em>setter</em> et peut être de n’importe quel type Java (cela inclus également les tableaux).</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Un attribut doit suivre la règle de nommage suivante :
+<ul><li>Sa première lettre doit renvoyée vrai à la méthode <i>Character.isJavaIdentifierStart</i></li>
+<li>Ses autres lettres doivent renvoyées vrai à la méthode <i>Character.isJavaIdentifierPart</i></li>
+</ul></td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Les attributs et opérations sont case sensitives.<br/>En outre, un attribut ne peut avoir qu’un seul getter et/ou setter.<br/>
+Par exemple, les attributs suivants ne sont pas valides :
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> valid <span style="color:#f92672">;</span>
+<span style="color:#66d9ef">int</span> number <span style="color:#f92672">;</span>
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isValid</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">valid</span> <span style="color:#f92672">;}</span>
+<span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">getValid</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">valid</span> <span style="color:#f92672">;}</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNumber</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> number<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">number</span> <span style="color:#f92672">=</span> number <span style="color:#f92672">;}</span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNumber</span><span style="color:#f92672">(</span>String number<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">number</span> <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>number<span style="color:#f92672">)</span> <span style="color:#f92672">;}</span>
+</code></pre></div></ul></td></tr>
+</tbody></table>
+<p>Les opérations JMX peuvent avoir différentes fonctions (comme effectuer une opération interne sur la ressource managée ou renvoyer une valeur) et sont des méthodes Java qui doivent être spécifiées dans l’interface de management (MBean). Ainsi, toute opération qui ne répond pas au design pattern défini par la définition d’attribut JMX est vue comme une opération.</p>
+<p><a name="mbean_dynamic"></a></p>
+<h2 id="dynamic-mbean">Dynamic MBean</h2>
+<p>Alors que les MBean Standard permettent de gérer des ressources bien définies, les Dynamics MBean offrent une solution plus flexible. En effet, les Dynamics MBean sont des ressources qui sont instrumentés au travers d’une interface prédéfinie qui n’expose les attributs et les opérations qu’à l’exécution. En effet, au lieu d’exposer ses opérations et attributs au travers de méthodes déterminées à l’avance, les Dynamics MBean implémentent une méthode qui retourne tous ses attributs ainsi que la signature de toutes ses méthodes, permettant ainsi de rendre l’exposition dynamique.</p>
+<p>En fait, un MBean qui implémente l’interface <code>DynamicMBean</code> ne fonctionne pas par introspection comme les MBean Standard mais appelle des méthodes qui lui renvoient les attributs et opérations gérables.</p>
+<p>Ainsi, un MBean Dynamic est une classe Java qui implémente directement ou indirectement (ie. par héritage) l’interface publique <code>DynamicMBean</code>.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCUxCaOtDI/AAAAAAAAAL8/xrRlOQfuDAo/s1600/jmx13.png" alt="center"></p>
+<p>En fait, cette interface définie les méthodes suivantes :</p>
+<ul>
+<li><code>getMBeanInfo</code> qui retourne une instance d’un MBeanInfo et qui contient la définition de l’interface de management du MBean, c&rsquo;est-à-dire la liste des ses attributs associés à leurs types et leurs propriétés (lecture-seule, écriture, lecture-écriture), de ses opérations associées à leurs signatures, la liste des notifications ainsi que la description des constructeurs offerts par le MBean.</li>
+</ul>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCNStck85I/AAAAAAAAAL0/FeAhq8knqNM/s1600/jmx08.png" alt="medium"></p>
+<ul>
+<li><code>getAttribute</code> et <code>getAttributes</code> qui retournent le ou les attributs demandés.</li>
+<li><code>setAttribute</code> et <code>setAttributes</code> qui permettent de renseigner les attributs.</li>
+<li><code>invoke</code> qui permet d’invoquer toutes les opérations offertes par le MBean.</li>
+</ul>
+<p>En outre, tout comme pour les MBean Standard, les Dynamic MBean peuvent hériter leur instrumentation d’une superclasse, mais il est à noter que l’interface de management ne peut être composée d’un arbre d’héritage puisque l’interface de management est fournie par le <code>MBeanInfo</code>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCVlbEX3AI/AAAAAAAAAMA/_H914xn8sP8/s1600/jmx15_1.png" alt="medium"></p>
+<p>Ainsi, dans l’exemple suivant, si la classe D étend la classe C sans redéfinir la méthode <code>getMBeanInfo</code>, alors D aura la même interface de management que C. Cependant, D pourra, en redéfinissant les accesseurs redéfinir l’implémentation de ses attributs.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCNR6tYsnI/AAAAAAAAALw/2vLb7jJai6s/s1600/jmx07.png" alt="medium"></p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Le serveur MBean ne teste ni ne valide la description du Dynamic MBean : c’est au développeur de vérifier si l’interface de management est conforme à l’implémentation interne.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+De par sa nature, un Dynamic MBean est susceptible d’évoluer à l’exécution de l’application. Cependant, seules des applications de management propriétaires peuvent prendre en compte ces changements puisqu’il est nécessaire de les notifier en cas de changements.
+</td></tr>
+</tbody></table>
+<blockquote>
+<p><a name="notification"></a></p>
+</blockquote>
+<h1 id="notification">Notification</h1>
+<p>Les interfaces de gestion des MBean permettent à un agent de récupérer ou de modifier la valeur des attributs des ressources ainsi que d’invoquer des opérations sur ces dernières. Cependant, JMX permet également de notifier les applications de gestion en cas de changement d’état du système (et plus particulièrement des ressources).</p>
+<p>Ainsi, JMX propose un modèle pour émettre des événements (appelés <strong>Notification</strong>) fonctionnant sur le principe d’écouteurs : les applications de managements et les autres objets enregistrés peuvent s’enregistrer comme des écouteurs (<code>NotificationListener</code>) du MBean émetteur de notifications (<code>Notification</code>). Il est cependant à noter qu’il ne leur est possible de ne s’enregistrer qu’une seule fois auprès de l’émetteur.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCYqpaFn1I/AAAAAAAAAME/hy9yqTxYLjU/s1600/jmx11_1.png" alt="center"></p>
+<p>Les notifications sont encapsulées dans une implémentation de l’interface <code>Notification</code> qui est composée :</p>
+<ul>
+<li>du type de notification (de type <code>String</code>) qui est formatée à la façon des propriétés java (ie. une chaine de caractère utilisant des points. Par exemple : <code>vendorName.resourceA.eventA1</code>). Il est à noter que les types de notification préfixés par JMX. sont réservées aux notifications émises par l’infrastructure JMX (par exemple,  <code>JMX.mbean.registered</code>).</li>
+<li>d’un numéro de séquence qui permet d’identifier une instance particulière de notification dans un contexte de broadcast.</li>
+<li>du timestamp qui permet de savoir quand la notification a été générée.</li>
+<li>du message émis (de type <code>String</code>) qui peut permettre d’expliciter la notification à l’utilisateur.</li>
+<li>d’information utilisateur (de type <code>Object</code>) qui peut contenir d’autres types d’information.</li>
+</ul>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCZPDKjyTI/AAAAAAAAAMM/4AH_JVk_0Rk/s1600/jmx14_1.png" alt="center"></p>
+<p>Du coté de l’émetteur, il doit implémenter soit l’interface <code>NotificationBroadcaster</code>, soit l’interface <code>NotificationEmitter</code>.</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCZnN_WiiI/AAAAAAAAAMQ/U3qrTB-431c/s1600/jmx12_1.png" alt="center"></p>
+<p>En outre, il est également possible de filtrer les notifications reçues en implémentant l’interface <code>NotificationFilter</code>.</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCZ3MbN7WI/AAAAAAAAAMU/kM4ERUGeCBg/s1600/jmx10_1.png" alt="center"></p>
+<p><a name="mbean_open"></a></p>
+<h1 id="open-mbean">Open MBean</h1>
+<p>Les Open MBean sont un-sous type des Dynamic MBean. En fait, il s’agit de Dynamic MBean mais dont le type des attributs et des signatures des opérations a été normalisé afin de permettre une meilleure interopérabilité entre le MBean et l’interface de management. Ainsi, l’application de management et les Open MBean peuvent partager et utiliser les données de management (attribut) et invoquer les opérations sans nécessiter une recompilation, un ré-assemblement ou un linkage dynamique, opérations qui nécessiteraient que l’application de management ait accès aux classes Java de l’agent si les types n’étaient pas normalisés.</p>
+<p>Cependant, les Open MBean ne sont que des Dynamic MBean, c&rsquo;est-à-dire que c’est à la charge du développeur de vérifier qu’ils n’utilisent que les types définis supportés par les Open MBean.</p>
+<p>Aussi, la méthode <code>getMBeanInfo()</code> doit retourner une instance d’un <code>OpenMBeanInfoSupport</code> plutôt qu’une instance d’un <code>MBeanInfo</code> (pour rappel, un Dynamic MBean doit implémenter l’interface <code>DynamicMBean</code> qui possède la méthode <code>getMBeanInfo()</code> et qui renvoie un objet de type <code>MBeanInfo</code>).</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCaO8HRaJI/AAAAAAAAAMY/dAkSqsvCRbQ/s1600/jmx17_1.png" alt="medium"></p>
+<p>Les types supportés par les Open MBean sont :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type de données sypportées par les Open MBean</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">java.lang.Boolean</td>
+<td style="text-align:center">java.lang.Float</td>
+</tr>
+<tr>
+<td style="text-align:center">java.lang.Byte</td>
+<td style="text-align:center">java.lang.Integer</td>
+</tr>
+<tr>
+<td style="text-align:center">java.lang.Character</td>
+<td style="text-align:center">java.lang.Long</td>
+</tr>
+<tr>
+<td style="text-align:center">java.lang.Double</td>
+<td style="text-align:center">java.lang.Short</td>
+</tr>
+<tr>
+<td style="text-align:center">boolean[]</td>
+<td style="text-align:center">float[]</td>
+</tr>
+<tr>
+<td style="text-align:center">byte []</td>
+<td style="text-align:center">int[]</td>
+</tr>
+<tr>
+<td style="text-align:center">char[]</td>
+<td style="text-align:center">long[]</td>
+</tr>
+<tr>
+<td style="text-align:center">double[]</td>
+<td style="text-align:center">short[]</td>
+</tr>
+<tr>
+<td style="text-align:center">java.lang.String</td>
+<td style="text-align:center">java.lang.Void (retour d’opérations seulement)</td>
+</tr>
+<tr>
+<td style="text-align:center">java.math.BigDecimal</td>
+<td style="text-align:center">java.math.BigInteger</td>
+</tr>
+<tr>
+<td style="text-align:center">java.util.Date</td>
+<td style="text-align:center">javax.management.ObjectName</td>
+</tr>
+<tr>
+<td style="text-align:center">javax.management.openmbean.CompositeData (interface)</td>
+<td style="text-align:center">javax.management.openmbean.TabularData (interface)</td>
+</tr>
+</tbody>
+</table>
+<p>Les types <code>CompositeData</code> et <code>TabularData</code> sont utilisés pour agréger les données basiques (tels que les String ou les tableaux de int) et fournissent un mécanisme pour fournir des structures de données complexes. Bien que ces types soient des types simples (au sens JMX du terme), elles peuvent contenir d’autres <code>CompositeData</code> ou <code>TabularData</code>.</p>
+<p>En fait, une implémentation d’un <code>CompositeData</code> est équivalente à une <code>Map</code>, alors qu’une instance d’un <code>TabularData</code> est équivalente à un tableau de <code>CompositeData</code>.</p>
+<p>Il est à noter qu’un <code>CompositeData</code> est une structure immuable. Ainsi dès qu’il est instancié, il n’est pas possible de le modifier. Le <code>TabularData</code> peut, quant à lui, être modifié.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCb7nMHwgI/AAAAAAAAAMc/2_IcnEmbYAU/s1600/jmx17_bis.png" alt="center"></p>
+<p>JMX fournit une implémentation de ces interfaces qu’il est possible d’utiliser. Pour le <code>CompositeData</code>, il s’agit de <code>CompositeDataSupport</code> et, pour le <code>TabularData</code>, <code>TabularDataSupport</code> (classe qui définie une structure de tableau contenant des CompositeData qui doivent avoir le même <code>CompositeType</code>).</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Les classes GCInfo, MemoryNotifInfoCompositeData, MemoryUsageCompositeData, MonitorInfoCompositeData, StackTraceElementCompositeData, ThreadInfoCompositeData et VMOptionCompositeData implémentent également l’interface CompositeDataSupport.
+</td></tr>
+</tbody></table>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCcUpilkdI/AAAAAAAAAMg/GnDbK9JVRqo/s1600/jmx18_1.png" alt="center"></p>
+<p>Cependant, le fait d’utiliser des types de données complexes nécessite que l’Open MBean doit décrire la structure des données. Pour cela, les Open MBean proposent une classe abstraite <code>OpenType</code> qui décrit aussi bien ses types basiques que ses types complexes. Cette classe abstraite est donc étendue par des classes qui décrivent chacun de ses types cités ci-dessus en spécifiant le nom du type, sa description ainsi que la classe qui la spécifie. Cela permet, pour les types complexes, de fournir une description et un nom de chaque élément qui le compose.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCccuJTwzI/AAAAAAAAAMk/tAsptdhxVj8/s1600/jmx20.png" alt="large"></p>
+<p>De plus, comme indiqué précédemment, un Open MBean étant un Dynamic MBean, il doit s’auto décrire via l’interface MBeanInfo. Pour cela, JMX propose, par défaut, des sous-classes des classes permettant de décrire un Dynamic MBean (<code>MBeanInfo</code>, <code>MBeanAttributeInfo</code>, <code>MBeanOperationInfo</code>, <code>MBeanParameterInfo</code>, <code>MBeanConstructorInfo</code>) et dont le nom est préfixé par Open et postfixé par Support (<code>OpenMBeanInfoSupport</code>, <code>OpenMBeanAttributeInfoSupport</code>, <code>OpenMBeanOperationInfoSupport</code>, <code>OpenMBeanParameterInfoSupport</code>, <code>OpenMBeanConstructorInfoSupport</code>).</p>
+<p>Les notifications sont, quant à elle, standard.
+<img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCczbc-JCI/AAAAAAAAAMo/ivfzCGCGR0A/s1600/jmx21_1.png" alt="large"></p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCdCn-DxlI/AAAAAAAAAMs/61pQhkzTh4c/s1600/jmx22_1.png" alt="medium"></p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCdZywnsaI/AAAAAAAAAMw/pWaoBFBfLR4/s1600/jmx23_1.png" alt="medium"></p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TNCdaX_4lPI/AAAAAAAAAM0/D_ck5n0AsvE/s1600/jmx25_1.png" alt="medium"></p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCdtEsWmrI/AAAAAAAAAM4/gE6SvL-vWVI/s1600/jmx26_1.png" alt="medium"></p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Pour développer un Open MBean, il faut :<br />
+<ul><li>Que la ressource à manager implémente l'interface <i>DynamicMBean</i></li>
+<li>Que tous les attributs et les signatures des méthodes soient des types supportés par les OpenMBean</li>
+<li>Que l'implémentation de la méthode <i>getMBeanInfo</i> retourne une instance de l'interface <i>OpenMBeanInfo</i> (par exemple, une instance d'un <i>OpenMBeanInfoSupport</i>) qui doit retourner des objets de type <i>OpenMBeanXXXInfo</i></li>
+<li>Que les méthodes suivantes retournent des objets valides et non null :  <ul><li><i>OpenMBeanInfo.getDescription</i></li>
+<li><i>OpenMBeanOperationInfo.getDescription</i></li>
+<li><i>OpenMBeanConstructorInfo.getDescription</i></li>
+<li><i>OpenMBeanParameterInfo.getDescription</i></li>
+<li><i>OpenMBeanAttributeInfo.getDescription</i></li>
+<li><i>MBeanNotificationInfo.getDescription</i></li>
+</ul></li>
+<li>Que la méthode <i>OpenMBeanOperationInfo.getImpact</i> retourne une des constantes suivantes :  <ul><li><i>ACTION</i>,</li>
+<li><i>INFO</i>,</li>
+<li><i>ACTION_INFO</i>.</li>
+</ul></li>
+</ul>
+</td></tr>
+</tbody></table>
+<p><a name="mbean_model"></a></p>
+<h1 id="model-mbean">Model MBean</h1>
+<p>Un Model MBean est un MBean générique configurable ayant pour objectif de fournir un patron de MBean pouvant être utilisé simplement par n’importe quelles ressources. Il s’agit, en fait, d’un MBean Dynamic particulier dont l’interface définie une structure qui, lorsqu’elle est implémentée, fournie un MBean avec un comportement par défaut. Ces Model MBean devant être supportés par les agents JMX, ils peuvent être utilisés par n’importe quels applications, ressources et services pour créer un objet gérable à l’exécution : les utilisateurs n’ont qu&rsquo;a instancier un Model MBean, configurer son comportement par défaut et l’enregistrer au sein de l’agent JMX.</p>
+<p>En fait un Model MBean est constitué d’un ensemble d’interfaces et de classes concrètes fournit par l’agent JMX (qui doit fournir une implémentation de la classe <code>RequiredModelMBean</code> et qui a pour objectif de fournir un comportement par défaut).</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCd8pEaVUI/AAAAAAAAAM8/zp_uL_-y7p8/s1600/jmx29.png" alt="medium"></p>
+<p>Un MBean Server est donc un repository et factory de Model MBean qui peuvent être obtenus au travers de l’agent JMX afin de rendre une ressource gérable : le développeur n’a pas besoin de fournir une implémentation de cette classe mais juste la configurer à l’exécution afin d’exposer l’interface d’administration et de supervision nécessaire à la ressource.</p>
+<p>La ressource à administrer et à superviser ajoute ses attributs, ses opérations et ses notifications à l’objet basique Model MBean en s’interfaçant avec l’agent JMX et à son ou ses Model MBean.</p>
+<p>Comme précisé précédemment, un Model MBean est un Dynamic MBean et doit donc implémenter l’interface <code>DynamicMBean</code>.</p>
+<p>Il est également à noter que l’implémentation du <code>RequiredModelMBean</code> est dépendante de l’environnement et plus précisément de la JVM : elle peut fournir des mécanismes de persistance, de transaction, de cache, de scalabilité ou de fonctionnement distant en fonction des besoins. Ainsi, le développeur n’a pas à se soucier de problématiques comme celles de persistance en se fiant à l’implémentation de la JVM sur lequel fonctionne son application (par exemple, un environnement J2ME n’a pas besoin d’offrir des propriétés de persistance ou d’accès distant) : il peut le déléguer au Model MBean exposé.</p>
+<p>Une implémentation d’un Model MBean doit implémenter l’interface <code>ModelMBean</code> qui étend les interfaces <code>DynamicMBean</code>, <code>PersistentMBean</code> et <code>ModelMBeanNotificationBroadcaster</code>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCeTxNgCPI/AAAAAAAAANA/P68PBgsxiEY/s1600/jmx27_1.png" alt="medium"></p>
+<p>En outre, le Model MBean doit exposer ses méta-données dans un objet de type <code>ModelMBeanInfoSupport</code> qui étend la classe <code>MBeanInfo</code> et qui implémente l’interface <code>ModelMBeanInfo</code>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCekBf1QzI/AAAAAAAAANE/uRwZx4k-7CU/s1600/jmx28_1.png" alt="medium"></p>
+<p>De plus, une instance d’un Model MBean peut émettre des notifications lors de changements de la valeur de ses attributs et possède un constructeur par défaut et un constructeur qui prend en paramètre une instance d’un <code>ModelMBeanInfo</code>. Il est à noter que chaque attribut, constructeur, opération et notification peut fournir sa description. Ces descriptions peuvent être de différentes natures comme la politique de connexion, la politique de notifications, …</p>
+<p>Enfin, les descriptions d’un Model MBean fournissent un mapping entre les attributs et les opérations de l’interface de gestion et les méthodes utilisées par la ressource à gérer (méthodes set, get et invoke). Il est à noter que ces ressources peuvent être indifféremment sur une autre JVM si le Model MBean a été configuré.</p>
+<p>Concrètement, une ressource managée donc doit utiliser l’interface <code>ModelMBeanInfo</code> pour exposer son interface d’administration et de supervision. A l’initialisation, la ressource managée créée ou trouve via le MBean Server une ou des instances d’un ModelMBean qui peuvent alors être configurées avec son interface de management (via une implémentation de l’interface <code>ModelMBeanInfo</code>).</p>
+<p>De la même manière, l’application de management (l’application cliente des ressources à administrer et superviser) via le serveur MBean peut accéder aux descriptions, aux opérations et aux notifications du ModelMBean afin de pouvoir les exposer à l’administrateur en lui fournissant le maximum d’information.
+Afin de permettre au Model MBean de fournir la description de ses différentes opérations, notifications et attributs, JMX propose, par défaut, des sous-classes des classes permettant de décrire un ModelMBean : <code>ModelMBeanInfoSupport</code>, <code>ModelMBeanAttributeInfo</code>, <code>ModelMBeanOperationInfo</code>, <code>ModelMBeanNotificationInfo</code>, <code>ModelMBeanConstructorInfo</code>).</p>
+<p>Ces classes implémentent l’interface <code>DescriptorAccess</code> qui permet de remplacer l’interface <code>Descriptor</code> pour chaque attribut, constructeur, opération et notification dans l’interface de management. La description est alors accédée au travers des méta-données de chaque composant.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCfZU2SohI/AAAAAAAAANI/OXAP8J6klxE/s1600/jmx32.png" alt="medium"></p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCfieyUY9I/AAAAAAAAANM/r9J5xW6yD1Y/s1600/jmx35.png" alt="medium"></p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCfphXk6qI/AAAAAAAAANQ/HyNPv6cxZy8/s1600/jmx34.png" alt="medium"></p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TNCfzx5EXdI/AAAAAAAAANU/sypPZS0mmy8/s1600/jmx36.png" alt="medium"></p>
+<p>L’interface <code>NotificationBroadcaster</code>, qui permet lorsqu’elle est implémentée par une MBean d’émettre des notifications génériques ou spécifiques et/ou lorsqu’un changement de valeur d’un attribut se produit à des MBean déclarés comme écouteur, est implémentée pour les Model MBean par l’interface <code>ModelMBeanNotificationBroadcaster</code>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCgZrU3ClI/AAAAAAAAANY/7OggAyAVTas/s1600/jmx36_bis.png" alt="medium"></p>
+<p>L’interface <code>Descriptor</code> fournit les descriptions des opérations, attributs et notifications du Model MBean qui ne sont pas accédées directement mais au travers de l’interface <code>DescriptorAccess</code> qui définit comment récupérer et positionner la valeur des différents champs qui constituent la description.</p>
+<p>Par défaut, JMX fournit deux implémentations de l’interface <code>Descriptor</code> : <code>ImmutableDescriptor</code> et <code>DescriptorSupport</code>.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TNCgiOsFsOI/AAAAAAAAANc/JzGI0sNlKj8/s1600/jmx37.png" alt="small"></p>
+<p>En fait, l’interface <code>ModelMBeanInfo</code> publie des méta-données sur les attributs, les opérations et les notifications déclarés dans l’interface d’administration et de supervision. Les descripteurs du Model MBean fournissent, quant à eux, le comportement et les règles de ces attributs, opérations et notifications. Un descripteur se présente sous forme d’un ensemble de clé/valeur où la clé est de type String et la valeur est de type Object qui peut être modifié (ajout, modification et suppression des champs) par la ressource managée ou par l’application de gestion. Il est à noter que certains noms sont réservés pour des propriétés prédéfinies telles que la gestion du cache ou de la persistance. Les descripteurs contiennent également le nom des opérations des getter et setter utilisées pour lire et écrire la valeur des attributs.</p>
+<p>Comme indiqué précédemment, les descripteurs sont des objets qui implémentent l’interface <code>Descriptor</code> et qui sont accessibles au travers des méthodes définies par l’interface <code>DescriptorAccess</code> dont les méthodes doivent être définies par les implémentations concrètes des interfaces <code>ModelMBeanAttributeInfo</code>, <code>ModelMBeanOperationInfo</code>, <code>ModelMBeanConstructorInfo</code> et <code>ModelMBeanNotificationInfo</code> (qui sont accessibles via l’instance de <code>ModelMBeanInfo</code>).</p>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Si le descripteur d’un attribut ne possède pas les signatures de ses méthodes, alors l’application ne peut gérer l’attribut : lorsque la méthode setAttribute est invoquée, la valeur est enregistrée dans le descripteur et une notification de type AttributeChangeNotification est émise à destination des écouteurs enregistrés comme intéressés par cet attribut.
+<br/>
+Si la méthode getAttribute est invoquée, la valeur est renvoyée par le descripteur mais sa valeur ne peut pas être rafraichie par la ressource managée.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Le Model MBean ne loguera les notifications que si le champ logfile dans le descripteur associé à la notification est renseigné.<br/>
+La journalisation des notifications ne se fera que si l’implémentation du Model MBean ou de l’agent JMX le supporte. Dans le cas contraire, les champs log et logfile seront ignorés.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+La politique de persitance peut être implémentée optionnellement. Cependant, même si elle est géré par le Model MBean, il n’est pas obligé que ce soit ce dernier qui l’implémente et elle peut être offerte par l’agent JMX qui peut proposer en différents niveaux.<br/>
+Lorsqu’aucune politique n’est implémentée, l’objet est transient par défaut. La politique de persistance peut être une implémentation simple offerte en sérialisant dans un fichier les données.<br/>
+Les champs prédéfinis persistLocation et persistName peuvent être utilisés pour définir l’emplacement des données persistées.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+La politique de cache d’une donnée (opération ou attribut) est définie par une valeur par défaut présente dans le descripteur de la donnée. En général, l’adaptateur accède au Model MBean de l’application au travers de l’agent JMX mais une interrogation systématique n’est pas toujours nécessaire (ou voulue) : c’est pourquoi JMX offre la possibitilié de définir un cache d’accès à la ressource.<br/>
+Pour ce faire, la description d’un attribut possède les clés prédéfinies currencyTimeLimit et lastUpdatedTimeStamp.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Le comportement par défaut offert par un Model MBean est généralement suffisant à la plupart des besoins. Cependant, JMX offre la possibilité de relier le Model MBean de l’application à un modèle de données différent. Cela peut se produire dans le cas, par exemple, où un MIB spécifique existe dans le système : le générateur de MIB peut alors intéragir directement avec l’agent JMX et créer un fichier MIB qui sera chargé par un système de supervision SNMP.<br/>
+Pour cela, le descripteur d’un attribut ou d’une opération propose le champ protocolMap qui doit alors contenir une référence à une instance de la classe implémentant l’interface Descriptor.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Si l’implémentation d’un agent JMX supporte les opérations dans un environnement multi-agent JMX, alors il peut avoir besoin d’avertir de son existance et de sa disponibilité un service de recherche. Il peut également avoir besoin d’enregistrer en son sein des MBean qui peuvent être localisés sur d’autres agents JMX sans avoir à connaitre ces derniers.<br/>
+Pour ce faire, le descripteur de son ModelMBeanInfo propose le champ prédéfini export dont la valeur peut être le nom ou l’objet requis pour exporter le MBean. S’il vaut F ou false, alors le MBean ne sera pas exporté.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Il peut parfois être nécessaire d’avoir différent niveau de lisibilité sur les différents MBeans du système.
+Pour cela, il est possible d’utiliser le champ visibility du descripteur. Il peut prendre une valeur entière de 1 à 4 et peut s’appliquer au niveau du MBean, d’un attribut ou d’une opération.<br/>
+Dans ce cas, c’est à l‘implémentation de l’adaptateur de protocole, du connecteur ou de l’interface de gestion de filtrer les différentes informations à remonter.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Dans le cas où l’interface de gestion doit etre dynamique (ie. qu’elle doit générer son interface en fonction des MBeans découverts ou présents) il est possible d’utiliser le champ presentationString du descripteur.
+Il doit contenir une chaine de caractères au format XML.<br/>
+Il est à noter, qu’actuellement, il n’existe pas de standardisation de la représentation de ce champ.
+</td></tr>
+</tbody></table>
+<br/>
+<table border="1" cellpadding="0" cellspacing="0" style="text-align: justify;" width="100%"><tbody>
+<tr><td style="border: 0px; text-align: center;"><a href="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" imageanchor="1" style="clear: left; margin-bottom: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TNCS7qzv19I/AAAAAAAAAL4/6qkEYy4pX6o/s1600/remarque.png" style="cursor: move;" /></a></td> <td style="border: 0px;">
+Une liste exhaustive des champs prédéfinis des descripteurs peut être trouvée dans la version agrégée de la spécification <a href="http://download.oracle.com/javase/6/docs/technotes/guides/jmx/JMX_1_4_specification.pdf">JMX au chapitre 4.5 Predefined Descriptor Fields</a>.
+</td></tr>
+</tbody></table>
+<h1 id="le-mot-de-la-fin-de-cette-partie">Le mot de la fin de cette partie</h1>
+<p>Ainsi s&rsquo;achève cette partie qui a permis de voir les notions de MBeans (en particulier les différences entre les différents MBeans) et de Notification.</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f11%2fjmx-pour-les-nuls-les-differents-mbeans%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1/">JMX pour les nuls... - Les concepts - Partie 1</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/">JMX pour les nuls... - Les agents JMX - Partie 3</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

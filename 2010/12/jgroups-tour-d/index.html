@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>JGroups : tour d&#39;horizon &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>JGroups : tour d&#39;horizon</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Dec 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jgroups">jgroups</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TRtn71JxZPI/AAAAAAAAATI/0vNqJjOXKlY/s1600/jgroups_logo_450px.png" alt="left-small">
+Actuellement, le besoin de rendre les systèmes ou les applications interopérables est indéniable. Pour ce faire, de nombreuses technologies ont vues le jour. Il peut s&rsquo;agir des MOM (<em>Message-Oriented Middleware</em>), des protocoles de communication entre les applications clientes et serveurs (REST, Soap, RMI, &hellip;), de solutions propriétaires utilisées pour permettre la communication entre les serveurs pour des problématiques de réplication ou de synchronisation ou même de solutions basées sur le paradigme NoSQL.</p>
+<p>Cependant, il est important de ne pas oublier que nos couches basses restent les protocoles TCP ou UDP et que répondre par un grand concept tel que MOM, réplication de serveurs ou cache distribué sur une problématique ne permet pas de savoir ce qui se trame derrière&hellip;</p>
+<p>Un produit souvent méconnu est utilisé en interne pour les problématiques de communication entre serveurs et même si, à ce jour, je ne connais pas d&rsquo;implémentations de MOM qui l&rsquo;utilise, il pourrait être un très bon candidat pour ces dernières en interne. Il s&rsquo;agit de JGroups.</p>
+<p>Aussi, cet article va tenter de donner un rapide tour d&rsquo;horizon sur <a href="http://www.jgroups.org/">JGroups</a> en présentant ses concepts. Il s&rsquo;appuiera sur sa version stable courante, à savoir la version 2.11.0.</p>
+<p>A noter que ce tour d&rsquo;horizon s&rsquo;appuie très fortement sur le manuel de référence de JGroups.</p>
+<!-- more -->
+<p>Cet article suivra le plan suivant :</p>
+<ul>
+<li><a href="#histoire">Un peu d&rsquo;histoire</a></li>
+<li><a href="#concept">Présentation des concepts</a>
+<ul>
+<li><a href="#canal">Canal</a></li>
+<li><a href="#bloc">Bloc de construction</a></li>
+<li><a href="#pile">Pile de protocoles</a></li>
+<li><a href="#entete">Entête</a></li>
+<li><a href="#evenement">Evénement</a></li>
+</ul>
+</li>
+<li><a href="#api">Présentation des APIs de JGroups</a>
+<ul>
+<li><a href="#interface">Les interfaces</a>
+<ul>
+<li><a href="#messageListener">MessageListener</a></li>
+<li><a href="#membershipListener">MembershipListener</a></li>
+<li><a href="#channelListener">ChannelListener</a></li>
+<li><a href="#receiver">Receiver</a></li>
+<li><a href="#receiverAdapter">ReceiverAdapter</a></li>
+</ul>
+</li>
+<li><a href="#address">L&rsquo;interface Address</a></li>
+<li><a href="#message">La classe Message</a></li>
+<li><a href="#view">La classe View</a>
+<ul>
+<li><a href="#viewId">La classe ViewId</a></li>
+<li><a href="#mergeView">La classe MergeView</a></li>
+<li><a href="#jchannel">La classe JChannel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#construction">Les blocs de construction</a>
+<ul>
+<li><a href="#messageDispatcher">MessageDispatcher</a></li>
+<li><a href="#rpcDispatcher">RpcDispatcher</a></li>
+<li><a href="#replicationHashMap">ReplicatedHashMap</a></li>
+<li><a href="#notificationBus">NotificationBus</a></li>
+</ul>
+</li>
+<li><a href="#protocole">Liste des protocoles</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<p><a name="histoire"></a></p>
+<h1 id="un-peu-dhistoire">Un peu d&rsquo;histoire&hellip;</h1>
+<p>Créé par Bela Ban, JGroups a vu le jour suite à son travail universitaire dans les équipe de Ken Birman sur le framework <em>Ensemble</em> qui, en 1998-1999, était un prototype pour la troisième génération de communication de groupes. <em>Ensemble</em> faisait suite à <em>Horus</em> (écrit par Robbert VanRenesse) qui faisait lui-même suite à <em>ISIS</em> (écrit par Keb Birman) et était écrit en OCaml. <em>Ensemble</em> proposant une interface pour s&rsquo;interfacer avec Java mais s&rsquo;appuyant sur son coeur, cela a été le début de JGroups (enfin pour être plus précis le début de <em>JChannel</em> puis de la partie <em>ProtocolStack</em>) qui avait pour objectif de fournir une solution full Java de Ensemble.</p>
+<p>Ainsi, JGroups a pris son essor en 2000 avec le départ de Bela Ban du pôle de recherche de l&rsquo;université de Cornell pour enfin être utilisé par JBoss dès 2002 avec, entre autre <em>JBossCache</em>.</p>
+<p><a name="concept"></a></p>
+<h1 id="présentation-des-concepts">Présentation des concepts</h1>
+<p>La communication entre groupes utilise les termes de groupes et de membres qui font partis intégrantes des groupes. En fait, un membre peut être vu comme un noeud et un groupe comme un cluster.</p>
+<p>En fait, un noeud est un processus qui réside sur une machine hôte et un cluster est constitué d&rsquo;un ou de plusieurs noeuds, sachant que plusieurs noeuds peuvent résider sur le même hôte et qu&rsquo;ils peuvent appartenir à un ou plusieurs clusters.</p>
+<p>JGroups est un framework permettant la communication fiable entre groupes et permets aux processus :</p>
+<ul>
+<li>de rejoindre un groupe,</li>
+<li>d&rsquo;envoyer des messages à tout ou partie des membres du groupe,</li>
+<li>et de recevoir les messages des membres du groupe.</li>
+</ul>
+<p>En outre, JGroups permet de garder de notifier les membres de chaque groupe lors de l&rsquo;arrivé d&rsquo;un nouveau membre ou d&rsquo;un départ ou arrêt brutal de l&rsquo;un d&rsquo;eux.</p>
+<p>Un <strong>groupe</strong> est identifié par son nom et n&rsquo;a pas besoin d&rsquo;être créé explicitement puisqu&rsquo;il est créé automatiquement.</p>
+<p>En fait, l&rsquo;architecture de JGroups s&rsquo;articule autour de trois points :</p>
+<ul>
+<li>les canaux (<strong>channel</strong>) utilisés par les applications pour leurs permettre de prendre part au groupe de communication fiable,</li>
+<li>les blocs de construction (<strong>building blocks</strong>) qui sont des couches au dessus des canaux qui permettent d&rsquo;abstraire ces derniers de la pile de protocoles à utiliser,</li>
+<li>la pile de protocoles qui implémentent les propriétés d&rsquo;un canal donné.</li>
+</ul>
+<p>En fait, un canal est connecté à une pile (<em>stack</em>) de protocoles et lorsqu&rsquo;une application émet un message, le canal le transmet au travers de cette pile pour effectuer séquentiellement des traitements jusqu&rsquo;à la couche réseau. De manière similaire, pour qu&rsquo;une application reçoive un message, ce dernier doit repasser dans cette pile de protocole (dans l&rsquo;ordre inverse des traitements qu&rsquo;il a subi lors de son émission) jusqu&rsquo;à arriver à canal qui gère la file des messages jusqu&rsquo;à leurs consommations par l&rsquo;application.</p>
+<p>Il est à noter que lorsqu&rsquo;une application se connecte à un canal, la pile de protocole est démarrée et que lorsqu&rsquo;elle se déconnecte, cette même pile est arrêtée. Quand le canal est fermé, la pile est détruite permettant ainsi de libérer ses ressources.</p>
+<p><a name="canal"></a></p>
+<h2 id="canal-channel">Canal (Channel)</h2>
+<p>Pour joindre un groupe et émettre des messages, un processus doit créer un canal et s&rsquo;y connecter en utilisant le nom du groupe puisque tous les canaux qui possèdent le même nom forment un même groupe.</p>
+<p>Une fois connecté, un membre peut émettre (resp. recevoir) des messages aux (resp. des) autres membres du groupe.</p>
+<p>Il quitte le groupe en se déconnectant du canal permettant ainsi sa réutilisation. Cependant, un canal ne gère qu&rsquo;un seul client simultanément.</p>
+<p>Le client a également la possibilité de signaler qu&rsquo;il ne désire plus utiliser un canal en le fermant. Dans ce cas, le canal ne peut plus être utilisé.</p>
+<p>Chaque canal dispose d&rsquo;une adresse unique et est toujours connu des autres membres de son groupe : une liste d&rsquo;adresse des membres peut être récupérée d&rsquo;un canal et est appelé vue (<strong>view</strong>).</p>
+<p>Un processus peut alors sélectionner une adresse dans cette liste et émettre un message à destination de l&rsquo;unique membre associé à cette adresse (mais également à lui-même puisqu&rsquo;il appartient à la vue) ou émettre un message à tous les membre de la vue (et donc au groupe).</p>
+<p>Pour gérer les vues :</p>
+<ul>
+<li>lorsqu&rsquo;un membre rejoint le groupe ou qu&rsquo;il s&rsquo;arrête (déconnexion ou détection de crash), JGroups envoie une nouvelle vue à tous les membres du groupes.</li>
+<li>lorsqu&rsquo;un membre est suspecté comme ayant potentiellement crashé, un message de suspicion est émis à destination de tous les membres non fautif.</li>
+</ul>
+<p>Ainsi, un canal peut recevoir trois types de messages ;</p>
+<ul>
+<li>les messages normaux (ie. un message émis par une application),</li>
+<li>les messages de vues lors de l&rsquo;ajout ou du retrait d&rsquo;un de ses membres,</li>
+<li>les messages de suspicion.</li>
+</ul>
+<p>Bien sûr, un client peut choisir s&rsquo;il accepte de recevoir les messages de types vue ou suspicion.
+En fait, les canaux sont similaires à des sockets BSD ; les messages sont stockés dans le canal jusqu&rsquo;à temps qu&rsquo;ils soient consommés par un client (approche <em>pull</em>). Dans le cas où il n&rsquo;y a pas de messages, le client est bloqué. Cependant, JGroups propose également la notion de push pour recevoir les messages en se basant sur la notion de <em>callback</em> (ou, du point de vue client, de <em>Listener</em>). Il est à noter que le fonctionnement en mode <em>pull</em> tend à être supprimé en version 3 de JGroups : il est donc déconseillé de l&rsquo;utiliser.</p>
+<p>Afin de positionner les propriétés sur un canal, JGroups s&rsquo;appuie sur une configuration XML.</p>
+<p><a name="bloc"></a></p>
+<h2 id="bloc-de-construction-building-blocks">Bloc de construction (Building Blocks)</h2>
+<p>Le canal est un concept simple qui permet de fournir la fonctionnalité basique d&rsquo;un groupe de communication en proposant une douzaine de méthodes qui permettent la communication entre applications via la transmission de messages asynchrones sur le même modèle que UDP. Ainsi, par exemple, le canal de base ne gère pas l&rsquo;ordonnancement des messages et il est alors à la charge de l&rsquo;application de réordonnancer les messages. En outre, le fonctionnement en mode <em>pull</em> nécessite généralement au client d&rsquo;avoir à gérer un thread pour éviter de bloquer l&rsquo;application lorsqu&rsquo;il attend un message.</p>
+<p>Ainsi, JGroups propose la notion de blocs de construction (<strong>Building Blocks</strong>) qui offre une API plus sophistiquée et qui s&rsquo;appuie, en interne, sur les canaux.</p>
+<p>Cela permet aux applications de communiquer en utilisant ces derniers en offrant une plus grande facilité d&rsquo;utilisation du groupe de communication (par exemple, certains blocks permettent de gérer nativement les identifiants des corrélations).</p>
+<p><a name="pile"></a></p>
+<h2 id="pile-de-protocoles-protocol-stack">Pile de protocoles (Protocol Stack)</h2>
+<p>La pile de protocoles contient de nombreuses couches de protocoles qui sont bidirectionnels. Tous les messages émis et reçus par le canal doivent passer à travers ces protocoles qui peuvent :</p>
+<ul>
+<li>modifier,</li>
+<li>réordonnancer,</li>
+<li>supprimer ou laisser passer un message,</li>
+<li>ajouter un entête au message,</li>
+<li>découper le message en messages plus petit,</li>
+<li>réaggréger un ensemble de messages,</li>
+<li>&hellip;</li>
+</ul>
+<p>La composition de la pile de protocoles (ie. ses couches) est déterminée par le créateur du canal via un fichier XML qui définit et paramètres les différentes couches à utiliser en lui associant un nom.
+Cette séparation des concepts permet ainsi d&rsquo;abstraire l&rsquo;application, qui utilise un canal, de comment le message est émis et reçu.</p>
+<p>Si aucune pile de protocoles n&rsquo;est fournie lors de la création du canal, alors c&rsquo;est sa configuration par défaut qui est utilisé.</p>
+<p><a name="entete"></a></p>
+<h2 id="entête-header">Entête (Header)</h2>
+<p>Un entête (<strong>Header</strong>) est un ensemble d&rsquo;informations personnalisables qui peut être ajouté à chaque message.</p>
+<p>Il est à noter que JGroups utilise cette fonctionnalité dans de nombreux cas de figures comme, par exemple, pour savoir connaitre l&rsquo;ordonnancement d&rsquo;envoi des messages (via les entêtes <em>NAKACK</em> et <em>UNICAST</em>).</p>
+<p><a name="evenement"></a></p>
+<h2 id="evénement-event">Evénement (Event)</h2>
+<p>Les évènements (<strong>Event</strong>) permettent à JGroups de savoir quels protocoles peuvent communiquer avec quel autre. Ainsi, contrairement aux messages qui transitent au travers du réseau entre les membres d&rsquo;un groupe, les évènements transitent au travers la pile.</p>
+<p><a name="api"></a></p>
+<h1 id="présentation-générale-des-apis-de-jgroups">Présentation générale des APIs de JGroups</h1>
+<p><a name="interface"></a></p>
+<h2 id="les-interfaces">Les interfaces</h2>
+<p>JGroups propose un certain nombre d&rsquo;interfaces principales sur lesquelles s&rsquo;appuient les différentes implémentations :</p>
+<ul>
+<li><code>MessageListener</code></li>
+<li><code>MembershipListener</code></li>
+<li><code>ChannelListener</code></li>
+<li><code>Receiver</code></li>
+<li><code>ReceiverAdapter</code></li>
+</ul>
+<p><a name="messageListener"></a></p>
+<h3 id="messagelistener">MessageListener</h3>
+<p>L&rsquo;interface <code>MessageListener</code> permet d&rsquo;être notifier lors de la réception d&rsquo;un message lorsque le mode de fonctionnement est de type push.</p>
+<p>Pour ce faire, la méthode <code>receive(Message msg)</code> est invoquée. Les méthodes <code>getState()</code> et <code>setState()</code> permettent, quant à elles, de récupérer l&rsquo;état du groupe.
+<img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4yCVvoq6I/AAAAAAAAAQ8/P05famfiSL4/s1600/jgroups01.png" alt="center"></p>
+<p><a name="membershipListener"></a></p>
+<h3 id="membershiplistener">MembershipListener</h3>
+<p>L&rsquo;interface <code>MembershipListener</code> permet d&rsquo;être notifiée lorsqu&rsquo;une nouvelle vue, un message de suspicion ou un évènement de bloc est reçu.</p>
+<p>Dans la plupart des cas, c&rsquo;est la méthode <code>viewAccepted()</code> qui est invoquée puisqu&rsquo;elle notifie lorsqu&rsquo;un nouveau membre a rejoint le groupe ou que l&rsquo;un d&rsquo;entre eux s&rsquo;est déconnecté ou s&rsquo;est arrêté brutalement. La méthode <code>suspect()</code> permet d&rsquo;être informé lorsqu&rsquo;un membre du groupe est suspecté de s&rsquo;être arrêté brutalement mais qu&rsquo;il n&rsquo;a pas encore été exclu. La méthode <code>block()</code> est invoquée pour indiqué que le membre courant est sur le point d&rsquo;être d&rsquo;être exclu des membres qui ont le droit d&rsquo;émettre des messages.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TQ4yKn49KiI/AAAAAAAAARA/w8UlwBfI1lc/s1600/jgroups02.png" alt="center"></p>
+<p><a name="channelListener"></a></p>
+<h3 id="channellistener">ChannelListener</h3>
+<p>L&rsquo;interface <code>ChannelListener</code> est utilisée comme interface de <em>callback</em> lorsque l&rsquo;application souhaite recevoir des informations sur les changements d&rsquo;état du canal (fermeture, déconnexion ou ouverture).</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4ydDBkt5I/AAAAAAAAARE/kEWjYvTnDFs/s1600/jgroups03.png" alt="center"></p>
+<p><a name="receiver"></a></p>
+<h3 id="receiver">Receiver</h3>
+<p>L&rsquo;interface <code>Receiver</code> peut être utilisée pour recevoir des messages et les changements de vue dans le mode <em>push</em>. A noter que cette interface est marquée comme dépréciée et sera supprimé en version 3. L&rsquo;utilisation de <code>MessageListener</code> et <code>MembershipListener</code> est préconisée.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TRoGqAZ288I/AAAAAAAAASg/EshWFLsfHjA/s1600/jgroups04.png" alt="center"></p>
+<p><a name="receiverAdapter"></a></p>
+<h3 id="receiveradapter">ReceiverAdapter</h3>
+<p>Cette classe permet de fournir une implémentation par défaut de l&rsquo;interface <code>Receiver</code> en ne permettant d&rsquo;avoir à implémenter que les méthodes nécessaires (dont la méthode <code>receive()</code>).</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TRoG6cQ9F5I/AAAAAAAAASk/orJ7pVnADug/s1600/jgroups05.png" alt="center"></p>
+<p><a name="address"></a></p>
+<h2 id="linterface-address">L&rsquo;interface Address</h2>
+<p>Chaque membre d&rsquo;un groupe dispose d&rsquo;une adresse qui l&rsquo;identifie de manière unique. Cette adresse est représentée par l&rsquo;interface Address qui require une implémentation concrète afin de fournir ses méthodes de comparaison, de trie et afin de permettre de différencier une adresse de type multicast.</p>
+<p>Cependant, une implémentation de l&rsquo;interface <code>Address</code> ne doit jamais être utilisée directement et l&rsquo;interface <code>Address</code> doit être vue comme une couche d&rsquo;abstraction lui permettant d&rsquo;identifier le noeud dans le cluster. Ses implémentations sont généralement générées par la couche la plus basse du protocole (ie. UDP ou TCP).</p>
+<p>Puisque l&rsquo;adresse identifie de manière unique un canal et plus précisément un membre du groupe, elle peut être utilisée pour émettre des message.</p>
+<p>Ainsi, par exemple, dans le cas de <code>JChannel</code>, l&rsquo;adresse, qui est implémentée par la classe <code>IpAddress</code>, correspond à l&rsquo;IP de l&rsquo;hôte sur laquelle se trouve le membre et de son port sur lequel sont reçus les messages.
+<img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TRoHFjviIMI/AAAAAAAAASo/nsGhSwGXwzw/s1600/jgroups06.png" alt="medium"></p>
+<p><a name="message"></a></p>
+<h2 id="la-classe-message">La classe Message</h2>
+<p>Les échanges de données émis entre les membres se fait au travers de messages qui sont représentés par la classe <code>Message</code>. Un message peut être émis, par un membre, aussi bien à un membre ou à tous les membres du groupe du canal.</p>
+<p>Il est composé de cinq parties :</p>
+<ul>
+<li>L&rsquo;adresse de destination : si elle vaut <code>null</code>, le message est émis à tous les membre du groupe courant.</li>
+<li>L&rsquo;adresse de l&rsquo;émetteur : ce champ est optionnel mais sera renseigné par le protocole de transport avant que le message n&rsquo;atteigne la couche réseau.</li>
+<li>Les drapeaux (<strong>flags</strong>) qui est codé sur un octet et qui peut valoir l&rsquo;une des valeurs suivantes : <code>OOB</code>, <code>LOW_PRIO</code> ou <code>HIGH_PRIO</code>.</li>
+<li>Le contenu (<strong>payload</strong>) : codé sous forme de buffers d&rsquo;octets, la classe <code>Message</code> doit contenir les méthodes permettant de sérialiser et désérialiser l&rsquo;information transmise.</li>
+<li>Les entêtes (<strong>headers</strong>) qui représentent les informations additionnelles au contenu.</li>
+</ul>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ4y5ZcL1RI/AAAAAAAAARU/3ayXiOTHOIY/s1600/jgroups07.png" alt="center"></p>
+<p><a name="view"></a></p>
+<h2 id="la-classe-view">La classe View</h2>
+<p>Une vue représente la liste des membres d&rsquo;un groupe à un instant donné. Elle consiste en un objet de type <code>ViewId</code> qui représente de manière unique la vue ainsi que la liste de ses membres.</p>
+<p>Les vues sont gérées automatiquement par la couche de protocoles lorsqu&rsquo;un nouveau membre rejoint le groupe ou qu&rsquo;un membre le quitte. Tous les membres d&rsquo;un groupe voient la même séquence de vues qui sont ordonnées.</p>
+<p>Ainsi, généralement, le premier membre d&rsquo;une vue est le coordinateur (son rôle consiste à émettre les nouvelles vues aux autres membres du groupe). Cela permet, si les membres du groupes changent, de déduire le coordinateur facilement sans avoir à contacter les autres membres du groupe.</p>
+<p>A noter que lorsqu&rsquo;une application est notifiée que le groupe a changé (ie. qu&rsquo;une nouvelle vue a été reçue), la vue est déjà à sa disposition dans le canal.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TRoHVP9nFLI/AAAAAAAAASs/bdb-orAyhxo/s1600/jgroups08.png" alt="medium"></p>
+<p><a name="viewId"></a></p>
+<h3 id="la-classe-viewid">La classe ViewId</h3>
+<p>La classe <code>ViewId</code> est utilisée pour numéroter les vues et consiste en l&rsquo;adresse du créateur de la vue et en son numéro de séquence.</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TRoHeWcBzbI/AAAAAAAAASw/aSNJllb0Q3o/s1600/jgroups09.png" alt="medium"></p>
+<p><a name="mergeView"></a></p>
+<h3 id="la-classe-mergeview">La classe MergeView</h3>
+<p>Lorsqu&rsquo;un groupe se retrouve découpé en sous-groupe (par exemple, lors d&rsquo;un partitionnement du réseau puis de son ré-aggrégement), les vues peuvent nécessiter un merge.</p>
+<p>Dans ce cas, un objet de type <code>MergeView</code> qui étend la classe <code>View</code> est reçu par l&rsquo;application. Cette classe contient, en plus de View, la liste des vues qui ont été mergés.</p>
+<p>Ainsi, par exemple, si un groupe est décrit par la vue <em>V1:(p,q,r,s,t)</em>, qu&rsquo;il subit un découpage en deux sous-groupe <em>V2:(p,q,r)</em> et <em>V2:(s,t)</em>, et que sa vue mergée est <em>v3:(p,q,r,s,t)</em>, alors l&rsquo;objet <code>MergegView</code> contiendra la liste des deux vues suivantes : <em>v2:(p,q,r)</em> et <em>v2:(s,t)</em>.</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TQ4zP2h5POI/AAAAAAAAARg/SUrNkuEtuR8/s1600/jgroups10.png" alt="center"></p>
+<p><a name="jchannel"></a></p>
+<h3 id="la-classe-jchannel">La classe JChannel</h3>
+<p>Afin de pouvoir joindre un groupe et émettre des messages (ou en recevoir), un processus doit créer un canal. Un canal peut s&rsquo;assimiler à une Socket. Quand le client se connecte à un canal, il doit donner le nom du groupe qu&rsquo;il veut rejoindre. En effet, un canal est (dans son mode connecté) toujours associé à un groupe donné. La pile de protocoles a alors à sa charge de vérifier que le canal se joint au groupe du même nom, résultant un nouvelle vue à installer sur chaque membre du groupe.</p>
+<p>Si aucun membre existe, le groupe est créé.</p>
+<p>A noter que lors de sa création, un canal est dans un état déconnecté. Pour qu&rsquo;il puisse commencer à traiter des opérations, il doit être dans un état connecté.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ40li7dxMI/AAAAAAAAARs/0kqgw2nAHfs/s1600/jgroups12.png" alt="center"></p>
+<p><a name="construction"></a></p>
+<h1 id="les-blocs-de-construction-building-blocks">Les blocs de construction (Building blocks)</h1>
+<p>Les blocs de construction sont les couches qui se trouvent au dessus des canaux. La plupart ne nécessite pas d&rsquo;un canal mais seulement d&rsquo;implémenter l&rsquo;interface <code>Transport</code> (qui est également implémentée par la classe <code>Channel</code>). Cela leurs permet de fonctionner pour n&rsquo;importe quel type de transport qui implémente cette interface. Les blocs de construction peuvent donc être utilisés à la place des canaux si cela est nécessaire. Ainsi, alors que les canaux peuvent être vus comme des sortes de sockets, les blocs de construction peuvent bénéficier d&rsquo;une interface beaucoup plus sophistiquée.</p>
+<p>Dans la suite, seuls les blocs de construction les plus importants seront décrits (à noter que le bloc de construction <code>PushPullAdapter</code> étant déprécié, il ne sera pas non plus décrit).</p>
+<p><a name="messageDispatcher"></a></p>
+<h2 id="messagedispatcher">MessageDispatcher</h2>
+<p>Les canaux sont de simple patron pour émettre et recevoir des messages de manière asynchrone. Cependant, il peut être nécessaire de disposer d&rsquo;un moyen de communiquer de manière synchrone.</p>
+<p>Le <code>MessageDispatcher</code> offre cette possibilité en fournissant la possibilité d&rsquo;émettre un message (ou requête) en positionnant un identifiant de corrélation afin de pouvoir associer la réponse avec la requête.</p>
+<p>Il offre également la possibilité de recevoir un message en mode push.</p>
+<p>Pour l&rsquo;utiliser, il doit être créé associé avec un canal et peut être utilisé coté émetteur ou récepteur.
+S&rsquo;il est utilisé du coté serveur, alors à chaque requête reçu, la méthode <code>handle()</code> provenant de l&rsquo;interface <code>RequestHandler</code> est invoquée.</p>
+<p>Cette méthode retourne le message (qui doit être sérialisable) ou lève une exception qui sont transmises au client.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ43hC993TI/AAAAAAAAASE/2mgpujE4eL0/s1600/jgroups14.png" alt="medium"></p>
+<p>S&rsquo;il est utilisé du coté client, il est possible d&rsquo;utiliser deux méthodes :</p>
+<ul>
+<li><code>castMessage()</code> qui permet de requêter un ensemble de destinataires (dans ce cas, si le destinataire est positionné sur l&rsquo;entête du message, il sera écrasé) et qui renvoie un objet de type <code>RspList</code> (qui implémente l&rsquo;interface <code>Map</code>)</li>
+<li><code>sendMessage()</code> qui permet de requêter un seul destinataire (dans ce cas, le destinataire doit être positionné sur l&rsquo;entête du message)</li>
+</ul>
+<p>Ces deux méthodes peuvent positionner un certain nombre d&rsquo;options lors de l&rsquo;émission du message encapsuler dans un objet de type <code>RequestOptions</code> tels que :</p>
+<ul>
+<li>un timeout qui permet d&rsquo;indiquer le temps qu&rsquo;il faut attendre la réponse.</li>
+<li>le type de requête à émettre :
+<ul>
+<li>dès qu&rsquo;une réponse arrive, la méthode castMessage() rend la main au programme (<code>GroupRequest.GET_FIRST</code>)</li>
+<li>attend la réponse de chaque destinataire avant de rendre la main au programme (<code>GroupRequest.GET_ALL</code>)</li>
+<li>attend la majorité des réponses (<code>GroupRequest.GET_MAJORITY</code>)</li>
+<li>attend la majorité absolue des réponses (<code>GroupRequest.GET_ABS_MAJORITY</code>)</li>
+<li>n&rsquo;attend aucune réponse (<code>GroupRequest.GET_NONE</code>)</li>
+</ul>
+</li>
+<li>un filtre pour les réponses attendues à l&rsquo;aide d&rsquo;un objet de type <code>RspFilter</code></li>
+</ul>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TRoHzicdvtI/AAAAAAAAAS0/OjoJmHdwLHU/s1600/jgroups13.png" alt="center"></p>
+<p>A noter que si un membre destinataire se déconnecte du canal (dans le cas d&rsquo;un arrêt brutal par exemple), alors l&rsquo;objet RspList retourner par la méthode castMessage() contiendra une réponse indiquée comme en échec.</p>
+<p><a name="rpcDispatcher"></a></p>
+<h2 id="rpcdispatcher">RpcDispatcher</h2>
+<p>La classe RpcDispatcher est dérivée de <code>MessageDispatcher</code> et permet donc au programmeur d&rsquo;invoquer des méthodes distantes sur un ou tous les membres du groupe et, optionnellement, attendre leurs réponses. Cependant, contrairement à l&rsquo;utilisation d&rsquo;un <code>MessageDispatcher</code>, l&rsquo;utilisation d&rsquo;un <code>RpcDispatcher</code> est plus simple pour un besoin de type requête/réponse puisqu&rsquo;il ne nécessite pas d&rsquo;avoir à implémenter l&rsquo;interface <code>RequestHandler</code> (et donc la méthode <code>handle()</code>).</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TQ42co-e7II/AAAAAAAAASA/arjovzck9cY/s1600/jgroups15.png" alt="medium"></p>
+<p>En effet, il est possible d&rsquo;indiquer lors de l&rsquo;émission des requêtes (qui se fait à l&rsquo;aide des méthodes <code>callRemoteMethod()</code> et <code>callRemoteMethods()</code>) quelles seront les méthodes (ainsi que leurs paramètres) qui seront invoqués lors de la réception des réponses.</p>
+<p>Les autres paramètres de ces méthodes sont similaires à la méthode <code>castMessage()</code> de la classe <code>MessageDispatcher</code>.</p>
+<p>De plus, il est à noter qu&rsquo;il est possible d&rsquo;utiliser les méthodes <code>callRemoteMethodWithFuture()</code> et <code>callRemoteMethodsWithFuture()</code> qui, comme leur nom l&rsquo;indique, permettent de ne pas bloquer l&rsquo;application lors de l&rsquo;appel à des méthodes.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ44DbehK6I/AAAAAAAAASM/SEJXTcIvnZY/s1600/jgroups16.png" alt="center"></p>
+<p><a name="replicatedHashMap"></a></p>
+<h2 id="replicatedhashmap">ReplicatedHashMap</h2>
+<p>La classe <code>ReplicatedHashMap</code> a été écrite comme une classe de démonstration afin de montrer comme les états pouvaient être partagés entre les différents noeuds du cluster. Aussi, elle n&rsquo;a pas été entièrement testée et n&rsquo;a pas pour objectif d&rsquo;être utilisée en production.</p>
+<p>Une ReplicatedHashMap utilise une HashMap concurrente en interne et permet de créer différentes instances d&rsquo;objets de type <code>HashMap</code> dans différents processus. Toutes ces instances possèdent exactement le même état. Lorsqu&rsquo;une instance de <code>ReplicatedHashMap</code> est créée, un nom de groupe permet de déterminer quel groupe de <code>ReplicatedHashMap</code> est rejoint et la nouvelle instance interroge alors les autres membres existants pour connaitre l&rsquo;état courant, le met à jour et se démarre.</p>
+<p>Les modifications de la <code>ReplicatedHashMap</code> (méthodes <code>put()</code>, <code>clear()</code> ou <code>remove()</code>) sont propagées de manière ordonné dans tout le groupe alors que les lectures (méthode <code>get()</code>) sont faites sur la copie locale.</p>
+<p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TQ438y8jKhI/AAAAAAAAASI/QUvyWEKXEXY/s1600/jgroups17.png" alt="medium"></p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TQ44U-8aDBI/AAAAAAAAASQ/8P6jK1PT8j8/s1600/jgroups18.png" alt="medium"></p>
+<p><a name="notificationBus"></a></p>
+<h2 id="notificationbus">NotificationBus</h2>
+<p>La classe <code>NotificationBus</code> permet d&rsquo;émettre et de recevoir des notifications. Ainsi, cela permet à une application de maintenir un cache local répliqué avec toutes les autres instances. La classe <code>NotificationBus</code> s&rsquo;appuie sur un canal en interne.</p>
+<p>En fait, le bloc de construction NotificationBus s&rsquo;apparente à JMS dans son mode <em>publish/subscribe</em>. Cependant, il peut également être utilisé pour faire du point à point en précisant l&rsquo;adresse du destinataire.</p>
+<p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TQ44eSOwW3I/AAAAAAAAASU/l8hNwFLTXYU/s1600/jgroups19.png" alt="medium"></p>
+<p><a name="protocole"></a></p>
+<h1 id="liste-des-protocoles">Liste des protocoles</h1>
+<p>Ce paragraphe fournit à titre indicatif une liste non exhaustive de protocoles fournies par JGroups. Pour plus d&rsquo;informations sur la configuration de chacun, il est conseillé de se référer à la documentation <a href="http://www.jgroups.org/ug.html">officielle</a> et/ou au <a href="http://community.jboss.org/wiki/JGroups">wiki</a> dont est issu ce paragraphe.</p>
+<table>
+<thead>
+<tr>
+<th>Catégorie</th>
+<th>Nom</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transport</td>
+<td>UDP</td>
+<td> UDP utilise le protocole multicast IP pour émettre des messages à tous les membres du groupe et des datagrams UDP pour les messages unicast (ie. à destination de membres particuliers). Quand il et démarré, il ouvre un socket multicast et unicast : le socket unicast est utilisé pour émettre et recevoir les messages unicast alors que le socket multicast pour les messages multicast. L&rsquo;adresse du canal est l&rsquo;adresse et le port du socket unicast.<br/><br/>Une pile de protocoles  utilisant UDP comme protocole de transport est généralement utilisé avec les groupes dont les membres s&rsquo;exécute sur le même hôte ou de manière distribué sur le LAN. Il est nécessaire de s&rsquo;assurer que le multicast IP est supporté entre les sous-réseau, ce qui n&rsquo;est souvent pas le cas. Dans ce dernier cas de figure, il est préférable d&rsquo;utiliser le protocole de transport TCP.</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>TCP permet d&rsquo;indiquer à JGroups qu&rsquo;il doit s&rsquo;appuyer sur le protocole de transport TCP pour émettre des messages à travers les membres du groupe. Dans ce cas, les membres du groupe créé un réseau de connexions TCP.</td>
+<td></td>
+</tr>
+<tr>
+<td>TCP_NIO</td>
+<td>TCP_NIO est une implémentation de TCP ne bloquant pas les I/O. Cependant, il n&rsquo;est pas conseillé de l&rsquo;utiliser en production mais d&rsquo;utiliser plutôt le protocole TCP.</td>
+<td></td>
+</tr>
+<tr>
+<td>TUNNEL</td>
+<td>TUNNEL est un protocole de transport qui fonctionne en ouvrant une connexion TCP sur un routeur de message (tel que le Gossip Router). Tous les membres d&rsquo;un groupe utilisant le protocole TUNNEL doivent être connectés au même routeur qui a pour rôle de transmettre les messages.<br/><br/>Il peut être utilisé dans le cas où des firewalls sont en place.</td>
+<td></td>
+</tr>
+<tr>
+<td>Découverte</td>
+<td>PING</td>
+<td>Le protocole PING permet de récupérer les membres du groupe. Il est utilisé pour détecter le coordinateur (le membre le plus vieux) soit en utilisant une requête PING multicast à l&rsquo;adresse IP MCAST, soit en se connectant au GossipRouteur : chaque membre du groupe répond alors avec un paquet {C, A} où C est l&rsquo;adresse du coordinateur et A est sa propre adresse. Cela permet de déterminer le coordinateur en fonction des réponses, permettant ainsi d&rsquo;émettre une requête de type JOIN au coordinateur.<br/><br/>Si personne ne répond alors on considère qu&rsquo;il s&rsquo;agit du premier membre du groupe.<br/><br/>A noter que, contrairement à TCPPING, PING permet une découverte dynamique et n&rsquo;a donc pas besoin d&rsquo;avoir la connaissance des autres membres du groupe.</td>
+</tr>
+<tr>
+<td>TCPPING</td>
+<td>Le protocole TCPPING permet de récupérer les membres initiaux du groupe en contactant directement (ie. en point-à-point) les autres membres du groupe suite à la réception d&rsquo;un message de type FIND_INITIAL_MBRS émit par le protocole GSM. Les réponses permettent de déterminer qui est le coordinateur du groupe.<br/><br/>A noter que, si le noeud courant est le serveur (ie. après avoir reçu un message de type BECOME_SERVER), alors il répondra aux requêtes de type TCPPING avec un message de type TCPPING.<br/><br/>TCPPING requière une configuration statique qui permet de savoir à l&rsquo;avance où trouver les autres membre du groupe.<br/><br/>Pour permettre une découverte dynamique des autres membres avec une pile de protocole qui s&rsquo;appuie sur TCP, il est possible d&rsquo;utiliser soit le protocole MPING (qui utilise un découverte multicast), soit le protocole TCPGOSSIP (qui contacte le GossipRouteur pour obtenir les membres initiaux).</td>
+<td></td>
+</tr>
+<tr>
+<td>TCPGOSSIP</td>
+<td>Le protocole TCPGOSSIP permet de récupérer les membres initiaux du groupe (utilisé par le protocole GMS et initié lors de la réception d&rsquo;un message de type FIND_INITIAL_MBRS).<br/><br/>Cela s&rsquo;effectue en contactant le ou les GossipRouteur qui doivent se trouver à des adresses/ports connus. Les réponses reçues doivent permettre de déterminer le coordinateur qui doit être contacté dans le cas où le noeud courant souhaite rejoindre le groupe.<br/><br/>A noter que, si le noeud courant est le serveur (ie. après avoir reçu un message de type BECOME_SERVER), alors il répondra aux requêtes de type TCPGOSSIP avec un message de type TCPGOSSIP.</td>
+<td></td>
+</tr>
+<tr>
+<td>MPING</td>
+<td>MPING (pour Multicast PING) utilise les IP multicast pour déterminer les membres initiaux du groupe. Il peut être utilisé avec tous les types de transport mais il s&rsquo;applique plus généralement avec le protocole TCP.<br/><br/></td>
+<td></td>
+</tr>
+<tr>
+<td>S3_PING</td>
+<td>S3_PING utilise le protocole S3 d&rsquo;Amazon pour déterminer les membres du groupe. Il a été conçu spécialement pour les membres qui s&rsquo;exécute sur Amazon EC2 qui ne supporte pas les échanges multicast.</td>
+<td></td>
+</tr>
+<tr>
+<td>Merge</td>
+<td>MERGE2</td>
+<td>Les protocoles MERGE et MERGE2 permettent, dans le cas d&rsquo;une scission du groupe (par exemple dans le cas d&rsquo;un partitionnement réseau), de fusionner les sous-groupes en un seul. Il est seulement exécuté par le coordinateur du groupe (ie. le membre le plus ancien du groupe) qui rappelle périodiquement sa présence par un message muticast. Si un autre coordinateur du même groupe reçoit le message émis par un autre coordinateur, cela signifie qu&rsquo;il doit engager un processus de fusion.<br/><br/>A noter que si une fusion des sous-groupe {A, B} et {C, D, E} a lieu et donne {A, B, C, D, E}, l&rsquo;état n&rsquo;est pas fusionner mais laisse à l&rsquo;application le soin de le faire.</td>
+</tr>
+<tr>
+<td>Détection d&rsquo;échec</td>
+<td>FD</td>
+<td>Le protocole FD (pour Failure Detection) s&rsquo;appuie sur des messages de heartbeat. Si aucune réponse n&rsquo;est reçu dans un délai imparti, le membre est déclaré comme suspect et sera exclu par le protocole GSM.<br/><br/>Si le protocole FD_SOCK est utilisé, alors aucun message de heartbeat n&rsquo;est émis mais un socket TCP est créé et un membre est déclaré mort quand le socket est fermé.</td>
+</tr>
+<tr>
+<td>FD_ALL</td>
+<td>FD_ALL permet la détection d&rsquo;échec en s&rsquo;appuyant sur un simple protocole de heartbeat : chaque membre diffuse (multicast) périodiquement un message de type heartbeat. Chaque membre devant maintenir la table de tous les membres, dès qu&rsquo;un message n&rsquo;est pas reçu d&rsquo;un des membres dans un délai imparti, il est considéré comme suspect.</td>
+<td></td>
+</tr>
+<tr>
+<td>FD_PING</td>
+<td>FD_PING utilise un script ou une commande qui reçoit comme paramètre l&rsquo;hôte à pinger et qui doit renvoyer l&rsquo;entier 0 en cas de succès et 1 sinon.<br/><br/>A noter que la commande par défaut est /sbin/ping (resp. ping.exe).</td>
+<td></td>
+</tr>
+<tr>
+<td>FD_ICMPL</td>
+<td>FD_ICMPL utilise en interne la méthode InetAddress.isReachable() afin de déterminer si l&rsquo;hôte donné est présent ou pas.<br/><br/>A noter qu&rsquo;il est préférable, avant d&rsquo;utiliser ce protocole, de s&rsquo;assurer au préalable du mode de fonctionnement de cette méthode pour le système d&rsquo;exploitation cible.</td>
+<td></td>
+</tr>
+<tr>
+<td>FD_SOCK</td>
+<td>Le protocole FD_SOCK s&rsquo;appuie sur une topologie en anneau au niveau des sockets TCP créé entre les membres du groupe.<br/><br/>Ainsi, par exemple, le membre B est suspecté par son voisin A s&rsquo;il observe une fermeture du socket TCP. Par contre, c&rsquo;est au membre B de prévenir son voisin dans le cas d&rsquo;un départ du groupe volontaire.<br/><br/>Cependant, dans le cas de l&rsquo;interruption d&rsquo;un serveur et/ou arrêt brutal d&rsquo;un switch (et donc une non fermeture du socket TCP), ce protocole est inefficace. Aussi, il est conseillé de l&rsquo;utiliser conjointement avec le protocole de FD (qui s&rsquo;appuie sur un fonctionnement en heartbeat).</td>
+<td></td>
+</tr>
+<tr>
+<td>VERIFY_SUSPECT</td>
+<td>Le protocole VERIFY_SUSPECT vérifie l&rsquo;état d&rsquo;un membre suspect en lui envoyant un ping.<br/><br/>A noter qu&rsquo;il doit être utilisé entre les couches FD et GMS sur la pile de protocole.</td>
+<td></td>
+</tr>
+<tr>
+<td>Messages fiables</td>
+<td>pbcast.NAKACK</td>
+<td>Le protocole pbcast.NAKACK permet de s&rsquo;assurer de la fiabilité de réception des messages en utilisant une file de message de type FIFO conjointement à des ack.<br/><br/>Ainsi, par exemple, si le noeud a reçu les messages P:1, P:3, P:4, alors il demandera une retransmission du message 2.</td>
+</tr>
+<tr>
+<td>pbcast.STABLE</td>
+<td>Le protocole pbcast.STABLE permet de calculer les messages émis qui sont dans un état stable, c&rsquo;est-à-dire qui ont été reçus par tous les membres. Cela permet au protocole NAKACK de supprimer les messages qui sont considérés comme ayant été reçu par tous les membres du groupe.</td>
+<td></td>
+</tr>
+<tr>
+<td>UNICAST</td>
+<td>Le protocole UNICAST fournit un protocole unicast fiable d&rsquo;émission en mode FIFO.</td>
+<td></td>
+</tr>
+<tr>
+<td>Fragmentation</td>
+<td>FRAG</td>
+<td>Le protocole FRAG permet de fragmenter les messages trop gros lors de l&rsquo;émission et de les ré-assembler lors de la réception.<br/><br/>Ce protocole fonctionne aussi bien pour les messages émis en multicast ou en unicast.<br/><br/>Il sérialise chaque message afin de le morceler, et cela, quel que soit son type (même s&rsquo;il s&rsquo;agit d&rsquo;octets) afin de pouvoir prendre en compte avec précision la taille de l&rsquo;entête et les propriétés du message.</td>
+</tr>
+<tr>
+<td>FRAG2</td>
+<td>Le protocole FRAG2 permet, tout comme le protocole FRAG, de fragmenter les messages.<br/><br/>Cependant, il offre un autre algorithme lui permettant de ne pas avoir à sérialiser les messages pour les découper.<br/><br/>A noter que le protocole FRAG2 est préférable au protocole FRAG.</td>
+<td></td>
+</tr>
+<tr>
+<td>Gestion des membres du groupe</td>
+<td>pbcast.GMS</td>
+<td>Le protocole pbcast.GMS permet de gérer le départ ou l&rsquo;enregistrement des membres dans le groupe. Il a également à sa charge de gérer les membres suspects et de les exclure du groupe. En fait, c&rsquo;est lui qui émet les vues à tous les autres membres du groupe quand un changement se produit.</td>
+</tr>
+<tr>
+<td>VIEW_SYNC</td>
+<td>Le protocole VIEW_SYNC permet aux membres du groupe de s&rsquo;échanger périodiquement leurs vues et, si une incohérence entre vue est constatée, alors cela permet au protocole pbcast.GMS de mettre à jour la vue &ldquo;officielle&rdquo;. En fait, ce protocole est le pendant du coordinateur mais au niveau des noeuds et garanti, en cas d&rsquo;anomalie sur le coordinateur pendant une dissémination des vues, une consistance des vues.</td>
+<td></td>
+</tr>
+<tr>
+<td>Contrôle de flux</td>
+<td>FC</td>
+<td>Le protocole FC (Flow Control) permet de gérer le flux des messages. En effet, si l&rsquo;émetteur émet plus vite que les destinataires ne peuvent consommer les messages, alors il y a risque de contension et c&rsquo;est pourquoi les émetteurs ne doivent pas émettre les messages plus vite que leur capacité à être absorbés par le système.<br/><br/>Pour ce faire, un émetteur possède N crédits pour chaque membres. Quand il émet un message, il décrémente le nombre d&rsquo;octets émis au crédit du récepteur. Quand le crédit d&rsquo;un récepteur est inférieur que ce que requière le message à émettre, l&quot;émetteur se bloque et attend que l&rsquo;émetteur dispose de plus de crédits.<br/><br/>Le récepteur décrémente également le nombre d&rsquo;octets reçu et émet son nombre de crédit à l&rsquo;émetteur quand il est en dessous d&rsquo;un certain seuil.</td>
+</tr>
+<tr>
+<td>SFC</td>
+<td>Le protocole SFC correspond à une version simplifiée du protocole FC qui peut entraîner une surconsommation chez le récepteur lorsqu&rsquo;il existe de la latence dans la couche de transport.<br/><br/>En fait, ce protocole s&rsquo;appuie sur un nombre d&rsquo;octet maximal de crédits (configurable) qui est vérifié coté émetteur et récepteur. Il se marrie très bien avec le protocole pbcast.STABLE qui permet de &ldquo;nettoyer&rdquo; les messages déjà traités.</td>
+<td></td>
+</tr>
+<tr>
+<td>Transfert d&rsquo;état</td>
+<td>pbcast.STATE_TRANSFER</td>
+<td>Le protocole pbcast.STATE_TRANSFER permet à un nouveau membre de récupérer l&rsquo;état du groupe du coordinateur.<br/><br/>Il fonctionne comme suit :<br/><ul><li>le nouveau membre demande au coordinateur l&rsquo;état</li><li>Le coordinateur vérifie deux choses : un digest et l&rsquo;état de l&rsquo;application, le digest étant un vecteur contenant le plus haut et le plus bas numéro de séquence des messages reçu pour chaque membre</li><li>Les messages dans le digest font déjà parti de l&rsquo;état du groupe et ne doivent pas être reçus</li><li>Le coordinateur émet l&rsquo;état et le digest au membre arrivant</li><li>Le membre arrivant positionne son état et positionne son digest avec celui reçu permettant ainsi de savoir les messages qui n&rsquo;ont pas encore été reçu</li></ul></td>
+</tr>
+<tr>
+<td>pbcast.STREAMING_STATE_TRANSFER</td>
+<td>Le protocole pbcast.STREAMING_STATE_TRANSFER permet de pallier aux problèmes de gros messages non traités par le protocole pbcast.STATE_TRANSFER.<br/><br/>Il permet de gérer des états de plus d&rsquo;un gigaoctet.</td>
+<td></td>
+</tr>
+<tr>
+<td>Synchronisation virtuelle</td>
+<td>pbcast.FLUSH</td>
+<td>Le protocole FLUSH, comme son nom l&rsquo;indique, force les membres du groupe à flusher leurs messages en cours plutôt que de les bloquer.<br/><br/>Il peut être utilisé dans les cas suivants :<br/><ul><li>Transfert d&rsquo;état ; quand un membre demande l&rsquo;état, le coordinateur indique à tous les membres d&rsquo;arrêter d&rsquo;émettre des message et attends leur réponse. Lorsque le nouveau membre a reçu toutes les informations requises, le coordinateur indique alors à tous les membres qu&rsquo;ils peuvent reprendre leurs activités</li><li>Changement du vue (c&rsquo;est-à-dire opération de join) : avant d&rsquo;installer une nouvelle vue, l&rsquo;opération de flush permet de s&rsquo;assurer que tous les messages émis dans la vue précédente ont été traités</li></ul></td>
+</tr>
+<tr>
+<td>Authentification et cryptage</td>
+<td>AUTH</td>
+<td>Le protocole AUTH est utilisé pour le couche d&rsquo;authentification de JGroups en permettant de déterminer si un noeud est autorisé à rejoindre un groupe. AUTH s&rsquo;appuie sur le protocole GMS et écoute les messages de type JOIN REQUEST : quand un message de type JOIN REQUEST est reçu, il cherche l&rsquo;objet AuthHeader dans lequel doit se trouver une implémentation de la classe AuthToken.<br/><br/>AuthToken est une classe abstraite dont les implémentations doivent fournir le mécanisme d&rsquo;authentification. JGroups fournit des implémentations basiques telles que :<br/><ul><li>SimpleToken,</li><li>MD5Token</li><li>et X50Token.</li></ul><br/><br/>Ces implémentations encrypte un chaîne de caractère se trouvant dans la configuration de JGroups et la passe au message JOIN REQUEST.<br/><br/>Quand l&rsquo;authentification est réussie, le message est passé à la pile qui s&rsquo;occupe du protocole GMS, sinon, un message de type JOIN RESPONSE contenant un message d&rsquo;erreur est renvoyé au noeud. Le client lève alors une exception de type SecurityException.</td>
+</tr>
+<tr>
+<td>ENCRYPT</td>
+<td>Le protocole ENCRYPT permet de crypter les messages. Par défaut, il n&rsquo;encrypte que le corps du message (ie. que tous les entêtes, les adresses des destinataires et de la source ne sont pas cryptés par défaut).</td>
+<td></td>
+</tr>
+<tr>
+<td>Synchronisation</td>
+<td>BARRIER</td>
+<td>Le protocole BARRIER peut être utilisé pour suspendre les messages à émettre.</td>
+</tr>
+</tbody>
+</table>
+<p><a name="conclusion"></a></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Comme nous avons pu le voir, JGroups présente une API pour le développeur qui est très agréable à utiliser.
+Cependant, la configuration des canaux peut s&rsquo;avérer très ardue car elle est demande une bonne connaissance de la couche réseau mais aussi de ce qui est ciblé :</p>
+<ul>
+<li>Est-il acceptable de faire du multicast IP sur notre réseau? A défaut, l&rsquo;utilisation de TCP est-elle suffisante?</li>
+<li>Faut-il crypter les messages?</li>
+<li>Faut-il que les messages émis sur le canal X soient ordonnancés?</li>
+<li>Comment veut-on s&rsquo;assurer que les messages soient bien transmis?</li>
+<li>&hellip;</li>
+</ul>
+<p>Pour moi, c&rsquo;est ce type de questions qu&rsquo;il est important de se poser afin de configurer les différents canaux de JGroups. En outre, par défaut, JGroups peut s&rsquo;avérer très bavard (notion de ping, signalisation en interne sur un merge, &hellip;) et, là encore, plutôt que de faire hurler votre administrateur réseau, essayer de voir avec lui ce qui est acceptable.</p>
+<p>Ainsi JGroups s&rsquo;adresse aux personnes qui veulent avoir la main sur les couches basses (contrairement à JMS qui a tendance à être plus abstrait sur les couches basses puisque cela dépend du provider choisi).</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
+<ul>
+<li>Site officiel de JGroups : <a href="http://www.jgroups.org/">http://www.jgroups.org/</a></li>
+<li>Wiki de JGroups : <a href="http://community.jboss.org/wiki/JGroups">http://community.jboss.org/wiki/JGroups</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2010%2f12%2fjgroups-tour-d%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs/">JMX pour les nuls... - Les connecteurs - Partie 8</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/">Petites astuces avec JMX</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

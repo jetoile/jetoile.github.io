@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 26 Jan 2010 22:53:32 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/reflexion/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Je pense donc je code... ou je code donc je pense</title>
-      <link>https://blog.jetoile.fr/post/2010-01-26-je-pense-donc-je-code-ou-je-code-donc/</link>
+      <link>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc/</link>
       <pubDate>Tue, 26 Jan 2010 22:53:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-01-26-je-pense-donc-je-code-ou-je-code-donc/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc/</guid>
       <description>Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c&#39;est [Yukihiro Matsumoto](http://en.wikipedia.org/wiki/Yukihiro_Matsumoto) (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu...) qui l&#39;a tenue. Il nous a expliqué ce qui l&amp;rsquo;avait amené à créer le langage Ruby : écrire du code dans un langage qui correspond à notre façon de penser; mais il a aussi tenté de nous démontrer pourquoi on devrait utiliser Ruby (chose difficile devant un public de Javaistes&amp;hellip;) : utiliser Ruby fluidifierait notre façon de penser.</description>
     </item>
     

@@ -10,10 +10,10 @@
     <lastBuildDate>Fri, 03 Nov 2017 16:16:05 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/test/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Packaging, test et livraison pour Hadoop : Mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/post/2017-11-03-packaging-et-livraison-pour-hadoop-mode-demploi/</link>
+      <link>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi/</link>
       <pubDate>Fri, 03 Nov 2017 16:16:05 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2017-11-03-packaging-et-livraison-pour-hadoop-mode-demploi/</guid>
+      <guid>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi/</guid>
       <description>Hadoop et son écosystème est un monde complexe où beaucoup de nos paradigmes de développeur Java / JavaEE (EE4J?) sont chamboulés.
 D&amp;rsquo;une part les technologies utilisées diffèrent mais, en plus, d&amp;rsquo;autres questions telles que l&amp;rsquo;architecture, les tests (unitaires, intégrations, &amp;hellip;), la gestion des logs (debug, audit, pki, &amp;hellip;), les procédures de livraison, la gestion de la configuration de l&amp;rsquo;application, etc. viennent s&amp;rsquo;y ajouter.
 Cet article va montrer comment il est possible de concilier simplement les tests d&amp;rsquo;intégration mais aussi le déploiement afin de tendre vers la philosophie de continuous deployment.</description>
@@ -21,10 +21,10 @@ Cet article va montrer comment il est possible de concilier simplement les tests
     
     <item>
       <title>Des tests d&#39;intégration avec Cassandra</title>
-      <link>https://blog.jetoile.fr/post/2017-07-21-tester-avec-cassandra/</link>
+      <link>https://blog.jetoile.fr/2017/07/tester-avec-cassandra/</link>
       <pubDate>Fri, 21 Jul 2017 10:22:37 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2017-07-21-tester-avec-cassandra/</guid>
+      <guid>https://blog.jetoile.fr/2017/07/tester-avec-cassandra/</guid>
       <description>Parce que je suis parti sur ma lancée des articles des tests d&amp;rsquo;intégration avec &amp;hellip;, à la demande de Duyhai, voilà que je me retrouve à faire un article pour Apache Cassandra&amp;hellip; ;)
 Plus sérieusement, faire des tests d&amp;rsquo;intégration avec Apache Cassandra est beaucoup plus simple qu&amp;rsquo;avec Redis ou Elasticsearch mais il existe cependant 2 projets qui simplifient énormément les tests d&amp;rsquo;intégration avec Cassandra :
  cassandra-unit créé par Jérémy Sevellec achille créé par Duyhai Doan  Ce petit article résume comment utiliser ces 2 solutions.</description>
@@ -32,10 +32,10 @@ Plus sérieusement, faire des tests d&amp;rsquo;intégration avec Apache Cassand
     
     <item>
       <title>Des tests d&#39;intégration avec Redis</title>
-      <link>https://blog.jetoile.fr/post/2017-07-17-tester-avec-redis/</link>
+      <link>https://blog.jetoile.fr/2017/07/tester-avec-redis/</link>
       <pubDate>Mon, 17 Jul 2017 11:10:30 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2017-07-17-tester-avec-redis/</guid>
+      <guid>https://blog.jetoile.fr/2017/07/tester-avec-redis/</guid>
       <description>Redis est écrit en C et faire des tests d&amp;rsquo;intégration en Java peut s&amp;rsquo;avérer compliquer. En outre, le fait que Redis doive être compilé lors de son installation rend les choses encore moins aisées.
 Bien sûr, il est possible d&amp;rsquo;utiliser Docker ou de l&amp;rsquo;installer préalablement sur son poste mais cette deuxième option casse un peu les bonnes pratiques des tests.
 Il existe également de nombreux projets permettant de faire des tests avec Redis mais, souvent, les solutions proposées embarquent le binaire de Redis ou on besoin qu&amp;rsquo;il soit déjà présent et installer/compiler sur le poste (https://github.</description>
@@ -43,10 +43,10 @@ Il existe également de nombreux projets permettant de faire des tests avec Redi
     
     <item>
       <title>Des tests d&#39;intégration avec Elasticsearch</title>
-      <link>https://blog.jetoile.fr/post/2017-07-11-tester-avec-elasticsearch/</link>
+      <link>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch/</link>
       <pubDate>Tue, 11 Jul 2017 10:05:51 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2017-07-11-tester-avec-elasticsearch/</guid>
+      <guid>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://blog.jetoile.fr/images/logo-elastic.png&#34; alt=&#34;left-small&#34;&gt; La version 5.0.0-alpha4 a signé la fin du support du mode embedded d&amp;rsquo;Elasticsearch.&lt;/p&gt;
 &lt;p&gt;Cela a été annoncé &lt;a href=&#34;https://www.elastic.co/blog/elasticsearch-the-server#_embedded_elasticsearch_not_supported&#34;&gt;là&lt;/a&gt; et la classe &lt;code&gt;NodeBuilder&lt;/code&gt; permettant de démarrer un noeud programmatiquement a été supprimée.&lt;/p&gt;
 &lt;p&gt;Cependant, même si la raison de l&amp;rsquo;arrêt du support de ce mode est compréhensible, cela pose le problème des tests d&amp;rsquo;intégration puisqu&amp;rsquo;il n&amp;rsquo;est plus possible de démarrer un Elasticsearch pendant la phase de test.&lt;/p&gt;

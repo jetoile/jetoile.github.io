@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 04 Jan 2010 20:17:40 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/cargo/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Retour sur la mise en oeuvre d&#39;un environnement de développement</title>
-      <link>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</link>
+      <link>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</link>
       <pubDate>Mon, 04 Jan 2010 20:17:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2010-01-04-retour-sur-la-mise-en-uvre-d_04/</guid>
+      <guid>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04/</guid>
       <description>Cet article présente la mise en œuvre que j&amp;rsquo;ai appliquée lors de la mise en place d&amp;rsquo;un environnement de développement devant s&amp;rsquo;interfacer, dans une démarche pseudo-agile, avec des outils d&amp;rsquo;intégration continue.
 Il présentera, dans un premier temps, le contexte et les problématiques puis, dans un second temps, comment j&amp;rsquo;ai tenté de répondre à ces problématiques que ce soit d&amp;rsquo;un point de vue méthodologique que d&amp;rsquo;un point de vue technique. Bien sûr, les choix et les implémentations utilisés sont discutables, mais c&amp;rsquo;est aussi pour cela que j&amp;rsquo;ai créé ce blog (afin de faire partager mon expérience et d&amp;rsquo;avoir un retour) ;-)</description>
     </item>

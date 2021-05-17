@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 06 Mar 2013 15:26:29 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jetty/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Démarrer une webapp en mode embedded avec Maven</title>
-      <link>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</link>
+      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</link>
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2013-03-06-demarrer-une-webapp-en-mode-embedded/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded/</guid>
       <description>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&amp;rsquo;il doit disposer de tests, qu&amp;rsquo;ils soient unitaire, d&amp;rsquo;intégration, fonctionnel ou d&amp;rsquo;acceptance.
 Pour adresser le problème des tests d&amp;rsquo;intégration, il est souvent utile de démarrer l&amp;rsquo;application cible de manière embedded.
 Cette article montrera comment il est possible de faire pour un contexte donné.</description>
@@ -21,10 +21,10 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
     
     <item>
       <title>Jetty, Maven et JMX</title>
-      <link>https://blog.jetoile.fr/post/2011-09-26-jetty-maven-et-jmx/</link>
+      <link>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</link>
       <pubDate>Mon, 26 Sep 2011 22:19:12 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/post/2011-09-26-jetty-maven-et-jmx/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx/</guid>
       <description>Vous avez peut être remarqué que ces derniers temps, j&amp;rsquo;étais très Maven et JMX. Cet article ne déroge pas à la règle puisque je vais parler de&amp;hellip; Maven et de JMX.
 Enfin pour être plus précis, je vais montrer comment il est facilement possible de déployer une application web dans le conteneur embarqué Jetty via Maven en activant la couche JMX afin de pouvoir tester de manière intégrée cette couche.</description>
     </item>

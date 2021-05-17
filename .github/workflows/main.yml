@@ -2,7 +2,7 @@ name: hugo CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ source ]
 
 jobs:
   build:

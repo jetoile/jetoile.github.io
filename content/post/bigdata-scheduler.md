@@ -77,7 +77,7 @@ Bref, on peut donc constater que la majorité des choses qui doivent être expri
 
 Le catalogue de données permet de connaitre l'ensemble des datasets du système. Afin de le peupler, plusieurs approches sont possibles :
 - utiliser directement le metastore hive comme étant le catalogue de données
-- dissocier le catalogue de données du métastore hive. Dans ce cas, il est possible d'avoir :
+- dissocier le catalogue de données du métastore hive
 
 Dissocier le catalogue de données du métastore hive apporte plusieurs avantages :
 - le découplage

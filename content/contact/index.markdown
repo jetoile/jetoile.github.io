@@ -9,20 +9,14 @@ footer: true
 # Qui suis-je ?
 
 
-Ingénieur d'études et de développement depuis 2004, je suis actuellement consultant Java/JavaEE et BigData.
+Ingénieur d'études et de développement depuis 2004 avec une forte connotation BigData (Hadoop, NoSql) et Java/JavaEE.
 
-J'ai travaillé pour de nombreux clients comme Voyages-sncf, Orange L@bs (ex-France Télécom R&D), Orange IT&L@bs ou Thales.
+Ex-freelance, j'ai travaillé pour de nombreux clients comme Voyages-sncf, Orange L@bs, Orange IT&L@bs ou Thales.
 
 
 # A propos de Jetoile
 
 ![center](/images/logoJetoile_v51.png)
-Eurl au capital de 5 000 euros
-
-__Siège social__ : 25 rue Montrosier – 92 200 Neuilly Sur Seine
-
-__SIRET__ : 788 926 392 00010
-
 
 # Me contacter
 

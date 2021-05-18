@@ -13,4 +13,4 @@ footer: true
 # Ce que ce site n'est pas...
 
 * un étalage de savoir : je ne prétends pas tout connaitre (mais alors vraiment pas... ;-) )
-* les articles à venir sont issus de mon expérience mais les solutions décrites ne sont pas forcément les meilleures et je ne serais être tenu pour responsable s'ils venaient à être mal utilisés
+* les articles à venir sont issus de mon expérience mais les solutions décrites ne sont pas forcément les meilleures et je ne serai être tenu pour responsable si elles venaient à être mal utilisées

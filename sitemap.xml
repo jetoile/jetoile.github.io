@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.jetoile.fr/tags/hadoop/</loc>
-    <lastmod>2017-11-03T16:16:05+01:00</lastmod>
+    <loc>https://blog.jetoile.fr/tags/architecture/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags/bigdata/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/post/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags/scheduler/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags/</loc>
+    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags/hadoop/</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/tags/livrable/</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/</loc>
-    <lastmod>2017-11-03T16:16:05+01:00</lastmod>
-  </url><url>
-    <loc>https://blog.jetoile.fr/post/</loc>
-    <lastmod>2017-11-03T16:16:05+01:00</lastmod>
-  </url><url>
-    <loc>https://blog.jetoile.fr/tags/</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/tags/test/</loc>
@@ -205,9 +217,6 @@
   </url><url>
     <loc>https://blog.jetoile.fr/tags/tomcat/</loc>
     <lastmod>2013-03-06T15:26:29+01:00</lastmod>
-  </url><url>
-    <loc>https://blog.jetoile.fr/tags/architecture/</loc>
-    <lastmod>2012-11-21T15:12:51+01:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/tags/devoxx/</loc>
     <lastmod>2012-11-21T15:12:51+01:00</lastmod>

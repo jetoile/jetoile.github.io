@@ -7,7 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&lt;a href=&#39;http://creativecommons.org/licenses/by/4.0/&#39; rel=&#39;license&#39;&gt;&lt;img alt=&#39;Licence Creative Commons&#39; src=&#39;https://blog.jetoile.fr/images/creative_common88x31.png&#39; style=&#39;border-width:0&#39;/&gt;&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 03 Nov 2017 16:16:05 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 May 2021 18:20:00 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>architecture</title>
+      <link>https://blog.jetoile.fr/tags/architecture/</link>
+      <pubDate>Tue, 18 May 2021 18:20:00 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bigdata</title>
+      <link>https://blog.jetoile.fr/tags/bigdata/</link>
+      <pubDate>Tue, 18 May 2021 18:20:00 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/bigdata/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>scheduler</title>
+      <link>https://blog.jetoile.fr/tags/scheduler/</link>
+      <pubDate>Tue, 18 May 2021 18:20:00 +0200</pubDate>
+      
+      <guid>https://blog.jetoile.fr/tags/scheduler/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Hadoop</title>
       <link>https://blog.jetoile.fr/tags/hadoop/</link>
@@ -329,15 +356,6 @@
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
       <guid>https://blog.jetoile.fr/tags/tomcat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>architecture</title>
-      <link>https://blog.jetoile.fr/tags/architecture/</link>
-      <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
-      
-      <guid>https://blog.jetoile.fr/tags/architecture/</guid>
       <description></description>
     </item>
     

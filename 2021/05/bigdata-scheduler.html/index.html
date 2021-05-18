@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Big Data et Scheduler : Reflexion &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Big Data et Scheduler : Reflexion</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 May 2021</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/bigdata">bigdata</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/scheduler">scheduler</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/architecture">architecture</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="https://blog.jetoile.fr/images/hadoop-all.png" alt="left-small">
+Dans le monde Big Data, rapidement se pose un certain nombre de besoins.</p>
+<p>Besoins qui, prit unitairement, sont déjà complexes à résoudre mais qui, mis bout à bout, s&rsquo;avèrent encore plus difficile à intégrer.</p>
+<p>Cet article n&rsquo;a pas pour objectif de fournir une solution clé en main mais plutôt de poser différentes réflexions que j&rsquo;ai pu avoir afin de savoir si elles avaient un sens&hellip;</p>
+<!-- more -->
+<h1 id="besoins">Besoins</h1>
+<p>Lorsque l&rsquo;on est confronté au Big Data, les besoins qui en découlent sont les suivants :</p>
+<ul>
+<li>avoir un <strong>scheduler</strong> scalable permettant d&rsquo;exécuter et ordonnancer les différents jobs (qu&rsquo;ils soient MapReduce, Spark, Hive ou autres) mais également exécuter des actions qui leurs sont associées (déplacement de fichiers/répertoires, création/suppression/modification de tables hive, création de fichiers _SUCCESS, etc.)</li>
+<li>avoir un <strong>catalogue de données</strong> (afin de connaitre ses datasets) pour pouvoir retrouver l&rsquo;information</li>
+<li>disposer d&rsquo;un <strong>lineage de données</strong> (afin de pouvoir savoir à partir de quel dataset est issu tel autre)</li>
+<li>avoir de la <strong>qualité de données</strong></li>
+</ul>
+<p>Si nous revenons plus précisément sur certains de ces points, <strong>le lineage de données</strong> et la <strong>qualité de données</strong> méritent qu&rsquo;on s&rsquo;y arrête un peu plus longtemps.</p>
+<p>Concerant le <strong>lineage de données</strong>, cela est intéressant de savoir à partir de quel dataset un dataset est issu mais il peut également être utile de disposer d&rsquo;un <strong>lineage de traitement</strong>, c&rsquo;est à dire savoir quel job a produit quel dataset. En effet, cela permet de facilement savoir, si un dataset a, par exemple, mal été produit, quel est le job dans la chaine qui est fautif.</p>
+<p>De même, dans un contexte de véracité ou d&rsquo;audit, pouvoir prouver que tel traitement produit bien le résultat voulu peut être primordial.</p>
+<p>En outre, en plus d&rsquo;avoir un <strong>lineage de données</strong> portant sur le dataset, il peut être intéressant d&rsquo;avoir un lineage de données portant sur le contenu du dataset. En effet, connaitre la propagation d&rsquo;une information (ou d&rsquo;un champ) de manière plus fine peut être nécessaire.</p>
+<p>Pour ce qui concerne la <strong>qualité de données</strong>, cela lève différentes interrogations :</p>
+<ul>
+<li>que faire lorsque la donnée produite ne respecte pas le contrat (car oui, il s&rsquo;agit bien d&rsquo;un contrat au sens pré-condition/post-condition) :
+<ul>
+<li>doit-on arrêter la chaine de traitement?</li>
+<li>doit-on lever une alerte et continuer le traitement? et si oui, que faire de la donnée ignorée/mal produite (doit-on faire une <em>dead letter queue</em> sur la donnée en amont ou en aval?)?</li>
+</ul>
+</li>
+<li>doit-on être pro-actif (ie. faire une verification avant/après l&rsquo;exécution de la transformation) ou le faire de manière lazy/asynchrone?</li>
+<li>comment doit être exprimé le contrat et qui (au sens traitement) doit vérifier la véracité de ce dernier?</li>
+</ul>
+<p>Bref, plus de question que de réponses&hellip; mais qu&rsquo;il est important de se poser.</p>
+<p>Aussi, le besoin peut maintenant être exprimé de la manière suivante :</p>
+<ul>
+<li>avoir un <strong>scheduler</strong></li>
+<li>avoir un <strong>catalogue de données</strong></li>
+<li>disposer d&rsquo;un <strong>lineage de données</strong> au niveau du dataset</li>
+<li>disposer d&rsquo;un <strong>lineage de données</strong> au niveau du champ</li>
+<li>disposer d&rsquo;un <strong>lineage de traitement</strong></li>
+<li>avoir de la <strong>qualité de données</strong> :
+<ul>
+<li>disposer d&rsquo;un moyen pour exprimer le contrat à respecter</li>
+<li>disposer d&rsquo;un moyen pour exprimer le comportement à avoir si le contrat n&rsquo;est pas respecté</li>
+</ul>
+</li>
+</ul>
+<h1 id="constat">Constat</h1>
+<h2 id="scheduler">Scheduler</h2>
+<p>Si on revient sur la partie <strong>scheduler</strong>, un constat peut être fait concernant les solutions les plus souvent utilisées/connues (airflow ou oozie pour n&rsquo;en citer que quelques unes) : elles sont verbeuses (au sens <em>don&rsquo;t repeat yourself</em>).</p>
+<p>Afin de permettre à l&rsquo;orchestrateur de calculer/représenter son <em>DAG</em> (Directed Acyclic Graph) d&rsquo;exécution, il faut :</p>
+<ul>
+<li>indiquer/représenter les input et output des jobs</li>
+<li>ajouter les pre/post actions à exécuter (à noter que la vérification des conditions de l&rsquo;exécution d&rsquo;un job peut être vu comme un pré-action)</li>
+</ul>
+<p>Pourtant, devoir indiquer/représenter les input/output d&rsquo;un job est déjà exprimé dans le job en lui-même (par exemple, si on prend un job Spark, afin de pouvoir consommer/produire un RDD/DataSet/DataFrame, il faut effectuer une opération de lecture/écriture explicite. De même pour une requête SQL où ces informations apparaissent).</p>
+<p>Concernant les pre/post actions, une grande majorité d&rsquo;entre elles peuvent être déduite du job : par exemple, on ne peut lire une donnée non présente. Ainsi devoir à l&rsquo;exprimer au niveau du <strong>scheduler</strong> est redondant.</p>
+<p>De même si on <em>sait</em> que le job <em>doit</em> créer/ajouter la partition hive pour la donnée produite, devoir le repréciser pour chaque job au niveau du scheduler est dommageable.</p>
+<p>Si un alter table hive doit être effectué dans le cas où un nouveau champ venait à être produit, nous y reviendrons un peu plus tard&hellip; :P</p>
+<p>Bref, on peut donc constater que la majorité des choses qui doivent être exprimées dans le scheduler sont redondantes.</p>
+<h2 id="catalogue-de-données">Catalogue de données</h2>
+<p>Le catalogue de données permet de connaitre l&rsquo;ensemble des datasets du système. Afin de le peupler, plusieurs approches sont possibles :</p>
+<ul>
+<li>utiliser directement le metastore hive comme étant le catalogue de données</li>
+<li>dissocier le catalogue de données du métastore hive. Dans ce cas, il est possible d&rsquo;avoir :</li>
+</ul>
+<p>Dissocier le catalogue de données du métastore hive apporte plusieurs avantages :</p>
+<ul>
+<li>le découplage</li>
+<li>la possibilité d&rsquo;ajouter d&rsquo;autres types d&rsquo;informations plus méta que ce qui est permis via le metastore (documentation, &hellip;)</li>
+</ul>
+<p>Cependant, cela demande à avoir à le maintenir/synchroniser et, pour cela, plusieurs approches sont possibles :</p>
+<ul>
+<li>une approche <em>lazy</em> c&rsquo;est à dire un mécanisme allant scruter le metastore hive (que cela soit fait en positionnant un <em>listener</em> directement sur ce dernier ou via un job allant l&rsquo;interroger)</li>
+<li>une approche plus <em>invasive</em> qui consiste à coupler fortement les jobs en leur demandant d&rsquo;aller renseigner le catalogue de données</li>
+<li>une approche <em>entre deux</em> qui consiste à s&rsquo;appuyer sur l&rsquo;observabilité des jobs</li>
+</ul>
+<p>En outre, vient se poser la question de la <em>véracité</em> du métastore hive. En effet, le metastore hive est une projection du dataset qui peut être incomplète puisqu&rsquo;on est en fonctionnement <em>schema on read</em>. Le dataset réel peut donc est plus complet que ce qui est déclaré dans le metastore (le cas des <em>view</em> n&rsquo;est, ici, pas pris en compte) (à noter que l&rsquo;utilisation de SparkSQL permet de réduire la chance de diverger).</p>
+<h2 id="linéage-de-données">Linéage de données</h2>
+<p>Le <strong>lineage de données</strong> est une problématique non triviale et est parfois faite de manière déclarative (et donc non à jour&hellip;).</p>
+<p>Cependant, les jobs disposent de l&rsquo;information et il est donc possible de réaggréger cette dernière de manière pro-active ou non afin de disposer d&rsquo;un linéage (au moins le lineage de dataset).</p>
+<p>Bien sûr disposer de nombreuses technologies de traitement rend cela plus complexe.</p>
+<p>Une autre approche pourrait consister à corréler les accès au metastore hive et le plan d&rsquo;exécution des jobs mais il se pose alors la même question de la complétude de l&rsquo;information que pour le <strong>catalogue de données</strong>.</p>
+<p>Concernant le linéage de données au niveau champ, cela s&rsquo;avère assez compliqué.</p>
+<h2 id="linéage-de-traitement">Linéage de traitement</h2>
+<p>Disposer d&rsquo;un <strong>linéage de traitement</strong> complet (ie. pas seulement avec une vision d&rsquo;un <em>workflow</em> donné) peut s&rsquo;avérer complexe avec les scheduler actuel.</p>
+<p>En outre, si plusieurs technologies de scheduler sont utilisées ou si en existe plusieurs instances, le manque d&rsquo;API/interface commune rend l&rsquo;extraction et la corrélation difficile.</p>
+<h2 id="qualité-de-données">Qualité de données</h2>
+<p>La <strong>qualité de données</strong> est souvent effectuée a posteriori sur les datasets avec présentation des résultats sous forme de dashboard et/ou possibilité d&rsquo;envoie d&rsquo;alertes.</p>
+<p>Cela permet d&rsquo;éviter d&rsquo;avoir un arrêt de la chaine de traitement mais cela induit qu&rsquo;il faut re-traiter la donnée toute la donnée corrompue.</p>
+<p>Pour ce faire, il devient alors utile/indispensable de disposer du <strong>linéage de données</strong> (au minimum dataset).</p>
+<p>Une fois l&rsquo;ensemble des datasets à re-produire en main, il faut alors en déduire les jobs qu&rsquo;il faut relancer et re-scheduler ces derniers (après une éventuelle correction) ou un sur-ensemble si le scheduler ne permet pas une exécution unitaire.</p>
+<p>Si la <strong>qualité de données</strong> est effectuée de manière défensive (ie. qu&rsquo;un job ne s&rsquo;exécute que si ses pre/post conditions sont respectées) cela peut permettre :</p>
+<ul>
+<li>une consommation moindre de ressource de calcul (le dataset est lu et traité moins souvent)</li>
+<li>d&rsquo;éviter d&rsquo;avoir à re-processer un ensemble de datasets corrompus</li>
+</ul>
+<p>Cependant, il se pose la question des données de qualité. En effet, il s&rsquo;agit souvent de données aggrégées (somme, moyenne, nombre d&rsquo;occurence, &hellip;). Il convient alors de les stocker et de les rendre accessible aux jobs en ayant besoin afin d&rsquo;éviter de les recalculer.</p>
+<p>Une autre question qui doit être posée est le couplage entre la génération de ces métriques de qualité et le traitement du job. Faut-il que le job produise ces données ou peut-on la voir comme une décoration du job?</p>
+<h1 id="proposition">Proposition</h1>
+<p>On a pu constater un certain nombre de points dans le paragraphe précédent (de manière totalement subjective et biaisé :P).</p>
+<p>Dans cette partie, on va tenter de réassembler les morceaux au moins d&rsquo;un point de vue conceptuel&hellip;</p>
+<p>Concernant le <strong>scheduler</strong>, on peut le voir de manière centrale. En effet, il a connaissance de nombreuses informations modulo qu&rsquo;il soit mono-tenant ou du moins qu&rsquo;ils soient interopérables dans le cas contraire.</p>
+<p>Pour la partie duplication d&rsquo;informations entre les jobs et leurs actions qui leur sont associées, si il était capable d&rsquo;intropecter le job, il serait presque possible de n&rsquo;avoir aucune information superflux à lui donner.</p>
+<p>Cette introspection pourrait être faite via un système de SPI (<em>Service Provider Interface</em>) couplé à un mini wrapper sur les opérations de lecture/écriture par exemple.</p>
+<p>Si l&rsquo;ajout <em>magique</em> d&rsquo;une action n&rsquo;était pas souhaitable, il est tout à fait possible d&rsquo;imaginer un mécanisme de décorateur (au sens <em>design pattern</em>) qui permettrait d&rsquo;ajouter un comportement au job et qui irait l&rsquo;introspecter afin de découvrir la majorité des paramètres nécessaire à son fonctionnement.</p>
+<p>Les informations dont le <strong>scheduler</strong> disposeraient permettrait alors de répondre :</p>
+<ul>
+<li>au <strong>linéage de données</strong> (du point de vue dataset)</li>
+<li>au <strong>linéage de traitement</strong></li>
+</ul>
+<p>Il est donc succeptible (afin de séparer les <em>concerns</em>) de remonter ces informations à des services tièrces chargés d&rsquo;aggréger et de mettre à disposition ces dernières.</p>
+<p>Concernant le <strong>catalogue de données</strong>, si il est vu découplé du metastore hive et si on considère que le schéma réel du dataset n&rsquo;est pas porté par le metastore hive mais par un autre format exhausif (comme parquet, avro, protobuf), on obtient alors la notion de <strong>schema registry</strong>.</p>
+<p>Ce <strong>schema registry</strong> deviendrait alors la source de vérité sur les datasets et chaque dataset alors consommé/produit devrait être connu de ce dernier et associé au format choisi (parquet, avro, protobuf) mais également à ses meta-données (localisation hive, etc). Le <strong>scheduler</strong> ou  le job devraient alors y accèder et il deviendrait alors possible de connaitre les champs consommés et produits. En effet, si chaque input/output du job dispose de sa propre déclaration au niveau du <strong>schema registry</strong>, alors par construction, on connait les champs consommés/produits. Il devient alors possible de disposer du <strong>linéage de données avec la granularité champ</strong>.</p>
+<p>Pour les mêmes raisons qu&rsquo;avec le <strong>catalogue de données</strong>, cette remonté d&rsquo;accès aux datasets pourraient être fait un à service tierce via un système de <em>hook</em>, <em>listener</em> ou autre.</p>
+<p>Enfin pour la <strong>qualité de données</strong>, si on considère que les pré/post condition ne sont que le résultat de la vérification d&rsquo;un contrat sur le dataset (ce dont il s&rsquo;agit réellement), alors cette information devrait être associée aux metadonnées du dataset et donc portée et exprimée au niveau du <strong>schema registry</strong>.</p>
+<p>Les metriques aggrégés de qualités pourraient également être enregistrées en tant que metadonnées associés au dataset (?).</p>
+<p>D&rsquo;un point de vue exécution, ce calcul de données aggrégées et la décision de savoir quel comportement adopté dans le cas où le contrat n&rsquo;est pas respecté pourrait être du ressort du <strong>scheduler</strong> en décorant le job au même titre qu&rsquo;il est décorré par les actions comme l&rsquo;ajout de partition hive.</p>
+<p>Enfin, concernant le design du <strong>scheduler</strong> en lui même, il doit bien sûr être <em>scalable</em>, fournir les métriques nécessaires à son monitoring/supervision.</p>
+<p>Si il est multi-tenant, il doit être capable d&rsquo;éviter les phénomènes de famine en disposant de <em>scheduler</em> permettant la préemption d&rsquo;exécution de jobs.</p>
+<p>Il devrait également disposer d&rsquo;exécuteurs indépendants et autonomes pilotés par un <em>manager</em> afin de permettre la résilience des exécutions et et la bonne exécution des jobs/actions (en gérant les retry ou en tuant une action bloquée par exemple)</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Dans cet article, j&rsquo;ai essayé de poser un certain nombre de besoins qui sont généralement présents dans les projets Big Data ainsi que les constats que j&rsquo;ai pu faire et une proposition (qui vaut ce qu&rsquo;elle vaut&hellip;) pour réassembler ces différents points.</p>
+<p>L&rsquo;approche que j&rsquo;ai aimé avec ma proposition est que, je trouve, qu&rsquo;au final, il y avait une certaine forme de cohérence un peu comme les pièces d&rsquo;un puzzle qu&rsquo;on emboite&hellip; avec en son centre le <strong>scheduler</strong> :P</p>
+<p>Bien sûr tous ces points sont discutables et c&rsquo;est d&rsquo;ailleurs la raison pour laquelle j&rsquo;ai posé mes réflexions dans cet article afin de fournir un matériel à partir duquel il sera possible de débattre/échanger/discuter si le coeur vous en dit :P</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2021%2f05%2fbigdata-scheduler.html%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/">Packaging, test et livraison pour Hadoop : Mode d&#39;emploi</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

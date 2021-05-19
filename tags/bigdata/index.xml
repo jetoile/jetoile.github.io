@@ -15,9 +15,9 @@
       
       <guid>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</guid>
       <description>Dans le monde Big Data, rapidement se pose un certain nombre de besoins.
-Besoins qui, prit unitairement, sont déjà complexes à résoudre mais qui, mis bout à bout, s&amp;rsquo;avèrent encore plus difficile à intégrer.
-Cet article n&amp;rsquo;a pas pour objectif de fournir une solution clé en main mais plutôt de poser différentes réflexions que j&amp;rsquo;ai pu avoir afin de savoir si elles avaient un sens&amp;hellip;
-Besoins Lorsque l&amp;rsquo;on est confronté au Big Data, les besoins qui en découlent sont les suivants :</description>
+Besoins qui, pris unitairement, sont déjà complexes à résoudre mais qui, mis bout à bout, s&amp;rsquo;avèrent encore plus difficiles à intégrer.
+Parmi ces besoins, on peut citer, par exemple, les besoins de qualité de données ou de linéage (problématiques qui peuvent être regrouper sous le terme de data governance).
+Cet article n&amp;rsquo;a pas pour objectif de fournir une solution clé en main ni de parler d&amp;rsquo;outils déjà existant mais plutôt de poser différentes réflexions que j&amp;rsquo;ai pu avoir afin de savoir si elles avaient un sens&amp;hellip;</description>
     </item>
     
   </channel>

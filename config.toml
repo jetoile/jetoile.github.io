@@ -6,6 +6,7 @@ theme = "blackburn"
 copyright = "<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a>"
 canonifyurls = true
 paginate = 10
+enableEmoji = true
 
 [indexes]
   tag = "tags"

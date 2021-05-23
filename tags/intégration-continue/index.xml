@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>intégration continue on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/int%C3%A9gration-continue/</link>
+    <link>https://blog.jetoile.fr/tags/int%C3%A9gration-continue.html</link>
     <description>Recent content in intégration continue on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 13 Jun 2013 00:27:32 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/int%C3%A9gration-continue/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>BreizhCamp 2013</title>
-      <link>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html/</link>
+      <link>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html</link>
       <pubDate>Thu, 13 Jun 2013 00:27:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html/</guid>
+      <guid>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html</guid>
       <description>Pour ceux qui l&amp;rsquo;aurait loupé, le BreizhCamp dans sa version 2013 a actuellement lieu.
 Etant un grand amoureux de la Bretagne, je ne pouvais manquer le cru de cette année&amp;hellip;
 En outre, j&amp;rsquo;ai eu la chance d&amp;rsquo;y présenter un Tools In Action d&#39;1/2 heure sur le sujet des tests d&amp;rsquo;acceptance et plus précisément sur la façon dont il est possible d&amp;rsquo;intégrer Cucumber JVM, Selenium et FluentLenium.
@@ -22,19 +22,19 @@ Les slides sont dès à présent disponibles :</description>
     
     <item>
       <title>Industrialiser la récolte de métriques Web</title>
-      <link>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html/</link>
+      <link>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html</link>
       <pubDate>Thu, 25 Apr 2013 21:01:09 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html</guid>
       <description>A l&amp;rsquo;origine, une des principales raisons à la mise en place d&amp;rsquo;un serveur d&amp;rsquo;intégration continue était l&amp;rsquo;automatisation des processus qui, fait manuellement, étaient souvent consommateur de temps et générateur d&amp;rsquo;erreurs humaines. Petit à petit, ce dernier s&amp;rsquo;est imposé comme l&amp;rsquo;orchestrateur de tous les processus et est devenu un des points central de l&amp;rsquo;usine de développement. En effet, en plus de ses capacités à compiler, packager, faire passer les tests unitaires, d&amp;rsquo;intégration et d&amp;rsquo;acceptance, il est souvent utilisé pour livrer mais également pour effectuer des tests de non régression.</description>
     </item>
     
     <item>
       <title>FluentLenium et Cucumber JVM... complément et precision</title>
-      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html/</link>
+      <link>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html</link>
       <pubDate>Thu, 11 Apr 2013 20:38:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html/</guid>
+      <guid>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html</guid>
       <description>Dans mon article précédent, j&amp;rsquo;avais tenté d&amp;rsquo;expliquer comment il était possible d&amp;rsquo;intégrer les frameworks Cucumber JVM et Selenium au travers de FluentLenium.
 En effet, pour rappel, FluentLenium permettait d&amp;rsquo;abstraire Selenium en lui offrant une API plus fluent mais également en lui apportant nativement ce qu&amp;rsquo;il préconise, à savoir le Page Object Design Pattern.
 Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation de l&amp;rsquo;initialisation de FluentLenium à une classe tierce injectée via le mécanisme d&amp;rsquo;injection de Cucumber JVM.</description>
@@ -42,20 +42,20 @@ Pour ce faire, j&amp;rsquo;avais proposé d&amp;rsquo;utiliser la délégation d
     
     <item>
       <title>FluentLenium et Cucumber JVM sont sur un bateau...</title>
-      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html/</link>
+      <link>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html</link>
       <pubDate>Thu, 14 Mar 2013 16:39:36 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html</guid>
       <description>Dans un article précédent, j&amp;rsquo;avais abordé comment il était possible de démarrer une application web dans un conteneur de Servlet de manière embedded au sein de la phase integration de Maven. Bien sûr, cela n&amp;rsquo;a pas été fait que pour l&amp;rsquo;exercice de style et il y avait une petite idée derrière : pouvoir exécuter des tests d&amp;rsquo;acceptance en mode boite noire sur l&amp;rsquo;application.
 Pour faire les tests d&amp;rsquo;acceptance, le choix de Cucumber JVM a été fait afin de permettre l&amp;rsquo;expression de tests d&amp;rsquo;acceptance avec une sémantique utilisant le pattern Given/When/Then mais également afin de permettre à des non développeurs de comprendre/écrire les scénarii de test à exécuter.</description>
     </item>
     
     <item>
       <title>Démarrer une webapp en mode embedded avec Maven</title>
-      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html/</link>
+      <link>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html</link>
       <pubDate>Wed, 06 Mar 2013 15:26:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html/</guid>
+      <guid>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html</guid>
       <description>La mouvance actuelle dit que tout projet qui se veut un minimum industrialisé doit pouvoir détecter les anomalies au plus tôt. Pour ce faire, il est dit qu&amp;rsquo;il doit disposer de tests, qu&amp;rsquo;ils soient unitaire, d&amp;rsquo;intégration, fonctionnel ou d&amp;rsquo;acceptance.
 Pour adresser le problème des tests d&amp;rsquo;intégration, il est souvent utile de démarrer l&amp;rsquo;application cible de manière embedded.
 Cette article montrera comment il est possible de faire pour un contexte donné.</description>
@@ -63,20 +63,20 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
     
     <item>
       <title>Précompiler ses jsp</title>
-      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</link>
+      <link>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html</link>
       <pubDate>Mon, 05 Nov 2012 12:57:40 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html</guid>
       <description>Parce qu&amp;rsquo;il est parfois nécessaire de valider ses jsp, cet article fera un petit retour sur comment cela peut être mis en oeuvre.
 Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Cependant, il ne faut pas oublier que dans le monde Java, cela reste une des technologies indispensables quelle que soit le framework utilisé (j&amp;rsquo;entends par là dans le cas où les pages sont rendus dynamiquement par une technologie java).</description>
     </item>
     
     <item>
       <title>Petit focus sur 2 plugins Maven</title>
-      <link>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html/</link>
+      <link>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html</link>
       <pubDate>Tue, 28 Feb 2012 23:09:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html</guid>
       <description>Bon, ça fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; je n&amp;rsquo;ai pas foncièrement d&amp;rsquo;excuses si ce n&amp;rsquo;est que j&amp;rsquo;ai été pas mal occupé sur un projet sur lequel j&amp;rsquo;essaierai de faire un petit retour dans un futur proche&amp;hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&amp;rdquo; plugins maven que j&amp;rsquo;ai eu l&amp;rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
  Olivier Lamy (http://olamy.</description>
@@ -84,10 +84,10 @@ En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&am
     
     <item>
       <title>Petite découverte de CloudBees</title>
-      <link>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html/</link>
+      <link>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html</link>
       <pubDate>Mon, 14 Nov 2011 22:40:16 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html/</guid>
+      <guid>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;assister à un atelier sur CloudBees chez nos amis de Xebia.
 Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique pour éviter tout favoritisme ;-) ) :
  Eric Briand Simon Caplette Nicolas De Loof Cyrille Leclerc Olivier Michallat Jean-Louis Rigau Emmanuel Servent  Comme d&amp;rsquo;habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n&amp;rsquo;est pas le but de mon article&amp;hellip;</description>
@@ -95,10 +95,10 @@ Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique p
     
     <item>
       <title>Présentation sur un retour d&#39;expérience pour la mise en oeuvre de Maven 2</title>
-      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html</link>
       <pubDate>Fri, 23 Sep 2011 22:14:32 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>

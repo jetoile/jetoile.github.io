@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>spring integration on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/spring-integration/</link>
+    <link>https://blog.jetoile.fr/tags/spring-integration.html</link>
     <description>Recent content in spring integration on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 10 Apr 2014 14:15:44 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/spring-integration/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lecture et traitement de fichiers : comment faire simple?</title>
-      <link>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html/</link>
+      <link>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html</link>
       <pubDate>Thu, 10 Apr 2014 14:15:44 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html/</guid>
+      <guid>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html</guid>
       <description>De nombreuses applications ou systèmes d&amp;rsquo;informations nécessitent le chargement de données issues de fichiers.
 Bien souvent, cet import est exécuté par batch, mais il peut aussi être intéressant de faire cet import au fil de l&amp;rsquo;eau.
 En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&amp;rsquo;il n&amp;rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&amp;rsquo;est à dire avec, au minimum, le temps de traitement d&amp;rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code.</description>
@@ -21,10 +21,10 @@ En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient v
     
     <item>
       <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content!</title>
-      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</link>
+      <link>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html</link>
       <pubDate>Mon, 24 Mar 2014 19:12:29 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html</guid>
       <description>Pour faire suite à mes articles resteasy-netty et resteasy-netty4, nous allons voir, dans cet article, comment il est possible de créer un service activator avec Spring Integration qui exposera via resteasy-netty4 un service REST.
 Ce service REST esposera simplement une opération en POST qui, via Spring Integration, écrira dans un fichier et qui, pour le fun, écrira également sur la console.
 Pour ce faire, rien de plus simple, un Service Activator de type gateway a été utilisé.</description>
@@ -32,10 +32,10 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
     
     <item>
       <title>Spring Integration vs. Apache Camel</title>
-      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html/</link>
+      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html</link>
       <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html</guid>
       <description>Lors d&amp;rsquo;un post précédent, j&amp;rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&amp;rsquo;il s&amp;rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
 Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
 En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&amp;rsquo;en ai ainsi que la façon dont je les ai compris.</description>

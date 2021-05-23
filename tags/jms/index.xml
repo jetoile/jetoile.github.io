@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jms on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/jms/</link>
+    <link>https://blog.jetoile.fr/tags/jms.html</link>
     <description>Recent content in jms on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Sun, 20 Nov 2011 22:49:24 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jms/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Devoxx 2011 - What&#39;s probably coming in Java Message Service 2.0</title>
-      <link>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html/</link>
+      <link>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html</link>
       <pubDate>Sun, 20 Nov 2011 22:49:24 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html/</guid>
+      <guid>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;aller à Devoxx en Belgique à Anvers.
 Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : http://www.devoxx.com/ et même à vous y inscrire l&amp;rsquo;année prochaine et/ou même mieux&amp;hellip; d&amp;rsquo;aller assister à Devoxx France!!
  Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de Nigel Deakin présentée à Devoxx 2011 et à laquelle j&amp;rsquo;ai assisté.</description>

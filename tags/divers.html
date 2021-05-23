@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>divers &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+  <link rel="alternate" type="application/rss+xml" title="Jetoile"
+    href='https://blog.jetoile.fr/tags/divers/index.xml' />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href='https://blog.jetoile.fr/tags/divers/index.xml'><i
+          class="fas fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>divers</h1>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2014/03/changement-flux-rss.html">Changement du flux RSS</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>31 Mar 2014</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Comme certain ont pu le constater, le look &amp; feel du blog a évolué et j&rsquo;espère qu&rsquo;il vous plait.
+Normalement, en plus d&rsquo;un meilleur confort pour moi lorsque j&rsquo;écris, une amélioration devrait être visible sur le temps de chargement des pages en raison d&rsquo;un allègement de ces dernières.
+Cependant, en raison d&rsquo;une limitation de feedburner sur la taille du fichier atom.xml, j&rsquo;ai été obligé de ne faire pointer que la catégorie Java (je n&rsquo;ai pas trouver comment il était possible de générer ce fichier avec seulement une partie de l&rsquo;article ou juste le titre&hellip;).
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2014/03/changement-flux-rss.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html">Changement de look et d&#39;hébergeur</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Mar 2014</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Cet article n&rsquo;a rien à voir avec Java et il est plus à titre informatif.
+En effet, j&rsquo;ai décidé de passer de Blogger pour l&rsquo;hébergement de mon blog à une solution basée sur Octopress et un hébergement sur github.io.
+Pourquoi ce choix?
+Et ben, en fait, pour plusieurs raisons :
+ J&rsquo;ai toujours aimé la philosophie de LaTeX qui permettait d&rsquo;écrire au kilomètre sans avoir à se soucier de la mise en forme.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html">Livereload et Linux ou comment rédiger du html simplement</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Mar 2014</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/html">html</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Cet article n&rsquo;a rien à voir avec le monde Java.
+Il s&rsquo;agit plus d&rsquo;un petit tutoriel surtout destiné&hellip; à moi-même&hellip; ;-)
+En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&rsquo;avoir une idée de l&rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&rsquo;énerver.
+Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l&rsquo;utiliser.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2012/11/independance-me-voici.html">Indépendance, me voici ;-)</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>06 Nov 2012</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Une fois n&rsquo;est pas coutume (quoique&hellip;)&hellip; cet article ne sert à rien&hellip; mais a juste pour objectif d&rsquo;annoncer que je quitte la société de service que j&rsquo;ai rejoint il y a déjà 3 ans pour me lancer dans le vaste monde de l&rsquo;indépendance&hellip;
+Je quitte donc une société de service où j&rsquo;ai eu la chance de rencontrer et côtoyer des personnes géniales (aussi bien humainement que professionnellement) et qui m&rsquo;a donné ma chance pour essayer de suivre et de transmettre mon enthousiasme à mes joyeux camarades ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2012/11/independance-me-voici.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html">Resign Patterns : les nouveaux patterns</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>02 Dec 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/architecture">architecture</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/avis">avis</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Cet article est une traduction &ldquo;libre&rdquo; de l&rsquo;excellent papier de Michael Duell qui se nomme &ldquo;Resign Patterns&rdquo; Ailments of Unsuitable Project-Disoriented Software.
+En fait, Resign Patterns reprend le principe des Design Patterns tels que décrit par the Gang Of Four mais en proposant un tout autres types de Patterns&hellip; Je vous laisse juger de leur véracité&hellip; Je pense qu&rsquo;ils ont suffisamment fait leurs preuves pour ne pas avoir droit, eux aussi, à leur gloire&hellip; ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/10/fusesource-community-day-2011.html">FuseSource Community Day 2011</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Oct 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ce jeudi 13 octobre dernier a eu lieu la troisième édition du FuseSource Community Day à la Défense. Pour ceux qui ne connaissent pas la société FuseSource, il s&rsquo;agit, en fait, du nouveau nom de Iona et c&rsquo;est une société spécialisée dans l&rsquo;open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation Apache.
+Parmi ces produits, on peut y trouver :
+ Apache CXF (Fuse Service Framework) Apache ServiceMix (Fuse ESB) Apache ActiveMQ (Fuse Message Broker) Apache Camel (Fuse Mediation Router)  En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l&rsquo;accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2011/10/fusesource-community-day-2011.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini.html">JugSummerCamp 2011 : C&#39;est fini...</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>18 Sep 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Voilà, pour ceux qui l&rsquo;auraient manquée ou qui ne le savaient pas (ouh!!!), le JugSummerCamp a fermé ses portes ce vendredi 16 septembre 2011.
+Ce fut une journée bien remplie, fatigante mais que du bonheur : des sessions intéressantes, des speakers compétents mais également une super organisation (merci au Poitou-Charente Java User Group mais également à tous les sponsors de l&rsquo;évènement sans qui rien n&rsquo;aurait été possible&hellip; (on les oublie tout le temps&hellip; ;-) ))!
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011.html">Retour sur le BreizhCamp 2011</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>29 Jul 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Cela fait un petit moment (plus d&rsquo;un mois déjà&hellip;) qu&rsquo;a eu lieu le BreizhCamp.
+Pour les néophytes, BreizhCamp est une journée de conférence sur diverses technologies allant de Python, en passant par .Net pour, finalement finir sur Java.
+Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l’ISTIC et a été organisée par l’équipe du BreizhJug qui comprend :
+ Nicolas De loof, Michel David, Julien Coste.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion.html">Ubuntu 11.04</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>11 Jun 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ubuntu 11.04 est sorti depuis le 28 avril 2011. Je ne reviendrai pas ni sur son ergonomie ni sur ses ajouts puisque cela a déjà été débattu sur de nombreux sites/blogs. Cependant, depuis la mise à jour, un point avait tendance à m&rsquo;agacer.
+En effet, dans un shell bash, sur la complétion de la commande ls (entre autre) avec des répertoires contenant des espaces, il ne m&rsquo;échappait plus ces derniers. Du coup, obligation d&rsquo;aller les échapper manuellement mais chose encore plus embêtante était qu&rsquo;il ne me proposait plus le contenu de mon répertoire.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html">Ouverture d&#39;un compte GitHub</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>30 Jan 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Voilà, ça fait quelques jours que je travaille sur un petit projet perso.
+Aussi, afin de pouvoir le hoster, je me suis créé un compte sur GitHub : https://github.com/jetoile.
+~~Pour toutes informations sur Git, je vous renvoie sur le site : http://blog.gitfr.net/~~
+De mon coté, je continue mon petit projet que je documenterai via de nouveaux articles d&rsquo;ici peu.
+Rester à l&rsquo;écoute ;-)
+  </p>
+
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html">NoSQL au Paris JUG</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>08 Sep 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Voilà! C&rsquo;est la rentrée!&hellip; et c&rsquo;est aussi la rentrée de tous les User Group : cela annonce une année bien chargée en conférences (et donc en émotion ;-) ) et il est probable qu&rsquo;il y en ait pour tous les goûts! Donc plus aucune excuse pour ne pas trouver chaussure à son pied!
+A titre d&rsquo;exemple, et pour n&rsquo;en citer que quelques-unes (désolé pour celles que j&rsquo;aurais oubliées mais il y en a trop et cela me prendrait trop de place pour toutes les mettre (ainsi que les logos)&hellip;), voilà un petit aperçu de ce qui nous attend en ce mois de septembre 2010 :
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html">Articles disponibles sur mon retour du Salon Linux Open Source 2010</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Dans mon précédent post, j&rsquo;avais annoncé la mise à disposition prochaine d&rsquo;une série d&rsquo;articles sur le Salon Linux Open Source qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
+C&rsquo;est désormais chose faite et les articles sont disponibles sur le blog de So@t.
+Il est donc possible d&rsquo;y retrouver les 6 articles suivants :
+ Retour sur le Salon Linux Open Source, Salon Linux Open Source – Atelier sur le développement logiciel collaboratif : bonnes pratiques, premiers bilans, Salon Linux Open Source – Keynote sur Oracle et l’Open Source : stratégie et initiatives – de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc, Salon Linux Open Source – Table ronde sur &ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&rdquo;, Salon Linux Open Source – Table ronde sur &ldquo;virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&rdquo;, Salon Linux Open Source – Cycle OW2.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/salon-linux-open-source.html">Retour sur le salon Linux Open Source</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>21 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Voilà, le salon Linux Open Source a fermé ses portes. Résultat des courses, 3 jours bien remplis où j&rsquo;ai pu assister à pas mal de conférences sur divers sujets tels que :
+ l&rsquo;atelier sur &ldquo;Développement logiciel collaboratif : bonnes pratiques, premiers bilans&rdquo; la keynote sur &ldquo;Oracle et l&rsquo;Open Source :stratégie et initiatives - de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc&rdquo; la table ronde sur &ldquo;Interopérabilité : les standards ouverts à la base des architectures&rdquo; la table ronde sur &ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&rdquo; la table ronde sur &ldquo;Virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&rdquo; et le cycle OW2 : &ldquo;Optimiser votre infrastructure d&rsquo;entreprise avec les solutions innovantes du Consortium OW2&rdquo; où j&rsquo;ai plus précisément assisté aux présentations suivantes :  &ldquo;Prenez de l&rsquo;avance avec la nouvelle génération du décisionnel Open Source grâce à l&rsquo;initiative OW2 Business Intelligence&rdquo; &ldquo;Gestion autonomique des infrastructures du nuage pour le PaaS avec JASMINe : état des lieux et perspectives&rdquo; &ldquo;Mettez la Data Integration dans votre ESB avec Talend et PEtALS&rdquo; &ldquo;Comment gérer efficacement vos documents avec eXo DMS et la solutions BPM Bonita&rdquo; &ldquo;Outils d&rsquo;audit et diagnostic pour les développeurs et administrateurs d&rsquo;applications Java EE&rdquo;    La rédaction de CRs est en cours et ils seront disponibles sur le blog de So@t d&rsquo;ici peu.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/salon-linux-open-source.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html">Je pense donc je code... ou je code donc je pense</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Jan 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/reflexion">reflexion</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Juste une petite réflexion que je trouve pas mal et que je ne fais que retranscrire puisque c'est [Yukihiro Matsumoto](http://en.wikipedia.org/wiki/Yukihiro_Matsumoto) (M. Ruby) lors de sa présentation au salon Linux Open Source de mars 2009 (oui, oui, je sais, ça date un peu...) qui l'a tenue. Il nous a expliqué ce qui l&rsquo;avait amené à créer le langage Ruby : écrire du code dans un langage qui correspond à notre façon de penser; mais il a aussi tenté de nous démontrer pourquoi on devrait utiliser Ruby (chose difficile devant un public de Javaistes&hellip;) : utiliser Ruby fluidifierait notre façon de penser.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/01/ouvrages-recommandes.html">Ouvrages recommandés</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>26 Jan 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/avis">avis</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ce post présente les ouvrages (techniques) que je recommande vivement&hellip; cependant, certaines références ne sont plus disponibles puisque l&rsquo;éditeur O&rsquo;Reilly a décidé de fermer sa branche française&hellip; dommage&hellip; mais les éditions anglaises sont toujours là!
+A lire absoluement Apache Maven de N. De Loof et A. Héritier chez Pearson Ce livre, qui ne se veut pas une bible maven, raconte la mise en place de maven avec un modèle &ldquo;essai successif&rdquo;, c&rsquo;est à dire en prenant en compte les besoins d&rsquo;un projet fictif au sens gestion de configuration et en suivant le raisonnement des acteurs pour arriver à construire un projet pérenne qui prend en considération la gestion de différentes sources, les tests, l&rsquo;intégration, la mise en production, la gestion du SCM&hellip; en gros tout ce qu&rsquo;un projet à besoin.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/01/ouvrages-recommandes.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>bigdata on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/bigdata/</link>
+    <link>https://blog.jetoile.fr/tags/bigdata.html</link>
     <description>Recent content in bigdata on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 18 May 2021 18:20:00 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/bigdata/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Big Data et Scheduler : Reflexion</title>
-      <link>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</link>
+      <link>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html</link>
       <pubDate>Tue, 18 May 2021 18:20:00 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</guid>
+      <guid>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html</guid>
       <description>Dans le monde Big Data, rapidement se pose un certain nombre de besoins.
 Besoins qui, pris unitairement, sont déjà complexes à résoudre mais qui, mis bout à bout, s&amp;rsquo;avèrent encore plus difficiles à intégrer.
 Parmi ces besoins, on peut citer, par exemple, les besoins de qualité de données ou de linéage (problématiques qui peuvent être regrouper sous le terme de data governance).

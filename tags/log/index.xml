@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>log on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/log/</link>
+    <link>https://blog.jetoile.fr/tags/log.html</link>
     <description>Recent content in log on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 05 Jan 2016 12:40:17 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/log/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Loggons beaucoup mais loggons bien...</title>
-      <link>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html/</link>
+      <link>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html</link>
       <pubDate>Tue, 05 Jan 2016 12:40:17 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html/</guid>
+      <guid>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html</guid>
       <description>Cela fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; Cependant, un sujet me taraude depuis un moment&amp;hellip; et il s&amp;rsquo;agit de la gestion des logs dans les applications.
 J&amp;rsquo;ai déjà pesté dans des articles précédents sur le fait qu&amp;rsquo;une application devait toujours être monitorée et supervisée mais, en plus de cela, le comportement d&amp;rsquo;une application doit également être traçable.
 Le sujet n&amp;rsquo;est pas ce qu&amp;rsquo;on peut dire le plus sexy du monde mais j&amp;rsquo;ai souvent constaté que ce dernier était souvent assez mal maitrisé.</description>

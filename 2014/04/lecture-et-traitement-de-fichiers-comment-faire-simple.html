@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Lecture et traitement de fichiers : comment faire simple? &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Lecture et traitement de fichiers : comment faire simple?</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>10 Apr 2014</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/spring-integration">spring integration</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/eip">eip</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/batch">batch</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/avis">avis</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="https://blog.jetoile.fr/images/batch/logo.png" alt="left-small"></p>
+<p>De nombreuses applications ou systèmes d&rsquo;informations nécessitent le chargement de données issues de fichiers.</p>
+<p>Bien souvent, cet import est exécuté par <em>batch</em>, mais il peut aussi être intéressant de faire cet import au fil de l&rsquo;eau.</p>
+<p>En outre, bien souvent, les fichiers à importer sont, soient nombreux, soient volumineux. Du coup, écrire un code simple et fiable peut devenir plus ardu que ce qu&rsquo;il n&rsquo;y parait. Si, de plus, on veut ajouter des logs parlant (c&rsquo;est à dire avec, au minimum, le temps de traitement d&rsquo;un fichier et son nom), cela a tendance a rajouter du bruit au code. Sans oublier que lire un fichier est bien mais que, souvent, un traitement est effectué dessus&hellip;</p>
+<p>Enfin, lors d&rsquo;une forte volumétrie, une scalabilité horizontale peut être intéressante surtout dans le contexte actuel où la quantité d&rsquo;information vient à exploser.</p>
+<p>Cet article parlera donc de la problématique d&rsquo;import de fichiers dans une application en s&rsquo;appuyant sur des framework comme <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> ou <a href="http://projects.spring.io/spring-integration/">Spring Integration</a>. Le mot d&rsquo;ordre sera de le faire le plus simplement possible en s&rsquo;appuyant au maximum sur ces framework.</p>
+<!-- more -->
+<h1 id="solution-à-base-de-_batch_">Solution à base de <em>batch</em></h1>
+<p>Ecrire un batch permettant de traiter des fichiers peut sembler simple mais lorsque le nombre de ces derniers vient à augmenter ou lorsque la taille des fichiers est volumineux, il arrive souvent que des bugs apparaissent. En outre, il convient alors de gérer manuellement les logs ainsi que la partie supervision.</p>
+<p>Pour répondre à ce besoin, il est peut être avantageux d&rsquo;utiliser <a href="http://projects.spring.io/spring-batch/">Spring Batch</a> (ou une autre implémentation de la <a href="https://jcp.org/en/jsr/detail?id=352">JSR 352</a>).</p>
+<p><em>ndlr</em> : je ne présenterai pas le fonctionnement de Spring Batch à base de <strong>Job</strong> et <strong>Step</strong> puisque cela se trouve très facilement dans les documents officiels, livres ou articles de blog et je mettrai plutôt l&rsquo;accent sur la faisabilité de tel ou tel chose.</p>
+<p><img src="https://blog.jetoile.fr/images/batch/spring-batch-reference-model.png" alt="center" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html"></p>
+<p>Spring Batch offre nativement la possibilité de traiter les fichiers par <em>chunk</em> via :</p>
+<ul>
+<li><code>FlatFileItemReader</code> qui permet de lire un fichier plat ligne par ligne et où chaque ligne dispose de la même information (il est également possible de traiter des types de lignes différentes issues du même fichier avec <code>PatternMatchingCompositeLineMapper</code>).</li>
+<li><code>StaxEventItemReader</code> pour lire fichiers xml composés de format de <em>fragments</em> identiques :
+<img src="https://blog.jetoile.fr/images/batch/xmlinput.png" alt="center" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html"></li>
+</ul>
+<p>avec :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;itemReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.xml.StaxEventItemReader&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;fragmentRootElementName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;trade&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resource&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;data/iosample/input/input.xml&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;unmarshaller&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span> <span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/bean&gt;</span>
+
+<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span>
+      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.oxm.xstream.XStreamMarshaller&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;util:map</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;trade&#34;</span>
+                   <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.springframework.batch.sample.domain.Trade&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;price&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.math.BigDecimal&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span> <span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/util:map&gt;</span>
+    <span style="color:#f92672">&lt;/property&gt;</span>
+<span style="color:#f92672">&lt;/bean&gt;</span>
+</code></pre></div><p>Généralement, il est nécessaire de préciser le nom du fichier à traiter mais il est également possible d&rsquo;en traiter plusieurs de même type dans la même <em>Step</em> via la classe <code>MultiResourceItemReader</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;multiResourceReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.file.MultiResourceItemReader&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resources&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;classpath:data/input/file-*.txt&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;delegate&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;flatFileItemReader&#34;</span> <span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/bean&gt;</span>
+</code></pre></div><p>Spring Batch supporte également la scalabilité horizontale en permettant de préciser un <code>taskExecutor</code> au niveau de la <em>Step</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;step</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;loading&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;tasklet</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;taskExecutor&#34;</span><span style="color:#f92672">&gt;</span>...<span style="color:#f92672">&lt;/tasklet&gt;</span>
+<span style="color:#f92672">&lt;/step&gt;</span>
+</code></pre></div><p>Ainsi, on constate que Spring Batch offre nativement la possibilité de traiter des fichiers volumineux en les découpant par <em>chunk</em>.</p>
+<p>De même, il offre nativement la possibilité de passer sur du traitement parallèle.</p>
+<p>Concernant la partie supervision, vu que l&rsquo;on est dans un environnement Spring, on bénéficie, bien sûr, de toute la partie JMX.</p>
+<p>Pour la partie gestion des erreurs, Spring Batch permet de les gérer de manière très simple.</p>
+<p>Cependant, on perd un grand intérêt si, par fichier, il n&rsquo;y a qu&rsquo;une seule donnée. En effet, le mécanisme de <em>chunk</em> devient alors inutile. Il reste cependant possible d&rsquo;utiliser la scalabilité horizontale.</p>
+<p>Concernant la partie log, j&rsquo;avoue ne pas avoir creuser, je ne dirai donc rien sur ce point&hellip;</p>
+<h1 id="solution-à-base-deip">Solution à base d&rsquo;EIP</h1>
+<p>Dans le cas où la volonté serait de traiter les fichiers au fil de l&rsquo;eau, Spring Batch n&rsquo;est pas la solution la plus adaptée&hellip;</p>
+<p>Cependant, Spring Integration répond à ce besoin de manière très simple.</p>
+<p>En effet, en utilisant un simple <strong>Service Activator</strong> (au sens EIP) de type <code>inbound-channel-adapter</code>, il devient alors possible de <em>poller</em> un répertoire et d&rsquo;envoyer le contenu du fichier vers un <em>filter</em> (au sens EIP).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;file:inbound-channel-adapter</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;fileAdapter&#34;</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">auto-create-directory=</span><span style="color:#e6db74">&#34;true&#34;</span>
+                              <span style="color:#a6e22e">filename-pattern=</span><span style="color:#e6db74">&#34;*.xml&#34;</span>
+                              <span style="color:#a6e22e">directory=</span><span style="color:#e6db74">&#34;file:/tmp&#34;</span>
+                              <span style="color:#a6e22e">scanner=</span><span style="color:#e6db74">&#34;recursiveScanner&#34;</span>
+                              <span style="color:#a6e22e">prevent-duplicates=</span><span style="color:#e6db74">&#34;true&#34;</span>
+                              <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;int:poller</span> <span style="color:#a6e22e">fixed-delay=</span><span style="color:#e6db74">&#34;30000&#34;</span> <span style="color:#a6e22e">max-messages-per-poll=</span><span style="color:#e6db74">&#34;500&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/file:inbound-channel-adapter&gt;</span>
+
+<span style="color:#f92672">&lt;file:file-to-string-transformer</span> <span style="color:#a6e22e">charset=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">delete-files=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">input-channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span>
+                                     <span style="color:#a6e22e">output-channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;int:logging-channel-adapter</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;DEBUG&#34;</span> <span style="color:#a6e22e">log-full-message=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+
+<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>D&rsquo;un point de vue scalabilité horizontale, il suffit de renseigner (tout comme pour Spring Batch) un <code>taskExecutor</code> au niveau du <em>Channel</em> et&hellip; c&rsquo;est tout!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;task:executor</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span>
+                   <span style="color:#a6e22e">pool-size=</span><span style="color:#e6db74">&#34;20&#34;</span>
+                   <span style="color:#a6e22e">keep-alive=</span><span style="color:#e6db74">&#34;2400&#34;</span><span style="color:#f92672">/&gt;</span>
+
+
+<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;int:dispatcher</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/int:channel&gt;</span>
+</code></pre></div><p>Enfin, disposer d&rsquo;une supervision est des plus aisé puisqu&rsquo;il suffit de rajouter l&rsquo;élément <code>message-history</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;int:message-history/&gt;</span>
+</code></pre></div><p>L&rsquo;ajout de cet élément indique à Spring Integration qui doit ajouter automatiquement dans le <em>header</em> du message le temps d&rsquo;exécution de chaque <em>Filter</em>. Concernant le nom du fichier et son chemin, il se trouve renseigner automatiquement dans le header par l'<em>adapter</em> <code>file:inbound-channel-adapter</code>.</p>
+<p>Coté gestion des erreurs, Spring Integration permet de les gérer très simplement sur le principe du canal d&rsquo;erreur qui peut récupérer tous les messages en erreur.</p>
+<p>Cependant, avec Spring Integration, si le fichier est volumineux, il n&rsquo;est plus possible de le traiter en <em>chunk</em> et un risque de contention mémoire existe.</p>
+<h1 id="solution-à-base-deip-et-de-batch">Solution à base d&rsquo;EIP et de batch</h1>
+<p>On a vu dans les deux paragraphe précédent que Spring Integration était une très bonne solution pour traiter des fichiers au fil de l&rsquo;eau alors que Spring Batch était plutôt orienté traitement par batch.</p>
+<p>Cependant, il est très facile de composer les 2 modes. Cela permet, par exemple, de déclencher un traitement d&rsquo;un fichier volumineux dès sa réception (via Spring Integration) et de bénéficier du mode <em>chunk</em> de Spring Batch pour le traitement.</p>
+<p>Dans ce cas, bien sûr, il n&rsquo;est pas question de faire de traitement sur le contenu du fichier dans la partie Spring Integration (seul l&rsquo;objet <code>File</code> est transmis dans le corps du message) et c&rsquo;est le jobs Spring Batch qui s&rsquo;occupera du traitement à proprement parler.</p>
+<p>Cela engendre peut être un <em>overhead</em> conséquent mais on est, au moins sûr, d&rsquo;éviter le <em>Out Of Memory</em> dans le cas de fichiers volumineux. En outre, cela permet de bénéficier de la puissance des EIP (routage ou filtrage sur le nom du fichier par exemple) tant que le fichier n&rsquo;a pas à être chargé.</p>
+<p><img src="https://blog.jetoile.fr/images/batch/archi_combo.png" alt="large"></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>On a vu dans cet article comment il pouvait être trivial de traiter l&rsquo;import de fichiers sans avoir à gérer manuellement des pools de thread ou des logs d&rsquo;audit.</p>
+<p>Je ne suis pas rentré dans les détails mais mon objectif était surtout de montrer qu&rsquo;en utilisant les bons outils/framework, il était possible de produire du code minimaliste et donc moins propice aux erreurs.</p>
+<p>Pour avoir mis en oeuvre ces solutions, je peux vous assurer que le code écrit (ainsi que le temps passé) était minimaliste sinon nul (si on considère qu&rsquo;écrire du xml n&rsquo;est pas du code&hellip;). Bien sûr, je ne parle pas du code de traitement qui doit être écrit quoiqu&rsquo;il arrive mais, encore une fois, le fait d&rsquo;expédier la partie plomberie a permis de se concentrer sur le réel besoin métier.</p>
+<p>Enfin, il est important de préciser que dans certains cas, une telle approche ne fonctionnera pas (si un fichier contient, par exemple, des dépendances à des données issues d&rsquo;autres fichiers) et qu&rsquo;il peut même être dangereux de vouloir absoluement utiliser ce type de framework au risque de leur faire faire des choses pour lesquelles ils ne sont pas prévus&hellip; Par exemple, il ne faut pas oublier que dans <strong>EIP</strong>, le <strong>I</strong> signifie Intégration!! Si le besoin est autre, il est fortement recommandé d&rsquo;utiliser autre chose ou de le faire manuellement mais, par pitié, ne tordez pas le coup aux outils&hellip;! (si si, je l&rsquo;ai vu&hellip; d&rsquo;où mon désarroi&hellip;).</p>
+<p><em>ndlr</em> : bon, j&rsquo;admets que la partie qui a dû être la plus longue a sûrement été le <em>tuning</em> du pool de thread afin de tirer le meilleur partie de la machine mais, même si cela avait été fait de manière programmatique, cela aurait été nécessaire&hellip;</p>
+<p><em>ndlr</em> : j&rsquo;ai parlé, dans cet article, de Spring Integration pour la partie EIP mais il est tout aussi simple d&rsquo;utiliser Apache Camel.</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
+<ul>
+<li><strong>Spring Integration in Action</strong> de Mark Fisher, Jonas Partner, Marius Bogoevici et Iwein Fuld chez Manning</li>
+<li><strong>Camel in Action</strong> de Claus Ibsen et Jonathan Anstey chez Manning</li>
+<li><strong>Spring Batch in Action</strong> de Arnaud Cogoluegnes, Thierry Templier, Gary Gregory et Olivier Bazoud chez Manning</li>
+<li><strong>Enterprise Integration Patterns</strong> de G. Hohpe et B. Woolf chez Addisson Wesley</li>
+<li><a href="http://www.eaipatterns.com/">http://www.eaipatterns.com/</a></li>
+<li><a href="http://projects.spring.io/spring-integration/">http://projects.spring.io/spring-integration/</a></li>
+<li><a href="http://projects.spring.io/spring-batch">http://projects.spring.io/spring-batch</a></li>
+<li><a href="http://www.technologies-ebusiness.com/langages/spring-batch-spring-integration-une-usine-de-batchs-a-moindre-cout">http://www.technologies-ebusiness.com/langages/spring-batch-spring-integration-une-usine-de-batchs-a-moindre-cout</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2014%2f04%2flecture-et-traitement-de-fichiers-comment-faire-simple.html" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html">Logstash : tour d&#39;horizon sur les stratégies de déploiement</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html">RDD : qu&#39;est ce que c&#39;est</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

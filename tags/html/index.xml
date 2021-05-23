@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>html on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/html/</link>
+    <link>https://blog.jetoile.fr/tags/html.html</link>
     <description>Recent content in html on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Thu, 20 Mar 2014 11:24:11 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/html/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Livereload et Linux ou comment rédiger du html simplement</title>
-      <link>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html/</link>
+      <link>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html</link>
       <pubDate>Thu, 20 Mar 2014 11:24:11 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html/</guid>
+      <guid>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html</guid>
       <description>Cet article n&amp;rsquo;a rien à voir avec le monde Java.
 Il s&amp;rsquo;agit plus d&amp;rsquo;un petit tutoriel surtout destiné&amp;hellip; à moi-même&amp;hellip; ;-)
 En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&amp;rsquo;avoir une idée de l&amp;rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&amp;rsquo;énerver.

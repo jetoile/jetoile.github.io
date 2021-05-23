@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jbi on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/jbi/</link>
+    <link>https://blog.jetoile.fr/tags/jbi.html</link>
     <description>Recent content in jbi on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 15 Mar 2010 23:29:48 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/jbi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Spring Integration vs. Apache Camel</title>
-      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html/</link>
+      <link>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html</link>
       <pubDate>Mon, 15 Mar 2010 23:29:48 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html/</guid>
+      <guid>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html</guid>
       <description>Lors d&amp;rsquo;un post précédent, j&amp;rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&amp;rsquo;il s&amp;rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
 Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
 En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&amp;rsquo;en ai ainsi que la façon dont je les ai compris.</description>
@@ -21,10 +21,10 @@ En fait, pour être plus précis, je vais plutôt tenter de présenter la vision
     
     <item>
       <title>JBI : Qu&#39;est ce que c&#39;est?</title>
-      <link>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html/</link>
+      <link>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html</link>
       <pubDate>Mon, 07 Dec 2009 09:58:58 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html/</guid>
+      <guid>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html</guid>
       <description>Voilà mon premier article. Il a pour objectif de présenter JBI (Java Business Service) aussi connue sous le doux nom de JSR 208 (Java Specification Release).
 Pourquoi un article sur JBI? Vous pouvez vous demander pourquoi un article sur JBI? Les réponses sont simples : j&amp;rsquo;aime bien cette spécification et je trouve qu&amp;rsquo;elle a du potentiel et qu&amp;rsquo;elle est sous exploitée.
 Bien sûr, me direz-vous, en tant qu&amp;rsquo;utilisateur d&amp;rsquo;un PEtALS ou ServiceMix, pourquoi devrais-je comprendre la technologie sous-jacente?</description>

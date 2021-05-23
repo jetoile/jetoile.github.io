@@ -2,460 +2,460 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.jetoile.fr/tags/architecture/</loc>
+    <loc>https://blog.jetoile.fr/tags/architecture.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</loc>
+    <loc>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/bigdata/</loc>
+    <loc>https://blog.jetoile.fr/tags/bigdata.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/post/</loc>
+    <loc>https://blog.jetoile.fr/post.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/scheduler/</loc>
+    <loc>https://blog.jetoile.fr/tags/scheduler.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/</loc>
+    <loc>https://blog.jetoile.fr/tags.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/hadoop/</loc>
+    <loc>https://blog.jetoile.fr/tags/hadoop.html</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/livrable/</loc>
+    <loc>https://blog.jetoile.fr/tags/livrable.html</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html/</loc>
+    <loc>https://blog.jetoile.fr/2017/11/packaging-et-livraison-pour-hadoop-mode-demploi.html</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/test/</loc>
+    <loc>https://blog.jetoile.fr/tags/test.html</loc>
     <lastmod>2017-11-03T16:16:05+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/cassandra/</loc>
+    <loc>https://blog.jetoile.fr/tags/cassandra.html</loc>
     <lastmod>2017-07-21T10:22:37+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html/</loc>
+    <loc>https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html</loc>
     <lastmod>2017-07-21T10:22:37+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2017/07/tester-avec-redis.html/</loc>
+    <loc>https://blog.jetoile.fr/2017/07/tester-avec-redis.html</loc>
     <lastmod>2017-07-17T11:10:30+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/redis/</loc>
+    <loc>https://blog.jetoile.fr/tags/redis.html</loc>
     <lastmod>2017-07-17T11:10:30+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html/</loc>
+    <loc>https://blog.jetoile.fr/2017/07/tester-avec-elasticsearch.html</loc>
     <lastmod>2017-07-11T10:05:51+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/elasticsearch/</loc>
+    <loc>https://blog.jetoile.fr/tags/elasticsearch.html</loc>
     <lastmod>2017-07-11T10:05:51+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/parquet/</loc>
+    <loc>https://blog.jetoile.fr/tags/parquet.html</loc>
     <lastmod>2016-11-28T11:15:19+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/sqoop/</loc>
+    <loc>https://blog.jetoile.fr/tags/sqoop.html</loc>
     <lastmod>2016-11-28T11:15:19+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html/</loc>
+    <loc>https://blog.jetoile.fr/2016/11/sqoop-et-parquet-mode-demploi.html</loc>
     <lastmod>2016-11-28T11:15:19+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html/</loc>
+    <loc>https://blog.jetoile.fr/2016/05/hadoop-unit-1-dot-3.html</loc>
     <lastmod>2016-05-16T14:20:51+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2016/04/hadoop-unit.html/</loc>
+    <loc>https://blog.jetoile.fr/2016/04/hadoop-unit.html</loc>
     <lastmod>2016-04-16T18:16:01+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html/</loc>
+    <loc>https://blog.jetoile.fr/2016/01/hadoop-ecosysteme-bootstrap.html</loc>
     <lastmod>2016-01-18T10:00:00+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/log/</loc>
+    <loc>https://blog.jetoile.fr/tags/log.html</loc>
     <lastmod>2016-01-05T12:40:17+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html/</loc>
+    <loc>https://blog.jetoile.fr/2016/01/loggons-beaucoup-mais-loggons-bien.html</loc>
     <lastmod>2016-01-05T12:40:17+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html/</loc>
+    <loc>https://blog.jetoile.fr/2015/10/hadoop-et-son-ecosysteme.html</loc>
     <lastmod>2015-10-09T14:53:03+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/java/</loc>
+    <loc>https://blog.jetoile.fr/tags/java.html</loc>
     <lastmod>2015-10-07T17:33:08+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/microservice/</loc>
+    <loc>https://blog.jetoile.fr/tags/microservice.html</loc>
     <lastmod>2015-10-07T17:33:08+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/rest/</loc>
+    <loc>https://blog.jetoile.fr/tags/rest.html</loc>
     <lastmod>2015-10-07T17:33:08+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2015/10/template-de-projets-rest.html/</loc>
+    <loc>https://blog.jetoile.fr/2015/10/template-de-projets-rest.html</loc>
     <lastmod>2015-10-07T17:33:08+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jmx/</loc>
+    <loc>https://blog.jetoile.fr/tags/jmx.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jolokia/</loc>
+    <loc>https://blog.jetoile.fr/tags/jolokia.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/maven/</loc>
+    <loc>https://blog.jetoile.fr/tags/maven.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/metrics/</loc>
+    <loc>https://blog.jetoile.fr/tags/metrics.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/performance/</loc>
+    <loc>https://blog.jetoile.fr/tags/performance.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html/</loc>
+    <loc>https://blog.jetoile.fr/2015/06/undertow-pour-booster-vos-services-rest.html</loc>
     <lastmod>2015-06-23T14:51:56+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/breizhcamp/</loc>
+    <loc>https://blog.jetoile.fr/tags/breizhcamp.html</loc>
     <lastmod>2014-06-12T08:28:38+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html</loc>
     <lastmod>2014-06-12T08:28:38+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/pr%C3%A9sentation/</loc>
+    <loc>https://blog.jetoile.fr/tags/pr%C3%A9sentation.html</loc>
     <lastmod>2014-06-12T08:28:38+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/05/breizhcamp-2014.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/05/breizhcamp-2014.html</loc>
     <lastmod>2014-05-24T20:00:24+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/big-data/</loc>
+    <loc>https://blog.jetoile.fr/tags/big-data.html</loc>
     <lastmod>2014-05-12T09:21:35+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/rdd/</loc>
+    <loc>https://blog.jetoile.fr/tags/rdd.html</loc>
     <lastmod>2014-05-12T09:21:35+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html</loc>
     <lastmod>2014-05-12T09:21:35+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/spark/</loc>
+    <loc>https://blog.jetoile.fr/tags/spark.html</loc>
     <lastmod>2014-05-12T09:21:35+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/avis/</loc>
+    <loc>https://blog.jetoile.fr/tags/avis.html</loc>
     <lastmod>2014-04-10T14:15:44+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/batch/</loc>
+    <loc>https://blog.jetoile.fr/tags/batch.html</loc>
     <lastmod>2014-04-10T14:15:44+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/eip/</loc>
+    <loc>https://blog.jetoile.fr/tags/eip.html</loc>
     <lastmod>2014-04-10T14:15:44+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/04/lecture-et-traitement-de-fichiers-comment-faire-simple.html</loc>
     <lastmod>2014-04-10T14:15:44+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/spring-integration/</loc>
+    <loc>https://blog.jetoile.fr/tags/spring-integration.html</loc>
     <lastmod>2014-04-10T14:15:44+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/logstash/</loc>
+    <loc>https://blog.jetoile.fr/tags/logstash.html</loc>
     <lastmod>2014-04-07T11:20:26+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/04/logstash-petit-tour-dhorizon.html</loc>
     <lastmod>2014-04-07T11:20:26+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/supervision/</loc>
+    <loc>https://blog.jetoile.fr/tags/supervision.html</loc>
     <lastmod>2014-04-07T11:20:26+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/changement-flux-rss.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/changement-flux-rss.html</loc>
     <lastmod>2014-03-31T18:54:22+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/divers/</loc>
+    <loc>https://blog.jetoile.fr/tags/divers.html</loc>
     <lastmod>2014-03-31T18:54:22+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/changement-de-look-et-dhebergeur.html</loc>
     <lastmod>2014-03-28T10:00:03+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty4-et-spring-integration-ils.html</loc>
     <lastmod>2014-03-24T19:12:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/netty/</loc>
+    <loc>https://blog.jetoile.fr/tags/netty.html</loc>
     <lastmod>2014-03-24T19:12:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/html/</loc>
+    <loc>https://blog.jetoile.fr/tags/html.html</loc>
     <lastmod>2014-03-20T11:24:11+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html</loc>
     <lastmod>2014-03-20T11:24:11+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html</loc>
     <lastmod>2014-03-17T08:43:12+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/jaxrs-netty-et-bien-plus-encore-mode.html</loc>
     <lastmod>2014-03-10T08:03:49+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html/</loc>
+    <loc>https://blog.jetoile.fr/2014/03/jolokia-le-piment-qui-vous-veut-du-bien.html</loc>
     <lastmod>2014-03-04T00:30:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html/</loc>
+    <loc>https://blog.jetoile.fr/2013/06/breizhcamp-2013.html</loc>
     <lastmod>2013-06-13T00:27:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/fluentlenium/</loc>
+    <loc>https://blog.jetoile.fr/tags/fluentlenium.html</loc>
     <lastmod>2013-06-13T00:27:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/int%C3%A9gration-continue/</loc>
+    <loc>https://blog.jetoile.fr/tags/int%C3%A9gration-continue.html</loc>
     <lastmod>2013-06-13T00:27:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/selenium/</loc>
+    <loc>https://blog.jetoile.fr/tags/selenium.html</loc>
     <lastmod>2013-06-13T00:27:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html/</loc>
+    <loc>https://blog.jetoile.fr/2013/04/industrialiser-la-recolte-de-metriques.html</loc>
     <lastmod>2013-04-25T21:01:09+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html/</loc>
+    <loc>https://blog.jetoile.fr/2013/04/fluentlenium-et-cucumber-jvm-complement.html</loc>
     <lastmod>2013-04-11T20:38:54+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html/</loc>
+    <loc>https://blog.jetoile.fr/2013/03/fluentlenium-et-cucumber-jvm-sont-sur.html</loc>
     <lastmod>2013-03-14T16:39:36+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html/</loc>
+    <loc>https://blog.jetoile.fr/2013/03/demarrer-une-webapp-en-mode-embedded.html</loc>
     <lastmod>2013-03-06T15:26:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jetty/</loc>
+    <loc>https://blog.jetoile.fr/tags/jetty.html</loc>
     <lastmod>2013-03-06T15:26:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/tomcat/</loc>
+    <loc>https://blog.jetoile.fr/tags/tomcat.html</loc>
     <lastmod>2013-03-06T15:26:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/devoxx/</loc>
+    <loc>https://blog.jetoile.fr/tags/devoxx.html</loc>
     <lastmod>2012-11-21T15:12:51+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html</loc>
     <lastmod>2012-11-21T15:12:51+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/soa/</loc>
+    <loc>https://blog.jetoile.fr/tags/soa.html</loc>
     <lastmod>2012-11-21T15:12:51+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/11/devoxx-2012-cest-fini.html</loc>
     <lastmod>2012-11-19T13:15:30+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/11/independance-me-voici.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/11/independance-me-voici.html</loc>
     <lastmod>2012-11-06T13:13:17+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/r%C3%A9flexion/</loc>
+    <loc>https://blog.jetoile.fr/tags/r%C3%A9flexion.html</loc>
     <lastmod>2012-11-06T13:13:17+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/ant/</loc>
+    <loc>https://blog.jetoile.fr/tags/ant.html</loc>
     <lastmod>2012-11-05T12:57:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jsp/</loc>
+    <loc>https://blog.jetoile.fr/tags/jsp.html</loc>
     <lastmod>2012-11-05T12:57:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/11/precompiler-ses-jsp.html</loc>
     <lastmod>2012-11-05T12:57:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/clif/</loc>
+    <loc>https://blog.jetoile.fr/tags/clif.html</loc>
     <lastmod>2012-10-17T12:29:39+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/gatling/</loc>
+    <loc>https://blog.jetoile.fr/tags/gatling.html</loc>
     <lastmod>2012-10-17T12:29:39+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jmeter/</loc>
+    <loc>https://blog.jetoile.fr/tags/jmeter.html</loc>
     <lastmod>2012-10-17T12:29:39+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html</loc>
     <lastmod>2012-10-17T12:29:39+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</loc>
     <lastmod>2012-08-28T10:47:11+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html</loc>
     <lastmod>2012-08-13T10:40:31+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/05/devoxx-2012-elasticsearch-moteur-de.html</loc>
     <lastmod>2012-05-22T10:37:00+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/nosql/</loc>
+    <loc>https://blog.jetoile.fr/tags/nosql.html</loc>
     <lastmod>2012-05-22T10:37:00+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html</loc>
     <lastmod>2012-03-13T10:19:01+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html/</loc>
+    <loc>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html</loc>
     <lastmod>2012-02-28T23:09:51+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html</loc>
     <lastmod>2011-12-02T23:04:54+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html</loc>
     <lastmod>2011-11-20T22:49:24+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jms/</loc>
+    <loc>https://blog.jetoile.fr/tags/jms.html</loc>
     <lastmod>2011-11-20T22:49:24+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/cloudbees/</loc>
+    <loc>https://blog.jetoile.fr/tags/cloudbees.html</loc>
     <lastmod>2011-11-14T22:40:16+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html</loc>
     <lastmod>2011-11-14T22:40:16+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011.html</loc>
     <lastmod>2011-10-20T22:32:52+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/09/jetty-maven-et-jmx.html</loc>
     <lastmod>2011-09-26T22:19:12+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html</loc>
     <lastmod>2011-09-23T22:17:00+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html</loc>
     <lastmod>2011-09-23T22:14:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/09/jugsummercamp-2011-cest-fini.html</loc>
     <lastmod>2011-09-18T22:10:30+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/07/retour-sur-le-breizhcamp-2011.html</loc>
     <lastmod>2011-07-29T22:06:36+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion.html</loc>
     <lastmod>2011-06-11T21:59:50+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/archetype/</loc>
+    <loc>https://blog.jetoile.fr/tags/archetype.html</loc>
     <lastmod>2011-06-05T21:48:02+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html</loc>
     <lastmod>2011-06-05T21:48:02+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/05/les-repositories-manager-pour-les-nuls.html</loc>
     <lastmod>2011-05-20T19:50:24+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/nexus/</loc>
+    <loc>https://blog.jetoile.fr/tags/nexus.html</loc>
     <lastmod>2011-05-20T19:50:24+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/03/microbenchmark-par-la-pratique.html</loc>
     <lastmod>2011-03-22T19:17:28+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html</loc>
     <lastmod>2011-03-18T19:04:33+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jgroups/</loc>
+    <loc>https://blog.jetoile.fr/tags/jgroups.html</loc>
     <lastmod>2011-02-24T18:49:13+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-33.html</loc>
     <lastmod>2011-02-24T18:49:13+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html</loc>
     <lastmod>2011-02-20T18:41:34+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html</loc>
     <lastmod>2011-01-31T18:37:27+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html</loc>
     <lastmod>2011-01-30T18:36:04+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx.html/</loc>
+    <loc>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx.html</loc>
     <lastmod>2011-01-23T18:27:07+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/12/jgroups-tour-d.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/12/jgroups-tour-d.html</loc>
     <lastmod>2010-12-28T17:42:18+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-connecteurs.html</loc>
     <lastmod>2010-12-20T17:25:15+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-les-services-jmx.html</loc>
     <lastmod>2010-12-13T17:01:18+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/12/jmx-pour-les-nuls-chargement-dynamique.html</loc>
     <lastmod>2010-12-06T16:40:48+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html</loc>
     <lastmod>2010-11-29T16:27:13+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html</loc>
     <lastmod>2010-11-21T16:03:56+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html</loc>
     <lastmod>2010-11-08T15:50:22+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html</loc>
     <lastmod>2010-11-03T14:09:21+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html</loc>
     <lastmod>2010-10-27T12:01:35+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-introduction.html</loc>
     <lastmod>2010-10-26T11:52:53+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/09/nosql-au-paris-jug.html</loc>
     <lastmod>2010-09-08T11:38:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/06/sooner-is-better.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/06/sooner-is-better.html</loc>
     <lastmod>2010-06-14T11:34:55+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html</loc>
     <lastmod>2010-05-15T11:24:47+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/05/jmx-et-firewall.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/05/jmx-et-firewall.html</loc>
     <lastmod>2010-05-13T11:16:06+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html</loc>
     <lastmod>2010-05-05T11:07:07+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/esb/</loc>
+    <loc>https://blog.jetoile.fr/tags/esb.html</loc>
     <lastmod>2010-04-07T10:55:20+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html</loc>
     <lastmod>2010-04-07T10:55:20+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html</loc>
     <lastmod>2010-04-01T10:39:26+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/03/petites-astuces-avec-maven-2.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/03/petites-astuces-avec-maven-2.html</loc>
     <lastmod>2010-03-28T23:58:17+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html</loc>
     <lastmod>2010-03-25T23:50:56+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/03/salon-linux-open-source.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/03/salon-linux-open-source.html</loc>
     <lastmod>2010-03-21T23:43:31+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/apache-camel/</loc>
+    <loc>https://blog.jetoile.fr/tags/apache-camel.html</loc>
     <lastmod>2010-03-15T23:29:48+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jbi/</loc>
+    <loc>https://blog.jetoile.fr/tags/jbi.html</loc>
     <lastmod>2010-03-15T23:29:48+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html</loc>
     <lastmod>2010-03-15T23:29:48+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jrebel/</loc>
+    <loc>https://blog.jetoile.fr/tags/jrebel.html</loc>
     <lastmod>2010-02-24T23:19:33+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/02/jrebel-ou-comment-accelerer-le_24.html</loc>
     <lastmod>2010-02-24T23:19:33+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/02/de-l-du-livrable.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/02/de-l-du-livrable.html</loc>
     <lastmod>2010-02-22T21:08:47+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/01/je-pense-donc-je-code-ou-je-code-donc.html</loc>
     <lastmod>2010-01-26T22:53:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/reflexion/</loc>
+    <loc>https://blog.jetoile.fr/tags/reflexion.html</loc>
     <lastmod>2010-01-26T22:53:32+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/01/ouvrages-recommandes.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/01/ouvrages-recommandes.html</loc>
     <lastmod>2010-01-26T22:26:44+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/cargo/</loc>
+    <loc>https://blog.jetoile.fr/tags/cargo.html</loc>
     <lastmod>2010-01-04T20:17:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/tags/jetspeed/</loc>
+    <loc>https://blog.jetoile.fr/tags/jetspeed.html</loc>
     <lastmod>2010-01-04T20:17:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html/</loc>
+    <loc>https://blog.jetoile.fr/2010/01/retour-sur-la-mise-en-uvre-d_04.html</loc>
     <lastmod>2010-01-04T20:17:40+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html/</loc>
+    <loc>https://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html</loc>
     <lastmod>2009-12-13T12:15:29+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html/</loc>
+    <loc>https://blog.jetoile.fr/2009/12/jbi-une-solution-enterree.html</loc>
     <lastmod>2009-12-07T09:58:58+01:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/about/</loc>
+    <loc>https://blog.jetoile.fr/about.html</loc>
   </url><url>
-    <loc>https://blog.jetoile.fr/contact/</loc>
+    <loc>https://blog.jetoile.fr/contact.html</loc>
   </url><url>
-    <loc>https://blog.jetoile.fr/topics/</loc>
+    <loc>https://blog.jetoile.fr/topics.html</loc>
   </url>
 </urlset>

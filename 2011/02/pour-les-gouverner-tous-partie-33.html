@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Pour les gouverner tous - partie 3/3 &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Pour les gouverner tous - partie 3/3</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>24 Feb 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jgroups">jgroups</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TUcoTratqiI/AAAAAAAAAUQ/Gmc1h0rvA2w/s1600/jmx_jgroups01.png" alt="left-small"></p>
+<p>Cet article fait suite à mes précédents posts (<a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">ici</a> et <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">là</a>) et à pour objectif d&rsquo;intégrer la partie JMX à mon petit POC JGroups afin d&rsquo;offrir une solution permettant de rendre complètement scalable la partie supervision/administration par JMX d&rsquo;une application distribuée (ie. d&rsquo;aggréger tous les MBeans au sein de tous les serveurs JMX). Pour rappel, le post précédent introduisait JGroups dans une petite application qui permettait à chaque instance d&rsquo;une application d&rsquo;obtenir la valeur d&rsquo;une donnée offerte par les autres instances.</p>
+<!-- more -->
+<h1 id="expression-du-besoin-et-conception">Expression du besoin et conception</h1>
+<p>Comme je l&rsquo;ai expliqué <a href="https://blog.jetoile.fr/2011/01/pour-les-gouverner-tous-partie-13.html">ici</a>, le principe est simple : en démarrant son application qui aura à sa charge d&rsquo;appeler un petit bout de code de notre toolkit, tous les MBeans se trouvant sur les autres serveurs JMX (modulo que l&rsquo;application qui les ait démarrés ait démarré en instanciant notre toolkit) doivent être remonter dans notre serveur JMX courant. Réciproquement, tous les MBeanServer devront enregistrer les MBeans offerts par notre instance d&rsquo;application.</p>
+<p>Pour ce faire, notre toolkit gérera la partie JMX, c&rsquo;est-à-dire qu&rsquo;il créera un connecteur JMX serveur (connecteur s&rsquo;appuyant sur le protocole RMI) permettant d&rsquo;accéder au MBeanServer courant (ie. il utilisera le MBeanServer s&rsquo;il en existe un ou, dans le cas échéant, il en créera un) et qu&rsquo;il l&rsquo;exposera aux autres instances en fournissant un stub de la partie connecteur JMX cliente. Ce stub permettra aux autres instances d&rsquo;instancier la couche de communication nécessaire vers le MBeanServer cible. C&rsquo;est ce stub qui sera transmis par JGroups (et qui remplacera donc la donnée partagée de notre <em>POC</em> JGroups).</p>
+<p>Ca va? Tout le monde suit? Bon, on va pouvoir accélérer&hellip; ;-)</p>
+<p>Ainsi, lorsqu&rsquo;une nouvelle instance sera démarrée dans le système, les instances déjà présentes seront notifiées de l&rsquo;arrivé d&rsquo;un nouveau membre dans la vue (<a href="https://blog.jetoile.fr/2010/12/jgroups-tour-d.html">concepts JGroups</a> et cf. <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">post précédent</a>). Suite à cela, elles récupèreront le stub du JMXConnector du nouveau MBeanServer (toujours cf. <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">post précédent</a>) qui leur permettra de créer un proxy dynamique correspondant aux MBeans présents dans le MBeanServer cible. Ce proxy dynamique sera instancié et enregistré comme étant un nouveau MBean dans le MBeanServer de l&rsquo;instance courante.</p>
+<p>Cependant, ce proxy dynamique ne pourra pas être utilisé directement (sinon ça serait trop simple). En effet, la méthode statique <code>JMX.newMBeanProxy()</code> permet de créer un proxy dynamique du MBean standard d&rsquo;un MBeanServer distant ou local. Cependant, il n&rsquo;est pas possible de l&rsquo;enregistrer comme MBean au sein d&rsquo;un MBeanServer car il ne répond alors pas à la règle : &ldquo;un MBean doit implémenter une interface de type MBean ou DynamicMBean&rdquo;. Aussi, la solution retenue a été de wrapper ce proxy dynamique dans un MBean dynamique. Ce wrapper fera donc passe-plat (en utilisant la réflexion) avec le proxy dynamique récupéré par la méthode <code>JMX.newMBeanProxy()</code> lors de l&rsquo;invocation d&rsquo;opérations dessus (pour ce faire, il s&rsquo;appuiera sur les normes spécifiées par JMX pour l&rsquo;accès en lecture/écriture aux variables d&rsquo;instance).</p>
+<p>En outre, pour le cas spécifique des MXBeans (un certain nombre de MXBean est spécifié par JMX : <a href="http://download.oracle.com/javase/6/docs/api/),">http://download.oracle.com/javase/6/docs/api/),</a> un traitement particulier sera effectué. En effet, JMX offre la possibilité de créer directement un proxy de l&rsquo;interface d&rsquo;un MXBean donné via la méthode statique <code>ManagementFactory.newPlatformMXBeanProxy()</code>. Aussi, pour les MXBeans, notre wrapper ne sera pas utilisé puisqu&rsquo;il est possible d&rsquo;enregistrer directement au sein de notre MBeanServer courant le MXBean distant.</p>
+<p>Bien sûr, encore une fois, cela aurait été trop simple s&rsquo;il n&rsquo;y avait pas un mais&hellip; ;-) En effet, la spécification JMX précise qu&rsquo;il est possible d&rsquo;avoir plusieurs MXBeans de type <code>MemoryPoolMXBean</code>, <code>MemoryManagerMXBean</code> et <code>GarbageCollector</code> (cf. <a href="http://download.oracle.com/javase/6/docs/api/)">http://download.oracle.com/javase/6/docs/api/)</a>. Dans ces cas précis, ce sont les propriétés de ces MXBeans qui permettent de les différencier : un traitement particulier sera donc effectué dans ces cas précis puisqu&rsquo;une recherche pour décrouvrir les propritétés du MXBean sera faite.</p>
+<p>En outre, un cas particulier lié à la JRE 6 de Sun (Hostpot) a, ici, été traité (du coup, cela rend le code proposé adhérent à notre jdk&hellip;) puisque le MXBean <code>HotpostDiagnostic</code> a fait l&rsquo;objet d&rsquo;une attention particulière&hellip;</p>
+<h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<h2 id="intégration-de-jmx">Intégration de JMX</h2>
+<p><u>Note</u> : à noter que le code présenté dans cet article comporte quelques raccourcis et n&rsquo;a pour objectif que de montrer les points clé. Aussi, certaines portions (comme, entre autre, la gestion des threads, des exceptions ou les méthodes <code>equals()</code>, <code>hashCode()</code> ou <code>toString()</code>) ne sont pas présentes par soucis de clarté. Le code complet peut être trouvé sur GitHub : <a href="https://github.com/jetoile/jmanager4all">https://github.com/jetoile/jmanager4all</a>.</p>
+<p>Ici, la donnée, traduite par la classe <code>Data</code> dans mon article précédent, sera remplacée par le stub au <code>JMXConnector</code>. Ce stub sera créé par la classe utilisée pour instancier les objets nécessaires à la bonne initalisation du toolkit et il sera encapsulé dans la classe <code>JManagerConnector</code> (à noter, bien sûr que la classe <code>RMIConnector</code> (implémentation de l&rsquo;interface <code>JMXConnector</code>) utilisée ici est sérialisable) lors de sa transmission entre les différentes instances de l&rsquo;application.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JManagerConnector</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+ <span style="color:#66d9ef">private</span> String location<span style="color:#f92672">;</span>
+ <span style="color:#66d9ef">private</span> JMXConnector connector<span style="color:#f92672">;</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JManagerConnector</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getLocation</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> location<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setLocation</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String location<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">location</span> <span style="color:#f92672">=</span> location<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> JMXConnector <span style="color:#a6e22e">getConnector</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> connector<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setConnector</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> JMXConnector connector<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connector</span> <span style="color:#f92672">=</span> connector<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Du point de vue création des objets JMX exposés (ie. le <code>JMXConnector</code> et son stub) et de l&rsquo;initialisation de ces derniers (ie. démarrage du connecteur), cela sera fait, comme dit précédemment, par notre classe qui nous servira de point d&rsquo;entrée à notre toolkit <code>JManager4All</code> :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JManager4All</span> <span style="color:#f92672">{</span>
+ 
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>JManager4All<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CONNECTOR_PROTOCOL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;rmi&#34;</span><span style="color:#f92672">;</span>
+ 
+    <span style="color:#66d9ef">private</span> JMXConnectorServer jmxConnector<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> JMXServiceURL jmxServiceUrl<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> JManagerConnector jmanagerConnector <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JManagerConnector<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MBeanServer mBeanServer<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> JMXConnectorStubCache connectorsStub <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JMXConnectorStubCache<span style="color:#f92672">();</span>
+ 
+    <span style="color:#66d9ef">private</span> JGroupsBindingComponent jmanagerBindingComponent<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">JManager4All</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxServiceUrl</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JMXServiceURL<span style="color:#f92672">(</span>CONNECTOR_PROTOCOL<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>MalformedURLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to create JMXServiceURL: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mBeanServer</span> <span style="color:#f92672">=</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlatformMBeanServer</span><span style="color:#f92672">();</span>
+        init<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxConnector</span> <span style="color:#f92672">=</span> JMXConnectorServerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newJMXConnectorServer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxServiceUrl</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> mBeanServer<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxConnector</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+ 
+            <span style="color:#66d9ef">final</span> ObjectName objectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;:type=csserver, name=csserver&#34;</span><span style="color:#f92672">);</span>
+            mBeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">registerMBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxConnector</span><span style="color:#f92672">,</span> objectName<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerConnector</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setConnector</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxConnector</span><span style="color:#f92672">.</span><span style="color:#a6e22e">toJMXConnector</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">));</span>
+ 
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerBindingComponent</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JGroupsBindingComponent<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerConnector</span><span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerBindingComponent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setConnectorsStub</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connectorsStub</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to init: {}&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmxConnector</span><span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerBindingComponent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerBindingComponent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+ 
+    <span style="color:#66d9ef">public</span> JManagerConnector <span style="color:#a6e22e">getStubConnector</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jmanagerConnector</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On remarquera également que cette classe instancie et démarre une instance d&rsquo;un <code>JGroupsBindingComponent</code> qui s&rsquo;occupe de la couche communication pour récupérer nos stubs du système (ici, ça sera JGroups). Je ne reviendrai pas sur les détails d&rsquo;implémentation de cette partie puisque cela a déjà été traité <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">ici</a>.</p>
+<p>A noter également que nos stubs seront conservés dans un cache <code>JMXConnectorStubCache</code> qui déclenchera, lorsqu&rsquo;un élément (ie. un stub d&rsquo;un <code>JMXConnector</code>) sera ajouté ou supprimé, la récupération de nos MBean distant et leur enregistrement au sein du MBeanServer courant (resp. leur suppression).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">JMXConnectorStubCache</span> <span style="color:#66d9ef">implements</span> Serializable <span style="color:#f92672">{</span>
+ 
+ <span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>JManagerAddress<span style="color:#f92672">,</span> JMXConnector<span style="color:#f92672">&gt;</span> connectorsStub <span style="color:#f92672">=</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">synchronizedMap</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>JManagerAddress<span style="color:#f92672">,</span> JMXConnector<span style="color:#f92672">&gt;());</span>
+ 
+ <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">public</span> Map<span style="color:#f92672">&lt;</span>JManagerAddress<span style="color:#f92672">,</span> JMXConnector<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getValue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connectorsStub</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">public</span> JMXConnector <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>JManagerAddress key<span style="color:#f92672">,</span> JMXConnector value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  JMXConnector result <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connectorsStub</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+  MBeanHandler mBeanHandler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MBeanHandler<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+  mBeanHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">handleAdd</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">public</span> JMXConnector <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>JManagerAddress key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  JMXConnector result <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connectorsStub</span><span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+  MBeanHandler mBeanHandler <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MBeanHandler<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> result<span style="color:#f92672">);</span>
+  mBeanHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">handleRemove</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Ce dernier point nous amène au paragraphe suivant, à savoir la récupération des MBeans distants et leur enregistrement.</p>
+<h1 id="récupération-des-mbeans-distants-et-enregistrement">Récupération des MBeans distants et enregistrement</h1>
+<p>La récupération des MBeans distants est globalement simple et suit le schéma suivant (cet algorithme ne s&rsquo;applique pas aux MXBeans) :</p>
+<ul>
+<li>à partir du <code>JMXConnector</code> client, récupération du <code>MBeanServerConnection</code>,</li>
+<li>à partir du <code>MBeanServerConnection</code>, une recherche est lancée sur le <code>MBeanServer</code> distant pour récupérer l&rsquo;ensemble des <code>ObjectInstance</code> présenst sur ce dernier,</li>
+<li>pour chaque <code>ObjectInstance</code> qui n&rsquo;est pas dans le domaine JMX <em>&ldquo;remote&rdquo;</em> (qui sera le domaine utilisé pour stocker les proxy des MBeans distants), création d&rsquo;un proxy dynamique représentant l&rsquo;objet exposé par le MBean et encapsulation de ce dernier dans la classe <code>MBeanWrapper</code> qui est un <code>DynamicMBean</code>,</li>
+<li>enfin enregistrement de chaque <code>DynamicMBean</code> créé dans le <code>MBeanServer</code> local via un <code>ObjectName</code> défini grâce à :
+<ul>
+<li>ses propriétés,</li>
+<li>son domaine JMX distant sous forme de propriété <em>&ldquo;subdomain&rdquo;</em>,</li>
+<li>mais également avec une propriété permettant de connaitre la provenance du MBean (propriété qui sera appelée <em>&ldquo;instance&rdquo;</em>).</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MBeanHandler</span> <span style="color:#f92672">{</span>
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String DOMAIN_REMOTE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;remote&#34;</span><span style="color:#f92672">;</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>MBeanHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MBeanServer mbeanServer <span style="color:#f92672">=</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlatformMBeanServer</span><span style="color:#f92672">();</span>
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JMXConnector connector<span style="color:#f92672">;</span>
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> JManagerAddress address<span style="color:#f92672">;</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MBeanHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> JManagerAddress address<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> JMXConnector connector<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">connector</span> <span style="color:#f92672">=</span> connector<span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">address</span> <span style="color:#f92672">=</span> address<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleAdd</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>connector <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   connector<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">();</span>
+   ObjectName objectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*:*&#34;</span><span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection <span style="color:#f92672">=</span> connector<span style="color:#f92672">.</span><span style="color:#a6e22e">getMBeanServerConnection</span><span style="color:#f92672">();</span>
+ 
+   <span style="color:#66d9ef">final</span> Set<span style="color:#f92672">&lt;</span>ObjectInstance<span style="color:#f92672">&gt;</span> instances <span style="color:#f92672">=</span> mBeanServerConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">queryMBeans</span><span style="color:#f92672">(</span>objectName<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+ 
+   <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ObjectInstance objectInstance <span style="color:#f92672">:</span> instances<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> ObjectName distantObjectName <span style="color:#f92672">=</span> objectInstance<span style="color:#f92672">.</span><span style="color:#a6e22e">getObjectName</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>DOMAIN_REMOTE<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>distantObjectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getDomain</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">final</span> ObjectName newObjectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span>DOMAIN_REMOTE <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:instance=&#34;</span> <span style="color:#f92672">+</span> address <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;subdomain=&#34;</span> <span style="color:#f92672">+</span> distantObjectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getDomain</span><span style="color:#f92672">()</span>
+      <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> distantObjectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getKeyPropertyListString</span><span style="color:#f92672">());</span>
+    <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo <span style="color:#f92672">=</span> mBeanServerConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">getMBeanInfo</span><span style="color:#f92672">(</span>distantObjectName<span style="color:#f92672">);</span>
+    registerRemoteMBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> distantObjectName<span style="color:#f92672">,</span> newObjectName<span style="color:#f92672">,</span> mBeanInfo<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerRemoteMBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> ObjectName distantObjectName<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> ObjectName newObjectName<span style="color:#f92672">,</span>
+   <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  Object mBean <span style="color:#f92672">=</span> getRemoteMBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> mBeanInfo<span style="color:#f92672">,</span> distantObjectName<span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBean <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   mbeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">registerMBean</span><span style="color:#f92672">(</span>mBean<span style="color:#f92672">,</span> newObjectName<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getRemoteMBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> ObjectName distantObjectName<span style="color:#f92672">)</span>
+   <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>Boolean<span style="color:#f92672">.</span><span style="color:#a6e22e">parseBoolean</span><span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> mBeanInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getDescriptor</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFieldValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mxbean&#34;</span><span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;current mxBeanInfo : {}&#34;</span><span style="color:#f92672">,</span> mBeanInfo<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">final</span> Class<span style="color:#f92672">&lt;?&gt;</span> clazz <span style="color:#f92672">=</span> Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span>mBeanInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassName</span><span style="color:#f92672">());</span>
+   <span style="color:#66d9ef">final</span> Class<span style="color:#f92672">&lt;?&gt;[]</span> interfazes <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getInterfaces</span><span style="color:#f92672">();</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>interfazes<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;current interface : {}&#34;</span><span style="color:#f92672">,</span> interfazes<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+    <span style="color:#66d9ef">final</span> Object proxy <span style="color:#f92672">=</span> JMX<span style="color:#f92672">.</span><span style="color:#a6e22e">newMBeanProxy</span><span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> distantObjectName<span style="color:#f92672">,</span> interfazes<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+    <span style="color:#66d9ef">final</span> MBeanWrapper mBeanWrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MBeanWrapper<span style="color:#f92672">(</span>mBeanInfo<span style="color:#f92672">,</span> proxy<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> mBeanWrapper<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><br/>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MBeanWrapper</span> <span style="color:#66d9ef">implements</span> DynamicMBean <span style="color:#f92672">{</span>
+ 
+ <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>MBeanWrapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">;</span>
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Object proxy<span style="color:#f92672">;</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MBeanWrapper</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> Object proxy<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mBeanInfo</span> <span style="color:#f92672">=</span> mBeanInfo<span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span> <span style="color:#f92672">=</span> proxy<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getAttribute</span><span style="color:#f92672">(</span>String attribute<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> AttributeNotFoundException<span style="color:#f92672">,</span> MBeanException<span style="color:#f92672">,</span> ReflectionException <span style="color:#f92672">{</span>
+  MBeanAttributeInfo<span style="color:#f92672">[]</span> mBeanAttributeInfos <span style="color:#f92672">=</span> mBeanInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getAttributes</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>MBeanAttributeInfo mBeanAttributeInfo <span style="color:#f92672">:</span> mBeanAttributeInfos<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">,</span> mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">isReadable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> invokeGetter<span style="color:#f92672">(</span>attribute<span style="color:#f92672">,</span> mBeanAttributeInfo<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ Object <span style="color:#a6e22e">invokeGetter</span><span style="color:#f92672">(</span>String attribute<span style="color:#f92672">,</span> MBeanAttributeInfo mBeanAttributeInfo<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+   Method method <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">isIs</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+    method <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;is&#34;</span> <span style="color:#f92672">+</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">capitalize</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">),</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+    <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+   <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    method <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;get&#34;</span> <span style="color:#f92672">+</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">capitalize</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">),</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+    <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to get remote attribute info {}: {}&#34;</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAttribute</span><span style="color:#f92672">(</span>Attribute attribute<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> AttributeNotFoundException<span style="color:#f92672">,</span> InvalidAttributeValueException<span style="color:#f92672">,</span> MBeanException<span style="color:#f92672">,</span> ReflectionException <span style="color:#f92672">{</span>
+  MBeanAttributeInfo<span style="color:#f92672">[]</span> mBeanAttributeInfos <span style="color:#f92672">=</span> mBeanInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getAttributes</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>MBeanAttributeInfo mBeanAttributeInfo <span style="color:#f92672">:</span> mBeanAttributeInfos<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">isWritable</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+     invokeSetter<span style="color:#f92672">(</span>attribute<span style="color:#f92672">,</span> mBeanAttributeInfo<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">invokeSetter</span><span style="color:#f92672">(</span>Attribute attribute<span style="color:#f92672">,</span> MBeanAttributeInfo mBeanAttributeInfo<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+   Method method <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBeanAttributeInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">isIs</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+    method <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set&#34;</span> <span style="color:#f92672">+</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">capitalize</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()),</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+    method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+   <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    method <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set&#34;</span> <span style="color:#f92672">+</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">capitalize</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()),</span> attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">());</span>
+    method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to set remote attribute info {}: {}&#34;</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> AttributeList <span style="color:#a6e22e">getAttributes</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> attributes<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  AttributeList result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AttributeList<span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String attribute <span style="color:#f92672">:</span> attributes<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   Attribute currentAttribute<span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    currentAttribute <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Attribute<span style="color:#f92672">(</span>attribute<span style="color:#f92672">,</span> getAttribute<span style="color:#f92672">(</span>attribute<span style="color:#f92672">));</span>
+    result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>currentAttribute<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to get remote attribute info {}: {}&#34;</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> AttributeList <span style="color:#a6e22e">setAttributes</span><span style="color:#f92672">(</span>AttributeList attributes<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  AttributeList result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AttributeList<span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> attributes<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+   Attribute attribute <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Attribute<span style="color:#f92672">)</span> attributes<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    setAttribute<span style="color:#f92672">(</span>attribute<span style="color:#f92672">);</span>
+    result<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>attribute<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to set remote attribute {}: {}&#34;</span><span style="color:#f92672">,</span> attribute<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> e<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>String actionName<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> params<span style="color:#f92672">,</span> String<span style="color:#f92672">[]</span> signature<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> MBeanException<span style="color:#f92672">,</span> ReflectionException <span style="color:#f92672">{</span>
+  Class<span style="color:#f92672">[]</span> paramTypes <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>signature <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   paramTypes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Class<span style="color:#f92672">[</span>signature<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">];</span>
+   <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> signature<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    paramTypes<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> signature<span style="color:#f92672">[</span>i<span style="color:#f92672">].</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+ 
+  <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+   Method method <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMethod</span><span style="color:#f92672">(</span>actionName<span style="color:#f92672">,</span> paramTypes<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">proxy</span><span style="color:#f92672">,</span> params<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unable to invoke {}: {}&#34;</span><span style="color:#f92672">,</span> actionName<span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#a6e22e">@Override</span>
+ <span style="color:#66d9ef">public</span> MBeanInfo <span style="color:#a6e22e">getMBeanInfo</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mBeanInfo</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>On voit donc que le processus n&rsquo;est pas vraiment compliqué. Pour le cas des MXBeans, cela est un peu plus sioux&hellip; mais globalement pas compliqué non plus ;-)</p>
+<p>En effet, plusieurs cas se présentent :</p>
+<ul>
+<li>Pour les <code>MXBeans</code> de types (type au sens propriété JMX) <strong>Compilation</strong>, <strong>ClassLoading</strong>, <strong>Memory</strong>, <strong>OperationSystem</strong>, <strong>Runtime</strong> et <strong>Threading</strong>, cela ne pose pas de problèmes puisque la spécification JMX nous dit qu&rsquo;il n&rsquo;y a qu&rsquo;un seul MBean de ce type dans le <code>MBeanServer</code> pour domaine <em>java.lang</em>. Dans ce cas, il suffit juste d&rsquo;instancier un proxy dynamique du MXBean lui-même et de l&rsquo;enregistrer avec le &ldquo;bon&rdquo; <code>ObjectName</code>.</li>
+<li>par contre, pour les <code>MXBeans</code> de types <strong>MemoryPool</strong>, <strong>GarbageCollector</strong> et <strong>MemoryManager</strong>, vu qu&rsquo;il peut y en avoir plusieurs, une recherche est effectuée (en limitant la recherche aux <code>MBeans</code> voulus bien sûr&hellip;) sur le <code>MBeanServer</code> distant afin d&rsquo;obtenir (mais également d&rsquo;instancier) le bon type de proxy dynamique mais également les bonnes propriétés sous lequel il est enregistré.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;&gt;</span> MXBEAN_MAP <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;&gt;();</span>
+ <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">COMPILATION_MXBEAN_NAME</span><span style="color:#f92672">,</span> CompilationMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">CLASS_LOADING_MXBEAN_NAME</span><span style="color:#f92672">,</span> ClassLoadingMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">MEMORY_MXBEAN_NAME</span><span style="color:#f92672">,</span> MemoryMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">OPERATING_SYSTEM_MXBEAN_NAME</span><span style="color:#f92672">,</span> OperatingSystemMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME_MXBEAN_NAME</span><span style="color:#f92672">,</span> RuntimeMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">THREAD_MXBEAN_NAME</span><span style="color:#f92672">,</span> ThreadMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;java.util.logging:type=Logging&#34;</span><span style="color:#f92672">,</span> LoggingMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">RemoteMXBeanHandler</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">getRemoteMBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> ObjectName distantObjectName<span style="color:#f92672">)</span>
+   <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Boolean<span style="color:#f92672">.</span><span style="color:#a6e22e">parseBoolean</span><span style="color:#f92672">((</span>String<span style="color:#f92672">)</span> mBeanInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getDescriptor</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFieldValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mxbean&#34;</span><span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;current mxBeanInfo : {}&#34;</span><span style="color:#f92672">,</span> mBeanInfo<span style="color:#f92672">);</span>
+   Object proxy <span style="color:#f92672">=</span> getMxBeanProxy<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> mBeanInfo<span style="color:#f92672">,</span> distantObjectName<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">return</span> proxy<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">private</span> Object <span style="color:#a6e22e">getMxBeanProxy</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> MBeanInfo mBeanInfo<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> ObjectName distantObjectName<span style="color:#f92672">)</span>
+   <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+  String distantName <span style="color:#f92672">=</span> distantObjectName<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> distantName<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">);</span>
+  String substring <span style="color:#f92672">=</span> distantName<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">?</span> index <span style="color:#f92672">:</span> distantName<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">());</span>
+  Class<span style="color:#f92672">&lt;?&gt;</span> mBeanClass <span style="color:#f92672">=</span> MXBEAN_MAP<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>substring<span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mBeanClass <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">return</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newPlatformMXBeanProxy</span><span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> distantName<span style="color:#f92672">,</span> mBeanClass<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">MEMORY_POOL_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> substring<span style="color:#f92672">)</span>
+    <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> substring<span style="color:#f92672">)</span>
+    <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">MEMORY_MANAGER_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> substring<span style="color:#f92672">)</span>
+    <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>substring<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;com.sun.management&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">return</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newPlatformMXBeanProxy</span><span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME_MXBEAN_NAME</span><span style="color:#f92672">,</span> RuntimeMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleSpecificMXBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#75715e">// cf. http://download.oracle.com/javase/6/docs/api/
+</span><span style="color:#75715e"></span> 
+  <span style="color:#75715e">// traitement particulier pour les MXBeans de type MemoryPoolMXBean
+</span><span style="color:#75715e"></span>  registerOtherMxBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">MEMORY_POOL_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> MemoryPoolMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  <span style="color:#75715e">// traitement particulier pour les MXBeans de type MemoryManagerMXBean
+</span><span style="color:#75715e"></span>  registerOtherMxBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">MEMORY_MANAGER_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> MemoryManagerMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+  <span style="color:#75715e">// traitement particulier pour les MXBeans de type GarbageCollector
+</span><span style="color:#75715e"></span>  registerOtherMxBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">GARBAGE_COLLECTOR_MXBEAN_DOMAIN_TYPE</span><span style="color:#f92672">,</span> GarbageCollectorMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ 
+  <span style="color:#75715e">// traitement particulier pour les MXBeans de type Hotspot
+</span><span style="color:#75715e"></span>  registerOtherMxBean<span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;com.sun.management:type=HotSpotDiagnostic&#34;</span><span style="color:#f92672">,</span> HotSpotDiagnosticMXBean<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+ <span style="color:#f92672">}</span>
+ 
+ <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">registerOtherMxBean</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> MBeanServerConnection mBeanServerConnection<span style="color:#f92672">,</span> String type<span style="color:#f92672">,</span> Class<span style="color:#f92672">&lt;?&gt;</span> clazz<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">final</span> ObjectName requestedObjectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span>type <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,*&#34;</span><span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">final</span> Set<span style="color:#f92672">&lt;</span>ObjectName<span style="color:#f92672">&gt;</span> objectNames <span style="color:#f92672">=</span> mBeanServerConnection<span style="color:#f92672">.</span><span style="color:#a6e22e">queryNames</span><span style="color:#f92672">(</span>requestedObjectName<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ObjectName objectName <span style="color:#f92672">:</span> objectNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">final</span> Object proxy <span style="color:#f92672">=</span> ManagementFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">newPlatformMXBeanProxy</span><span style="color:#f92672">(</span>mBeanServerConnection<span style="color:#f92672">,</span> objectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getCanonicalName</span><span style="color:#f92672">(),</span> clazz<span style="color:#f92672">);</span>
+   <span style="color:#66d9ef">final</span> ObjectName newObjectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;remote:instance=&#34;</span> <span style="color:#f92672">+</span> address <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;subdomain=&#34;</span> <span style="color:#f92672">+</span> objectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getDomain</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span>
+     <span style="color:#f92672">+</span> objectName<span style="color:#f92672">.</span><span style="color:#a6e22e">getKeyPropertyListString</span><span style="color:#f92672">());</span>
+   mbeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">registerMBean</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">,</span> newObjectName<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+</code></pre></div><p>Pour le cas particulier du <code>MXBean HotspotDiagnostic</code>, je vous laisse le soin de jeter un oeil sur le code&hellip; ;-)</p>
+<h1 id="désenregistrement-dune-instance-et-donc-de-ses-mbeans-associés">Désenregistrement d&rsquo;une instance (et donc de ses MBeans associés)</h1>
+<p>Bien entendu, si une instance venait à disparaitre, il est nécessaire de désenregistrer ses <code>MBeans</code> pour chaque instance de l&rsquo;application encore présente.</p>
+<p>Là encore, la principe est ultra-simple puisqu&rsquo;il suffit de récupérer l&rsquo;ensemble des MBeans qui se trouvent dans le domaine JMX <em>&ldquo;remote&rdquo;</em> (qui pour rappel est le domaine utilisé pour enregistrer tous nos proxy) avec la &ldquo;bonne&rdquo; propriété (à savoir la propriété <code>instance</code> qui doit valoir la valeur de l&rsquo;adresse de l&rsquo;instance à supprimer) et de les désenregistrer du <code>MBeanServer</code> local.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleRemove</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">final</span> ObjectName queryObjectName <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObjectName<span style="color:#f92672">(</span>DOMAIN_REMOTE <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:instance=&#34;</span> <span style="color:#f92672">+</span> address <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,*&#34;</span><span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">final</span> Set<span style="color:#f92672">&lt;</span>ObjectName<span style="color:#f92672">&gt;</span> objectNames <span style="color:#f92672">=</span> mbeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">queryNames</span><span style="color:#f92672">(</span>queryObjectName<span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>ObjectName objectName <span style="color:#f92672">:</span> objectNames<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+   LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">debug</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;remove from mBeanServer objectName : {}&#34;</span><span style="color:#f92672">,</span> objectName<span style="color:#f92672">);</span>
+   mbeanServer<span style="color:#f92672">.</span><span style="color:#a6e22e">unregisterMBean</span><span style="color:#f92672">(</span>objectName<span style="color:#f92672">);</span>
+  <span style="color:#f92672">}</span>
+ <span style="color:#f92672">}</span>
+</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<p>On a vu tout au long de cette article comment il était possible d&rsquo;utiliser JMX coté client (on récupère des <code>MBeans</code> distants) mais également coté serveur (on créé des <code>MBeans</code>). Bien sûr, la couche JGroups n&rsquo;est qu&rsquo;un prétexte mais je trouvais intéressant de pouvoir s&rsquo;appuyer sur ce dernier pour être notifié de changement dans le système. Si je suis motivé, j&rsquo;intégrerais peut être une implémentation NoSQL pour stocker et partager les JMXConnector ou un truc du genre&hellip; ;-)</p>
+<p>Par contre, je n&rsquo;ai pas testé le comportement dans le cas où des notifications seraient émises&hellip; en outre, si un service de <strong>Relation</strong> JMX était utilisé, je pense que cela pourrait poser quelques soucis&hellip;</p>
+<p>A noter que je suis tombé tout récemment sur une <a href="http://blog.infin-it.fr/2010/08/05/aggregateur-jmx-2/">autre solution</a> (que je n&rsquo;ai pas testé) qui permet d&rsquo;aggréger des informations JMX au sein d&rsquo;un même serveur <code>MBeanServer</code>. La cible n&rsquo;est pas tout à fait identique mais peut être suffisante pour la plupart des cas&hellip; par contre, il faut aimer Spring&hellip; ;-)</p>
+<h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
+<ul>
+<li>Site officiel de JGroups : <a href="http://www.jgroups.org/">http://www.jgroups.org/</a></li>
+<li>Wiki de JGroups : <a href="http://community.jboss.org/wiki/JGroups">http://community.jboss.org/wiki/JGroups</a></li>
+<li>Site de la JSR 3 - Java Management Extensions (JMX) Specification : <a href="http://www.jcp.org/en/jsr/detail?id=3">http://www.jcp.org/en/jsr/detail?id=3</a></li>
+<li>Site de la JSR 160 - Java Management Extensions (JMX) Remote API : <a href="http://jcp.org/en/jsr/detail?id=160">http://jcp.org/en/jsr/detail?id=160</a></li>
+<li>Site officiel d&rsquo;Oracle sur JMX : <a href="http://www.oracle.com/technetwork/java/javase/tech/docs-jsp-135989.html">http://www.oracle.com/technetwork/java/javase/tech/docs-jsp-135989.html</a></li>
+</ul>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f02%2fpour-les-gouverner-tous-partie-33.html" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2011/02/pour-les-gouverner-tous-partie-23.html">Pour les gouverner tous - partie 2/3</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html">MicroBenchmark : mode d&#39;emploi</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2011/03/microbenchmark-mode-d.html"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

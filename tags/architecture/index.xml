@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>architecture on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/architecture/</link>
+    <link>https://blog.jetoile.fr/tags/architecture.html</link>
     <description>Recent content in architecture on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Tue, 18 May 2021 18:20:00 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Big Data et Scheduler : Reflexion</title>
-      <link>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</link>
+      <link>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html</link>
       <pubDate>Tue, 18 May 2021 18:20:00 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html/</guid>
+      <guid>https://blog.jetoile.fr/2021/05/bigdata-scheduler.html</guid>
       <description>Dans le monde Big Data, rapidement se pose un certain nombre de besoins.
 Besoins qui, pris unitairement, sont déjà complexes à résoudre mais qui, mis bout à bout, s&amp;rsquo;avèrent encore plus difficiles à intégrer.
 Parmi ces besoins, on peut citer, par exemple, les besoins de qualité de données ou de linéage (problématiques qui peuvent être regrouper sous le terme de data governance).
@@ -22,10 +22,10 @@ Cet article n&amp;rsquo;a pas pour objectif de fournir une solution clé en main
     
     <item>
       <title>Devoxx 2012 : Versionner son service dans une architecture SOA et/ou Cloud</title>
-      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html/</link>
+      <link>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html</link>
       <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html</guid>
       <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
 Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
  Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
@@ -33,40 +33,40 @@ Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioni
     
     <item>
       <title>Découpage de projets : projet vs. modules</title>
-      <link>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html/</link>
+      <link>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</link>
       <pubDate>Tue, 28 Aug 2012 10:47:11 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
  le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
       <title>Petits retours sur Cassandra</title>
-      <link>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html/</link>
+      <link>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html</link>
       <pubDate>Tue, 13 Mar 2012 10:19:01 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/03/petits-retours-sur-cassandra.html</guid>
       <description>Suite à de nombreuses présentations de Cassandra (faites, entre autre, par Michaël Figuière) et à une opportunité de regarder plus précisément ce qui se cachait réellement derrière cette implémentation d&amp;rsquo;une solution de la famille des produits NoSQL orienté colonnes, je vais, dans cet article, tenter de décrire ce que j&amp;rsquo;ai aimé et ce que je n&amp;rsquo;ai pas aimé sur Apache Cassandra.
 Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle sur le produit et que je ne m&amp;rsquo;appuierai donc que sur sa documentation officielle en version 1.</description>
     </item>
     
     <item>
       <title>Resign Patterns : les nouveaux patterns</title>
-      <link>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html/</link>
+      <link>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html</link>
       <pubDate>Fri, 02 Dec 2011 23:04:54 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html/</guid>
+      <guid>https://blog.jetoile.fr/2011/12/resign-patterns-les-nouveaux-patterns.html</guid>
       <description>Cet article est une traduction &amp;ldquo;libre&amp;rdquo; de l&amp;rsquo;excellent papier de Michael Duell qui se nomme &amp;ldquo;Resign Patterns&amp;rdquo; Ailments of Unsuitable Project-Disoriented Software.
 En fait, Resign Patterns reprend le principe des Design Patterns tels que décrit par the Gang Of Four mais en proposant un tout autres types de Patterns&amp;hellip; Je vous laisse juger de leur véracité&amp;hellip; Je pense qu&amp;rsquo;ils ont suffisamment fait leurs preuves pour ne pas avoir droit, eux aussi, à leur gloire&amp;hellip; ;-)</description>
     </item>
     
     <item>
       <title>Présentation sur les problématiques liées à une architecture distribuée</title>
-      <link>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html/</link>
+      <link>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html</link>
       <pubDate>Fri, 23 Sep 2011 22:17:00 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html/</guid>
+      <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur les problématiques liées aux architectures distribuées. Pour information, c&amp;rsquo;est un retour d&amp;rsquo;expérience d&amp;rsquo;une mission qui date un peu puisque c&amp;rsquo;était en 2007 mais les préconisations restent identiques à ce jour.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
 Introduction sur les problématiques d&#39;une architecture distribuée  View more presentations from jetoile  </description>

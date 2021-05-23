@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+  <link rel="alternate" type="application/rss+xml" title="Jetoile"
+    href='https://blog.jetoile.fr/index.xml' />
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href='https://blog.jetoile.fr/index.xml'><i
+          class="fas fa-rss fa-fw"></i>RSS</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Jetoile</h1>
+  <h2></h2>
+</div>
+
+<div class="content">
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/06/sooner-is-better.html">Sooner is better</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>14 Jun 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Bon, voilà, cela fait un moment que je n&rsquo;ai pas bloggé&hellip; manque d&rsquo;inspiration peut être&hellip; manque de temps ou changement des priorités pour consacrer plus de temps à la lecture de livres en retard&hellip;
+Dans cet article, je voudrais revenir sur un point que j&rsquo;avais légèrement abordé dans ce post portant sur les livrables mais en le développant pour se focaliser sur une petite réflexion portant sur l&rsquo;importance de s&rsquo;intégrer aux processus de compilation et de livraison au plus tôt&hellip; en fait, pour être plus précis, je n&rsquo;avais pas vraiment abordé cette problématique mais cela vient du même constat&hellip; ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/06/sooner-is-better.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html">RTFM ou de l&#39;importance de savoir lire une documentation</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>15 May 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ce petit article est plus une tranche de vie ayant pour objectif de montrer l'importance de savoir lire une documentation qu'un "vrai" post intéressant... Il est vrai que savoir trouver son information s&rsquo;applique énormément dans le monde Open Source où il est crucial de savoir fouiller (documentation, forum, &hellip;) lorsqu&rsquo;un fait technique (anomalie? framework incomplet? cas d&rsquo;usage délirant? &hellip;) a lieu mais cela s&rsquo;applique aussi dans notre vie de programmeur de tous les jours.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/05/rtfm-ou-de-l-de-savoir-lire-une.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/05/jmx-et-firewall.html">JMX et Firewall</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>13 May 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Cet article fait suite à mon post précédent qui, je le rappelle, pour ceux qui auraient eux le courage de le lire jusqu&rsquo;à la fin ;-), avait pour objectif de rappeler en quoi JMX (Java Management eXtension) pouvait être une bonne réponse aux problématiques de supervision et d&rsquo;administration dans une application (au sens large du terme). Cet article portera sur le sujet que je voulais initialement traiter, à savoir, comment accéder à un serveur JMX se trouvant derrière un Firewall.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/05/jmx-et-firewall.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">JMX ou comment administrer et superviser son système...</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>05 May 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/r%C3%A9flexion">réflexion</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Je n&rsquo;ai encore fait aucun article sur JMX (Java Management eXtension). Pourtant, je pense qu&rsquo;il s&rsquo;agit d&rsquo;une technologie indispensable pour toute application qui se veut un minimum sérieuse et industrialisable. Dans ce post, je ne parlerai pas de &ldquo;comment ça marche&rdquo; ou je ne fournirai pas de tutoriaux. Il s&rsquo;agit juste d&rsquo;un petit coup de gueule parce que j&rsquo;en ai marre d&rsquo;entendre toujours les mêmes inepties sur JMX&hellip;
+Bon, pourquoi JMX me direz-vous?
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/05/jmx-ou-comment-administrer-et.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html">Orchestration ou Routage?</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>07 Apr 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/eip">eip</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/esb">esb</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/soa">soa</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Orchestration ou routage? Telle est la question qui se pose souvent&hellip; En effet, il est important de se poser la question sur la solution à adopter pour gérer, par exemple, des transformations ou du routage de messages dans un système asynchrone : s&rsquo;agit-il de médiation technique ou de quelque chose de plus complexe (ie. de logique métier)?
+PEtALS Link vient de mettre à disposition un livre blanc traitant du sujet en proposant différentes pistes pour choisir la solution d&rsquo;implémentation.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/04/orchestration-ou-routage.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html">Le plugin release (un peu) démystifié</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>01 Apr 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/maven">maven</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  J&rsquo;ai déjà longuement parlé de maven 2 dans des posts précédents (Petites astuces avec maven 2, De l&rsquo;art du livrable et Retour sur la mise en œuvre d&rsquo;un environnement de développement). Ici, je vais revenir sur le plugin release en version 2.0 en explicitant ce que font ses goals prepare et perform plus concrètement.
+En effet, il peut être utile de vouloir savoir quels sont les actions appelées et comment il est possible d&rsquo;y ajouter son petit grain de sel&hellip; ;-)
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/04/le-plugin-release-un-peu-demystifie.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/petites-astuces-avec-maven-2.html">Petites astuces avec maven 2</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>28 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Ce post aura pour principal objectif de répertorier un ensemble d&rsquo;astuces et de pointeurs sur maven2 (cela m&rsquo;évitant également de rechercher dans mes liens ;-) ). Ne voulant pas répéter ce qu&rsquo;y a déjà été traité par d&rsquo;autres sites ou blogs, je me contenterai seulement de faire des références.
+Descriptif des différentes phases Page du site de maven2 décrivant le cycle de vie d&rsquo;un projet : http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
+Cette page récapitule le cycle des phases utilisés pour un packaging donné.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/petites-astuces-avec-maven-2.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html">Articles disponibles sur mon retour du Salon Linux Open Source 2010</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Dans mon précédent post, j&rsquo;avais annoncé la mise à disposition prochaine d&rsquo;une série d&rsquo;articles sur le Salon Linux Open Source qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
+C&rsquo;est désormais chose faite et les articles sont disponibles sur le blog de So@t.
+Il est donc possible d&rsquo;y retrouver les 6 articles suivants :
+ Retour sur le Salon Linux Open Source, Salon Linux Open Source – Atelier sur le développement logiciel collaboratif : bonnes pratiques, premiers bilans, Salon Linux Open Source – Keynote sur Oracle et l’Open Source : stratégie et initiatives – de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc, Salon Linux Open Source – Table ronde sur &ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&rdquo;, Salon Linux Open Source – Table ronde sur &ldquo;virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&rdquo;, Salon Linux Open Source – Cycle OW2.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/salon-linux-open-source.html">Retour sur le salon Linux Open Source</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>21 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/divers">divers</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Voilà, le salon Linux Open Source a fermé ses portes. Résultat des courses, 3 jours bien remplis où j&rsquo;ai pu assister à pas mal de conférences sur divers sujets tels que :
+ l&rsquo;atelier sur &ldquo;Développement logiciel collaboratif : bonnes pratiques, premiers bilans&rdquo; la keynote sur &ldquo;Oracle et l&rsquo;Open Source :stratégie et initiatives - de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc&rdquo; la table ronde sur &ldquo;Interopérabilité : les standards ouverts à la base des architectures&rdquo; la table ronde sur &ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&rdquo; la table ronde sur &ldquo;Virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&rdquo; et le cycle OW2 : &ldquo;Optimiser votre infrastructure d&rsquo;entreprise avec les solutions innovantes du Consortium OW2&rdquo; où j&rsquo;ai plus précisément assisté aux présentations suivantes :  &ldquo;Prenez de l&rsquo;avance avec la nouvelle génération du décisionnel Open Source grâce à l&rsquo;initiative OW2 Business Intelligence&rdquo; &ldquo;Gestion autonomique des infrastructures du nuage pour le PaaS avec JASMINe : état des lieux et perspectives&rdquo; &ldquo;Mettez la Data Integration dans votre ESB avec Talend et PEtALS&rdquo; &ldquo;Comment gérer efficacement vos documents avec eXo DMS et la solutions BPM Bonita&rdquo; &ldquo;Outils d&rsquo;audit et diagnostic pour les développeurs et administrateurs d&rsquo;applications Java EE&rdquo;    La rédaction de CRs est en cours et ils seront disponibles sur le blog de So@t d&rsquo;ici peu.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/salon-linux-open-source.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+    <article>
+  <header>
+    <h2><a href="https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html">Spring Integration vs. Apache Camel</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>15 Mar 2010</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/apache-camel">apache camel</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/eip">eip</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jbi">jbi</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/soa">soa</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/spring-integration">spring integration</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  Lors d&rsquo;un post précédent, j&rsquo;avais parlé des EIPs (Enterprise Integration Patterns) en expliquant qu&rsquo;il s&rsquo;agissait de Patterns permettant de normaliser les échanges de messages dans un système asynchrone.
+Dans cet article, je vais tenter de présenter succinctement deux de ses implémentations : Spring Integration et [Apache Camel](https://camel.apache.org/.
+En fait, pour être plus précis, je vais plutôt tenter de présenter la vision que j&rsquo;en ai ainsi que la façon dont je les ai compris.
+  </p>
+
+  
+  <footer>
+    <a href="https://blog.jetoile.fr/2010/03/spring-integration-vs-apache-camel.html">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
+  
+</article>
+
+  
+
+  
+
+
+<nav class="pagination" role="pagination">
+  
+  <a href="https://blog.jetoile.fr/page/7.html"><i class="fa fa-chevron-left"></i></a>
+  
+  <span>&nbsp;8 / 9&nbsp;</span>
+  
+  <a href="https://blog.jetoile.fr/page/9.html"><i class="fa fa-chevron-right"></i></a>
+  
+</nav>
+
+
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

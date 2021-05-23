@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>big data on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/big-data/</link>
+    <link>https://blog.jetoile.fr/tags/big-data.html</link>
     <description>Recent content in big data on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 12 May 2014 09:21:35 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/big-data/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RDD : qu&#39;est ce que c&#39;est</title>
-      <link>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html/</link>
+      <link>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html</link>
       <pubDate>Mon, 12 May 2014 09:21:35 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html/</guid>
+      <guid>https://blog.jetoile.fr/2014/05/rdd-quest-ce-que-cest.html</guid>
       <description>Spark est un framework qui a de plus en plus le vent en poupe et le fait qu&amp;rsquo;il ait été promu en top-level project par la fondation Apache qu&amp;rsquo;il a rejoint récemment (en juin 2013) montre bien de l&amp;rsquo;intérêt qu&amp;rsquo;il succite (cela est d&amp;rsquo;aileurs confirmé par son intégration avec des solutions comme celles de DataStax (cf. ici) ou mapR (cf. ici).
 Un des points central de Spark est son utilisation des RDDs (Resilient Distributed Datasets).</description>
     </item>

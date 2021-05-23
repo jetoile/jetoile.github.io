@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Redis on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/redis/</link>
+    <link>https://blog.jetoile.fr/tags/redis.html</link>
     <description>Recent content in Redis on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Mon, 17 Jul 2017 11:10:30 +0200</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Des tests d&#39;intégration avec Redis</title>
-      <link>https://blog.jetoile.fr/2017/07/tester-avec-redis.html/</link>
+      <link>https://blog.jetoile.fr/2017/07/tester-avec-redis.html</link>
       <pubDate>Mon, 17 Jul 2017 11:10:30 +0200</pubDate>
       
-      <guid>https://blog.jetoile.fr/2017/07/tester-avec-redis.html/</guid>
+      <guid>https://blog.jetoile.fr/2017/07/tester-avec-redis.html</guid>
       <description>Redis est écrit en C et faire des tests d&amp;rsquo;intégration en Java peut s&amp;rsquo;avérer compliquer. En outre, le fait que Redis doive être compilé lors de son installation rend les choses encore moins aisées.
 Bien sûr, il est possible d&amp;rsquo;utiliser Docker ou de l&amp;rsquo;installer préalablement sur son poste mais cette deuxième option casse un peu les bonnes pratiques des tests.
 Il existe également de nombreux projets permettant de faire des tests avec Redis mais, souvent, les solutions proposées embarquent le binaire de Redis ou on besoin qu&amp;rsquo;il soit déjà présent et installer/compiler sur le poste (https://github.</description>

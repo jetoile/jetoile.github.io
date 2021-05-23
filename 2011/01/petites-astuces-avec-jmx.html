@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  <title>Petites astuces avec JMX &middot; Jetoile</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://blog.jetoile.fr/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://blog.jetoile.fr/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="https://blog.jetoile.fr/css/my.css">
+    
+  
+  
+    
+        <script src="https://blog.jetoile.fr/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://blog.jetoile.fr/">Jetoile</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/post"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/about"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://blog.jetoile.fr/hadoop-unit"><i class='fa fa-list fa-fw'></i>Hadoop Unit</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/jetoile" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="http://slideshare.net/jetoile" rel="me" target="_blank"><i class="fab fa-slideshare fa-fw"></i>SlideShare</a>
+    </li>
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/khanh-tuong-maudoux-11b92b19" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/jetoile" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small><a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='https://blog.jetoile.fr/images/creative_common88x31.png' style='border-width:0'/></a></small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Petites astuces avec JMX</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>23 Jan 2011</time>
+  </div>
+
+  
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/java">java</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="https://blog.jetoile.fr/tags/jmx">jmx</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TTr8YAhjHqI/AAAAAAAAAUA/nx8ug8MDDNA/s320/jmx02.png" alt="left-small">
+Ce rapide article fournit un petit retour d&rsquo;expérience de quelques galères que j&rsquo;ai pu avoir avec JMX (<em>Java Management eXtension</em>), galères certes stupides mais qui pourront peut être servir à d&rsquo;autres&hellip; ;-)</p>
+<p>Seront donc abordés deux points :</p>
+<ul>
+<li>Erreur lors de l&rsquo;arrêt de tomcat configuré avec JMX</li>
+<li>Impossibilité de se connecter à l&rsquo;agent JMX</li>
+</ul>
+<!-- more -->
+<h1 id="message-derreur-lors-de-larrêt-dapache-tomcat">Message d&rsquo;erreur lors de l&rsquo;arrêt d&rsquo;Apache Tomcat?</h1>
+<h2 id="cas-dusage">Cas d&rsquo;usage</h2>
+<p>Les options permettant d&rsquo;activer JMX sur la JVM ont été passées via la variable <code>JAVA_OPTS</code> ou autre (via le catalina.sh par exemple).</p>
+<p>Le démarrage de Tomcat s&rsquo;effectue sans problème mais lors de son arrêt, une erreur apparaît et tomcat refuse de s&rsquo;arrêter c&rsquo;est-à-dire que son processus tourne toujours en tâche de fond.</p>
+<p>Exemple de variable JAVA_OPTS :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$JAVA_OPTS<span style="color:#e6db74"> \
+</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote \
+</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.port=18080 \
+</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.authenticate=false \
+</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.ssl=false&#34;</span>
+</code></pre></div><p>Message affiché sur la console lors du démarrage de Tomcat :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./startup.sh
+Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
+Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
+Using CATALINA_HOME:  /opt/apache-tomcat-6.0.20/temp
+Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
+</code></pre></div><p>Message affiché sur la console lors de l&rsquo;arrêt de Tomcat :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./shutdown.sh
+Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
+Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
+Using CATALINA_HOME:   /opt/apache-tomcat-6.0.20/temp
+Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
+Erreur: Exception envoyée par l<span style="color:#960050;background-color:#1e0010">&#39;</span>agent : java.rmi.server.ExportException: Port already in use: 18080; nested exception is: 
+        java.net.BindException: Address already in use
+</code></pre></div><h2 id="explication">Explication</h2>
+<p>En fait, cette erreur se produit lors de l&rsquo;arrêt de Tomcat car le script <code>shutdown.sh</code> (ou <code>catalina.sh stop</code>) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l&rsquo;on tente d&rsquo;arrêter, cela échoue.</p>
+<h2 id="proposition-pour-résoudre-le-problème">Proposition pour résoudre le problème</h2>
+<ul>
+<li><del>Ne pas positionner les options pour activer JMX sur la variable système <code>JAVA_OPTS</code> au risque de ne pas pouvoir démarrer plusieurs processus Java.</del></li>
+<li><del>Si c&rsquo;est le script catalina.sh qui positionne la variable <code>JAVA_OPTS</code>, ne pas la positionner dans tous les cas mais seulement dans le cas où l&rsquo;argument start est passé au script.</del></li>
+<li><del>Positionner la variable <code>JAVA_OPTS</code> dans le script <code>startup.sh</code>.</del></li>
+<li>Utiliser la variable <code>CATALINA_OPTS</code> qui n&rsquo;est utilisée que quand les options run et start sont passées&quot;</li>
+</ul>
+<blockquote>
+<p>CATALINA_OPTS   (Optional) Java runtime options used when the &ldquo;start&rdquo;,  or &ldquo;run&rdquo; command is executed.</p>
+</blockquote>
+<h1 id="problème-de-connexion">Problème de connexion?</h1>
+<h2 id="cas-dusage-1">Cas d&rsquo;usage</h2>
+<p>Une jconsole ou une jvisualvm qui n&rsquo;arrive pas à se connecter à un programme ou une connexion au connecteur d&rsquo;un agent JMX qui échoue avec une exception.</p>
+<p>Chose d&rsquo;autant plus étonnante qu&rsquo;avec une connexion réseau, il n&rsquo;y a pas de problèmes alors qu&rsquo;en mode hors-ligne, impossible d&rsquo;avoir accès à l&rsquo;agent JMX.</p>
+<p>Exemple d&rsquo;exception lors de la tentative de connexion à l&rsquo;agent JMX distant :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java.lang.NullPointerException
+at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:281<span style="color:#f92672">)</span>
+at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:227<span style="color:#f92672">)</span>
+at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span>
+at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest.main<span style="color:#f92672">(</span>TestJMXServerTest.java:34<span style="color:#f92672">)</span>
+
+</code></pre></div><p>Fenêtre d&rsquo;erreur de la jconsole :</p>
+<p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TTsrkOibDDI/AAAAAAAAAUE/qpX-1nw0OOA/s1600/error02.png" alt="medium"></p>
+<p>Fenêtre d&rsquo;erreur de jvisualvm : <em>&ldquo;Data not available because JMX connection to the JMX agent could not be established.&quot;</em> :</p>
+<p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TTsroeTxKoI/AAAAAAAAAUI/0aUghCdjv0w/s1600/error01.png" alt="medium"></p>
+<h2 id="analyse">Analyse</h2>
+<p>Après de multiples tentatives pour comprendre, j&rsquo;ai tenté un changement de jre pour voir si cela ne pouvait pas venir d&rsquo;une anomalie (si j&rsquo;avais un problème de connexion en mode hors-ligne, ce n&rsquo;était pas pour rien puisque j&rsquo;étais effectivement hors-ligne et, par conséquent, je devais me débrouiller par moi-même&hellip; ;-) ).</p>
+<p>Ainsi, en passant d&rsquo;une jre hotspot vers une openjdk, j&rsquo;ai obtenu une stacktrace beaucoup plus complète puisqu&rsquo;elle m&rsquo;a clairement indiquée la source du problème :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR c.b.j.j.c.ConnectorStubListener - ConnectorStubListener update: <span style="color:#f92672">{}</span>
+java.rmi.ConnectIOException: Exception creating connection to: 192.168.xxx.xxx; nested exception is:
+java.net.NoRouteToHostException: Network is unreachable
+at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:632<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at sun.rmi.transport.tcp.TCPChannel.createConnection<span style="color:#f92672">(</span>TCPChannel.java:216<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at sun.rmi.transport.tcp.TCPChannel.newConnection<span style="color:#f92672">(</span>TCPChannel.java:202<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at sun.rmi.server.UnicastRef.invoke<span style="color:#f92672">(</span>UnicastRef.java:128<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at javax.management.remote.rmi.RMIServerImpl_Stub.newClient<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at javax.management.remote.rmi.RMIConnector.getConnection<span style="color:#f92672">(</span>RMIConnector.java:2343<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:296<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:244<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+...
+at com.blogspot.jetoile.jgroups.connector.JMXServer.start<span style="color:#f92672">(</span>JMXServer.java:152<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest2.main<span style="color:#f92672">(</span>TestJMXServerTest2.java:34<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>test-classes/:na<span style="color:#f92672">]</span>
+ 
+ 
+Caused by: java.net.NoRouteToHostException: Network is unreachable
+at java.net.PlainSocketImpl.socketConnect<span style="color:#f92672">(</span>Native Method<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.AbstractPlainSocketImpl.doConnect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:310<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.AbstractPlainSocketImpl.connectToAddress<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:176<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.AbstractPlainSocketImpl.connect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:163<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.SocksSocketImpl.connect<span style="color:#f92672">(</span>SocksSocketImpl.java:384<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:546<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:495<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:392<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
+at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:206<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
+at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket<span style="color:#f92672">(</span>RMIDirectSocketFactory.java:40<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket<span style="color:#f92672">(</span>RMIMasterSocketFactory.java:146<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:613<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+... <span style="color:#ae81ff">34</span> common frames omitted
+</code></pre></div><h2 id="explication-1">Explication</h2>
+<p>En fait, mon problème venait du fait que mon fichier hosts était incorrect (je vous avais prévenu que c&rsquo;était une erreur stupide : n&rsquo;importe qui aurait pensé à vérifier sa configuration réseau&hellip; ! ;-) ).</p>
+<p>En effet, la couche logicielle gérant mes connexions réseaux sur mon ordinateur a tendance à ajouter dans mon fichier /etc/hosts mon adresse réseau. Cependant, lorsque je coupe mon wifi, mon ordinateur passe en mode hors-ligne sans modifier mon fichier hosts, ce qui corrompt ma configuration réseau.</p>
+<h1 id="proposition-pour-résoudre-le-problème-1">Proposition pour résoudre le problème</h1>
+<ul>
+<li>Corriger son fichier hosts et vérifier sa configuration réseau</li>
+</ul>
+<p>A noter que dans mon cas, le fait d&rsquo;avoir changer de jre m&rsquo;a permis d&rsquo;obtenir une stacktrace beaucoup plus complète et précise. Aussi, dans un moment de désespoir et en dernier recours, il peut être intéressant de changer de jre ;-).</p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.jetoile.fr%2f2011%2f01%2fpetites-astuces-avec-jmx.html" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://blog.jetoile.fr/2010/12/jgroups-tour-d.html"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://blog.jetoile.fr/2010/12/jgroups-tour-d.html">JGroups : tour d&#39;horizon</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html">Ouverture d&#39;un compte GitHub</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'jetoile';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://blog.jetoile.fr/js/ui.js"></script>
+<script src="https://blog.jetoile.fr/js/menus.js"></script>
+
+
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-11955429-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+<script src="https://blog.jetoile.fr/js/math-code.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+</body>
+</html>
+

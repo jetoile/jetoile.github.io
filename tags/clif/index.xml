@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>clif on Jetoile</title>
-    <link>https://blog.jetoile.fr/tags/clif/</link>
+    <link>https://blog.jetoile.fr/tags/clif.html</link>
     <description>Recent content in clif on Jetoile</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -10,10 +10,10 @@
     <lastBuildDate>Wed, 17 Oct 2012 12:29:39 +0100</lastBuildDate><atom:link href="https://blog.jetoile.fr/tags/clif/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test de charge : mode d&#39;emploi</title>
-      <link>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html/</link>
+      <link>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html</link>
       <pubDate>Wed, 17 Oct 2012 12:29:39 +0100</pubDate>
       
-      <guid>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html/</guid>
+      <guid>https://blog.jetoile.fr/2012/10/test-de-charge-mode-demploi.html</guid>
       <description>Au cours de la vie d&amp;rsquo;un projet, il est courant d&amp;rsquo;avoir recours à des tests de charge.
 Cependant, je me suis rendu compte que, trop souvent, le sujet est mal maîtrisé et donc malheureusement mal traité.
 En effet, combien de fois n&amp;rsquo;ai-je pas vu un test de charge effectué avec la méthodologie &amp;ldquo;clic clic partout&amp;rdquo;, l&amp;rsquo;utilisation de Selenium, la commande curl, ou, dans le meilleur des cas, avec quelques scénarii JMeter issus de l&amp;rsquo;utilisation du recorder de ce dernier.</description>

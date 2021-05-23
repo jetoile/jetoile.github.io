@@ -7,13 +7,14 @@ copyright = "<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'
 canonifyurls = true
 paginate = 10
 enableEmoji = true
+uglyurls = true
 
 [indexes]
   tag = "tags"
   topic = "topics"
 
 [permalinks]
-  post = "/:year/:month/:filename.html"
+  post = "/:year/:month/:filename/"
 
 [params]
   # Shown in the home page
@@ -44,18 +45,18 @@ enableEmoji = true
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 2
     identifier = "posts"
-    url = "/post"
+    url = "/post.html"
   [[menu.main]]
     name = "About"
     pre = "<i class='fa fa-user fa-fw'></i>"
     weight = 3
     identifier = "about"
-    url = "/about"
+    url = "/about.html"
   [[menu.main]]
     name = "Contact"
     pre = "<i class='fa fa-phone fa-fw'></i>"
     weight = 4
-    url = "/contact/"
+    url = "/contact.html"
   [[menu.main]]
     name = "Hadoop Unit"
     pre = "<i class='fa fa-list fa-fw'></i>"

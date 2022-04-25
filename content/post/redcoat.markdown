@@ -69,6 +69,8 @@ Et mon bilan perso le montre bien:
 
 Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant que étant une grande partie du temps en roller, je ne sais comment interprété la distance obtenue par ma montre...).
 
+Par exemple, pour [Estelle](https://twitter.com/estelandry), cette année, elle a fait 10h de sommeil, 19km parcourus sachant qu'elle n'a été pas été présente mardi et sachant que sa montre n'a pas fonctionné le vendredi (donc seulement des résultats sur les journées du mercredi et jeudi)... (cf. https://twitter.com/estelandry/status/1517844416869851137)
+
 Bien sûr, concernant le sommeil, cela n'est pas foncièrement lié au travail de redcoat (sauf pour l'heure de réveil) mais plus aux _after_ (seul vrai moment où on peut revoir/discuter avec les participants/copains/copines) :stuck_out_tongue_winking_eye:
 
 Pourtant, la majorité d'entre nous re-signe chaque année même si l'équipe évolue (7 personnes de l'équipe sont là depuis le tout début, à savoir 2012) et cette année, nous avions 6 nouvelles recrues.

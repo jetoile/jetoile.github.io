@@ -53,6 +53,9 @@ Lors de l'événement même, elle a différentes choses à faire (ce qui expliqu
 - intervenir en cas de rush pour aider à la gestion des badges, goodies, vestiaires
 - vérifier que tous se passe au mieux pour les participants, sponsors et _speakers_
 
+Après l'événement (soit le vendredi soir), l'équipe doit:
+- récupérer tous ce qui a été installé le mardi (signalétique, kakémono, salles, badgeuses, ...), le ranger et le remettre sur palette
+
 # Pourquoi être redcoat
 
 ![center](/images/redcoat/FQ8IAjMWYAAnk3G.jpeg)

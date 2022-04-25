@@ -9,7 +9,7 @@ tags:
 ![left-small](/images/redcoat/logo_devoxx_france_2019_simple.png)
 Pour cet article je vais vous parler de ce qui se cache derrière le terme redcoat (alias _gilet rouge_) couramment utilisé lors de [DevoxxFr](https://www.devoxx.fr/).
 
-En fait, en TL;DR, derrière ce terme se cache une équipe de bénévoles qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jea-François et Maryne.
+En fait, en TL;DR, derrière ce terme se cache une équipe de bénévoles qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jean-François et Maryne.
 
 <!-- more -->
 

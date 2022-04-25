@@ -32,7 +32,7 @@ Pour ma part, je fais partie de l'équipe depuis l'édition 2014.
 
 Comme dit précédemment, derrière ce terme se cache une équipe d'une vingtaine de personnes (pour être exact, 28 personnes pour l'édition 2022) qui a différentes responsabilités lors de l'événement.
 
-Dans un premier lieu, l'équipe intervient dès le mardi (Devoxx France ayant lieu du mercredi au vendredi inclus) pour (de manière non exhaustive):
+Dans un premier temps, l'équipe intervient dès le mardi (Devoxx France ayant lieu du mercredi au vendredi inclus) pour (de manière non exhaustive):
 - décharger et ranger tout le matériel nécessaire (kakémono, badgeuse, ...))
 - mettre en place les badgeuses
 - mettre en place les signalétiques (kakémono, plan, ...)

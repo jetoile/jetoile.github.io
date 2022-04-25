@@ -21,6 +21,7 @@ Ainsi, dans cet article nous allons donc voir:
 <div class="note">
 
 Attention, cet avis ne concerne que mon propre ressenti et est donc totalement subjectif... :stuck_out_tongue_winking_eye: 
+
 Pour ma part, je fais partie de l'équipe depuis l'édition 2014.
 
 </div>
@@ -87,9 +88,11 @@ De mon point de vue, je dirais que c'est grâce à l'ambiance et à la très bon
 
 Même avec un niveau de fatigue global assez élevé, il semble que nous soyons tous très heureux d'avoir aidé au bon déroulement de l'événement.
 
-Mais aussi d'avoir participé à la communauté en permettant l'échange lors d'une conférence technique :stuck_out_tongue_winking_eye: 
+Mais aussi d'avoir participé à la communauté en permettant l'échange et le partage lors d'une conférence technique :stuck_out_tongue_winking_eye: 
 
-En gros être les petites mains de l'événement... 
+__Update__ En fait, participer dans l'ombre sans attendre de retours mais en étant sincère s'inscrit presque comme une façon de penser. Comme l'a dit [Katia](https://twitter.com/karesti) lors d'une conférence qu'elle a donnée (désolé, je ne me rappelle plus ni de la date ni du titre...), c'est comme une histoire de destin (même si je ne suis pas d'accord avec ce terme) : si retombé il doit y avoir, cela se fera naturellement (parce que cela aura été fait avec sincérité avec comme seul but le partage et la volonté d'aider la communauté). Ensuite, rien que de savoir que les participants, _speakers_ et sponsors ont passé un bon moment se suffit à soi-même.
+
+En gros, _redcoat_ c'est être les petites mains dans l'ombre de l'événement... avec comme seul récompense le sourire des participants, _speakers_ et sponsors...
 
 Bien sûr, en compensation, l'équipe se retrouve pour diner ensemble le soir et ainsi former de vrai liens permettant ainsi de se faire de nouveaux copains/copines qui se retrouvent tous les ans...
 
@@ -97,17 +100,20 @@ Bref...
 
 ![center](/images/redcoat/FQ8H_zaXEAAqgbM.jpeg)
 
+
 # Pourquoi redcoat tu ne seras pas...
 
 Cependant, malgré tout ce que j'ai pu écrire plus haut, plusieurs points sont à prendre en compte avant de vouloir devenir _redcoat_.
 
 En effet, si c'est pour autre chose que de vouloir aider et/ou trimer pendant 4 jours, alors passe ton chemin.
 
-Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quand bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière). Aussi, les retransmissions sur YouTube seront ta seule façon de voir les conférences.
+Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quand bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière et/ou que tu sois tellement accaparé par ton téléphone dans l'attente d'un appel à gérer une urgence que tu ne sois pas concentré sur la conférence). Aussi, les retransmissions sur YouTube seront ta seule façon de voir ces dernières.
 
 Enfin, si tu penses faire du _personal branding_, passe également ton chemin : au vu du travail demandé, il reste peu de temps pour discuter avec les autres participants/sponsors/_speakers_.
 
 Etre redcoat, c'est être dans les coulisses en s'arrangeant pour que tout se passe au mieux pour les personnes dans la lumière sur scène!
+
+__Update__: Et pour reprendre un des points du paragraphe précédent, si cela n'est pas fait avec comme seul but de partager avec abnégation son temps et son énergie pour la communauté, mais avec comme seul objectif sa gloire et/ou son égo alors cela n'est pas fait pour toi.
 
 
 # Conclusion

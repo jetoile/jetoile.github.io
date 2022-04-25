@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.jetoile.fr/tags/devoxxfr.html</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags/perso.html</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/post.html</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/tags.html</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.jetoile.fr/2022/04/redcoat.html</loc>
+    <lastmod>2022-04-25T10:20:00+02:00</lastmod>
+  </url><url>
     <loc>https://blog.jetoile.fr/tags/architecture.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
@@ -11,16 +29,7 @@
     <loc>https://blog.jetoile.fr/tags/bigdata.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
-    <loc>https://blog.jetoile.fr/</loc>
-    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
-  </url><url>
-    <loc>https://blog.jetoile.fr/post.html</loc>
-    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
-  </url><url>
     <loc>https://blog.jetoile.fr/tags/scheduler.html</loc>
-    <lastmod>2021-05-18T18:20:00+02:00</lastmod>
-  </url><url>
-    <loc>https://blog.jetoile.fr/tags.html</loc>
     <lastmod>2021-05-18T18:20:00+02:00</lastmod>
   </url><url>
     <loc>https://blog.jetoile.fr/tags/hadoop.html</loc>

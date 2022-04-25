@@ -7,9 +7,9 @@ tags:
 - perso
 ---
 ![left-small](/images/redcoat/logo_devoxx_france_2019_simple.png)
-Pour cet article je vais vous parler de ce qui se cache derrière le terme redcoat (alias _gilet rouge_) couramment utilisé lors de [DevoxxFr](https://www.devoxx.fr/).
+Pour cet article je vais vous parler de ce qui se cache derrière le terme _redcoat_ (alias _polos rouges_) couramment utilisé lors de [DevoxxFr](https://www.devoxx.fr/).
 
-En fait, en TL;DR, derrière ce terme se cache une équipe de volontaires qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jean-François et Maryne.
+En fait, en TL;DR, derrière ce terme se cache une équipe de petites mains qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jean-François et Maryne.
 
 <!-- more -->
 
@@ -20,7 +20,7 @@ Ainsi, dans cet article nous allons donc voir:
 
 <div class="note">
 
-Attention, cet avis ne concerne que mon propre ressenti et est donc totalement subjecfif... :stuck_out_tongue_winking_eye: 
+Attention, cet avis ne concerne que mon propre ressenti et est donc totalement subjectif... :stuck_out_tongue_winking_eye: 
 Pour ma part, je fais partie de l'équipe depuis l'édition 2014.
 
 </div>
@@ -32,8 +32,8 @@ Pour ma part, je fais partie de l'équipe depuis l'édition 2014.
 
 Comme dit précédemment, derrière ce terme se cache une équipe d'une vingtaine de personnes (pour être exact, 28 personnes pour l'édition 2022) qui a différentes responsabilités lors de l'événement.
 
-Dans un premier lieu, l'équipe intervient dès le mardi (Devoxx France ayant lieu du mercredi au vendredi inclu) pour (de manière non exhaustive):
-- décharger et ranger tous le matériel nécessaire (kakémono, badgeuse, ...))
+Dans un premier lieu, l'équipe intervient dès le mardi (Devoxx France ayant lieu du mercredi au vendredi inclus) pour (de manière non exhaustive):
+- décharger et ranger tout le matériel nécessaire (kakémono, badgeuse, ...))
 - mettre en place les badgeuses
 - mettre en place les signalétiques (kakémono, plan, ...)
 - préparer les salles de labs
@@ -44,8 +44,8 @@ Lors de l'événement même, elle a différentes choses à faire (ce qui expliqu
 - ouvrir toutes les salles et vérifier qu'elles sont approvisionnées en eau
 - aider le/les _speakers_ à se mettre en place
 - vérifier le setup (signalétique, timer, ...)
-- surveiller les salles (et empecher les participants de rentrer lorsque la salle est pleine en les redirigeant éventuellement vers les _overflow_)
-- en fonction du remplissage des salles, décider lesquels envoyer en _overflow_
+- surveiller les salles (et empêcher les participants de rentrer lorsque la salle est pleine en les redirigeant éventuellement vers les _overflow_)
+- en fonction du remplissage des salles, décider lesquelles envoyer en _overflow_
 - se synchroniser pour que toutes les conférences démarrent en même temps (afin de faciliter la captation des présentations)
 - répondre aux questions des participants (où sont les goodies, vestiaires, salles xxx) et des sponsors
 - mettre en place le nécessaire pour la gestion des buffets
@@ -120,7 +120,7 @@ Bien sûr, les tâches et devoirs décris plus haut sont spécifiques à Devoxx 
 - le traiteur
 - les hotes/hotesses qui s'occupent du vestiaire et qui nous aide à la distribution des badges
 
-Cependant, pour avoir fait parti également des volontaires lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu en tant que bénévoles dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux et ainsi contribuer à la communauté dans l'ombre). 
+Cependant, pour avoir fait parti des volontaires lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux et ainsi contribuer à la communauté dans l'ombre). 
 
 A noter qu'avec les années, le travail des _redcoat_ à Devoxx a évolué puisqu'au début, il y avait notamment (entre autre) le remplissage des sacs (environ 3000) ainsi que l'impression et le collage des noms sur les badges...
 
@@ -130,7 +130,9 @@ Enfin, un énorme merci à toute l'équipe d'avant, de maintenant et de demain! 
 
 Et merci aux organisateurs de nous avoir fait confiance!
 
-En espérant, à l'année prochaine!
+Et en espérant, à l'année prochaine!
+
+PS: et merci à la relecture de l'équipe des _redcoat_ :stuck_out_tongue_winking_eye:
 
 
 # Ressources

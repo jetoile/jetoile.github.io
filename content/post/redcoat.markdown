@@ -9,7 +9,7 @@ tags:
 ![left-small](/images/redcoat/logo_devoxx_france_2019_simple.png)
 Pour cet article je vais vous parler de ce qui se cache derrière le terme redcoat (alias _gilet rouge_) couramment utilisé lors de [DevoxxFr](https://www.devoxx.fr/).
 
-En fait, en TL;DR, derrière ce terme se cache une équipe de bénévoles qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jean-François et Maryne.
+En fait, en TL;DR, derrière ce terme se cache une équipe de volontaires qui intervient lors de l'événement (ainsi qu'un peu avant/après) le tout sous la houlette de la core team [Nicolas](https://twitter.com/nmartignole), [Zouheir](https://twitter.com/zouheircadi) et [Antonio](https://twitter.com/agoncal) ainsi que de l'équipe de [321 idCom](https://321idcom.fr/) avec Karine, Athalane, Jean-François et Maryne.
 
 <!-- more -->
 
@@ -116,13 +116,13 @@ Bien sûr, les tâches et devoirs décris plus haut sont spécifiques à Devoxx 
 - le traiteur
 - les hotes/hotesses qui s'occupent du vestiaire et qui nous aide à la distribution des badges
 
-Cependant, pour avoir fait parti également des bénévoles lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu en tant que bénévoles dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux). 
+Cependant, pour avoir fait parti également des volontaires lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu en tant que bénévoles dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux et ainsi contribuer à la communauté dans l'ombre). 
 
 A noter qu'avec les années, le travail des _redcoat_ à Devoxx a évolué puisqu'au début, il y avait notamment (entre autre) le remplissage des sacs (environ 3000) ainsi que l'impression et le collage des noms sur les badges...
 
 Ainsi on peut voir que nous nous sommes amélioré petit à petit avec, en autre pour cette année, une application développée par [Fabrice](https://twitter.com/fsznajderman) (merci à lui d'ailleurs :stuck_out_tongue_winking_eye:) pour la gestion du remplissage des salles, ce qui nous a permis de mieux gérer les _overflow_.
 
-Enfin, un énorme merci à tous les bénévoles d'avant et de maintenant!! :stuck_out_tongue_winking_eye: 
+Enfin, un énorme merci à toute l'équipe d'avant, de maintenant et de demain! :stuck_out_tongue_winking_eye: 
 
 Et merci aux organisateurs de nous avoir fait confiance!
 

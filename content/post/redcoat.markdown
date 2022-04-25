@@ -14,14 +14,14 @@ En fait, en TL;DR, derrière ce terme se cache une équipe de volontaires qui in
 <!-- more -->
 
 Ainsi, dans cet article nous allons donc voir:
-- qu'est ce que fait le redcoat
+- ce que fait le redcoat
 - pourquoi devenir redcoat
 - pourquoi ne pas le devenir
 
 <div class="note">
 
 Attention, cet avis ne concerne que mon propre ressenti et est donc totalement subjecfif... :stuck_out_tongue_winking_eye: 
-Pour ma part, je fais parti de l'équipe depuis l'édition 2014.
+Pour ma part, je fais partie de l'équipe depuis l'édition 2014.
 
 </div>
 
@@ -69,9 +69,9 @@ Et mon bilan perso le montre bien:
 ![center](/images/redcoat/sommeil.png)
 ![center](/images/redcoat/distance.png)
 
-Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant que étant une grande partie du temps en roller, je ne sais comment interprété la distance obtenue par ma montre...).
+Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant que étant une grande partie du temps en roller, je ne sais comment interpréter la distance obtenue par ma montre...).
 
-Par exemple, pour [Estelle](https://twitter.com/estelandry), cette année, elle a fait 10h de sommeil, 19km parcourus sachant qu'elle n'a été pas été présente mardi et sachant que sa montre n'a pas fonctionné le vendredi (donc seulement des résultats sur les journées du mercredi et jeudi)... (cf. https://twitter.com/estelandry/status/1517844416869851137)
+Par exemple, pour [Estelle](https://twitter.com/estelandry), cette année, elle a fait 10h de sommeil, 19km parcourus sachant qu'elle n'a pas été présente mardi et sachant que sa montre n'a pas fonctionné le vendredi (donc seulement des résultats sur les journées du mercredi et jeudi)... (cf. https://twitter.com/estelandry/status/1517844416869851137)
 
 Bien sûr, concernant le sommeil, cela n'est pas foncièrement lié au travail de redcoat (sauf pour l'heure de réveil) mais plus aux _after_ (seul vrai moment où on peut revoir/discuter avec les participants/copains/copines) :stuck_out_tongue_winking_eye:
 
@@ -108,7 +108,7 @@ Idem si tu penses pouvoir assister à des conférences : le planning des redcoat
 
 Enfin, si tu penses faire du _personal branding_, passe également ton chemin : au vu du travail demandé, il reste peu de temps pour discuter avec les autres participants/sponsors/_speakers_.
 
-Etre redcoat, c'est être dans les coulisses en s'arrangeant que tout se passe au mieux pour les personnes dans la lumière sur scène!
+Etre redcoat, c'est être dans les coulisses en s'arrangeant pour que tout se passe au mieux pour les personnes dans la lumière sur scène!
 
 
 # Conclusion

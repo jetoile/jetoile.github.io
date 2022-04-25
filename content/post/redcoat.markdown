@@ -69,7 +69,7 @@ Et mon bilan perso le montre bien:
 
 Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant que étant une grande partie du temps en roller, je ne sais comment interprété la distance obtenue par ma montre...).
 
-Bien sûr, concernant le sommeil, cela n'est pas foncièrement lié au travail de redcoat (sauf pour l'heure de réveil) mais plus aux _after_ :stuck_out_tongue_winking_eye:
+Bien sûr, concernant le sommeil, cela n'est pas foncièrement lié au travail de redcoat (sauf pour l'heure de réveil) mais plus aux _after_ (seul vrai moment où on peut revoir/discuter avec les participants/copains/copines) :stuck_out_tongue_winking_eye:
 
 Pourtant, la majorité d'entre nous re-signe chaque année même si l'équipe évolue (7 personnes de l'équipe sont là depuis le tout début, à savoir 2012) et cette année, nous avions 6 nouvelles recrues.
 
@@ -82,8 +82,13 @@ De mon point de vue, je dirais que c'est grâce à l'ambiance et à la très bon
 ![small](/images/redcoat/FQ-0RHYXIAEKekR.jpeg)
 ![small](/images/redcoat/FQ9eQJtXsAAyVtm.jpeg)
 
-Même avec un niveau de fatigue global assez élevé, il semble que nous soyons tous très heureux d'avoir aidé au bon déroulement de l'événement. mais aussi d'avoir participé à la communauté en permettant l'échange lors d'une conférence technique :stuck_out_tongue_winking_eye: 
-En gros être les petites mains de l'événement...
+Même avec un niveau de fatigue global assez élevé, il semble que nous soyons tous très heureux d'avoir aidé au bon déroulement de l'événement.
+
+Mais aussi d'avoir participé à la communauté en permettant l'échange lors d'une conférence technique :stuck_out_tongue_winking_eye: 
+
+En gros être les petites mains de l'événement... 
+
+Bien sûr, en compensation, l'équipe se retrouve pour diner ensemble le soir et ainsi former de vrai liens permettant ainsi de se faire de nouveaux copains/copines qui se retrouve ainsi tous les ans...
 
 Bref...
 
@@ -95,7 +100,7 @@ Cependant, malgré tous ce que j'ai pu écrire avant, plusieurs points sont à p
 
 En effet, si c'est pour autre chose que de vouloir aider et/ou trimer pendant 4 jours, alors passe ton chemin.
 
-Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quant bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière).
+Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quant bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière). Aussi, les retransmissions sur YouTube seront ta seule façon de voir les conférences.
 
 Enfin, si tu penses faire du _personal branding_, passe également ton chemin : au vu du travail demandé, il reste peu de temps pour discuter avec les autres participants/sponsors/_speakers_.
 

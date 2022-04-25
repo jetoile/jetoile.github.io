@@ -49,7 +49,6 @@ Lors de l'événement même, elle a différentes choses à faire (ce qui expliqu
 - se synchroniser pour que toutes les conférences démarrent en même temps (afin de faciliter la captation des présentations)
 - répondre aux questions des participants (où sont les goodies, vestiaires, salles xxx) et des sponsors
 - mettre en place le nécessaire pour la gestion des buffets
-- gérer l'accès des sponsors à leur salle de rangement
 - intervenir en cas de rush pour aider à la gestion des badges, goodies, vestiaires
 - vérifier que tout se passe au mieux pour les participants, sponsors et _speakers_
 

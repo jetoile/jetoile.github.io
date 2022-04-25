@@ -62,6 +62,8 @@ Après l'événement (soit le vendredi soir), l'équipe doit:
 
 Comme nous l'avons vu lors dans le paragraphe précédent, le travail du redcoat n'est pas de tout repos... :stuck_out_tongue_winking_eye: 
 
+Sans parler des _rush_ et des situations où il faut être autonome afin de prendre la meilleure décision à l'instant t...
+
 Et mon bilan perso le montre bien:
 
 ![center](/images/redcoat/sommeil.png)

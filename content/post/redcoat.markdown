@@ -49,18 +49,18 @@ Lors de l'événement même, elle a différentes choses à faire (ce qui expliqu
 - se synchroniser pour que toutes les conférences démarrent en même temps (afin de faciliter la captation des présentations)
 - répondre aux questions des participants (où sont les goodies, vestiaires, salles xxx) et des sponsors
 - mettre en place le nécessaire pour la gestion des buffets
-- gérer l'accès aux sponsors à leur salle de rangement
+- gérer l'accès des sponsors à leur salle de rangement
 - intervenir en cas de rush pour aider à la gestion des badges, goodies, vestiaires
-- vérifier que tous se passe au mieux pour les participants, sponsors et _speakers_
+- vérifier que tout se passe au mieux pour les participants, sponsors et _speakers_
 
 Après l'événement (soit le vendredi soir), l'équipe doit:
-- récupérer tous ce qui a été installé le mardi (signalétique, kakémono, salles, badgeuses, ...), le ranger et le remettre sur palette
+- récupérer tout ce qui a été installé le mardi (signalétique, kakémono, salles, badgeuses, ...), le ranger et le remettre sur palette
 
-# Pourquoi être redcoat
+# Pourquoi être redcoat?
 
 ![center](/images/redcoat/FQ8IAjMWYAAnk3G.jpeg)
 
-Comme nous l'avons vu lors dans le paragraphe précédent, le travail du redcoat n'est pas de tout repos... :stuck_out_tongue_winking_eye: 
+Comme nous l'avons vu dans le paragraphe précédent, le travail du redcoat n'est pas de tout repos... :stuck_out_tongue_winking_eye: 
 
 Sans parler des _rush_ et des situations où il faut être autonome afin de prendre la meilleure décision à l'instant t...
 
@@ -69,7 +69,7 @@ Et mon bilan perso le montre bien:
 ![center](/images/redcoat/sommeil.png)
 ![center](/images/redcoat/distance.png)
 
-Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant que étant une grande partie du temps en roller, je ne sais comment interpréter la distance obtenue par ma montre...).
+Ce qui fait un bilan de 8h de sommeil et 55km sur 4 jours (sachant qu'étant une grande partie du temps en roller, je ne sais comment interpréter la distance obtenue par ma montre...).
 
 Par exemple, pour [Estelle](https://twitter.com/estelandry), cette année, elle a fait 10h de sommeil, 19km parcourus sachant qu'elle n'a pas été présente mardi et sachant que sa montre n'a pas fonctionné le vendredi (donc seulement des résultats sur les journées du mercredi et jeudi)... (cf. https://twitter.com/estelandry/status/1517844416869851137)
 
@@ -77,7 +77,7 @@ Bien sûr, concernant le sommeil, cela n'est pas foncièrement lié au travail d
 
 Pourtant, la majorité d'entre nous re-signe chaque année même si l'équipe évolue (7 personnes de l'équipe sont là depuis le tout début, à savoir 2012) et cette année, nous avions 6 nouvelles recrues.
 
-Alors pourquoi les personnes semblent re-signées? 
+Alors pourquoi les personnes semblent re-signer? 
 
 De mon point de vue, je dirais que c'est grâce à l'ambiance et à la très bonne entente de l'équipe, comme peuvent l'attester ces différentes photos:
 ![small](/images/redcoat/FQ-4UACXoAIhNOk.jpeg)
@@ -92,7 +92,7 @@ Mais aussi d'avoir participé à la communauté en permettant l'échange lors d'
 
 En gros être les petites mains de l'événement... 
 
-Bien sûr, en compensation, l'équipe se retrouve pour diner ensemble le soir et ainsi former de vrai liens permettant ainsi de se faire de nouveaux copains/copines qui se retrouvent ainsi tous les ans...
+Bien sûr, en compensation, l'équipe se retrouve pour diner ensemble le soir et ainsi former de vrai liens permettant ainsi de se faire de nouveaux copains/copines qui se retrouvent tous les ans...
 
 Bref...
 
@@ -100,11 +100,11 @@ Bref...
 
 # Pourquoi redcoat tu ne seras pas...
 
-Cependant, malgré tous ce que j'ai pu écrire avant, plusieurs points sont à prendre en compte avant de vouloir devenir _redcoat_.
+Cependant, malgré tout ce que j'ai pu écrire plus haut, plusieurs points sont à prendre en compte avant de vouloir devenir _redcoat_.
 
 En effet, si c'est pour autre chose que de vouloir aider et/ou trimer pendant 4 jours, alors passe ton chemin.
 
-Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quant bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière). Aussi, les retransmissions sur YouTube seront ta seule façon de voir les conférences.
+Idem si tu penses pouvoir assister à des conférences : le planning des redcoat est fait à l'avance en fonction des salles et non en fonction du contenu (bien sûr il est possible de s'arranger le jour J) et, de toute façon, il est possible que tu sois obligé de rester à la porte pour surveiller (et quand bien même, la fatigue aidant, il est possible que tu t'endormes pendant cette dernière). Aussi, les retransmissions sur YouTube seront ta seule façon de voir les conférences.
 
 Enfin, si tu penses faire du _personal branding_, passe également ton chemin : au vu du travail demandé, il reste peu de temps pour discuter avec les autres participants/sponsors/_speakers_.
 
@@ -113,14 +113,14 @@ Etre redcoat, c'est être dans les coulisses en s'arrangeant pour que tout se pa
 
 # Conclusion
 
-Bien sûr, les tâches et devoirs décris plus haut sont spécifiques à Devoxx France et nous avons la chance de bénéficier du soutien des équipes du palais des congrès (modulo facturation bien sûr...) qui nous héberge et qui nous apporte :
+Bien sûr, les tâches et devoirs décrits plus haut sont spécifiques à Devoxx France et nous avons la chance de bénéficier du soutien des équipes du palais des congrès (modulo facturation bien sûr...) qui nous héberge et qui nous apporte :
 - l'équipe chargée de vérifier que toutes les normes de sécurité sont respectées (ex: nombre de sortie par salle en fonction du nombre de participants)
-- les agents de sécurités
+- les agents de sécurité
 - les équipes de captation/son
 - le traiteur
-- les hôtes/hôtesses qui s'occupent du vestiaire et qui nous aide à la distribution des badges
+- les hôtes/hôtesses qui s'occupent du vestiaire et qui nous aident à la distribution des badges
 
-Cependant, pour avoir fait parti des volontaires lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux et ainsi contribuer à la communauté dans l'ombre). 
+Cependant, pour avoir fait partie des volontaires lors du [BreizhCamp](https://www.breizhcamp.org/) plusieurs années, je ne pense pas me tromper en disant que ce qui est attendu dans les autres conférences est grosso modo similaire (à savoir se mettre à la disposition des organisateurs pour permettre à l'événement de se dérouler au mieux et ainsi contribuer à la communauté dans l'ombre). 
 
 A noter qu'avec les années, le travail des _redcoat_ à Devoxx a évolué puisqu'au début, il y avait notamment (entre autre) le remplissage des sacs (environ 3000) ainsi que l'impression et le collage des noms sur les badges (merci à [Emmanuel](https://twitter.com/moyowi) pour tout son travail sur les badgeuses)...
 

@@ -3,6 +3,8 @@ languageCode = "en-us"
 title = "Jetoile"
 theme = "blackburn"
 
+googleAnalytics ="G-375066041"
+
 copyright = "<a href='http://creativecommons.org/licenses/by/4.0/' rel='license'><img alt='Licence Creative Commons' src='/images/creative_common88x31.png' style='border-width:0'/></a>"
 canonifyurls = true
 paginate = 10
@@ -20,7 +22,7 @@ uglyurls = true
   # Shown in the home page
   subtitle = ""
   brand = "Jetoile"
-  googleAnalytics = "UA-11955429-1"
+  # googleAnalytics = "UA-11955429-1"
   disqus = "jetoile"
   # CSS name for highlight.js
   highlightjs = "androidstudio"

@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Industrialiser la récolte de métriques Web &middot; Jetoile</title>
 
@@ -291,12 +291,12 @@
 <p>Comme dit dans le paragraphe précédent, il convient au préalable de générer les métriques.</p>
 <p>Du coté de YSlow, cela est facilement faisable en s&rsquo;appuyant sur phantomjs.</p>
 <p>Pour ce faire, il suffit de récupérer et d&rsquo;installer le binaire de <a href="http://phantomjs.org/">phantomjs</a>. Il reste ensuite à récupérer le script yslow.js puis d&rsquo;exécuter la commande suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs yslow.js &lt;url page&gt;
-</code></pre></div><p><img src="http://2.bp.blogspot.com/-YmCjl2Qldg8/UXgB31zhtoI/AAAAAAAAA5U/P79Nn3j6Pvo/s1600/01-yslow_cmd2.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/opt/phantomjs/bin/phantomjs yslow.js &lt;url page&gt;
+</span></span></code></pre></div><p><img src="http://2.bp.blogspot.com/-YmCjl2Qldg8/UXgB31zhtoI/AAAAAAAAA5U/P79Nn3j6Pvo/s1600/01-yslow_cmd2.png" alt="medium"></p>
 <p>Il est également possible de s&rsquo;appuyer sur <a href="http://nodejs.org/">nodejs</a> mais l&rsquo;opération devient alors un peu plus compliqué : il faut d&rsquo;abord installer nodejs puis yslow avant de pouvoir lancer la génération du rapport en passant par la génération d&rsquo;un fichier HAR (<a href="http://httparchive.org/index.php">HTTP ARchive</a>) :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo /opt/nodejs/bin/npm install yslow -g
-/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; | yslow
-</code></pre></div><p><img src="http://2.bp.blogspot.com/-gD-DFJtuChI/UXgBG-wifGI/AAAAAAAAA5M/2M1bFUsavqc/s1600/01-yslow_cmd.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo /opt/nodejs/bin/npm install yslow -g
+</span></span><span style="display:flex;"><span>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; | yslow
+</span></span></code></pre></div><p><img src="http://2.bp.blogspot.com/-gD-DFJtuChI/UXgBG-wifGI/AAAAAAAAA5M/2M1bFUsavqc/s1600/01-yslow_cmd.png" alt="medium"></p>
 <p>Coté génération du rapport Pagespeed, trois pistes ont été étudiées :</p>
 <ul>
 <li>la première en utilisant un <a href="https://github.com/pauly/pagespeed">module nodejs</a>,</li>
@@ -304,11 +304,11 @@
 <li>la troisième en s&rsquo;appuyant sur un <a href="https://code.google.com/p/harstorage/downloads/list">binaire déjà compilé</a> trouvé sur le site de <a href="https://code.google.com/p/harstorage/">HarStorage</a>.</li>
 </ul>
 <p>Les deux premières solutions se sont malheureusement avérées être un échec : en effet, concernant le module nodejs, il s&rsquo;est avéré être incompatible à l&rsquo;installation avec la version courante de nodejs (0.10.4). Or une version antérieure se trouvait être incompatible avec le module YSlow&hellip; (j&rsquo;avoue ne pas m&rsquo;être amusé à tester toutes les versions de nodejs et j&rsquo;ai donc laissé cette piste de coté).</p>
-<p>Du coté de la deuxième piste, je n&rsquo;ai malheureusement pas réussi à la faire compiler&hellip; :'( et cela malgré moultes tentatives sur les versions 1.7, 1.8 et 1.9 sur mon système Linux (Ubuntu 12.10) mais également sur un système disposant de XUbuntu 11.10. Cette piste a donc également été abandonnée&hellip;</p>
+<p>Du coté de la deuxième piste, je n&rsquo;ai malheureusement pas réussi à la faire compiler&hellip; :&rsquo;( et cela malgré moultes tentatives sur les versions 1.7, 1.8 et 1.9 sur mon système Linux (Ubuntu 12.10) mais également sur un système disposant de XUbuntu 11.10. Cette piste a donc également été abandonnée&hellip;</p>
 <p>La troisième tentative a, heureusement, été plus concluante. Ainsi, après téléchargement du binaire, il est possible, en lui fournissant un fichier HAR (générable, par exemple, à l&rsquo;aide du module netsniff de phantomjs), de générer nos métriques PageSpeed :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; &gt; monhar.har
-./pagespeed_bin --input_file monhar.har
-</code></pre></div><p><img src="http://3.bp.blogspot.com/-EPCoFg22lhA/UXhTkX7iPOI/AAAAAAAAA5k/mHf-dyeVctI/s1600/01-pagespeed_cmd.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js  &lt;url page&gt; &gt; monhar.har
+</span></span><span style="display:flex;"><span>./pagespeed_bin --input_file monhar.har
+</span></span></code></pre></div><p><img src="http://3.bp.blogspot.com/-EPCoFg22lhA/UXhTkX7iPOI/AAAAAAAAA5k/mHf-dyeVctI/s1600/01-pagespeed_cmd.png" alt="medium"></p>
 <p>La génération des rapports ayant été effectuée, l&rsquo;étape suivante pour répondre à notre cahier des charges consiste à remonter nos métriques récoltées par YSlow dans un outils un peu plus agréable.</p>
 <p>Pour ce faire, le plugin <a href="https://wiki.jenkins-ci.org/display/JENKINS/TAP+Plugin">TAP</a> (<em>Test Anything Protocol</em>) de Jenkins a été utilisé. Ainsi, combiné avec l&rsquo;exécution de récupération de la métrique, cela permet d&rsquo;avoir au sein de Jenkins un job dédié à la génération de cette dernière et à son affichage, la gestion de l&rsquo;historisation étant déléguée à l&rsquo;historique du job.</p>
 <p>Cependant, YSlow ne prenant en entrée qu&rsquo;une url, un job doit être créé pour chaque page ciblée.</p>
@@ -316,7 +316,7 @@
 <p><img src="http://2.bp.blogspot.com/-cFZAvtOQj0k/UXhX3xVuVUI/AAAAAAAAA58/9JNC8XhNsRo/s1600/01-tap1.png" alt="medium"></p>
 <p>Coté Pagespeed, j&rsquo;avoue ne pas avoir cherché mais le chapitre suivant proposera une solution simple et efficace pour obtenir une visualisation et une historisation de ces métriques.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>Comme on a pu le constater, la génération de métriques YSlow et/ou Pagespeed oblige (je n&rsquo;ai pas trouvé d&rsquo;autres moyens plus simples :'( ) à passer par des frameworks tierces tels que phantomjs ou nodejs.</p>
+<p>Comme on a pu le constater, la génération de métriques YSlow et/ou Pagespeed oblige (je n&rsquo;ai pas trouvé d&rsquo;autres moyens plus simples :&rsquo;( ) à passer par des frameworks tierces tels que phantomjs ou nodejs.</p>
 <p>Pour le lecteur qui a su lire entre les lignes, il a pu constater qu&rsquo;il y a deux approches possibles : soit passer par phantomjs (qui offre un navigateur headless) pour capturer la page rendu en déléguant au script de YSlow l&rsquo;analyse de la page, soit passer par phantomjs pour générer un fichier HAR (qui contient, entre autre, les ressources chargées par la page ainsi que leur temps de récupération et le statut associé) puis de le passer à YSlow (via son module nodeJS) ou à PageSpeed.</p>
 <p>En outre, du fait que les résultats obtenus l&rsquo;ont été par page, pour un site complet, cela peut vite devenir&hellip; rébarbatif (pour rester poli)&hellip; pas glop&hellip;</p>
 <h1 id="vitesse-de-rendu">Vitesse de rendu</h1>
@@ -337,12 +337,12 @@
 <p>Coté affichage et historisation, nous verrons que cela a, encore une fois, été un peu galère même si les résultats obtenus sont satisfaisant (ouf&hellip; heureusement).</p>
 <h2 id="solution-et-mise-en-oeuvre-1">Solution et mise en oeuvre</h2>
 <p>La première piste étudiée a été celle utilisant le plugin loadpage.js de phantomjs :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/loadspeed.js &lt;url page&gt;
-</code></pre></div><p><img src="http://2.bp.blogspot.com/-EnsolVkBftc/UXhYbNBGVSI/AAAAAAAAA6E/_gwMF7JBVnY/s1600/01-timeline-loadspeed.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/loadspeed.js &lt;url page&gt;
+</span></span></code></pre></div><p><img src="http://2.bp.blogspot.com/-EnsolVkBftc/UXhYbNBGVSI/AAAAAAAAA6E/_gwMF7JBVnY/s1600/01-timeline-loadspeed.png" alt="medium"></p>
 <p>Cependant, ce plugin ne renvoie que le temps de chargement de la page et ne fournit pas un niveau de granulatité suffisante.</p>
 <p>Le deuxième piste étudiée a été l&rsquo;utilisation du plugin netsniff de phantomjs. Ce plugin permet de générer un fichier HAR (HTTP ARchive) qui contient l&rsquo;ensemble des ressources chargées par la page ainsi que leur temps de chargement.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js &lt;url page&gt; &gt; monFichier.har
-</code></pre></div><p>Cette solution semble satisfaisante. Ne reste plus qu&rsquo;à afficher le fichier HAR dans un dashboard&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/opt/phantomjs/bin/phantomjs /opt/phantomjs/examples/netsniff.js &lt;url page&gt; &gt; monFichier.har
+</span></span></code></pre></div><p>Cette solution semble satisfaisante. Ne reste plus qu&rsquo;à afficher le fichier HAR dans un dashboard&hellip;</p>
 <p>Coté affichage, deux approches ont été testées :</p>
 <ul>
 <li>HarViewer,</li>
@@ -374,80 +374,80 @@
 </ul>
 <p>La partie upload au sein de HarStorage peut également être faite à l&rsquo;aide des API Rest offertes par HarStorage.</p>
 <p>Pour la première piste, je ne m&rsquo;étendrai pas dessus puisque la solution est directement accessible sur le <a href="https://code.google.com/p/harstorage/wiki/JavaTutorial">site de HarStorage</a>. Il est juste important de noter que cette dernière nécessite d&rsquo;avoir préalablement récupérer le proxy BrowserMobProxy en le compilant si nécessaire via un coup de mvn package -Preleasse (l&rsquo;assembly se trouve branché au profil release) et de l&rsquo;avoir lancé avec un port d&rsquo;écoute donné, port qui est nommé PROXY_API_PORT dans le code :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/browsermob-proxy --port <span style="color:#ae81ff">9090</span>
-</code></pre></div><p>En effet, BrowserMobProxy se comporte comme un serveur de proxy qu&rsquo;il est possible de créer et d&rsquo;enregistrer dynamiquement. Dans le code, la variable de classe PROXY_PORT correspond au port du proxy réel qui sera créé au sein du server BrowserMobProxy exécuté sur le port indiqué par PROXY_API_PORT. La classe fournit n&rsquo;a pour rôle que d&rsquo;interagir avec le serveur BrowserMobProxy au travers de son API REST (création d&rsquo;un proxy, création et récupération du HAR).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./bin/browsermob-proxy --port <span style="color:#ae81ff">9090</span>
+</span></span></code></pre></div><p>En effet, BrowserMobProxy se comporte comme un serveur de proxy qu&rsquo;il est possible de créer et d&rsquo;enregistrer dynamiquement. Dans le code, la variable de classe PROXY_PORT correspond au port du proxy réel qui sera créé au sein du server BrowserMobProxy exécuté sur le port indiqué par PROXY_API_PORT. La classe fournit n&rsquo;a pour rôle que d&rsquo;interagir avec le serveur BrowserMobProxy au travers de son API REST (création d&rsquo;un proxy, création et récupération du HAR).</p>
 <p>La deuxième approche consiste, quant à elle, à créer ce serveur programmatiquement puis à lui demander l&rsquo;instanciation d&rsquo;un proxy Selenium (il n&rsquo;y a donc pas besoin de récupérer le serveur BrowerMobProxy).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ProxyServer server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ProxyServer<span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>PROXY_API_PORT<span style="color:#f92672">));</span>
-   server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
- 
-   <span style="color:#75715e">// Change browser settings
-</span><span style="color:#75715e"></span>   Proxy proxy <span style="color:#f92672">=</span> server<span style="color:#f92672">.</span><span style="color:#a6e22e">seleniumProxy</span><span style="color:#f92672">();</span>
- 
-   <span style="color:#75715e">////////////////////////////////////////////////
-</span><span style="color:#75715e"></span>   <span style="color:#75715e">// ip a renseigner soit manuellement soit en utilisant NetworkInterface
-</span><span style="color:#75715e"></span>   <span style="color:#75715e">////////////////////////////////////////////////
-</span><span style="color:#75715e"></span>   String ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span> 
-   proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">setHttpProxy</span><span style="color:#f92672">(</span>ip <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> PROXY_API_PORT<span style="color:#f92672">);</span>
-   proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">setHttpProxy</span><span style="color:#f92672">(</span>ip <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> PROXY_API_PORT<span style="color:#f92672">);</span>
- 
-   DesiredCapabilities capabilities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DesiredCapabilities<span style="color:#f92672">();</span>
-   capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapability</span><span style="color:#f92672">(</span>CapabilityType<span style="color:#f92672">.</span><span style="color:#a6e22e">PROXY</span><span style="color:#f92672">,</span> proxy<span style="color:#f92672">);</span>
- 
-   Driver firefoxDriver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FirefoxDriver<span style="color:#f92672">(</span>capabilities<span style="color:#f92672">)</span>
- 
-   server<span style="color:#f92672">.</span><span style="color:#a6e22e">newHar</span><span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
- 
-   <span style="color:#75715e">////////////////////////////////////////////////
-</span><span style="color:#75715e"></span>   <span style="color:#75715e">// ma navigation via selenium avec le driver
-</span><span style="color:#75715e"></span>   <span style="color:#75715e">////////////////////////////////////////////////
-</span><span style="color:#75715e"></span> 
-   <span style="color:#75715e">// Read data from container
-</span><span style="color:#75715e"></span>   Har har <span style="color:#f92672">=</span> server<span style="color:#f92672">.</span><span style="color:#a6e22e">getHar</span><span style="color:#f92672">();</span>
- 
-   String strFilePath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;target/selenium_report.har&#34;</span><span style="color:#f92672">;</span>
-   File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>strFilePath<span style="color:#f92672">);</span>
-   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-       file<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>  
-   <span style="color:#f92672">}</span>
-   FileOutputStream fos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
-   har<span style="color:#f92672">.</span><span style="color:#a6e22e">writeTo</span><span style="color:#f92672">(</span>fos<span style="color:#f92672">);</span>
-   server<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
- 
-   InputStreamReader inputStreamReader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">)</span> <span style="color:#f92672">);</span>
-   LineNumberReader lineNumberReader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LineNumberReader<span style="color:#f92672">(</span>inputStreamReader<span style="color:#f92672">);</span>
-   String ligne<span style="color:#f92672">;</span>
-   String res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-   <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>ligne <span style="color:#f92672">=</span> lineNumberReader<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-           res <span style="color:#f92672">+=</span> ligne<span style="color:#f92672">;</span>
-   <span style="color:#f92672">}</span>
- 
-   <span style="color:#75715e">// Send results to HAR Storage
-</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-       HarStorage hs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HarStorage<span style="color:#f92672">(</span>HARSTORAGE_HOST<span style="color:#f92672">,</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>HARSTORAGE_PORT<span style="color:#f92672">));</span>
- 
-       String response <span style="color:#f92672">=</span> hs<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>res<span style="color:#f92672">);</span>
-       System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
-   <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-       e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-   <span style="color:#f92672">}</span>
-</code></pre></div><p>Par contre, il semble que le driver de phantomjs ne fonctionne pas&hellip; dommage&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ProxyServer server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ProxyServer<span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>PROXY_API_PORT<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>   server<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Change browser settings
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   Proxy proxy <span style="color:#f92672">=</span> server<span style="color:#f92672">.</span><span style="color:#a6e22e">seleniumProxy</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">////////////////////////////////////////////////
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// ip a renseigner soit manuellement soit en utilisant NetworkInterface
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">////////////////////////////////////////////////
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   String ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span> 
+</span></span><span style="display:flex;"><span>   proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">setHttpProxy</span><span style="color:#f92672">(</span>ip <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> PROXY_API_PORT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">setHttpProxy</span><span style="color:#f92672">(</span>ip <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> PROXY_API_PORT<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   DesiredCapabilities capabilities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DesiredCapabilities<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapability</span><span style="color:#f92672">(</span>CapabilityType<span style="color:#f92672">.</span><span style="color:#a6e22e">PROXY</span><span style="color:#f92672">,</span> proxy<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   Driver firefoxDriver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FirefoxDriver<span style="color:#f92672">(</span>capabilities<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   server<span style="color:#f92672">.</span><span style="color:#a6e22e">newHar</span><span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">////////////////////////////////////////////////
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">// ma navigation via selenium avec le driver
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#75715e">////////////////////////////////////////////////
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Read data from container
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   Har har <span style="color:#f92672">=</span> server<span style="color:#f92672">.</span><span style="color:#a6e22e">getHar</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   String strFilePath <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;target/selenium_report.har&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>strFilePath<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>file<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       file<span style="color:#f92672">.</span><span style="color:#a6e22e">delete</span><span style="color:#f92672">();</span>  
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   FileOutputStream fos <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   har<span style="color:#f92672">.</span><span style="color:#a6e22e">writeTo</span><span style="color:#f92672">(</span>fos<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   server<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   InputStreamReader inputStreamReader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span>file<span style="color:#f92672">)</span> <span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   LineNumberReader lineNumberReader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LineNumberReader<span style="color:#f92672">(</span>inputStreamReader<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   String ligne<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   String res <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>ligne <span style="color:#f92672">=</span> lineNumberReader<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           res <span style="color:#f92672">+=</span> ligne<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// Send results to HAR Storage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       HarStorage hs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HarStorage<span style="color:#f92672">(</span>HARSTORAGE_HOST<span style="color:#f92672">,</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>HARSTORAGE_PORT<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>       String response <span style="color:#f92672">=</span> hs<span style="color:#f92672">.</span><span style="color:#a6e22e">save</span><span style="color:#f92672">(</span>res<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>       System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>       e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Par contre, il semble que le driver de phantomjs ne fonctionne pas&hellip; dommage&hellip;</p>
 <p>Bien sûr, cela est parfaitement intégrable à ce qui a été fait dans mon article précédent (ie. via Cucumber JVM et FluentLenium), ce qui permet d&rsquo;obtenir une feature Cucumber JVM du type :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Feature: harstorage
- 
-  Scenario Outline: har browser navigation:
-    Given I connect on url http://127.0.0.1:8080 with different browsers and I register the HarStorage Server on 127.0.0.1:5000 with name test:
-      | &lt;browser&gt; | &lt;parameters&gt; | &lt;host&gt; | &lt;version&gt; | &lt;platform&gt; |
-    Given j accede a la homePage
-    And je suis sur homePage
-    When je submit
-    Then je suis sur la page result
-    Then I send har files to the HarStorage Server
-    Then drivers are closed
-  Examples:
-    | browser | parameters | host | version | platform |
-    | firefox |            | none |         |          |
-#    | firefox |            | http://10.147.2.83:4444/wd/hub |         | win7     |
-</code></pre></div><h2 id="conclusion-2">Conclusion</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Feature: harstorage
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  Scenario Outline: har browser navigation:
+</span></span><span style="display:flex;"><span>    Given I connect on url http://127.0.0.1:8080 with different browsers and I register the HarStorage Server on 127.0.0.1:5000 with name test:
+</span></span><span style="display:flex;"><span>      | &lt;browser&gt; | &lt;parameters&gt; | &lt;host&gt; | &lt;version&gt; | &lt;platform&gt; |
+</span></span><span style="display:flex;"><span>    Given j accede a la homePage
+</span></span><span style="display:flex;"><span>    And je suis sur homePage
+</span></span><span style="display:flex;"><span>    When je submit
+</span></span><span style="display:flex;"><span>    Then je suis sur la page result
+</span></span><span style="display:flex;"><span>    Then I send har files to the HarStorage Server
+</span></span><span style="display:flex;"><span>    Then drivers are closed
+</span></span><span style="display:flex;"><span>  Examples:
+</span></span><span style="display:flex;"><span>    | browser | parameters | host | version | platform |
+</span></span><span style="display:flex;"><span>    | firefox |            | none |         |          |
+</span></span><span style="display:flex;"><span>#    | firefox |            | http://10.147.2.83:4444/wd/hub |         | win7     |
+</span></span></code></pre></div><h2 id="conclusion-2">Conclusion</h2>
 <p>On a vu dans ce paragraphe qu&rsquo;il était aisé d&rsquo;intégrer la génération et l&rsquo;upload d&rsquo;un fichier HAR issu d&rsquo;un scénario fonctionnel dans HarStorage.</p>
 <p>Cependant, ce mécanisme ne fonctionne malheureusement pas avec phantomjs, ce qui peut forcer à l&rsquo;utilisation de Selenium Server (à noter que cela n&rsquo;a pas été testé avec d&rsquo;autres driver que Firefox).</p>
 <p>Enfin, un point essentiel à noter est que par cette méthode, le temps d&rsquo;exécution du javascript n&rsquo;est pas remonté dans la timeline. En effet, l&rsquo;utilisation d&rsquo;un proxy ne fournit pas cette information alors qu&rsquo;avec une génération direct d&rsquo;un fichier HAR via phantomjs, cette donnée est bien présente.</p>

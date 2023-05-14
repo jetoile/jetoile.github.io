@@ -47,7 +47,7 @@ Cet article va montrer comment il est possible de concilier simplement les tests
       <description>Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&amp;rsquo;avais posté précédemment sur un composant au doux nom d&amp;rsquo;Hadoop-Unit.
 J&amp;rsquo;ai le plaisir de vous annoncer qu&amp;rsquo;il a été releasé en version 1.3 et qu&amp;rsquo;il est également disponible sur maven central.
 Il intègre dans sa nouvelle version :
- support d&amp;rsquo;ElasticSearch 5.0.0-alpha2 correction de bugs : la variable d&amp;rsquo;environnement HADOOP_UNIT n&amp;rsquo;est plus nécessaire que pour les utilisateurs de Windows (merci Florent ;)) passage en version 0.</description>
+support d&amp;rsquo;ElasticSearch 5.0.0-alpha2 correction de bugs : la variable d&amp;rsquo;environnement HADOOP_UNIT n&amp;rsquo;est plus nécessaire que pour les utilisateurs de Windows (merci Florent ;)) passage en version 0.</description>
     </item>
     
     <item>
@@ -57,7 +57,7 @@ Il intègre dans sa nouvelle version :
       
       <guid>https://blog.jetoile.fr/2016/04/hadoop-unit.html</guid>
       <description>Dans mon dernier post, j&amp;rsquo;avais parlé d&amp;rsquo;une surcouche que j&amp;rsquo;avais développé afin de faciliter l&amp;rsquo;utilisation de quelques-uns des composants de l&amp;rsquo;écosystème Hadoop, à savoir :
- Hdfs, Zookeeper, HiveMetastore, Hiveserver2, SolR, SolRCloud, Oozie, Kafka, HBase, MongoDB [New \o/ ], et Cassandra [New \o/ ].  Il s&amp;rsquo;appelait alors Hadoop-Bootstrap mais il s&amp;rsquo;agissait aussi d&amp;rsquo;une première version qui a, bien sûr, évolué.
+Hdfs, Zookeeper, HiveMetastore, Hiveserver2, SolR, SolRCloud, Oozie, Kafka, HBase, MongoDB [New \o/ ], et Cassandra [New \o/ ]. Il s&amp;rsquo;appelait alors Hadoop-Bootstrap mais il s&amp;rsquo;agissait aussi d&amp;rsquo;une première version qui a, bien sûr, évolué.
 Cet article présentera donc quels ont été les améliorations qui ont été apportées.</description>
     </item>
     

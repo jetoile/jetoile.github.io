@@ -17,7 +17,7 @@
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
- utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur.  RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
+utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur. RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
     </item>
     
     <item>
@@ -78,7 +78,7 @@ Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Ce
       
       <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
- le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
+le découper fonctionnellement, le découper techniquement. En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
@@ -88,7 +88,7 @@ Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Ce
       
       <guid>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html</guid>
       <description>Il y a un moment déjà, j&amp;rsquo;avais fait un article sur le plugin release oh combien pratique dans notre utilisation de maven. J&amp;rsquo;y avais mentionné les 2 goals prepare et perform qui sont les plus connus et qui, pour rappel, permettent de :
- vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
+vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
     </item>
     
     <item>
@@ -99,7 +99,7 @@ Oui, je sais, les jsp c&amp;rsquo;est has been me diront certains&amp;hellip; Ce
       <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html</guid>
       <description>Bon, ça fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; je n&amp;rsquo;ai pas foncièrement d&amp;rsquo;excuses si ce n&amp;rsquo;est que j&amp;rsquo;ai été pas mal occupé sur un projet sur lequel j&amp;rsquo;essaierai de faire un petit retour dans un futur proche&amp;hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&amp;rdquo; plugins maven que j&amp;rsquo;ai eu l&amp;rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
- Olivier Lamy (http://olamy.</description>
+Olivier Lamy (http://olamy.</description>
     </item>
     
     <item>
@@ -120,7 +120,7 @@ Enfin pour être plus précis, je vais montrer comment il est facilement possibl
       <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
-Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>
+Présentation sur Maven 2 et petit retour d&#39;expérience View more presentations from jetoile </description>
     </item>
     
     <item>
@@ -131,7 +131,7 @@ Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentat
       <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html</guid>
       <description>Dans le cadre d&amp;rsquo;une problématique d&amp;rsquo;une usine logiciel, il peut s&amp;rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &amp;ldquo;bonnes&amp;rdquo; pratiques que doivent respecter l&amp;rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
- la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
+la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
     </item>
     
     <item>

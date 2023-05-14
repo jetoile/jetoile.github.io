@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Logstash : tour d&#39;horizon sur les stratégies de déploiement &middot; Jetoile</title>
 
@@ -288,24 +288,24 @@ Cet article fera un rapide tour d&rsquo;horizon sur les différentes stratégies
 </ul>
 <p><img src="https://blog.jetoile.fr/images/logstash/archi01.png" alt="center"></p>
 <p>En fait, une configuration typique de Logstash est la suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">input { 
-  stdin { } 
-}
-
-filter {
-  grok {
-    match =&gt; { &#34;message&#34; =&gt; &#34;%{COMBINEDAPACHELOG}&#34; }
-  }
-  date {
-    match =&gt; [ &#34;timestamp&#34; , &#34;dd/MMM/yyyy:HH:mm:ss Z&#34; ]
-  }
-}
-
-output {
-  elasticsearch { host =&gt; localhost }
-  stdout { codec =&gt; rubydebug }
-}
-</code></pre></div><p>où :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>input { 
+</span></span><span style="display:flex;"><span>  stdin { } 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>filter {
+</span></span><span style="display:flex;"><span>  grok {
+</span></span><span style="display:flex;"><span>    match =&gt; { &#34;message&#34; =&gt; &#34;%{COMBINEDAPACHELOG}&#34; }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  date {
+</span></span><span style="display:flex;"><span>    match =&gt; [ &#34;timestamp&#34; , &#34;dd/MMM/yyyy:HH:mm:ss Z&#34; ]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output {
+</span></span><span style="display:flex;"><span>  elasticsearch { host =&gt; localhost }
+</span></span><span style="display:flex;"><span>  stdout { codec =&gt; rubydebug }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>où :</p>
 <ul>
 <li><code>input</code> peut prendre en valeur des <em>plugins</em> qui correspondent à ce que peut prendre en entrée l&rsquo;agent (comme, par exemple, l&rsquo;entrée standard ou le contenu d&rsquo;un fichier).</li>
 <li><code>filter</code> peut prendre en valeur des <em>plugins</em> qui permettent de manipuler l&rsquo;événement en le <em>parsant</em>, filtrant ou en ajoutant des informations issues du parsing ou non.</li>
@@ -316,7 +316,7 @@ output {
 <p>Dans l&rsquo;architecture de déploiement <em>classique</em>, on retrouve la <em>stack</em> préconisée qui est la suivante :</p>
 <ul>
 <li>Les agents Logstash se trouvant sur les machines hôtes collectent et émettent les logs (sous forme d&rsquo;événements) au système central.</li>
-<li>Une instance d&rsquo;un système de bufferisation (comme <a href="http://redis.io/"><strong>Redis</strong></a> ou autre, comme une implémentation d'<a href="http://www.amqp.org/"><strong>AMQP</strong></a>) reçoit les événement sur le serveur central et joue le rôle de buffer.</li>
+<li>Une instance d&rsquo;un système de bufferisation (comme <a href="http://redis.io/"><strong>Redis</strong></a> ou autre, comme une implémentation d&rsquo;<a href="http://www.amqp.org/"><strong>AMQP</strong></a>) reçoit les événement sur le serveur central et joue le rôle de buffer.</li>
 <li>Un agent Logstash extrait les événements de logs du buffer et les traite.</li>
 <li>L&rsquo;agent Logstash envoie les événements d&rsquo;index dans ElasticSearch.</li>
 <li>ElasticSearch stocke et rend les événements cherchable.</li>

@@ -17,7 +17,7 @@
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
- utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur.  RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
+utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur. RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
     </item>
     
     <item>
@@ -38,8 +38,7 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
       
       <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html</guid>
       <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
-Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
-En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
+Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)</description>
     </item>
     
     <item>

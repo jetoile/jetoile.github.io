@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>FluentLenium et Cucumber JVM... complément et precision &middot; Jetoile</title>
 
@@ -291,67 +291,67 @@
 <p>Contrairement à la façon que j&rsquo;avais présentée dans mon article précédent, il n&rsquo;est pas obligatoire de déléguer la déclaration des pages <code>FluentPage</code> à une autre classe étendant <code>FluentTest</code>. En fait, il suffit juste de faire étendre la classe contenant les steps cucumber de <code>FluentAdapter</code>, d&rsquo;y déclarer les pages et d&rsquo;appeler dans la méthode annotée par @Before (celui de Cucumber JVM bien sûr) les méthode d&rsquo;initialisation du contexte de FluentLenium.</p>
 <p>Pour rappel, cette initialisation instancie le WebDriver utilisé par Selenium 2 mais également les pages (annotées par l&rsquo;annotation <code>@Page</code>) présentes dans la classe courante (ou ses parentes) qui doit, au minimum, étendre de <code>FluentAdapter</code>. Cela se fait au travers des méthodes <code>initFluent()</code> et <code>initTest()</code>.</p>
 <p>Le code est donc extrêmement simple puisqu&rsquo;il suffit de faire quelque chose du style :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> cucumber.api.java.After<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> cucumber.api.java.Before<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> cucumber.api.java.en.Given<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> cucumber.api.java.en.Then<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> cucumber.api.java.en.When<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.fluentlenium.core.FluentAdapter<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.fluentlenium.core.annotation.Page<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.openqa.selenium.htmlunit.HtmlUnitDriver<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import static</span> org.fest.assertions.api.Assertions.assertThat<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleStep</span> <span style="color:#66d9ef">extends</span> FluentAdapter <span style="color:#f92672">{</span>
-
- <span style="color:#a6e22e">@Page</span>
- BingPage page<span style="color:#f92672">;</span>
-
- <span style="color:#a6e22e">@Before</span>
- <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">before</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HtmlUnitDriver<span style="color:#f92672">());</span>
-  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
- <span style="color:#f92672">}</span>
-
- <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;j accede a bing&#34;</span><span style="color:#f92672">)</span>
- <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  goTo<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
- <span style="color:#f92672">}</span>
-
- <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;je recherche ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
- <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step2</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  fill<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_q&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">with</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
-  submit<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_go&#34;</span><span style="color:#f92672">);</span>
- <span style="color:#f92672">}</span>
-
- <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;le titre est ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
- <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step3</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  assertThat<span style="color:#f92672">(</span>title<span style="color:#f92672">()).</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
- <span style="color:#f92672">}</span>
-
- <span style="color:#a6e22e">@After</span>
- <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">after</span><span style="color:#f92672">(){</span>
-  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
- <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>où BingPage est :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.fluentlenium.core.FluentPage<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BingPage</span> <span style="color:#66d9ef">extends</span> FluentPage <span style="color:#f92672">{</span>
-
- <span style="color:#a6e22e">@Override</span>
- <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUrl</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;http://www.bing.com&#34;</span><span style="color:#f92672">;</span>
- <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>et la feature, la suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Feature: basic
-
-  Scenario: scenar1
-    Given j accede a bing
-    When je recherche toto
-    Then le titre est toto 
-</code></pre></div><p>Il est intéressant de remarquer la simplicité de la chose (et rien à voir avec l&rsquo;implémentation que j&rsquo;avais proposé précédemment!).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.java.After<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.java.Before<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.java.en.Given<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.java.en.Then<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.java.en.When<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.fluentlenium.core.FluentAdapter<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.fluentlenium.core.annotation.Page<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.openqa.selenium.htmlunit.HtmlUnitDriver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> org.fest.assertions.api.Assertions.assertThat<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleStep</span> <span style="color:#66d9ef">extends</span> FluentAdapter <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Page</span>
+</span></span><span style="display:flex;"><span> BingPage page<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Before</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">before</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HtmlUnitDriver<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;j accede a bing&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step1</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  goTo<span style="color:#f92672">(</span>page<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;je recherche ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step2</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  fill<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_q&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">with</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  submit<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#sb_form_go&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span>value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;le titre est ([^ ]*) &#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step3</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  assertThat<span style="color:#f92672">(</span>title<span style="color:#f92672">()).</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>keyword<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@After</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">after</span><span style="color:#f92672">(){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>où BingPage est :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> org.fluentlenium.core.FluentPage<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BingPage</span> <span style="color:#66d9ef">extends</span> FluentPage <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUrl</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;http://www.bing.com&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>et la feature, la suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Feature: basic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Scenario: scenar1
+</span></span><span style="display:flex;"><span>    Given j accede a bing
+</span></span><span style="display:flex;"><span>    When je recherche toto
+</span></span><span style="display:flex;"><span>    Then le titre est toto 
+</span></span></code></pre></div><p>Il est intéressant de remarquer la simplicité de la chose (et rien à voir avec l&rsquo;implémentation que j&rsquo;avais proposé précédemment!).</p>
 <p>A part cela, peu de choses à ajouter : le code parle de lui même&hellip;</p>
 <h2 id="limites">Limites</h2>
 <p>On vient de voir comme il était simple de faire cohabiter FluentLenium et Cucumber JVM.</p>
@@ -371,34 +371,34 @@ Cependant, la question principale est de trouver comment il est possible de n&rs
 <p>En fait, il est plus propre, d&rsquo;un point de vue séparation des concepts, de laisser à cette classe le soin de proposer les fixtures d&rsquo;initialisation du webDriver tout en séparant la déclaration des pages.</p>
 <p>Cela peut être réalisé en créant une classe (<code>FluentPageInjector</code>) étendant de <code>FluentAdapter</code> qui définit les pages et de la faire étendre d&rsquo;une classe (<code>FluentLeniumStepInitilizer</code>) qui définit les fixtures d&rsquo;instanciation du webDriver.</p>
 <p>Cela offre deux avantages : les classes qui définissent les steps de navigation n&rsquo;ont qu&rsquo;à étendre de <code>FluentPageInjector</code> pour avoir une visibilité sur les pages (tout en continuant d&rsquo;injecter via pico l&rsquo;instance de <code>FluentLeniumStepInitilizer</code>) et il devient alors possible de variabiliser le webDriver à utiliser.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Feature: browser
-
-  Scenario: navigation version firefox
-    Given I connect on url http://localhost:8080 with firefox
-    Given j accede a la homePage
-    And je suis sur homePage
-    When je submit
-    Then je suis sur la page result
-    And driver is closed
-
-
-  Scenario: navigation version chrome
-    Given I connect on url http://localhost:8080 with chrome with parameters webdriver.chrome.driver:/opt/chromedriver/chromedriver
-    Given j accede a la homePage
-    And je suis sur homePage
-    When je submit
-    Then je suis sur la page result
-    And driver is closed
-
-
-  Scenario: navigation version phantomjs
-    Given I connect on url http://localhost:8080 with phantomjs with parameters phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs 
-    Given j accede a la homePage
-    And je suis sur homePage
-    When je submit
-    Then je suis sur la page result
-    And driver is closed
-</code></pre></div><br/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Feature: browser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Scenario: navigation version firefox
+</span></span><span style="display:flex;"><span>    Given I connect on url http://localhost:8080 with firefox
+</span></span><span style="display:flex;"><span>    Given j accede a la homePage
+</span></span><span style="display:flex;"><span>    And je suis sur homePage
+</span></span><span style="display:flex;"><span>    When je submit
+</span></span><span style="display:flex;"><span>    Then je suis sur la page result
+</span></span><span style="display:flex;"><span>    And driver is closed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Scenario: navigation version chrome
+</span></span><span style="display:flex;"><span>    Given I connect on url http://localhost:8080 with chrome with parameters webdriver.chrome.driver:/opt/chromedriver/chromedriver
+</span></span><span style="display:flex;"><span>    Given j accede a la homePage
+</span></span><span style="display:flex;"><span>    And je suis sur homePage
+</span></span><span style="display:flex;"><span>    When je submit
+</span></span><span style="display:flex;"><span>    Then je suis sur la page result
+</span></span><span style="display:flex;"><span>    And driver is closed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Scenario: navigation version phantomjs
+</span></span><span style="display:flex;"><span>    Given I connect on url http://localhost:8080 with phantomjs with parameters phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs 
+</span></span><span style="display:flex;"><span>    Given j accede a la homePage
+</span></span><span style="display:flex;"><span>    And je suis sur homePage
+</span></span><span style="display:flex;"><span>    When je submit
+</span></span><span style="display:flex;"><span>    Then je suis sur la page result
+</span></span><span style="display:flex;"><span>    And driver is closed
+</span></span></code></pre></div><br/>
 ```java
 package step;
 <p>import org.fluentlenium.core.FluentAdapter;
@@ -412,8 +412,8 @@ protected HomePage homePage;</p>
 protected ResultPage resultPage;
 </code></pre>
 <p>}</p>
-<pre><code>
-On remarque, comme dit plus haut, que cette classe n'a qu'un seul rôle qui est de déclarer les pages tout en étendant de `FluentAdapter`. 
+<pre tabindex="0"><code>
+On remarque, comme dit plus haut, que cette classe n&#39;a qu&#39;un seul rôle qui est de déclarer les pages tout en étendant de `FluentAdapter`. 
 
 ```java
 public class HomePageStep extends FluentPageInjector {
@@ -424,111 +424,111 @@ public class HomePageStep extends FluentPageInjector {
      }
 
 
-     @Given(&quot;^j accede a la homePage$&quot;)
+     @Given(&#34;^j accede a la homePage$&#34;)
      public void j_accede_a_homePage() {
       goTo(homePage);
      }
 
-     @Given(&quot;^je suis sur homePage$&quot;)
+     @Given(&#34;^je suis sur homePage$&#34;)
      public void je_suis_sur_homePage() {
       homePage.isAt();
      }
 
-     @When(&quot;^je submit$&quot;)
+     @When(&#34;^je submit$&#34;)
      public void je_submit() throws Throwable {
       homePage.submit();
      }
 }
 </code></pre><br/>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResultPageStep</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ResultPageStep</span><span style="color:#f92672">(</span>FluentLeniumStepInitilizer delegator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span> <span style="color:#f92672">=</span> delegator<span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^je suis sur la page result$&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">je_suis_sur_la_page_result</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-        resultPage<span style="color:#f92672">.</span><span style="color:#a6e22e">isAt</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span> 
-</code></pre></div><p>Ces classes correspondent aux classes qui définissent les fixtures. Elles étendent de <code>FluentPageInjector</code> de façon à pouvoir bénéficier de la visibilité sur les pages. Par contre, il est intéressant de constater que, dans son constructeur, la classe <code>FluentLeniumStepInitializer</code> est injecté via Pico Container. Cela permet d&rsquo;affecter la valeur des pages.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FluentLeniumStepInitilizer</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^I connect on url ([^ ]*) with ([^ ]*) with parameters ([^ ]*)$&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">browser_connect</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browser<span style="color:#f92672">,</span> String parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        init<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> parameters<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^drivers are closed&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@After</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterClose</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserName<span style="color:#f92672">,</span> String parametersLine<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Browser browser <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-
-        DesiredCapabilities capabilities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DesiredCapabilities<span style="color:#f92672">();</span>
-
-        String<span style="color:#f92672">[]</span> parameters <span style="color:#f92672">=</span> parametersLine<span style="color:#f92672">.</span><span style="color:#a6e22e">slip</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;;&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String parameter <span style="color:#f92672">:</span> parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                String<span style="color:#f92672">[]</span> key_value <span style="color:#f92672">=</span> parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">);</span>
-                capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapability</span><span style="color:#f92672">(</span>key_value<span style="color:#f92672">[</span>0<span style="color:#f92672">],</span> key_value<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-
-        browser <span style="color:#f92672">=</span> Browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>browserLine<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
-        capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setBrowserName</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-
-        initWebDriver<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browserHost<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initWebDriver</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserHost<span style="color:#f92672">,</span> Browser browser<span style="color:#f92672">,</span> DesiredCapabilities capabilities<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Fluent fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        WebDriver driver <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            driver <span style="color:#f92672">=</span> BrowserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getDriver</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
-            fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span>driver<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-
-        fluent<span style="color:#f92672">.</span><span style="color:#a6e22e">withDefaultUrl</span><span style="color:#f92672">(</span>host<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Cette classe étend par transitivité <code>FluentAdapter</code> et dispose donc de la visibilité sur les méthodes d&rsquo;initialisation de <code>FluentLenium</code>. En outre, en étendant <code>FluentPageInjector</code> (qui étend de <code>FluentAdapter</code>), cela lui permet, à l&rsquo;appel de <code>initTest()</code>, d&rsquo;initialiser les pages.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ResultPageStep</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ResultPageStep</span><span style="color:#f92672">(</span>FluentLeniumStepInitilizer delegator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span> <span style="color:#f92672">=</span> delegator<span style="color:#f92672">.</span><span style="color:#a6e22e">resultPage</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^je suis sur la page result$&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">je_suis_sur_la_page_result</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        resultPage<span style="color:#f92672">.</span><span style="color:#a6e22e">isAt</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span> 
+</span></span></code></pre></div><p>Ces classes correspondent aux classes qui définissent les fixtures. Elles étendent de <code>FluentPageInjector</code> de façon à pouvoir bénéficier de la visibilité sur les pages. Par contre, il est intéressant de constater que, dans son constructeur, la classe <code>FluentLeniumStepInitializer</code> est injecté via Pico Container. Cela permet d&rsquo;affecter la valeur des pages.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FluentLeniumStepInitilizer</span> <span style="color:#66d9ef">extends</span> FluentPageInjector <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^I connect on url ([^ ]*) with ([^ ]*) with parameters ([^ ]*)$&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">browser_connect</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browser<span style="color:#f92672">,</span> String parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        init<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> parameters<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;^drivers are closed&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@After</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afterClose</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">quit</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserName<span style="color:#f92672">,</span> String parametersLine<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Browser browser <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        DesiredCapabilities capabilities <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DesiredCapabilities<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        String<span style="color:#f92672">[]</span> parameters <span style="color:#f92672">=</span> parametersLine<span style="color:#f92672">.</span><span style="color:#a6e22e">slip</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String parameter <span style="color:#f92672">:</span> parameters<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                String<span style="color:#f92672">[]</span> key_value <span style="color:#f92672">=</span> parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setCapability</span><span style="color:#f92672">(</span>key_value<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">],</span> key_value<span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        browser <span style="color:#f92672">=</span> Browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>browserLine<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        capabilities<span style="color:#f92672">.</span><span style="color:#a6e22e">setBrowserName</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        initWebDriver<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> browserHost<span style="color:#f92672">,</span> browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initWebDriver</span><span style="color:#f92672">(</span>String host<span style="color:#f92672">,</span> String browserHost<span style="color:#f92672">,</span> Browser browser<span style="color:#f92672">,</span> DesiredCapabilities capabilities<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Fluent fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        WebDriver driver <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            driver <span style="color:#f92672">=</span> BrowserMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">getDriver</span><span style="color:#f92672">(</span>browser<span style="color:#f92672">,</span> capabilities<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            fluent <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initFluent</span><span style="color:#f92672">(</span>driver<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        fluent<span style="color:#f92672">.</span><span style="color:#a6e22e">withDefaultUrl</span><span style="color:#f92672">(</span>host<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">initTest</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Cette classe étend par transitivité <code>FluentAdapter</code> et dispose donc de la visibilité sur les méthodes d&rsquo;initialisation de <code>FluentLenium</code>. En outre, en étendant <code>FluentPageInjector</code> (qui étend de <code>FluentAdapter</code>), cela lui permet, à l&rsquo;appel de <code>initTest()</code>, d&rsquo;initialiser les pages.
 Concernant l&rsquo;initialisation des webDriver, cela est fait au niveau de la classe <code>BrowserMapper</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Browser <span style="color:#f92672">{</span>
-    HTMLUNIT<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">),</span>
-    FIREFOX<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firefox&#34;</span><span style="color:#f92672">),</span>
-    CHROME<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;chrome&#34;</span><span style="color:#f92672">),</span>
-    PHANTOMJS<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;phantomjs&#34;</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-
-    Browser<span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Browser <span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Browser browser <span style="color:#f92672">:</span> values<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>name<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">return</span> browser<span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> HTMLUNIT<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><br/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Browser <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    HTMLUNIT<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>    FIREFOX<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firefox&#34;</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>    CHROME<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;chrome&#34;</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>    PHANTOMJS<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;phantomjs&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Browser<span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Browser <span style="color:#a6e22e">getBrowser</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Browser browser <span style="color:#f92672">:</span> values<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>browser<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>name<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> browser<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> HTMLUNIT<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><br/>
 ```java
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -564,10 +564,10 @@ return webDriverLazyLoader.getWebDriverClass(capabilities);</p>
 return browserMapper.get(Browser.HTMLUNIT).getWebDriverClass();
 }
 }</p>
-<pre><code>
-Cette classe permet de faire le pont avec les webDriver qu'il est possible d'utiliser. Cependant, la petite astuce consiste à instancier de manière &quot;Lazy&quot; ces derniers.
+<pre tabindex="0"><code>
+Cette classe permet de faire le pont avec les webDriver qu&#39;il est possible d&#39;utiliser. Cependant, la petite astuce consiste à instancier de manière &#34;Lazy&#34; ces derniers.
 
-En effet, appeler le constructeur d'un webDriver l'instancie mais le démarre également (ie. que la fenêtre du navigateur s'ouvre réellement). Du coup, la petite classe présentée ci-dessous a été utilisée. 
+En effet, appeler le constructeur d&#39;un webDriver l&#39;instancie mais le démarre également (ie. que la fenêtre du navigateur s&#39;ouvre réellement). Du coup, la petite classe présentée ci-dessous a été utilisée. 
 
 ```java
 import org.openqa.selenium.Capabilities;
@@ -609,67 +609,67 @@ class WebDriverLazyLoader {
 <p>Il a été vu dans le chapitre précédent comment il était possible d&rsquo;exécuter des tests d&rsquo;acceptances/intégration sur un navigateur donné.</p>
 <p>Ce chapitre présentera, pour sa part, une façon de les lancer sur différents navigateurs sans avoir à faire de copier/coller ;-).</p>
 <p>En fait, Cucumber JVM permet nativement de boucler sur un scénario en utilisant différents paramètres. Cela se fait par le mécanisme de <code>scenario outline</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">
-Feature: multibrowser
-
-  Scenario Outline: multi browser navigation version 1:
-    Given I connect on url http://localhost:8080 with &lt;browser&gt; with parameters &lt;parameters&gt;
-    Given j accede a la homePage
-    And je suis sur homePage
-    When je submit
-    Then je suis sur la page result
-    And driver is closed
-  Examples:
-    | browser | parameters                                             | 
-    | firefox |                                                        | 
-    | default |                                                        | 
-    | chrome  | webdriver.chrome.driver:/opt/chromedriver/chromedriver | 
-</code></pre></div><p>Et&hellip; c&rsquo;est tout!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Feature: multibrowser
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Scenario Outline: multi browser navigation version 1:
+</span></span><span style="display:flex;"><span>    Given I connect on url http://localhost:8080 with &lt;browser&gt; with parameters &lt;parameters&gt;
+</span></span><span style="display:flex;"><span>    Given j accede a la homePage
+</span></span><span style="display:flex;"><span>    And je suis sur homePage
+</span></span><span style="display:flex;"><span>    When je submit
+</span></span><span style="display:flex;"><span>    Then je suis sur la page result
+</span></span><span style="display:flex;"><span>    And driver is closed
+</span></span><span style="display:flex;"><span>  Examples:
+</span></span><span style="display:flex;"><span>    | browser | parameters                                             | 
+</span></span><span style="display:flex;"><span>    | firefox |                                                        | 
+</span></span><span style="display:flex;"><span>    | default |                                                        | 
+</span></span><span style="display:flex;"><span>    | chrome  | webdriver.chrome.driver:/opt/chromedriver/chromedriver | 
+</span></span></code></pre></div><p>Et&hellip; c&rsquo;est tout!</p>
 <p>Le code n&rsquo;a pas à être modifié : Cucumber JVM s&rsquo;occupe de tout! ;-)</p>
 <h2 id="limites-2">Limites</h2>
 <p>On a vu dans le paragraphe précédent comment il était possible d&rsquo;exécuter facilement des tests d&rsquo;acceptance/intégration en s&rsquo;appuyant sur la notion de scénario outline offerte nativement par Cucumber JVM.</p>
 <p>Coté limitation, je n&rsquo;en vois pas trop&hellip;</p>
 <p>Peut être le fait de ne pas instancier le webDriver pour chaque scénario (opération assez coûteuse en temps) mais cela est aisément résolvable en utilisant une sorte de cache de webDriver fonctionnant sur le principe de singleton qui serait réinialisé lors de l&rsquo;appel à la step drivers are closed qui serait isolée dans son propre <code>scenario outline</code> :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">  Scenario Outline: browsers are closed:
-    Then driver is closed
-  Examples:
-    | browser   | parameters                                                            | 
-    | firefox   |                                                                       | 
-    | default   |                                                                       | 
-    | phantomjs | phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs | 
-    | chrome    | webdriver.chrome.driver:/opt/chromedriver/chromedriver                |     
-</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>  Scenario Outline: browsers are closed:
+</span></span><span style="display:flex;"><span>    Then driver is closed
+</span></span><span style="display:flex;"><span>  Examples:
+</span></span><span style="display:flex;"><span>    | browser   | parameters                                                            | 
+</span></span><span style="display:flex;"><span>    | firefox   |                                                                       | 
+</span></span><span style="display:flex;"><span>    | default   |                                                                       | 
+</span></span><span style="display:flex;"><span>    | phantomjs | phantomjs.binary.path:/opt/phantomjs-1.9.0-linux-x86_64/bin/phantomjs | 
+</span></span><span style="display:flex;"><span>    | chrome    | webdriver.chrome.driver:/opt/chromedriver/chromedriver                |     
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>Il a été présenté dans cet article comment il était possible d&rsquo;implémenter l&rsquo;intégration de Cucumber JVM et de Selenium à l&rsquo;aide de FluentLenium.</p>
 <p>Cet article n&rsquo;a, cependant, pas fait mention de l&rsquo;exécution des tests sur des navigateurs distants via les <strong>RemoteWebDriver</strong> mais cela est tout à fait possible (même si le code montré ici ne le présente pas) et est même totalement fonctionnel : pour ce faire (code disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/tree/multiNav">ici</a>), il suffit de fournir, entre autre, des paramètres supplémentaires comme l&rsquo;url de connexion au hub Selenium et d&rsquo;instancier un <code>RemoteWebDriver</code> plutôt que le webDriver.</p>
 <p>De même, le code permettant d&rsquo;instancier à la mode singleton les webDriver est disponible <a href="https://github.com/jetoile/fluentlenium-cucumber/blob/multiNav/src/test/java/step/FluentLeniumStepInitilizer.java">ici</a> (voir la méthode <code>initCachedWebDriver()</code> de la classe <code>FluentLeniumStepInitilizer</code>).</p>
 <p>Enfin, un dernier mot sur la façon dont il est possible d&rsquo;exécuter tout ce beau monde (comme ça, je réponds à la remarque très pertinente de <a href="https://twitter.com/josepaumard">José</a> ;-) ) parce que faire des tests, c&rsquo;est bien, les jouer, c&rsquo;est mieux!</p>
 <p>Il est possible de jouer les tests d&rsquo;au moins trois manières distinctes : une orienté &ldquo;vraie vie&rdquo; (ie. utilisable au sein d&rsquo;un build maven et donc exécutable via une usine d&rsquo;intégration continue) et deux autres plutôt orientés développement.</p>
 <p>Ainsi, pour jouer les tests via maven, il suffit de le déclarer dans le <code>pom.xml</code> le plugin failsafe en le branchant sur la &ldquo;bonne phase&rdquo;, à savoir le runner Cucumber JVM :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-failsafe-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>integration-test<span style="color:#f92672">&lt;/goal&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>verify<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-        <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/BasicRunner.java<span style="color:#f92672">&lt;/include&gt;</span>
-        <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>Coté jouabilité des tests sur un environnement de développement  il est possible d&rsquo;exécuter le <strong>Runner</strong> Cucumber JVM directement (comme lors de l&rsquo;exécution d&rsquo;une classe de test unitaire) ou d&rsquo;utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas&hellip;).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> cucumber.api.junit.Cucumber<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>Cucumber<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Cucumber.Options</span><span style="color:#f92672">(</span>features <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classpath:fr/jetoile/webapp/acceptance&#34;</span><span style="color:#f92672">,</span> format <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;pretty&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;html:target/cucumber&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;json:target/cucumber.json&#34;</span><span style="color:#f92672">})</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RunCucumberFeatures</span> <span style="color:#f92672">{</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><img src="http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s1600/screenshot01.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-failsafe-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>integration-test<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>verify<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/BasicRunner.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>Coté jouabilité des tests sur un environnement de développement  il est possible d&rsquo;exécuter le <strong>Runner</strong> Cucumber JVM directement (comme lors de l&rsquo;exécution d&rsquo;une classe de test unitaire) ou d&rsquo;utiliser le plugin Cucumber JVM proposé par notre IDE préféré (pour moi IntelliJ, pour les autres, je ne sais pas&hellip;).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> cucumber.api.junit.Cucumber<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.runner.RunWith<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RunWith</span><span style="color:#f92672">(</span>Cucumber<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Cucumber.Options</span><span style="color:#f92672">(</span>features <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classpath:fr/jetoile/webapp/acceptance&#34;</span><span style="color:#f92672">,</span> format <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;pretty&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;html:target/cucumber&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;json:target/cucumber.json&#34;</span><span style="color:#f92672">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RunCucumberFeatures</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><img src="http://4.bp.blogspot.com/-RGW7oSAChOQ/UWXmqPsYh6I/AAAAAAAAA4Y/cDH-YyVcpgs/s1600/screenshot01.png" alt="medium"></p>
 <br/>
 <p><img src="http://3.bp.blogspot.com/-FkF8ZO6r6co/UWXnUNjqjII/AAAAAAAAA4g/obtSC7BS6kI/s1600/screenshot02.png" alt="medium"></p>
 <p>Enfin, pour rappel, mon usecase étant de tester mon application web en boite noire, un prérequis était que mon application web soit démarrée au préalable.</p>

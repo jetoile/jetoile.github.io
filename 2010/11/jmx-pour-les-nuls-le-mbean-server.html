@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>JMX pour les nuls... - Le MBean Server - Partie 5 &middot; Jetoile</title>
 
@@ -397,7 +397,7 @@ Son ObjectName est JMXImplementation:type=MBeanServerDelegate et il possède que
 </tbody></table>
 <p>Les méthodes <code>queryMBeans(ObjectName, QueryExp)</code> et <code>queryNames(ObjectName, QueryExp)</code> de récupération d&rsquo;un MBean permettent de fournir une requête afin de minimiser la recherche au sein du MBean Server. Pour ce faire, ces méthodes prennent en paramètre :</p>
 <ul>
-<li>un <code>ObjectName</code> sous forme de pattern qui correspond à la portée de la requête et qui permet de spécifier le nom de l'<code>ObjectName</code> des MBeans à rechercher,</li>
+<li>un <code>ObjectName</code> sous forme de pattern qui correspond à la portée de la requête et qui permet de spécifier le nom de l&rsquo;<code>ObjectName</code> des MBeans à rechercher,</li>
 <li>un critère de filtre sur la valeur des attributs qui s&rsquo;applique aux MBeans trouvés par le premier paramètre.</li>
 </ul>
 <p>Dans le cas où la requête ne trouve pas de MBeans ou qu&rsquo;aucun MBean trouvé ne répond aux critères fournis, le résultat ne contiendra pas d&rsquo;éléments.</p>
@@ -420,16 +420,16 @@ Le MBeanServerDelegate est accessible lors de la recherche de MBeans.
 <p>Dans la pratique, il n&rsquo;est pas nécessaire d&rsquo;avoir à utiliser directement les interfaces <code>ValueExp</code> et <code>QueryExp</code>. En effet, la classe Query fonctionne comme une fabrique d&rsquo;objets de type <code>QueryExp</code>.</p>
 <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TOlUQAX1lSI/AAAAAAAAAPk/ILENCvAgkPQ/s1600/jmx53.png" alt="medium"></p>
 <p>Ainsi, on pourra, par exemple, avoir le code suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">geq</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;age&#34;</span><span style="color:#f92672">),</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span>20<span style="color:#f92672">)),</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">),</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;G*ling&#34;</span><span style="color:#f92672">)));</span>
- 
-QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">classattr</span><span style="color:#f92672">(),</span>
-   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;managed.device.Printer&#34;</span><span style="color:#f92672">));</span>
-</code></pre></div><p>L&rsquo;interface <code>MBeanServerConnection</code> étendue par l&rsquo;interface <code>MBeanServer</code> permet de fournir une interface commune d&rsquo;accès au MBean Server qu&rsquo;il soit distant ou local.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">and</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">geq</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;age&#34;</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#ae81ff">20</span><span style="color:#f92672">)),</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>Query<span style="color:#f92672">.</span><span style="color:#a6e22e">attr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">),</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;G*ling&#34;</span><span style="color:#f92672">)));</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>QueryExp exp <span style="color:#f92672">=</span> Query<span style="color:#f92672">.</span><span style="color:#a6e22e">eq</span><span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">classattr</span><span style="color:#f92672">(),</span>
+</span></span><span style="display:flex;"><span>   Query<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;managed.device.Printer&#34;</span><span style="color:#f92672">));</span>
+</span></span></code></pre></div><p>L&rsquo;interface <code>MBeanServerConnection</code> étendue par l&rsquo;interface <code>MBeanServer</code> permet de fournir une interface commune d&rsquo;accès au MBean Server qu&rsquo;il soit distant ou local.</p>
 <p>Enfin, il est possible de fournir sa propre implémentation du MBean Server en renseignant la propriété système javax.management.builder.initial : lorsque les méthodes <code>createMBeanServer()</code> ou <code>newMBeanServer()</code> sur les <code>MBeanServerFactory</code> sont appelées, alors, si la variable système est renseignée, c&rsquo;est le MBean Server qui est renseigné qui est utilisé, sinon, c&rsquo;est le MBean Server par défaut.</p>
 <p>Ce MBean Server doit être une classe publique qui étend la classe ``MBeanServerBuilder<code>. Il est à noter que cette classe doit également pouvoir créer une instance de </code>MBeanServerDelegate` (qui peut être standard ou pas).</p>
 <p><img src="http://2.bp.blogspot.com/_XLL8sJPQ97g/TOlUoxk6UlI/AAAAAAAAAPo/oPr-jYiJNIw/s1600/jmx54.png" alt="center"></p>

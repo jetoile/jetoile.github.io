@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Devoxx 2011 - What&#39;s probably coming in Java Message Service 2.0 &middot; Jetoile</title>
 
@@ -318,59 +318,59 @@ La semaine dernière, j&rsquo;ai eu la chance d&rsquo;aller à Devoxx en Belgiqu
 <ul>
 <li>avec Java 7 dans un contexte JEE :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappedName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-ContextFactory contextFactory<span style="color:#f92672">;</span>
- 
-<span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappepdName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-Queue orderQueue<span style="color:#f92672">;</span>
- 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>messagingContext mCtx <span style="color:#f92672">=</span> contextFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createContext</span><span style="color:#f92672">()</span> <span style="color:#f92672">;)</span> <span style="color:#f92672">{</span>
-    TextMessage textMessage <span style="color:#f92672">=</span> mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
-    mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>orderQueue<span style="color:#f92672">,</span> textMessage<span style="color:#f92672">);</span>
-  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappedName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>ContextFactory contextFactory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappepdName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Queue orderQueue<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  </span><span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>messagingContext mCtx <span style="color:#f92672">=</span> contextFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createContext</span><span style="color:#f92672">()</span> <span style="color:#f92672">;)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>TextMessage textMessage <span style="color:#f92672">=</span> mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>orderQueue<span style="color:#f92672">,</span> textMessage<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
 <li>avec CDI dans un contexte JEE :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappedName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-Queue orderQueue<span style="color:#f92672">;</span>
- 
-<span style="color:#a6e22e">@Inject</span>
-<span style="color:#a6e22e">@MessagingContext</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-MessagingContext mCtx<span style="color:#f92672">;</span>
- 
-<span style="color:#a6e22e">@Inject</span>
-TextMessage textMessage<span style="color:#f92672">;</span>
- 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  textMesage<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
-  mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>orderQueue<span style="color:#f92672">,</span> textMessage<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Resource</span><span style="color:#f92672">(</span>mappedName<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Queue orderQueue<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@MessagingContext</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>MessagingContext mCtx<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span>TextMessage textMessage<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  textMesage<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  mCtx<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>orderQueue<span style="color:#f92672">,</span> textMessage<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
 <li>toujours avec Java 7 dans un contexte JEE :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Inject</span>
-<span style="color:#a6e22e">@JMSConnection</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@JMSDestination</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
-MessageProducer producer<span style="color:#f92672">;</span>
- 
-<span style="color:#a6e22e">@Inject</span>
-TextMessage textMessage<span style="color:#f92672">;</span>
- 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-    textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
-    producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>textMessage<span style="color:#f92672">);</span>
-  <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>JMSException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">//todo
-</span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h1 id="autres-simplifications">Autres simplifications</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@JMSConnection</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@JMSDestination</span><span style="color:#f92672">(</span>lookup<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>MessageProducer producer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Inject</span>
+</span></span><span style="display:flex;"><span>TextMessage textMessage<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendMessage</span><span style="color:#f92672">(</span>String payload<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  </span><span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>textMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>payload<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>textMessage<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">  </span><span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>JMSException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#75715e">//todo
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">  </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="autres-simplifications">Autres simplifications</h1>
 <p>Les autres simplifications d&rsquo;API envisageables pourraient être :</p>
 <ul>
 <li>de ne pas à créer préalablement un objet de type Message (ce qui pourrait permettrait de faire directement : <code>producer.send(String/Serializable);</code> ). Cependant, ce type d&rsquo;API ne permettrait pas de positionner des propriétés sur le message et ne serait pas adapter pour des messages de types <code>BytesMessage</code> ou <code>StreamMessage</code>. A ajouter à cela la question de son pendant pour la réception</li>
-<li>de simplifier la gestion des <code>DurableSubscriber</code> (<a href="http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic,">http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic,</a> java.lang.String)), qui, au jour d&rsquo;aujourd&rsquo;hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d&rsquo;une utilisation conjointe avec les EJB 3.2</li>
+<li>de simplifier la gestion des <code>DurableSubscriber</code> (<a href="http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic">http://download.oracle.com/javaee/1.4/api/javax/jms/Session.html#createDurableSubscriber(javax.jms.Topic</a>, java.lang.String)), qui, au jour d&rsquo;aujourd&rsquo;hui, doivent obligatoirement posséder un identifiant client et un nom de souscription. Ces deux paramètres pourraient être rendus optionnels dans le cadre d&rsquo;une utilisation conjointe avec les EJB 3.2</li>
 </ul>
 <h1 id="vers-le-futur">Vers le futur&hellip;</h1>
 <p>Autre que la simplification des APIs, Nigel nous a présenté ce que pourrait apporter JMS 2.0 dans nos besoins de demain.</p>

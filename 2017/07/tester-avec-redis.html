@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Des tests d&#39;intégration avec Redis &middot; Jetoile</title>
 
@@ -265,220 +265,220 @@
 
   <p><img src="https://blog.jetoile.fr/images/redis.png" alt="left-small"> Redis est écrit en C et faire des tests d&rsquo;intégration en Java peut s&rsquo;avérer compliquer. En outre, le fait que Redis doive être compilé lors de son installation rend les choses encore moins aisées.</p>
 <p>Bien sûr, il est possible d&rsquo;utiliser Docker ou de l&rsquo;installer préalablement sur son poste mais cette deuxième option casse un peu les bonnes pratiques des tests.</p>
-<p>Il existe également de nombreux projets permettant de faire des tests avec Redis mais, souvent, les solutions proposées embarquent le binaire de Redis ou on besoin qu&rsquo;il soit déjà présent et installer/compiler sur le poste (<a href="https://github.com/kstyrc/embedded-redis,">https://github.com/kstyrc/embedded-redis,</a> <a href="https://github.com/lordofthejars/nosql-unit,">https://github.com/lordofthejars/nosql-unit,</a> <a href="https://github.com/ishiis/redis-unit)">https://github.com/ishiis/redis-unit)</a>. Les solutions qui intègrent le binaire ne sont malheureusement souvent pas à jour et laisse assez peu la main sur la version.</p>
+<p>Il existe également de nombreux projets permettant de faire des tests avec Redis mais, souvent, les solutions proposées embarquent le binaire de Redis ou on besoin qu&rsquo;il soit déjà présent et installer/compiler sur le poste (<a href="https://github.com/kstyrc/embedded-redis">https://github.com/kstyrc/embedded-redis</a>, <a href="https://github.com/lordofthejars/nosql-unit">https://github.com/lordofthejars/nosql-unit</a>, <a href="https://github.com/ishiis/redis-unit)">https://github.com/ishiis/redis-unit)</a>. Les solutions qui intègrent le binaire ne sont malheureusement souvent pas à jour et laisse assez peu la main sur la version.</p>
 <p>Pour ceux qui n&rsquo;aurait pas envie d&rsquo;utiliser Docker, cet article va montrer comment il est possible de piloter programmatiquement l&rsquo;installation de Redis afin de permettre les tests d&rsquo;intégration.</p>
 <!-- more -->
 <p>En fait, le code ci-dessous se charge de télécharger Redis et de le compiler dans le répertoire <code>$USER_HOME/.redis</code>. Pour ce faire une tache ant est utilisée car un appel direct à la commande make échoue.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.commons.io.FileUtils<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.commons.io.IOUtils<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.tools.ant.BuildException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.tools.ant.DefaultLogger<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.tools.ant.Project<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.tools.ant.ProjectHelper<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.codehaus.plexus.archiver.ArchiverException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.codehaus.plexus.archiver.tar.TarGZipUnArchiver<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.codehaus.plexus.logging.console.ConsoleLogger<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.slf4j.Logger<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.slf4j.LoggerFactory<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.OutputStream<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.nio.file.Path<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.nio.file.Paths<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.Arrays<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import static</span> org.apache.commons.io.FileUtils.getFile<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisInstaller</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>RedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String REDIS_PACKAGE_PREFIX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;redis-&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> REDIS_EXECUTABLE_FILE <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redis-server&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;redis-sentinel&#34;</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Path REDIS_INSTALLATION_PATH <span style="color:#f92672">=</span> Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user.home&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/.redis&#34;</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String downloadUrl<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String version<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String tmpDir<span style="color:#f92672">;</span>
-
-    RedisInstaller<span style="color:#f92672">(</span>String version<span style="color:#f92672">,</span> String downloadUrl<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">,</span> String tmpDir<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">downloadUrl</span> <span style="color:#f92672">=</span> downloadUrl<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">version</span> <span style="color:#f92672">=</span> version<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">forceCleanupInstallationDirectory</span> <span style="color:#f92672">=</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tmpDir</span> <span style="color:#f92672">=</span> tmpDir<span style="color:#f92672">;</span>
-        REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">().</span><span style="color:#a6e22e">mkdirs</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    File <span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> fileRelativeToInstallationDir<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;redis-server&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">fileRelativeToInstallationDir</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> path<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> getFile<span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">(),</span> path<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">getInstallationDirectory</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> getFile<span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">(),</span> REDIS_PACKAGE_PREFIX <span style="color:#f92672">+</span> version<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">install</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>forceCleanupInstallationDirectory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">forceDelete</span><span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">());</span>
-        <span style="color:#f92672">}</span>
-        installRedis<span style="color:#f92672">();</span>
-        makeRedis<span style="color:#f92672">();</span>
-        applyRedisPermissionRights<span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">installRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        Path downloadedTo <span style="color:#f92672">=</span> download<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span>downloadUrl <span style="color:#f92672">+</span> REDIS_PACKAGE_PREFIX <span style="color:#f92672">+</span> version <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.tar.gz&#34;</span><span style="color:#f92672">));</span>
-        install<span style="color:#f92672">(</span>downloadedTo<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">getAntFile</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        InputStream in <span style="color:#f92672">=</span> RedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;build.xml&#34;</span><span style="color:#f92672">);</span>
-        File fileOut <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>tmpDir<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;build.xml&#34;</span><span style="color:#f92672">);</span>
-
-        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Writing redis&#39; build.xml to: &#34;</span> <span style="color:#f92672">+</span> fileOut<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
-
-        OutputStream out <span style="color:#f92672">=</span> FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">openOutputStream</span><span style="color:#f92672">(</span>fileOut<span style="color:#f92672">);</span>
-        IOUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> out<span style="color:#f92672">);</span>
-        in<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-        out<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-
-        <span style="color:#66d9ef">return</span> fileOut<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">makeRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&gt; make&#34;</span><span style="color:#f92672">);</span>
-        File makeFilePath <span style="color:#f92672">=</span> getInstallationDirectory<span style="color:#f92672">();</span>
-
-        DefaultLogger consoleLogger <span style="color:#f92672">=</span> getConsoleLogger<span style="color:#f92672">();</span>
-
-        Project project <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Project<span style="color:#f92672">();</span>
-        File buildFile <span style="color:#f92672">=</span> getAntFile<span style="color:#f92672">();</span>
-        project<span style="color:#f92672">.</span><span style="color:#a6e22e">setUserProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ant.file&#34;</span><span style="color:#f92672">,</span> buildFile<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
-        project<span style="color:#f92672">.</span><span style="color:#a6e22e">addBuildListener</span><span style="color:#f92672">(</span>consoleLogger<span style="color:#f92672">);</span>
-
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildStarted</span><span style="color:#f92672">();</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
-            ProjectHelper projectHelper <span style="color:#f92672">=</span> ProjectHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getProjectHelper</span><span style="color:#f92672">();</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">addReference</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ant.projectHelper&#34;</span><span style="color:#f92672">,</span> projectHelper<span style="color:#f92672">);</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redisDirectory&#34;</span><span style="color:#f92672">,</span> makeFilePath<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
-            projectHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span>project<span style="color:#f92672">,</span> buildFile<span style="color:#f92672">);</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">executeTarget</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">);</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildFinished</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BuildException buildException<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildFinished</span><span style="color:#f92672">(</span>buildException<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!!! Unable to compile redis !!!&#34;</span><span style="color:#f92672">,</span> buildException<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> DefaultLogger <span style="color:#a6e22e">getConsoleLogger</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        DefaultLogger consoleLogger <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultLogger<span style="color:#f92672">();</span>
-        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setErrorPrintStream</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">);</span>
-        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPrintStream</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">);</span>
-        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageOutputLevel</span><span style="color:#f92672">(</span>Project<span style="color:#f92672">.</span><span style="color:#a6e22e">MSG_INFO</span><span style="color:#f92672">);</span>
-
-        <span style="color:#66d9ef">return</span> consoleLogger<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> Path <span style="color:#a6e22e">download</span><span style="color:#f92672">(</span>URL source<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        File target <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(),</span> source<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">());</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>target<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Downloading : &#34;</span> <span style="color:#f92672">+</span> source <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; to &#34;</span> <span style="color:#f92672">+</span> target <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">);</span>
-            FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">copyURLToFile</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> target<span style="color:#f92672">);</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Download complete&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Download skipped&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> target<span style="color:#f92672">.</span><span style="color:#a6e22e">toPath</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">install</span><span style="color:#f92672">(</span>Path downloadedFile<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Installing Redis into &#34;</span> <span style="color:#f92672">+</span> REDIS_INSTALLATION_PATH <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">final</span> TarGZipUnArchiver ua <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TarGZipUnArchiver<span style="color:#f92672">();</span>
-            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">setSourceFile</span><span style="color:#f92672">(</span>downloadedFile<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">());</span>
-            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">enableLogging</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ConsoleLogger<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;console&#34;</span><span style="color:#f92672">));</span>
-            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">setDestDirectory</span><span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">());</span>
-            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">extract</span><span style="color:#f92672">();</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Done&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ArchiverException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failure : &#34;</span> <span style="color:#f92672">+</span> e<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!!! Unable to download and untar redis !!!&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">applyRedisPermissionRights</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        File binDirectory <span style="color:#f92672">=</span> getFile<span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String fn <span style="color:#f92672">:</span> REDIS_EXECUTABLE_FILE<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            File executableFile <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>binDirectory<span style="color:#f92672">,</span> fn<span style="color:#f92672">);</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Applying executable permissions on &#34;</span> <span style="color:#f92672">+</span> executableFile<span style="color:#f92672">);</span>
-            executableFile<span style="color:#f92672">.</span><span style="color:#a6e22e">setExecutable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Avec le fichier ant <code>build.xml</code> suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;ISO-8859-1&#34;?&gt;</span>
-<span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;make&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;init&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;echo</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;Redis compilation is starting&#34;</span> <span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;exec</span> <span style="color:#a6e22e">command=</span><span style="color:#e6db74">&#34;make&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${redisDirectory}&#34;</span> <span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;echo</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;Redis compilation finished&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/target&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>Ainsi, en wrappant l&rsquo;appel dans un builder, il devient facile d&rsquo;invoquer l&rsquo;installeur.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> lombok.Builder<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> lombok.Data<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@Builder</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmbeddedRedisInstaller</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> String downloadUrl<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String version<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String tmpDir<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
-
-    RedisInstaller redisInstaller<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> EmbeddedRedisInstaller <span style="color:#a6e22e">install</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        installRedis<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">installRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
-        redisInstaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedisInstaller<span style="color:#f92672">(</span>version<span style="color:#f92672">,</span> downloadUrl<span style="color:#f92672">,</span> forceCleanupInstallationDirectory<span style="color:#f92672">,</span> tmpDir<span style="color:#f92672">);</span>
-        redisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">install</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> File <span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> redisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Utilisation de l&rsquo;installeur :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">EmbeddedRedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">version</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;4.0.0&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">downloadUrl</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://download.redis.io/releases/&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">forceCleanupInstallationDirectory</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">tmpDir</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tmp/redis&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">()</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">install</span><span style="color:#f92672">();</span>
-</code></pre></div><p>Enfin, en le couplant, avec le projet <a href="https://github.com/ishiis/redis-unit">redis-unit</a>, il est possible de choisir son mode d&rsquo;utilisation tout en rendant configurable les ports :</p>
-<pre><code>EmbeddedRedisInstaller installer = EmbeddedRedisInstaller.builder()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.commons.io.FileUtils<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.commons.io.IOUtils<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.tools.ant.BuildException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.tools.ant.DefaultLogger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.tools.ant.Project<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.tools.ant.ProjectHelper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.codehaus.plexus.archiver.ArchiverException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.codehaus.plexus.archiver.tar.TarGZipUnArchiver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.codehaus.plexus.logging.console.ConsoleLogger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.slf4j.Logger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.slf4j.LoggerFactory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.OutputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.file.Path<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.file.Paths<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Arrays<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> org.apache.commons.io.FileUtils.getFile<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisInstaller</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>RedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String REDIS_PACKAGE_PREFIX <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;redis-&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> REDIS_EXECUTABLE_FILE <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redis-server&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;redis-sentinel&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Path REDIS_INSTALLATION_PATH <span style="color:#f92672">=</span> Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">getProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user.home&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/.redis&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String downloadUrl<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String version<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String tmpDir<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    RedisInstaller<span style="color:#f92672">(</span>String version<span style="color:#f92672">,</span> String downloadUrl<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">,</span> String tmpDir<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">downloadUrl</span> <span style="color:#f92672">=</span> downloadUrl<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">version</span> <span style="color:#f92672">=</span> version<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">forceCleanupInstallationDirectory</span> <span style="color:#f92672">=</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">tmpDir</span> <span style="color:#f92672">=</span> tmpDir<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">().</span><span style="color:#a6e22e">mkdirs</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    File <span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> fileRelativeToInstallationDir<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;redis-server&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">fileRelativeToInstallationDir</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> path<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> getFile<span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">(),</span> path<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">getInstallationDirectory</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> getFile<span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">(),</span> REDIS_PACKAGE_PREFIX <span style="color:#f92672">+</span> version<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">install</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>forceCleanupInstallationDirectory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">forceDelete</span><span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        installRedis<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        makeRedis<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        applyRedisPermissionRights<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">installRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Path downloadedTo <span style="color:#f92672">=</span> download<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span>downloadUrl <span style="color:#f92672">+</span> REDIS_PACKAGE_PREFIX <span style="color:#f92672">+</span> version <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.tar.gz&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        install<span style="color:#f92672">(</span>downloadedTo<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> File <span style="color:#a6e22e">getAntFile</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        InputStream in <span style="color:#f92672">=</span> RedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;build.xml&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        File fileOut <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>tmpDir<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;build.xml&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Writing redis&#39; build.xml to: &#34;</span> <span style="color:#f92672">+</span> fileOut<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        OutputStream out <span style="color:#f92672">=</span> FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">openOutputStream</span><span style="color:#f92672">(</span>fileOut<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        IOUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> out<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        in<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        out<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> fileOut<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">makeRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&gt; make&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        File makeFilePath <span style="color:#f92672">=</span> getInstallationDirectory<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        DefaultLogger consoleLogger <span style="color:#f92672">=</span> getConsoleLogger<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Project project <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Project<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        File buildFile <span style="color:#f92672">=</span> getAntFile<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        project<span style="color:#f92672">.</span><span style="color:#a6e22e">setUserProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ant.file&#34;</span><span style="color:#f92672">,</span> buildFile<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        project<span style="color:#f92672">.</span><span style="color:#a6e22e">addBuildListener</span><span style="color:#f92672">(</span>consoleLogger<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildStarted</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ProjectHelper projectHelper <span style="color:#f92672">=</span> ProjectHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">getProjectHelper</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">addReference</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;ant.projectHelper&#34;</span><span style="color:#f92672">,</span> projectHelper<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redisDirectory&#34;</span><span style="color:#f92672">,</span> makeFilePath<span style="color:#f92672">.</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            projectHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">parse</span><span style="color:#f92672">(</span>project<span style="color:#f92672">,</span> buildFile<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">executeTarget</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildFinished</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>BuildException buildException<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            project<span style="color:#f92672">.</span><span style="color:#a6e22e">fireBuildFinished</span><span style="color:#f92672">(</span>buildException<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!!! Unable to compile redis !!!&#34;</span><span style="color:#f92672">,</span> buildException<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DefaultLogger <span style="color:#a6e22e">getConsoleLogger</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        DefaultLogger consoleLogger <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultLogger<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setErrorPrintStream</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setOutputPrintStream</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        consoleLogger<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageOutputLevel</span><span style="color:#f92672">(</span>Project<span style="color:#f92672">.</span><span style="color:#a6e22e">MSG_INFO</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> consoleLogger<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Path <span style="color:#a6e22e">download</span><span style="color:#f92672">(</span>URL source<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        File target <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(),</span> source<span style="color:#f92672">.</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>target<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Downloading : &#34;</span> <span style="color:#f92672">+</span> source <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; to &#34;</span> <span style="color:#f92672">+</span> target <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            FileUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">copyURLToFile</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> target<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Download complete&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Download skipped&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> target<span style="color:#f92672">.</span><span style="color:#a6e22e">toPath</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">install</span><span style="color:#f92672">(</span>Path downloadedFile<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Installing Redis into &#34;</span> <span style="color:#f92672">+</span> REDIS_INSTALLATION_PATH <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;...&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">final</span> TarGZipUnArchiver ua <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TarGZipUnArchiver<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">setSourceFile</span><span style="color:#f92672">(</span>downloadedFile<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">enableLogging</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ConsoleLogger<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;console&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">setDestDirectory</span><span style="color:#f92672">(</span>REDIS_INSTALLATION_PATH<span style="color:#f92672">.</span><span style="color:#a6e22e">toFile</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>            ua<span style="color:#f92672">.</span><span style="color:#a6e22e">extract</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Done&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ArchiverException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Failure : &#34;</span> <span style="color:#f92672">+</span> e<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;!!! Unable to download and untar redis !!!&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">applyRedisPermissionRights</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        File binDirectory <span style="color:#f92672">=</span> getFile<span style="color:#f92672">(</span>getInstallationDirectory<span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;src&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String fn <span style="color:#f92672">:</span> REDIS_EXECUTABLE_FILE<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            File executableFile <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>binDirectory<span style="color:#f92672">,</span> fn<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Applying executable permissions on &#34;</span> <span style="color:#f92672">+</span> executableFile<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            executableFile<span style="color:#f92672">.</span><span style="color:#a6e22e">setExecutable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Avec le fichier ant <code>build.xml</code> suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;ISO-8859-1&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;make&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;init&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;echo</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;Redis compilation is starting&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;exec</span> <span style="color:#a6e22e">command=</span><span style="color:#e6db74">&#34;make&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${redisDirectory}&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;echo</span> <span style="color:#a6e22e">message=</span><span style="color:#e6db74">&#34;Redis compilation finished&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>Ainsi, en wrappant l&rsquo;appel dans un builder, il devient facile d&rsquo;invoquer l&rsquo;installeur.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> lombok.Builder<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> lombok.Data<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Builder</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EmbeddedRedisInstaller</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String downloadUrl<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String version<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String tmpDir<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> forceCleanupInstallationDirectory<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    RedisInstaller redisInstaller<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> EmbeddedRedisInstaller <span style="color:#a6e22e">install</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        installRedis<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">installRedis</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> InterruptedException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        redisInstaller <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedisInstaller<span style="color:#f92672">(</span>version<span style="color:#f92672">,</span> downloadUrl<span style="color:#f92672">,</span> forceCleanupInstallationDirectory<span style="color:#f92672">,</span> tmpDir<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        redisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">install</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> File <span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">getExecutableFile</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Utilisation de l&rsquo;installeur :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>EmbeddedRedisInstaller<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">version</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;4.0.0&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">downloadUrl</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://download.redis.io/releases/&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">forceCleanupInstallationDirectory</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">tmpDir</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;tmp/redis&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span><span style="color:#a6e22e">install</span><span style="color:#f92672">();</span>
+</span></span></code></pre></div><p>Enfin, en le couplant, avec le projet <a href="https://github.com/ishiis/redis-unit">redis-unit</a>, il est possible de choisir son mode d&rsquo;utilisation tout en rendant configurable les ports :</p>
+<pre tabindex="0"><code>EmbeddedRedisInstaller installer = EmbeddedRedisInstaller.builder()
                 .downloadUrl(downloadUrl)
                 .forceCleanupInstallationDirectory(cleanupInstallation)
                 .version(version)
@@ -488,7 +488,7 @@
 try {
     installer.install();
 } catch (IOException | InterruptedException e) {
-    LOGGER.error(&quot;unable to install redis&quot;, e);
+    LOGGER.error(&#34;unable to install redis&#34;, e);
 }
 
 switch (type) {
@@ -540,12 +540,12 @@ switch (type) {
 }
 </code></pre><h1 id="conclusion">Conclusion</h1>
 <p>On a pu voir dans cet article comment il était possible simplement d&rsquo;utiliser Redis lors de ses tests d&rsquo;intégration sans utiliser Docker et tout en pilotant la chose programmatiquement.</p>
-<p>Pour retrouver le code, il est disponible à l'<a href="https://github.com/jetoile/hadoop-unit/tree/master/hadoop-unit-redis">url suivante</a>.</p>
+<p>Pour retrouver le code, il est disponible à l&rsquo;<a href="https://github.com/jetoile/hadoop-unit/tree/master/hadoop-unit-redis">url suivante</a>.</p>
 <p>A noter qu&rsquo;il a été utilisé dans <a href="https://github.com/jetoile/hadoop-unit">Hadoop-Unit</a> et qu&rsquo;il est possible d&rsquo;utiliser Redis en test d&rsquo;intégration des manière suivantes ( #autopromo ;) ) :</p>
 <ul>
 <li>En utilisant le démarrage de <a href="https://github.com/jetoile/hadoop-unit/blob/master/hadoop-unit-redis/src/test/java/fr/jetoile/hadoopunit/RedisBootstrapTest.java">manière programmatique</a>:</li>
 </ul>
-<pre><code>@BeforeClass
+<pre tabindex="0"><code>@BeforeClass
 public static void setup() throws BootstrapException {
     HadoopBootstrap.INSTANCE.startAll();
 }
@@ -558,64 +558,64 @@ public static void tearDown() throws BootstrapException {
 
 @Test
 public void testStartAndStopServerMode() throws InterruptedException {
-    Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);
+    Jedis jedis = new Jedis(&#34;127.0.0.1&#34;, 6379);
     Assert.assertNotNull(jedis.info());
     System.out.println(jedis.info());
     jedis.close();
 }
 </code></pre><p>avec le pom suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-
-<span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>redis.clients<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>jedis<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.9.0<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>et le fichier de configuration <code>hadoop-unit-default.properties</code> suivant:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain"># Redis
-redis.port=6379
-redis.download.url=http://download.redis.io/releases/
-redis.version=4.0.0
-redis.cleanup.installation=false
-redis.temp.dir=/tmp/redis
-redis.type=SERVER
-#redis.type=CLUSTER
-#redis.type=MASTER_SLAVE
-#redis.type=SENTINEL
-#redis.slave.ports=6380
-#redis.sentinel.ports=36479,36480,36481,36482,36483
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>redis.clients<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>jedis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.9.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>et le fichier de configuration <code>hadoop-unit-default.properties</code> suivant:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span># Redis
+</span></span><span style="display:flex;"><span>redis.port=6379
+</span></span><span style="display:flex;"><span>redis.download.url=http://download.redis.io/releases/
+</span></span><span style="display:flex;"><span>redis.version=4.0.0
+</span></span><span style="display:flex;"><span>redis.cleanup.installation=false
+</span></span><span style="display:flex;"><span>redis.temp.dir=/tmp/redis
+</span></span><span style="display:flex;"><span>redis.type=SERVER
+</span></span><span style="display:flex;"><span>#redis.type=CLUSTER
+</span></span><span style="display:flex;"><span>#redis.type=MASTER_SLAVE
+</span></span><span style="display:flex;"><span>#redis.type=SENTINEL
+</span></span><span style="display:flex;"><span>#redis.slave.ports=6380
+</span></span><span style="display:flex;"><span>#redis.sentinel.ports=36479,36480,36481,36482,36483
+</span></span></code></pre></div><ul>
 <li>En utilisant le plugin maven en <a href="https://github.com/jetoile/hadoop-unit/tree/master/sample/redis">phase de pré-integration</a>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>${hadoop-unit.version}<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>embedded-start<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-        <span style="color:#f92672">&lt;components&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;componentName&gt;</span>REDIS<span style="color:#f92672">&lt;/componentName&gt;</span>
-                <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-redis:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-        <span style="color:#f92672">&lt;/components&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>${hadoop-unit.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>embedded-start<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;components&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;componentName&gt;</span>REDIS<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-redis:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/components&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div>
   
   <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
 <ul class="share-buttons">

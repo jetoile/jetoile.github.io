@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Jolokia : le piment qui vous veut du bien  &middot; Jetoile</title>
 
@@ -309,34 +309,34 @@
 <h2 id="war-agent">WAR agent</h2>
 <p>Le type WAR agent se présente comme une application web standard (au format WAR). La configuration se fait alors via l&rsquo;élément <code>init-param</code> du web.xml.</p>
 <p>Un autre moyen consiste à utiliser le context (dans le cas de Tomcat) qui permet de déporter la configuration en dehors du WAR. Ainsi, par exemple avec Tomcat, avec le context de l&rsquo;application web se trouvant dans <code>$TOMCAT_HOME/conf/Catalina/localhost</code>, on peut avoir par exemple :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Context&gt;</span>
-<span style="color:#f92672">&lt;Parameter</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maxDepth&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">&gt;</span>
-<span style="color:#f92672">&lt;/Context&gt;</span>
-</code></pre></div><p>Au niveau paramétrage, je vous laisse aller voir la document officielle ;-).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;Context&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;Parameter</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maxDepth&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Context&gt;</span>
+</span></span></code></pre></div><p>Au niveau paramétrage, je vous laisse aller voir la document officielle ;-).</p>
 <p>Du point de vue sécurité, il est possible de bénéficier de la sécurité du conteneur de Servlet via le <code>web.xml</code>.</p>
 <p>Une autre manière de faire consite à intégrer Jolokia comme Servlet dans son application web. Pour ce faire, il suffit de tirer la bonne dépendance et de préciser le Servlet de Jolokia de manière classique via les éléments <code>servlet</code> et <code>servlet-mapping</code> du <code>web.xml</code> de l&rsquo;application.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version&gt;</span>${jolokia.version}<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>Comme il est possible de déployer de multiples WAR agents Jolokia sur une même JVM, puisque des MBeans spécifiques Jolokia sont déployé dans le <strong>PlatformMBeansServer</strong>, il faut préciser la valeur de l&rsquo;élément mbeanQualifier dans les paramètres d&rsquo;init.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;version&gt;</span>${jolokia.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>Comme il est possible de déployer de multiples WAR agents Jolokia sur une même JVM, puisque des MBeans spécifiques Jolokia sont déployé dans le <strong>PlatformMBeansServer</strong>, il faut préciser la valeur de l&rsquo;élément mbeanQualifier dans les paramètres d&rsquo;init.</p>
 <h2 id="jvm-agent">JVM agent</h2>
 <p>Ce type d&rsquo;agent Jolokia que j&rsquo;ai testé IRL est très simple à utiliser et permet d&rsquo;attacher un agent à une JVM afin qu&rsquo;elle expose à la mode REST ses couches d&rsquo;administration et de supervision.</p>
 <p>Il est possible de :</p>
 <ul>
 <li><em>bootstrapper</em> l&rsquo;agent JVM au démarrage de la JVM en lui fournissant le jar adéquate ainsi que les options qui vont bien :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -javaagent:agent.jar<span style="color:#f92672">=</span>port<span style="color:#f92672">=</span>7777,host<span style="color:#f92672">=</span>localhost
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -javaagent:agent.jar<span style="color:#f92672">=</span>port<span style="color:#f92672">=</span>7777,host<span style="color:#f92672">=</span>localhost
+</span></span></code></pre></div><ul>
 <li><em>bootstrapper</em> l&rsquo;agent JVM en lui fournissant directement une fichier de configuration :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -javaagent:agent.jar<span style="color:#f92672">=</span>config<span style="color:#f92672">=</span>$FICHIER_CONFIG_JOLOKIA
-</code></pre></div><p>où un exemple de fichier de configuration peut être trouvé dans jar de l&rsquo;agent (au nom de <code>default-jolokia-agent.properties</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -javaagent:agent.jar<span style="color:#f92672">=</span>config<span style="color:#f92672">=</span>$FICHIER_CONFIG_JOLOKIA
+</span></span></code></pre></div><p>où un exemple de fichier de configuration peut être trouvé dans jar de l&rsquo;agent (au nom de <code>default-jolokia-agent.properties</code>).</p>
 <p>où <code>agent.jar</code> peut être téléchargé de <a href="http://www.jolokia.org/download.html">http://www.jolokia.org/download.html</a> (artifact : <strong>JVM-Agent</strong>).</p>
 <p>De la même manière, un agent Jolokia peut être attaché à une processus Java à la demande (un peu comme lorsque JConsole se connecte à un processus local). Pour ce faire, il suffit de lancer la commande suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar agent.jar start &lt;PID&gt;
-</code></pre></div><h2 id="jolokia-et-la-sécurité">Jolokia et la sécurité</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -jar agent.jar start &lt;PID&gt;
+</span></span></code></pre></div><h2 id="jolokia-et-la-sécurité">Jolokia et la sécurité</h2>
 <p>Jolokia permet de configurer la sécurité assez finement. N&rsquo;ayant pas tester, je ne m&rsquo;attarderai pas trop sur le sujet.</p>
 <p>Cependant, il est intéressant de noter que Jolokia permet de filtrer l&rsquo;accès des clients par IP mais offre également un accès plus fin pour l&rsquo;accès aux MBeans (<code>read</code>/<code>write</code>/<code>exec</code>/<code>list</code>/<code>search</code>/<code>version</code>).</p>
 <p>Point également important, Jolokia supporte la spécification W3C pour le Cross-Origin Resource Sharing (CORS) qui permet d&rsquo;utiliser des outils comme <a href="http://hawt.io/">Hawt.io</a> (mais nous y reviendront plus tard&hellip;).</p>
@@ -356,61 +356,61 @@
 <p>A noter que Jolokia utilise le caractère &ldquo;!&rdquo; comme caractère d&rsquo;échappement.</p>
 <p>Plutôt que de longs discours, quelques exemples issus de la documentation aideront à comprendre&hellip;</p>
 <p>Pour lire la valeur du MBean dont l&rsquo;objectName est <strong>java.lang:type=Memory/HeapMemoryUsage</strong>, les requêtes suivantes sont équivalentes :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
-</code></pre></div><br/>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/?p=/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
-</code></pre></div><br/>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -d <span style="color:#e6db74">&#39;{&#34;type&#34; : &#34;read&#34;, &#34;mbean&#34; : &#34;java.lang:type=Memory&#34;, &#34;attribute&#34; : &#34;HeapMemoryUsage&#34;, &#34;path&#34; : &#34;used&#34; }&#39;</span> http://127.0.0.1:8778/jolokia/
-</code></pre></div><p>soit en format lisible :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
-    <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
-    <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
-    <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>
-}
-</code></pre></div><p>La réponse obtenue est de la forme :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393865787</span>,
-    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
-    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
-        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
-        <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>,
-        <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
-        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
-    },
-    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">162037504</span>
-}
-</code></pre></div><p>Pour montrer le coté structuré de la réponse, à une requête de type :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://127.0.0.1:8778/jolokia/read/java.lang:type<span style="color:#f92672">=</span>Memory
-</code></pre></div><p>on obtient :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393866039</span>,
-    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
-    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
-        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
-        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
-    },
-    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> {
-        <span style="color:#e6db74">&#34;Verbose&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
-        <span style="color:#e6db74">&#34;ObjectPendingFinalizationCount&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
-        <span style="color:#e6db74">&#34;NonHeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
-            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">329252864</span>,
-            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">218951680</span>,
-            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">19136512</span>,
-            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">139774968</span>
-        },
-        <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
-            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
-            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
-            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">134217728</span>,
-            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">179096552</span>
-        },
-        <span style="color:#e6db74">&#34;ObjectName&#34;</span><span style="color:#f92672">:</span> {
-            <span style="color:#e6db74">&#34;objectName&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>
-        }
-    }
-}
-</code></pre></div><p>Concernant les opérations possibles (dans l&rsquo;exemple précédent, il s&rsquo;agissait d&rsquo;une lecture), il existe :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
+</span></span></code></pre></div><br/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -XGET <span style="color:#e6db74">&#34;http://127.0.0.1:8778/jolokia/?p=/read/java.lang:type=Memory/HeapMemoryUsage/used&#34;</span>
+</span></span></code></pre></div><br/>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -XPOST -d <span style="color:#e6db74">&#39;{&#34;type&#34; : &#34;read&#34;, &#34;mbean&#34; : &#34;java.lang:type=Memory&#34;, &#34;attribute&#34; : &#34;HeapMemoryUsage&#34;, &#34;path&#34; : &#34;used&#34; }&#39;</span> http://127.0.0.1:8778/jolokia/
+</span></span></code></pre></div><p>soit en format lisible :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>La réponse obtenue est de la forme :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393865787</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;path&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;used&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;attribute&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">162037504</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Pour montrer le coté structuré de la réponse, à une requête de type :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://127.0.0.1:8778/jolokia/read/java.lang:type<span style="color:#f92672">=</span>Memory
+</span></span></code></pre></div><p>on obtient :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1393866039</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;request&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;mbean&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Verbose&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ObjectPendingFinalizationCount&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;NonHeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">329252864</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">218951680</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">19136512</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">139774968</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;committed&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">518979584</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;init&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">134217728</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;used&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">179096552</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ObjectName&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;objectName&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Concernant les opérations possibles (dans l&rsquo;exemple précédent, il s&rsquo;agissait d&rsquo;une lecture), il existe :</p>
 <ul>
 <li><strong>read</strong> avec le format GET suivant :</li>
 </ul>
@@ -442,17 +442,17 @@
 <p><code>&lt;base-url&gt;/version</code></p>
 <p>(ex : http://localhost:8080/jolokia/version)</p>
 <p>Enfin, si le mode proxy est utilisé, seul le mode POST peut être utilisé et doit, alors, avoir le format suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#e6db74">&#34;type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
-    <span style="color:#e6db74">&#34;mbean&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
-    <span style="color:#e6db74">&#34;attribute&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
-    <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> { 
-         <span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;service:jmx:rmi:///jndi/rmi://targethost:9999/jmxrmi&#34;</span>,
-         <span style="color:#e6db74">&#34;user&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;jolokia&#34;</span>,
-         <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;s!cr!t&#34;</span>
-    } 
-} 
-</code></pre></div><p>Je ne rentrerai pas plus en détaille sur cette partie là qui est beaucoup plus exhaustive dans la documentation officielle (comment les objets sont sérialisés, le mapping complet des MXBeans, la découverte des agents ou les différentes versions du protocole Jolokia - actuellement la version 7.1 - ) et si cela est nécessaire, je conseille d&rsquo;aller directement se référer à la documentation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;read&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;mbean&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;java.lang:type=Memory&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;attribute&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;HeapMemoryUsage&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> { 
+</span></span><span style="display:flex;"><span>         <span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;service:jmx:rmi:///jndi/rmi://targethost:9999/jmxrmi&#34;</span>,
+</span></span><span style="display:flex;"><span>         <span style="color:#e6db74">&#34;user&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;jolokia&#34;</span>,
+</span></span><span style="display:flex;"><span>         <span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;s!cr!t&#34;</span>
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><p>Je ne rentrerai pas plus en détaille sur cette partie là qui est beaucoup plus exhaustive dans la documentation officielle (comment les objets sont sérialisés, le mapping complet des MXBeans, la découverte des agents ou les différentes versions du protocole Jolokia - actuellement la version 7.1 - ) et si cela est nécessaire, je conseille d&rsquo;aller directement se référer à la documentation.</p>
 <h1 id="autres-features">Autres features</h1>
 <p>En plus des fonctionnalités présentées précédemment, Jolokia offre les fonctionnalités suivantes :</p>
 <ul>
@@ -463,35 +463,35 @@
 <li>une integration Spring,</li>
 </ul>
 <p>Pour l&rsquo;intégration avec Spring, cela se fait via l&rsquo;import Maven suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-spring<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version&gt;</span>1.2.0<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>  
-</code></pre></div><p>et le contexte Spring suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
-       <span style="color:#a6e22e">xmlns:jolokia=</span><span style="color:#e6db74">&#34;http://www.jolokia.org/jolokia-spring/schema/config&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;
-</span><span style="color:#e6db74">       http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
-</span><span style="color:#e6db74">       http://www.jolokia.org/jolokia-spring/schema/config  http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
-</span><span style="color:#e6db74">       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span style="color:#f92672">&gt;</span>
- 
-  <span style="color:#f92672">&lt;jolokia:agent</span> <span style="color:#a6e22e">lookupConfig=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">systemPropertiesMode=</span><span style="color:#e6db74">&#34;never&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;jolokia:config</span>
-                <span style="color:#a6e22e">autoStart=</span><span style="color:#e6db74">&#34;true&#34;</span>
-                <span style="color:#a6e22e">host=</span><span style="color:#e6db74">&#34;${jolokia.host}&#34;</span>
-                <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#34;${jolokia.port}&#34;</span>
-                <span style="color:#a6e22e">user=</span><span style="color:#e6db74">&#34;${jolokia.user}&#34;</span>
-                <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;${jolokia.password}&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/jolokia:agent&gt;</span>
- 
-    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/bean&gt;</span>
-<span style="color:#f92672">&lt;/beans&gt;</span>
-</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;groupId&gt;</span>org.jolokia<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;artifactId&gt;</span>jolokia-spring<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;version&gt;</span>1.2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>  
+</span></span></code></pre></div><p>et le contexte Spring suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:context=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/context&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:jolokia=</span><span style="color:#e6db74">&#34;http://www.jolokia.org/jolokia-spring/schema/config&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       http://www.jolokia.org/jolokia-spring/schema/config  http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;jolokia:agent</span> <span style="color:#a6e22e">lookupConfig=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">systemPropertiesMode=</span><span style="color:#e6db74">&#34;never&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;jolokia:config</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">autoStart=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">host=</span><span style="color:#e6db74">&#34;${jolokia.host}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#34;${jolokia.port}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">user=</span><span style="color:#e6db74">&#34;${jolokia.user}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;${jolokia.password}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/jolokia:agent&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>Dans cet article, une présentation succincte a été faite de Jolokia. J&rsquo;espère qu&rsquo;elle vous aura plu ;-)&hellip;</p>
 <p>Il s&rsquo;agit d&rsquo;un outils simple, pluggable très facilement à n&rsquo;importe quelle application (une intégration à Cassandra s&rsquo;est fait en 5 minutes).</p>
 <p>Cette présentation était surtout axé concepts et principes afin de bien comprendre ce que peut apporter cet outils.</p>

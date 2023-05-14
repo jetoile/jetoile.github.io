@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Lecture et traitement de fichiers : comment faire simple? &middot; Jetoile</title>
 
@@ -288,33 +288,33 @@
 <img src="https://blog.jetoile.fr/images/batch/xmlinput.png" alt="center" title="crédit photo : http://docs.spring.io/spring-batch/trunk/reference/html-single/index.html"></li>
 </ul>
 <p>avec :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;itemReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.xml.StaxEventItemReader&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;fragmentRootElementName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;trade&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resource&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;data/iosample/input/input.xml&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;unmarshaller&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
-
-<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span>
-      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.oxm.xstream.XStreamMarshaller&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;util:map</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;trade&#34;</span>
-                   <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.springframework.batch.sample.domain.Trade&#34;</span> <span style="color:#f92672">/&gt;</span>
-            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;price&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.math.BigDecimal&#34;</span> <span style="color:#f92672">/&gt;</span>
-            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span> <span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;/util:map&gt;</span>
-    <span style="color:#f92672">&lt;/property&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
-</code></pre></div><p>Généralement, il est nécessaire de préciser le nom du fichier à traiter mais il est également possible d&rsquo;en traiter plusieurs de même type dans la même <em>Step</em> via la classe <code>MultiResourceItemReader</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;multiResourceReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.file.MultiResourceItemReader&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resources&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;classpath:data/input/file-*.txt&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;delegate&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;flatFileItemReader&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
-</code></pre></div><p>Spring Batch supporte également la scalabilité horizontale en permettant de préciser un <code>taskExecutor</code> au niveau de la <em>Step</em>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;step</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;loading&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;tasklet</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;taskExecutor&#34;</span><span style="color:#f92672">&gt;</span>...<span style="color:#f92672">&lt;/tasklet&gt;</span>
-<span style="color:#f92672">&lt;/step&gt;</span>
-</code></pre></div><p>Ainsi, on constate que Spring Batch offre nativement la possibilité de traiter des fichiers volumineux en les découpant par <em>chunk</em>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;itemReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.xml.StaxEventItemReader&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;fragmentRootElementName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;trade&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resource&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;data/iosample/input/input.xml&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;unmarshaller&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;tradeMarshaller&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.oxm.xstream.XStreamMarshaller&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;util:map</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;aliases&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;trade&#34;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.springframework.batch.sample.domain.Trade&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;price&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.math.BigDecimal&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;entry</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/util:map&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span></code></pre></div><p>Généralement, il est nécessaire de préciser le nom du fichier à traiter mais il est également possible d&rsquo;en traiter plusieurs de même type dans la même <em>Step</em> via la classe <code>MultiResourceItemReader</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;multiResourceReader&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.batch.item.file.MultiResourceItemReader&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;resources&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;classpath:data/input/file-*.txt&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;delegate&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;flatFileItemReader&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span></code></pre></div><p>Spring Batch supporte également la scalabilité horizontale en permettant de préciser un <code>taskExecutor</code> au niveau de la <em>Step</em>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;step</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;loading&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;tasklet</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;taskExecutor&#34;</span><span style="color:#f92672">&gt;</span>...<span style="color:#f92672">&lt;/tasklet&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/step&gt;</span>
+</span></span></code></pre></div><p>Ainsi, on constate que Spring Batch offre nativement la possibilité de traiter des fichiers volumineux en les découpant par <em>chunk</em>.</p>
 <p>De même, il offre nativement la possibilité de passer sur du traitement parallèle.</p>
 <p>Concernant la partie supervision, vu que l&rsquo;on est dans un environnement Spring, on bénéficie, bien sûr, de toute la partie JMX.</p>
 <p>Pour la partie gestion des erreurs, Spring Batch permet de les gérer de manière très simple.</p>
@@ -324,34 +324,34 @@
 <p>Dans le cas où la volonté serait de traiter les fichiers au fil de l&rsquo;eau, Spring Batch n&rsquo;est pas la solution la plus adaptée&hellip;</p>
 <p>Cependant, Spring Integration répond à ce besoin de manière très simple.</p>
 <p>En effet, en utilisant un simple <strong>Service Activator</strong> (au sens EIP) de type <code>inbound-channel-adapter</code>, il devient alors possible de <em>poller</em> un répertoire et d&rsquo;envoyer le contenu du fichier vers un <em>filter</em> (au sens EIP).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;file:inbound-channel-adapter</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;fileAdapter&#34;</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">auto-create-directory=</span><span style="color:#e6db74">&#34;true&#34;</span>
-                              <span style="color:#a6e22e">filename-pattern=</span><span style="color:#e6db74">&#34;*.xml&#34;</span>
-                              <span style="color:#a6e22e">directory=</span><span style="color:#e6db74">&#34;file:/tmp&#34;</span>
-                              <span style="color:#a6e22e">scanner=</span><span style="color:#e6db74">&#34;recursiveScanner&#34;</span>
-                              <span style="color:#a6e22e">prevent-duplicates=</span><span style="color:#e6db74">&#34;true&#34;</span>
-                              <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;int:poller</span> <span style="color:#a6e22e">fixed-delay=</span><span style="color:#e6db74">&#34;30000&#34;</span> <span style="color:#a6e22e">max-messages-per-poll=</span><span style="color:#e6db74">&#34;500&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/file:inbound-channel-adapter&gt;</span>
-
-<span style="color:#f92672">&lt;file:file-to-string-transformer</span> <span style="color:#a6e22e">charset=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">delete-files=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">input-channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span>
-                                     <span style="color:#a6e22e">output-channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
-
-<span style="color:#f92672">&lt;int:logging-channel-adapter</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;DEBUG&#34;</span> <span style="color:#a6e22e">log-full-message=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-
-<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>D&rsquo;un point de vue scalabilité horizontale, il suffit de renseigner (tout comme pour Spring Batch) un <code>taskExecutor</code> au niveau du <em>Channel</em> et&hellip; c&rsquo;est tout!</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;task:executor</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span>
-                   <span style="color:#a6e22e">pool-size=</span><span style="color:#e6db74">&#34;20&#34;</span>
-                   <span style="color:#a6e22e">keep-alive=</span><span style="color:#e6db74">&#34;2400&#34;</span><span style="color:#f92672">/&gt;</span>
-
-
-<span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;int:dispatcher</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/int:channel&gt;</span>
-</code></pre></div><p>Enfin, disposer d&rsquo;une supervision est des plus aisé puisqu&rsquo;il suffit de rajouter l&rsquo;élément <code>message-history</code> :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;int:message-history/&gt;</span>
-</code></pre></div><p>L&rsquo;ajout de cet élément indique à Spring Integration qui doit ajouter automatiquement dans le <em>header</em> du message le temps d&rsquo;exécution de chaque <em>Filter</em>. Concernant le nom du fichier et son chemin, il se trouve renseigner automatiquement dans le header par l'<em>adapter</em> <code>file:inbound-channel-adapter</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;file:inbound-channel-adapter</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;fileAdapter&#34;</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">auto-create-directory=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#a6e22e">filename-pattern=</span><span style="color:#e6db74">&#34;*.xml&#34;</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#a6e22e">directory=</span><span style="color:#e6db74">&#34;file:/tmp&#34;</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#a6e22e">scanner=</span><span style="color:#e6db74">&#34;recursiveScanner&#34;</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#a6e22e">prevent-duplicates=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>                              <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;int:poller</span> <span style="color:#a6e22e">fixed-delay=</span><span style="color:#e6db74">&#34;30000&#34;</span> <span style="color:#a6e22e">max-messages-per-poll=</span><span style="color:#e6db74">&#34;500&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/file:inbound-channel-adapter&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;file:file-to-string-transformer</span> <span style="color:#a6e22e">charset=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">delete-files=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">input-channel=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span>
+</span></span><span style="display:flex;"><span>                                     <span style="color:#a6e22e">output-channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;int:logging-channel-adapter</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;toLogger&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;DEBUG&#34;</span> <span style="color:#a6e22e">log-full-message=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;inputChannel&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>D&rsquo;un point de vue scalabilité horizontale, il suffit de renseigner (tout comme pour Spring Batch) un <code>taskExecutor</code> au niveau du <em>Channel</em> et&hellip; c&rsquo;est tout!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;task:executor</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#a6e22e">pool-size=</span><span style="color:#e6db74">&#34;20&#34;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#a6e22e">keep-alive=</span><span style="color:#e6db74">&#34;2400&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;int:channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;toLogger&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;int:dispatcher</span> <span style="color:#a6e22e">task-executor=</span><span style="color:#e6db74">&#34;someExecutor&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/int:channel&gt;</span>
+</span></span></code></pre></div><p>Enfin, disposer d&rsquo;une supervision est des plus aisé puisqu&rsquo;il suffit de rajouter l&rsquo;élément <code>message-history</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;int:message-history/&gt;</span>
+</span></span></code></pre></div><p>L&rsquo;ajout de cet élément indique à Spring Integration qui doit ajouter automatiquement dans le <em>header</em> du message le temps d&rsquo;exécution de chaque <em>Filter</em>. Concernant le nom du fichier et son chemin, il se trouve renseigner automatiquement dans le header par l&rsquo;<em>adapter</em> <code>file:inbound-channel-adapter</code>.</p>
 <p>Coté gestion des erreurs, Spring Integration permet de les gérer très simplement sur le principe du canal d&rsquo;erreur qui peut récupérer tous les messages en erreur.</p>
 <p>Cependant, avec Spring Integration, si le fichier est volumineux, il n&rsquo;est plus possible de le traiter en <em>chunk</em> et un risque de contention mémoire existe.</p>
 <h1 id="solution-à-base-deip-et-de-batch">Solution à base d&rsquo;EIP et de batch</h1>

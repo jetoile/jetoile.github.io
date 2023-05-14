@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>JMX pour les nuls... - Les services JMX - Partie 7 &middot; Jetoile</title>
 
@@ -501,10 +501,10 @@ Les permissions sont des objets java qui étendent la classe <i>Permission</i>.<
 </li>
 </ul>
 <p><u>Exemples de cible :</u></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">com.example.Resource#Name[com.example.main:type=resource]
-com.example.Resource#*[com.example.main:type=resource]
-*#Name[com.example.main:type=resource]
-</code></pre></div><ul><li><ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>com.example.Resource#Name[com.example.main:type=resource]
+</span></span><span style="display:flex;"><span>com.example.Resource#*[com.example.main:type=resource]
+</span></span><span style="display:flex;"><span>*#Name[com.example.main:type=resource]
+</span></span></code></pre></div><ul><li><ul>
 <li>la  deuxième représente l'action une ou plusieurs méthodes du MBean Server parmi les suivantes :</li>
 <li><ul>
 	<li>`addNotificationListener`</li>
@@ -539,31 +539,31 @@ Les opérations suivantes ne sont pas soumises à la sécurisation du MBean Serv
 <p>Une permission <code>MBeanTrustPermission</code> est configurée soit avec la valeur &ldquo;register&rdquo;, soit avec la valeur  &ldquo;*&rdquo; qui signifient toutes deux la même chose dans la version courante de la version JMX.</p>
 <p>Ainsi, utilisé en complément de la permission <code>MBeanPermission</code>, la permission <code>MBeanTrustPermission</code> permet une gestion de la sécurité plus fine sur l&rsquo;enregistrement des MBeans : la permission <code>MBeanPermission</code> vérifie qui enregistre alors que la permission <code>MBeanTrustPermission</code> vérifie ce qui est enregistré.</p>
 <p><u>Exemples de fichier de policy :</u></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">grant {
-    permission javax.management.MBeanPermission &#34;*&#34;, &#34;*&#34;;
-};
- 
-grant codeBase &#34;file:${user.dir}${/}appl1.jar&#34; {
-    permission javax.management.MBeanPermission &#34;&#34;, &#34;getClassLoaderRepository&#34;;
-};
- 
-grant codeBase &#34;file:${user.dir}${/}appl2.jar&#34; {
-    permission javax.management.MBeanPermission &#34;[d1:*]&#34;, &#34;isInstanceOf, getObjectInstance&#34;;
-};
- 
-grant codeBase &#34;file:${user.dir}${/}appl3.jar&#34; {
-    permission javax.management.MBeanServerPermission &#34;findMBeanServer&#34;;
-    permission javax.management.MBeanPermission &#34;JMImplementation:*&#34;, &#34;queryNames&#34;;
-};
- 
-grant {
-    permission javax.management.MBeanTrustPermission &#34;register&#34;;
-};
- 
-grant signedBy &#34;Gorey&#34; {
-    permission javax.management.MBeanTrustPermission &#34;register&#34;;
-};
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>grant {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanPermission &#34;*&#34;, &#34;*&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>grant codeBase &#34;file:${user.dir}${/}appl1.jar&#34; {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanPermission &#34;&#34;, &#34;getClassLoaderRepository&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>grant codeBase &#34;file:${user.dir}${/}appl2.jar&#34; {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanPermission &#34;[d1:*]&#34;, &#34;isInstanceOf, getObjectInstance&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>grant codeBase &#34;file:${user.dir}${/}appl3.jar&#34; {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanServerPermission &#34;findMBeanServer&#34;;
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanPermission &#34;JMImplementation:*&#34;, &#34;queryNames&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>grant {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanTrustPermission &#34;register&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>grant signedBy &#34;Gorey&#34; {
+</span></span><span style="display:flex;"><span>    permission javax.management.MBeanTrustPermission &#34;register&#34;;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div>
   
   <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
 <ul class="share-buttons">

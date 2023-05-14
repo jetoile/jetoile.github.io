@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>JAXRS, Netty4 et Spring Integration : ils reviennent et ils ne sont pas content! &middot; Jetoile</title>
 
@@ -285,103 +285,103 @@
 <h1 id="présentation-du-usecase">Présentation du usecase</h1>
 <p>Le service qui est exposé est un service de type REST répondant à un appel de type POST et acceptant du JSON.</p>
 <p>Il répondra à une requête de type :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;message&#34;: &#34;hello&#34;, &#34;time&#34;: &#34;2014-03-05T10:55:39.835+01:00&#34;}&#39;</span>  http://127.0.0.1:8081/sample/write
-</code></pre></div><p>et écrira un fichier par requête reçue dans le répertoire <code>/tmp</code>. En outre, il loggera sur la console le message reçu.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -XPOST -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;message&#34;: &#34;hello&#34;, &#34;time&#34;: &#34;2014-03-05T10:55:39.835+01:00&#34;}&#39;</span>  http://127.0.0.1:8081/sample/write
+</span></span></code></pre></div><p>et écrira un fichier par requête reçue dans le répertoire <code>/tmp</code>. En outre, il loggera sur la console le message reçu.</p>
 <p>Ainsi, avec la commande suivante, on devrait voir un incrément du nombre à chaque réception de message.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">watch <span style="color:#e6db74">&#39;ls *.msg | wc -l&#39;</span>
-</code></pre></div><h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>watch <span style="color:#e6db74">&#39;ls *.msg | wc -l&#39;</span>
+</span></span></code></pre></div><h1 id="mise-en-oeuvre">Mise en oeuvre</h1>
 <h2 id="dépendances">Dépendances</h2>
 <p>A titre informatif, les dépendances ainsi que leurs versions sont les suivantes (au format gradle) :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">dependencies {
-    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-core&#39;, version:&#39;3.0.1.RELEASE&#39;
-    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-jmx&#39;, version:&#39;3.0.1.RELEASE&#39;
-    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-http&#39;, version:&#39;3.0.1.RELEASE&#39;
-    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-file&#39;, version:&#39;3.0.1.RELEASE&#39;
-    compile group: &#39;io.netty&#39;, name: &#39;netty-all&#39;, version:&#39;4.0.17.Final&#39;
-    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
-    compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-spring&#39;, version:&#39;1.1.2&#39;
-    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.0&#39;
-    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
-    compile group: &#39;javax.servlet&#39;, name: &#39;servlet-api&#39;, version:&#39;2.5&#39;
-    compile group: &#39;com.ryantenney.metrics&#39;, name: &#39;metrics-spring&#39;, version:&#39;3.0.0-RC4&#39;
-    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-netty4&#39;, version:&#39;3.0.6.Final&#39;
-    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson-provider&#39;, version:&#39;3.0.6.Final&#39;
-    compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.9&#39;
-    compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
-    compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
-    compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&#39;
-    compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) {exclude(module: &#39;jsr305&#39;)}
-}
-</code></pre></div><p>Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId <strong>org.codehaus</strong>). En effet, Jackson 2 et JodaTime m&rsquo;ont fait des misères et je n&rsquo;ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1&hellip; ;-)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-core&#39;, version:&#39;3.0.1.RELEASE&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-jmx&#39;, version:&#39;3.0.1.RELEASE&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-http&#39;, version:&#39;3.0.1.RELEASE&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.springframework.integration&#39;, name: &#39;spring-integration-file&#39;, version:&#39;3.0.1.RELEASE&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;io.netty&#39;, name: &#39;netty-all&#39;, version:&#39;4.0.17.Final&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;jaxrs-api&#39;, version:&#39;3.0.4.Final&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.jolokia&#39;, name: &#39;jolokia-spring&#39;, version:&#39;1.1.2&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-jaxrs_2.10&#39;, version:&#39;1.3.0&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;com.wordnik&#39;, name: &#39;swagger-annotations_2.10&#39;, version:&#39;1.3.0&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;javax.servlet&#39;, name: &#39;servlet-api&#39;, version:&#39;2.5&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;com.ryantenney.metrics&#39;, name: &#39;metrics-spring&#39;, version:&#39;3.0.0-RC4&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-netty4&#39;, version:&#39;3.0.6.Final&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;org.jboss.resteasy&#39;, name: &#39;resteasy-jackson-provider&#39;, version:&#39;3.0.6.Final&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;commons-configuration&#39;, name: &#39;commons-configuration&#39;, version:&#39;1.9&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;commons-collections&#39;, name: &#39;commons-collections&#39;, version:&#39;3.2.1&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;commons-io&#39;, name: &#39;commons-io&#39;, version:&#39;2.4&#39;
+</span></span><span style="display:flex;"><span>    compile group: &#39;joda-time&#39;, name: &#39;joda-time&#39;, version:&#39;2.3&#39;
+</span></span><span style="display:flex;"><span>    compile(group: &#39;com.google.guava&#39;, name: &#39;guava&#39;, version:&#39;15.0&#39;) {exclude(module: &#39;jsr305&#39;)}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Pour le lecteur averti, il constatera que la version de Jackson utilisé ici est la 1 (ie. avec le groupId <strong>org.codehaus</strong>). En effet, Jackson 2 et JodaTime m&rsquo;ont fait des misères et je n&rsquo;ai pas réussi à les résoudre rapidement, donc, par flemme, je suis repassé en version 1&hellip; ;-)</p>
 <h2 id="dto">DTO</h2>
 <p>Un DTO annoté JAX-B (compris par Jackson) sera utilisé pour représenter le JSON reçu dans le corps du POST.</p>
 <p>Il se présente comme suit :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@XmlRootElement</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DtoRequest</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> String message<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> DateTime time<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> message<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> DateTime <span style="color:#a6e22e">getTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;DtoRequest{&#34;</span> <span style="color:#f92672">+</span>
-                <span style="color:#e6db74">&#34;message=&#39;&#34;</span> <span style="color:#f92672">+</span> message <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
-                <span style="color:#e6db74">&#34;, time=&#34;</span> <span style="color:#f92672">+</span> time <span style="color:#f92672">+</span>
-                <span style="color:#e6db74">&#39;}&#39;</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Ici, la méthode <code>toString()</code> a été overridé car utilisé lors de l&rsquo;affichage du message par le loggueur sur la console.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@XmlRootElement</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DtoRequest</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String message<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> DateTime time<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getMessage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> message<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setMessage</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> message<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> DateTime <span style="color:#a6e22e">getTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTime</span><span style="color:#f92672">(</span>DateTime time<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> time<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;DtoRequest{&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;message=&#39;&#34;</span> <span style="color:#f92672">+</span> message <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;, time=&#34;</span> <span style="color:#f92672">+</span> time <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;}&#39;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Ici, la méthode <code>toString()</code> a été overridé car utilisé lors de l&rsquo;affichage du message par le loggueur sur la console.</p>
 <p>Jusque là, ça ne casse pas trois pattes à un canard ;-)</p>
 <h2 id="intégration-complète-de-spring-integration">Intégration complète de Spring Integration</h2>
 <p>Pour rappel, Spring Integration est une implémentation des <a href="https://blog.jetoile.fr/2009/12/eip-quest-ce-que-cest.html">EIP</a> (<em>Enterprise Integration Patterns</em>) et propose donc une mise en oeuvre de l&rsquo;architecture <strong>Pipes and Filters</strong>.</p>
 <p><img src="http://3.bp.blogspot.com/-Pd_JIILTp_0/Ux8fIIRV-tI/AAAAAAAABRQ/hevpIqdQU4M/s1600/si-netty4-graph.png" alt="large"></p>
 <p>Au niveau écriture dans un répertoire, le <code>file-outbound-adapter</code> offert par Spring Integration sera utilisé :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">file:outbound-channel-adapter id=&#34;fileAdapter&#34; auto-create-directory=&#34;true&#34;
-                                       directory=&#34;file:${out.directory}&#34;
-                                       channel=&#34;channel&#34;/&gt;
-</code></pre></div><p>Coté loggueur, ce sera le composant logging :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"> <span style="color:#f92672">&lt;int:logging-channel-adapter</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;channel&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span> <span style="color:#a6e22e">log-full-message=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>et où on aura un Pipe (channel) en mode <code>Publish-Subscribe</code> :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"> <span style="color:#f92672">&lt;int:publish-subscribe-channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;channel&#34;</span><span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>Au niveau des namespaces et autres informations, on aura ce qui suit :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
-       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;corePlaceHolder&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ignoreUnresolvablePlaceholders&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locations&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;list&gt;</span>
-                <span style="color:#f92672">&lt;value&gt;</span>classpath:/conf.properties<span style="color:#f92672">&lt;/value&gt;</span>
-            <span style="color:#f92672">&lt;/list&gt;</span>
-        <span style="color:#f92672">&lt;/property&gt;</span>
-    <span style="color:#f92672">&lt;/bean&gt;</span>
-
-    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/bean&gt;</span>
-
-    <span style="color:#f92672">&lt;int-jmx:mbean-export</span> <span style="color:#a6e22e">default-domain=</span><span style="color:#e6db74">&#34;fr.jetoile.sample&#34;</span> <span style="color:#a6e22e">server=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span><span style="color:#f92672">/&gt;</span>
-
-    <span style="color:#f92672">&lt;int:message-history/&gt;</span>    
-    ...
-<span style="color:#f92672">&lt;/beans&gt;</span>
-</code></pre></div><p>On y remarque la lecture du fichier de configuration, ainsi que les activations jmx adéquate afin d&rsquo;avoir un peu d&rsquo;informations ;-) Concernant l&rsquo;élément message-history, cela permet de préciser à Spring Integration d&rsquo;ajouter dans les headers du message (qui, pour rappel, transite via les Pipes entre les différents Filters) des informations de temps d&rsquo;exécution.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>file:outbound-channel-adapter id=&#34;fileAdapter&#34; auto-create-directory=&#34;true&#34;
+</span></span><span style="display:flex;"><span>                                       directory=&#34;file:${out.directory}&#34;
+</span></span><span style="display:flex;"><span>                                       channel=&#34;channel&#34;/&gt;
+</span></span></code></pre></div><p>Coté loggueur, ce sera le composant logging :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span> <span style="color:#f92672">&lt;int:logging-channel-adapter</span> <span style="color:#a6e22e">auto-startup=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">channel=</span><span style="color:#e6db74">&#34;channel&#34;</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span> <span style="color:#a6e22e">log-full-message=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>et où on aura un Pipe (channel) en mode <code>Publish-Subscribe</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span> <span style="color:#f92672">&lt;int:publish-subscribe-channel</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;channel&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span></code></pre></div><p>Au niveau des namespaces et autres informations, on aura ce qui suit :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;corePlaceHolder&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ignoreUnresolvablePlaceholders&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locations&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;list&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;value&gt;</span>classpath:/conf.properties<span style="color:#f92672">&lt;/value&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/list&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.jmx.support.MBeanServerFactoryBean&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locateExistingServerIfPossible&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;int-jmx:mbean-export</span> <span style="color:#a6e22e">default-domain=</span><span style="color:#e6db74">&#34;fr.jetoile.sample&#34;</span> <span style="color:#a6e22e">server=</span><span style="color:#e6db74">&#34;mbeanServer&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;int:message-history/&gt;</span>    
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
+</span></span></code></pre></div><p>On y remarque la lecture du fichier de configuration, ainsi que les activations jmx adéquate afin d&rsquo;avoir un peu d&rsquo;informations ;-) Concernant l&rsquo;élément message-history, cela permet de préciser à Spring Integration d&rsquo;ajouter dans les headers du message (qui, pour rappel, transite via les Pipes entre les différents Filters) des informations de temps d&rsquo;exécution.</p>
 <p>En soit, il s&rsquo;agit d&rsquo;une configuration extrèmement simple pour toute personne connaissant un minimum Spring Integration, donc encore une fois, rien de compliqué&hellip; ;-)</p>
 <h2 id="gateway-spring-integration">Gateway Spring Integration</h2>
 <p>Afin de rentrer dans le vif du sujet, ce paragraphe montrera comment il est possible de transformer notre petit serveur Resteasy-Netty4 en une Gateway Spring Integration.</p>
@@ -392,173 +392,173 @@ Ci dessous un petit extract de la <a href="http://docs.spring.io/spring-integrat
 <p>&hellip;</p>
 <p>En fait, Spring Integration fournit un GatewayProxyFactoryBean qui génère un proxy pour n&rsquo;importe quelle interface et qui, en interne, invoque la méthode de la Gateway. Ainsi, en utilisant l&rsquo;injection de dépendance, il est possible d&rsquo;exposer l&rsquo;interface aux méthodes business.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">NettyGateway</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>DtoRequest msg<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Ainsi, notre service REST se présentera comme suit :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> NettyGateway messageProducer<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setGateway</span><span style="color:#f92672">(</span>NettyGateway messageProducer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span> <span style="color:#f92672">=</span> messageProducer<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@POST</span>
-    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/write&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#a6e22e">@Consumes</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DtoRequest message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>On y constatera que l&rsquo;inteface NettyGateway lui a été injecté afin qu&rsquo;il puisse servir de passe plat.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">NettyGateway</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>DtoRequest msg<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Ainsi, notre service REST se présentera comme suit :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/sample&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleService</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> NettyGateway messageProducer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setGateway</span><span style="color:#f92672">(</span>NettyGateway messageProducer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span> <span style="color:#f92672">=</span> messageProducer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@POST</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/write&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Consumes</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DtoRequest message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>On y constatera que l&rsquo;inteface NettyGateway lui a été injecté afin qu&rsquo;il puisse servir de passe plat.</p>
 <p>Coté Spring, la configuration est la suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;int:gateway</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;nettyGateway&#34;</span> <span style="color:#a6e22e">service-interface=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.gateway.NettyGateway&#34;</span>
-                 <span style="color:#a6e22e">default-request-channel=</span><span style="color:#e6db74">&#34;channel&#34;</span><span style="color:#f92672">/&gt;</span>
-
-<span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;simpleService&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.service.SimpleService&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;gateway&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;nettyGateway&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
-</code></pre></div><p>Du coté de démarrage de notre serveur Resteasy-Netty4, cela ne sera, bien sûr, plus fait dans le <code>main()</code>, mais dans notre bean Spring à qui sera injectée notre classe implémentant notre service REST :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;nettyContainer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.gateway.NettyContainer&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;constructor-arg</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;simpleService&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/bean&gt;</span>
-</code></pre></div><p>Avec :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NettyContainer</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>NettyContainer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CONF_PROPERTIES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;conf.properties&#34;</span><span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Configuration config<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">private</span> SimpleService simpleService<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NettyContainer</span><span style="color:#f92672">(</span>SimpleService simpleService<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PropertiesConfiguration<span style="color:#f92672">(</span>CONF_PROPERTIES<span style="color:#f92672">);</span>
-
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ConfigurationException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bad config&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">simpleService</span> <span style="color:#f92672">=</span> simpleService<span style="color:#f92672">;</span>
-        initServer<span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initServer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        ResteasyDeployment deployment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResteasyDeployment<span style="color:#f92672">();</span>
-
-        <span style="color:#66d9ef">int</span> nettyPort <span style="color:#f92672">=</span> 8081<span style="color:#f92672">;</span>
-
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>config <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceEnabled</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getBoolean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceEnabled&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">));</span>
-            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxJobResults</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxJobResults&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span>
-            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxWait</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getLong</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxWait&#34;</span><span style="color:#f92672">,</span> 300000<span style="color:#f92672">));</span>
-            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceThreadPoolSize</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceThreadPoolSize&#34;</span><span style="color:#f92672">,</span> 100<span style="color:#f92672">));</span>
-
-            nettyPort <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.port&#34;</span><span style="color:#f92672">,</span> TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;is going to use default netty config&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-
-        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResources</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.&lt;</span>Object<span style="color:#f92672">&gt;</span>asList<span style="color:#f92672">(</span>simpleService<span style="color:#f92672">));</span>
-
-        MyNettyJaxrsServer netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MyNettyJaxrsServer<span style="color:#f92672">();</span>
-
-        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
-        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setPort</span><span style="color:#f92672">(</span>nettyPort<span style="color:#f92672">);</span>
-        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setRootResourcePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
-        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityDomain</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
-        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Et voilà&hellip; c&rsquo;est tout!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;int:gateway</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;nettyGateway&#34;</span> <span style="color:#a6e22e">service-interface=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.gateway.NettyGateway&#34;</span>
+</span></span><span style="display:flex;"><span>                 <span style="color:#a6e22e">default-request-channel=</span><span style="color:#e6db74">&#34;channel&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;simpleService&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.service.SimpleService&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;gateway&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;nettyGateway&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span></code></pre></div><p>Du coté de démarrage de notre serveur Resteasy-Netty4, cela ne sera, bien sûr, plus fait dans le <code>main()</code>, mais dans notre bean Spring à qui sera injectée notre classe implémentant notre service REST :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;nettyContainer&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;fr.jetoile.sample.gateway.NettyContainer&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;constructor-arg</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;simpleService&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span></code></pre></div><p>Avec :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NettyContainer</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOGGER <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>NettyContainer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CONF_PROPERTIES <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;conf.properties&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Configuration config<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SimpleService simpleService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">NettyContainer</span><span style="color:#f92672">(</span>SimpleService simpleService<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            config <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> PropertiesConfiguration<span style="color:#f92672">(</span>CONF_PROPERTIES<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>ConfigurationException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bad config&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">simpleService</span> <span style="color:#f92672">=</span> simpleService<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        initServer<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initServer</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ResteasyDeployment deployment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ResteasyDeployment<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> nettyPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">8081</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>config <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceEnabled</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getBoolean</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceEnabled&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxJobResults</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxJobResults&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceMaxWait</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getLong</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceMaxWait&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">300000</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setAsyncJobServiceThreadPoolSize</span><span style="color:#f92672">(</span>config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.asyncJobServiceThreadPoolSize&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            nettyPort <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;netty.port&#34;</span><span style="color:#f92672">,</span> TestPortProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            LOGGER<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;is going to use default netty config&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        deployment<span style="color:#f92672">.</span><span style="color:#a6e22e">setResources</span><span style="color:#f92672">(</span>Arrays<span style="color:#f92672">.&lt;</span>Object<span style="color:#f92672">&gt;</span>asList<span style="color:#f92672">(</span>simpleService<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        MyNettyJaxrsServer netty <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MyNettyJaxrsServer<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeployment</span><span style="color:#f92672">(</span>deployment<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setPort</span><span style="color:#f92672">(</span>nettyPort<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setRootResourcePath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">setSecurityDomain</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        netty<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Et voilà&hellip; c&rsquo;est tout!</p>
 <p>Ne reste plus que la classe implémentant notre main() qui ne fera que charger le contexte spring :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ConfigurationException <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;springintegration-config.xml&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Juste un dernier point : le lecteur un peu concentré aura remarqué qu&rsquo;il y a, ici, un petit meli melo dans la lecture des fichiers de configuration (parfois chargé par Spring, parfois chargé via commons-configuration). Je laisse cependant ces points en suspens et à la discrétion de la personne qui utilisera et lira cet article (ou qui aura atteint ce point&hellip;) (s&rsquo;il y en a&hellip; ;-) ).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> ConfigurationException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> ClassPathXmlApplicationContext<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;springintegration-config.xml&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Juste un dernier point : le lecteur un peu concentré aura remarqué qu&rsquo;il y a, ici, un petit meli melo dans la lecture des fichiers de configuration (parfois chargé par Spring, parfois chargé via commons-configuration). Je laisse cependant ces points en suspens et à la discrétion de la personne qui utilisera et lira cet article (ou qui aura atteint ce point&hellip;) (s&rsquo;il y en a&hellip; ;-) ).</p>
 <h2 id="intégration-de-metrics">Intégration de Metrics</h2>
 <p>L&rsquo;objectif de cet article étant de monter une stack &ldquo;presque complète&rdquo;, il est, bien sûr, primordial de fournir les bonnes métriques.</p>
 <p>Comme dans mon article précédent, ce sera Metrics qui sera utilisé.</p>
 <p>Cependant, alors que cela avait été fait programmatiquement, ce coup-ci, cela sera fait via Spring (parce que sinon ce n&rsquo;est pas drôle&hellip; ;-) ).</p>
 <p>Pour ce faire, c&rsquo;est très simple, en tirant la dépendance <strong>&lsquo;com.ryantenney.metrics&rsquo;, name: &lsquo;metrics-spring&rsquo;, version:&lsquo;3.0.0-RC4&rsquo;</strong> au lieu de <strong>&lsquo;com.codahale.metrics&rsquo;, name: &lsquo;metrics-core&rsquo;</strong>, il ne reste qu&rsquo;à ajouter à notre service REST l&rsquo;annotation <code>@Timed</code> et d&rsquo;ajouter dans la configuration Spring les éléments suivants :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@POST</span>
-<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/write&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Consumes</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Timed</span>
-<span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DtoRequest message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Avec la configuration Spring suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
-       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#a6e22e">xmlns:metrics=</span><span style="color:#e6db74">&#34;http://www.ryantenney.com/schema/metrics&#34;</span>
-       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd
-</span><span style="color:#e6db74">                  http://www.ryantenney.com/schema/metrics http://www.ryantenney.com/schema/metrics/metrics-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;metrics:metric-registry</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-    <span style="color:#f92672">&lt;metrics:annotation-driven</span> <span style="color:#a6e22e">metric-registry=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-    <span style="color:#f92672">&lt;metrics:reporter</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;jmx&#34;</span> <span style="color:#a6e22e">metric-registry=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/beans&gt;</span>
-</code></pre></div><p>Pour montrer que je ne mens pas, on a donc (ici, utilisation de Hawt.io via Jolokia) :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@POST</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/write&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Consumes</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">APPLICATION_JSON</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Timed</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>DtoRequest message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">messageProducer</span><span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Avec la configuration Spring suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:metrics=</span><span style="color:#e6db74">&#34;http://www.ryantenney.com/schema/metrics&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.ryantenney.com/schema/metrics http://www.ryantenney.com/schema/metrics/metrics-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;metrics:metric-registry</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;metrics:annotation-driven</span> <span style="color:#a6e22e">metric-registry=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;metrics:reporter</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;jmx&#34;</span> <span style="color:#a6e22e">metric-registry=</span><span style="color:#e6db74">&#34;metrics&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
+</span></span></code></pre></div><p>Pour montrer que je ne mens pas, on a donc (ici, utilisation de Hawt.io via Jolokia) :</p>
 <p><img src="http://4.bp.blogspot.com/-CZebCZS47aE/Ux8fk-EwKQI/AAAAAAAABRY/C7OwMBMZNEc/s1600/si-hawtio-connextion.png" alt="medium"></p>
 <p><img src="http://2.bp.blogspot.com/-H-LmsIrivjA/Ux8fo7ORYpI/AAAAAAAABRg/EIp_-F6LzF4/s1600/si-hawtio-metrics.png" alt="medium"></p>
 <p>On constate encore une fois la simplicité de la chose!</p>
 <h2 id="intégration-de-jolokia">Intégration de Jolokia</h2>
 <p>De même que pour notre paragraphe précédent, l&rsquo;intégration de Jolokia se fera ici par configuration Spring plutôt que de manière programmatique.</p>
 <p>Pour ce faire, il suffit de tirer la dépendance <strong>&lsquo;org.jolokia&rsquo;, name: &lsquo;jolokia-spring&rsquo;, version:&lsquo;1.1.2&rsquo;</strong> au lieu de <strong>&lsquo;org.jolokia&rsquo;, name: &lsquo;jolokia-jvm&rsquo;</strong>, et d&rsquo;ajouter le bon bean à Spring :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
-       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
-       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
-       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-       <span style="color:#a6e22e">xmlns:metrics=</span><span style="color:#e6db74">&#34;http://www.ryantenney.com/schema/metrics&#34;</span>
-       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
-       <span style="color:#a6e22e">xmlns:jolokia=</span><span style="color:#e6db74">&#34;http://www.jolokia.org/jolokia-spring/schema/config&#34;</span>
-       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
-</span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd
-</span><span style="color:#e6db74">                  http://www.jolokia.org/jolokia-spring/schema/config http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
-</span><span style="color:#e6db74">                  http://www.ryantenney.com/schema/metrics http://www.ryantenney.com/schema/metrics/metrics-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;corePlaceHolder&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ignoreUnresolvablePlaceholders&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locations&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;list&gt;</span>
-                <span style="color:#f92672">&lt;value&gt;</span>classpath:/conf.properties<span style="color:#f92672">&lt;/value&gt;</span>
-            <span style="color:#f92672">&lt;/list&gt;</span>
-        <span style="color:#f92672">&lt;/property&gt;</span>
-    <span style="color:#f92672">&lt;/bean&gt;</span>
-
-    <span style="color:#f92672">&lt;jolokia:agent</span> <span style="color:#a6e22e">lookupConfig=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">systemPropertiesMode=</span><span style="color:#e6db74">&#34;never&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;jolokia:config</span>
-                <span style="color:#a6e22e">autoStart=</span><span style="color:#e6db74">&#34;true&#34;</span>
-                <span style="color:#a6e22e">host=</span><span style="color:#e6db74">&#34;${jolokia.host}&#34;</span>
-                <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#34;${jolokia.port}&#34;</span>
-                <span style="color:#a6e22e">user=</span><span style="color:#e6db74">&#34;${jolokia.user}&#34;</span>
-                <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;${jolokia.password}&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/jolokia:agent&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/beans&gt;</span>
-</code></pre></div><p>Et&hellip; c&rsquo;est tout&hellip; Jolokia est intégré à notre petite stack.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;beans</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:file=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/file&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:metrics=</span><span style="color:#e6db74">&#34;http://www.ryantenney.com/schema/metrics&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:int-jmx=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/integration/jmx&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xmlns:jolokia=</span><span style="color:#e6db74">&#34;http://www.jolokia.org/jolokia-spring/schema/config&#34;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.springframework.org/schema/integration/jmx http://www.springframework.org/schema/integration/jmx/spring-integration-jmx.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.jolokia.org/jolokia-spring/schema/config http://www.jolokia.org/jolokia-spring/schema/config/jolokia-config.xsd
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                  http://www.ryantenney.com/schema/metrics http://www.ryantenney.com/schema/metrics/metrics-3.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;bean</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&#34;</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;corePlaceHolder&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;ignoreUnresolvablePlaceholders&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;locations&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;list&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;value&gt;</span>classpath:/conf.properties<span style="color:#f92672">&lt;/value&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/list&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/bean&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jolokia:agent</span> <span style="color:#a6e22e">lookupConfig=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">systemPropertiesMode=</span><span style="color:#e6db74">&#34;never&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;jolokia:config</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">autoStart=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">host=</span><span style="color:#e6db74">&#34;${jolokia.host}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">port=</span><span style="color:#e6db74">&#34;${jolokia.port}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">user=</span><span style="color:#e6db74">&#34;${jolokia.user}&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">password=</span><span style="color:#e6db74">&#34;${jolokia.password}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/jolokia:agent&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/beans&gt;</span>
+</span></span></code></pre></div><p>Et&hellip; c&rsquo;est tout&hellip; Jolokia est intégré à notre petite stack.</p>
 <h2 id="intégration-de-swagger">Intégration de Swagger</h2>
 <p>Concernant l&rsquo;intégration de Swagger, cela ne diffère en rien de mon article précédent. Même problème de CORS, même hack&hellip;</p>
 <p><img src="http://4.bp.blogspot.com/-ev6GX1U7SEs/Ux8fxhWTl_I/AAAAAAAABRo/srY62BOqZS4/s1600/si-swagger.png" alt="medium"></p>

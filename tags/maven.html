@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>maven &middot; Jetoile</title>
 
@@ -293,7 +293,7 @@
   Il y a quelques temps, j&rsquo;avais fait une série d&rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
- utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur.  RestEasy-Netty, même s&rsquo;il existe de nombreux points d&rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&rsquo;un mécanisme un peu limité concernant la partie sécurité.
+utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur. RestEasy-Netty, même s&rsquo;il existe de nombreux points d&rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&rsquo;un mécanisme un peu limité concernant la partie sécurité.
   </p>
 
   
@@ -616,7 +616,7 @@ Oui, je sais, les jsp c&rsquo;est has been me diront certains&hellip; Cependant,
 
   <p>
   Lorsqu&rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&rsquo;approches :
- le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?
+le découper fonctionnellement, le découper techniquement. En outre, en plus de ce type de découpage, il est également important de s&rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?
   </p>
 
   
@@ -662,7 +662,7 @@ Oui, je sais, les jsp c&rsquo;est has been me diront certains&hellip; Cependant,
 
   <p>
   Il y a un moment déjà, j&rsquo;avais fait un article sur le plugin release oh combien pratique dans notre utilisation de maven. J&rsquo;y avais mentionné les 2 goals prepare et perform qui sont les plus connus et qui, pour rappel, permettent de :
- vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.
+vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.
   </p>
 
   
@@ -711,7 +711,7 @@ Oui, je sais, les jsp c&rsquo;est has been me diront certains&hellip; Cependant,
   <p>
   Bon, ça fait un moment que je n&rsquo;ai rien écrit&hellip; je n&rsquo;ai pas foncièrement d&rsquo;excuses si ce n&rsquo;est que j&rsquo;ai été pas mal occupé sur un projet sur lequel j&rsquo;essaierai de faire un petit retour dans un futur proche&hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &ldquo;petits&rdquo; plugins maven que j&rsquo;ai eu l&rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
- Olivier Lamy (http://olamy.
+Olivier Lamy (http://olamy.
   </p>
 
   
@@ -812,7 +812,7 @@ Enfin pour être plus précis, je vais montrer comment il est facilement possibl
   <p>
   Ci-dessous se trouve une présentation que j&rsquo;ai donné sur un retour d&rsquo;expérience sur Maven 2.
 Enjoy et n&rsquo;hésitez pas à commenter ;-)
-Présentation sur Maven 2 et petit retour d'expérience  View more presentations from jetoile  
+Présentation sur Maven 2 et petit retour d'expérience View more presentations from jetoile 
   </p>
 
   
@@ -857,7 +857,7 @@ Présentation sur Maven 2 et petit retour d'expérience  View more presentations
   <p>
   Dans le cadre d&rsquo;une problématique d&rsquo;une usine logiciel, il peut s&rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &ldquo;bonnes&rdquo; pratiques que doivent respecter l&rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
- la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.
+la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.
   </p>
 
   

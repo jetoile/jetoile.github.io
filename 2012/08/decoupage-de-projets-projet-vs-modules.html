@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Découpage de projets : projet vs. modules &middot; Jetoile</title>
 
@@ -302,13 +302,13 @@
 <p>Le projet des décomposé comme suit :</p>
 <p><img src="http://2.bp.blogspot.com/-tB997UpDKpA/UCvnxlx4G5I/AAAAAAAAAnc/9bD09UesmJ4/s1600/scm-projets2.png" alt="center"></p>
 <p>Alors les valeurs des éléments scm pour trunk seront les suivantes :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">projet1                          scm : trunk/projet1
-      projet11                   scm : trunk/projet1/projet11
-projet2                          scm : trunk/projet2
-</code></pre></div><p>Par contre, si le plugin release est utilisée (par exemple le goal branches), on aura  la valeur de l&rsquo;élément scm pour branches projet11 qui sera la suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>projet1                          scm : trunk/projet1
+</span></span><span style="display:flex;"><span>      projet11                   scm : trunk/projet1/projet11
+</span></span><span style="display:flex;"><span>projet2                          scm : trunk/projet2
+</span></span></code></pre></div><p>Par contre, si le plugin release est utilisée (par exemple le goal branches), on aura  la valeur de l&rsquo;élément scm pour branches projet11 qui sera la suivante :</p>
 <p><img src="http://1.bp.blogspot.com/-0Ha4zM3jOGU/UCvo1B6DknI/AAAAAAAAAnk/6CJBHQurR3c/s1600/scm-projets.png" alt="center"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">projet11                  scm : branches/projet1/projet11
-</code></pre></div><p>On constate que la transformation de la valeur de l&rsquo;élément scm pour le projet11 est erronée. Cela n&rsquo;influe en rien le livrable, cependant, il devient alors impossible de créer une branche ou de faire une release du projet11 avec le plugin maven release&hellip;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>projet11                  scm : branches/projet1/projet11
+</span></span></code></pre></div><p>On constate que la transformation de la valeur de l&rsquo;élément scm pour le projet11 est erronée. Cela n&rsquo;influe en rien le livrable, cependant, il devient alors impossible de créer une branche ou de faire une release du projet11 avec le plugin maven release&hellip;</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Pour conclure cet article, on peut voir que le choix entre module et projet n&rsquo;est pas si complexe que cela mais qu&rsquo;il est préférable (et même, à mon sens, indispensable) de se poser les bonnes questions. Pour ma part, j&rsquo;aurai tendance à dire que plus cela est tôt dans le projet, mieux c&rsquo;est. Cependant, il faut se méfier de l&rsquo;overdesign et trop de découpage peut tuer le découpage&hellip; Certaines personnes préfèrent, d&rsquo;ailleurs, n&rsquo;avoir qu&rsquo;un seul projet décomposé en différent sous module puis, en fonction de l&rsquo;avancée du projet, effectuer un découpage : c&rsquo;est également une possibilité qui se veut aussi plus pragmatique.</p>
 <p>Après chacun fait comme il l&rsquo;entend et c&rsquo;est une question de goût. Cependant, si on pousse ce raisonnement à l&rsquo;extrème, pourquoi, dans ce cas, ne pas faire un découpage par package? : cela est plus simple, on ne s&rsquo;embête pas à gérer différents poms et c&rsquo;est encore plus pragmatique non? ;-)</p>

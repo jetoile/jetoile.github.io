@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Petites astuces avec JMX &middot; Jetoile</title>
 
@@ -276,26 +276,26 @@ Ce rapide article fournit un petit retour d&rsquo;expérience de quelques galèr
 <p>Les options permettant d&rsquo;activer JMX sur la JVM ont été passées via la variable <code>JAVA_OPTS</code> ou autre (via le catalina.sh par exemple).</p>
 <p>Le démarrage de Tomcat s&rsquo;effectue sans problème mais lors de son arrêt, une erreur apparaît et tomcat refuse de s&rsquo;arrêter c&rsquo;est-à-dire que son processus tourne toujours en tâche de fond.</p>
 <p>Exemple de variable JAVA_OPTS :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$JAVA_OPTS<span style="color:#e6db74"> \
-</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote \
-</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.port=18080 \
-</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.authenticate=false \
-</span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.ssl=false&#34;</span>
-</code></pre></div><p>Message affiché sur la console lors du démarrage de Tomcat :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./startup.sh
-Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
-Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
-Using CATALINA_HOME:  /opt/apache-tomcat-6.0.20/temp
-Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
-</code></pre></div><p>Message affiché sur la console lors de l&rsquo;arrêt de Tomcat :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./shutdown.sh
-Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
-Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
-Using CATALINA_HOME:   /opt/apache-tomcat-6.0.20/temp
-Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
-Erreur: Exception envoyée par l<span style="color:#960050;background-color:#1e0010">&#39;</span>agent : java.rmi.server.ExportException: Port already in use: 18080; nested exception is: 
-        java.net.BindException: Address already in use
-</code></pre></div><h2 id="explication">Explication</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export JAVA_OPTS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$JAVA_OPTS<span style="color:#e6db74"> \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-Dcom.sun.management.jmxremote \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.port=18080 \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.authenticate=false \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">-Dcom.sun.management.jmxremote.ssl=false&#34;</span>
+</span></span></code></pre></div><p>Message affiché sur la console lors du démarrage de Tomcat :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./startup.sh
+</span></span><span style="display:flex;"><span>Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
+</span></span><span style="display:flex;"><span>Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
+</span></span><span style="display:flex;"><span>Using CATALINA_HOME:  /opt/apache-tomcat-6.0.20/temp
+</span></span><span style="display:flex;"><span>Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
+</span></span></code></pre></div><p>Message affiché sur la console lors de l&rsquo;arrêt de Tomcat :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>khanh@khanh-vaio:/opt/apache-tomcat-6.0.20/bin$ ./shutdown.sh
+</span></span><span style="display:flex;"><span>Using CATALINA_BASE:   /opt/apache-tomcat-6.0.20
+</span></span><span style="display:flex;"><span>Using CATALINA_TMPDIR:  /opt/apache-tomcat-6.0.20
+</span></span><span style="display:flex;"><span>Using CATALINA_HOME:   /opt/apache-tomcat-6.0.20/temp
+</span></span><span style="display:flex;"><span>Using JRE_HOME:     /usr/lib/jvm/java-6-sun/jre
+</span></span><span style="display:flex;"><span>Erreur: Exception envoyée par l<span style="color:#960050;background-color:#1e0010">&#39;</span>agent : java.rmi.server.ExportException: Port already in use: 18080; nested exception is: 
+</span></span><span style="display:flex;"><span>        java.net.BindException: Address already in use
+</span></span></code></pre></div><h2 id="explication">Explication</h2>
 <p>En fait, cette erreur se produit lors de l&rsquo;arrêt de Tomcat car le script <code>shutdown.sh</code> (ou <code>catalina.sh stop</code>) relance un processus java qui tente alors de démarrer un serveur RMI qui est utilisé par JMX. Bien sûr, ce port étant déjà utilisé par le processus java que l&rsquo;on tente d&rsquo;arrêter, cela échoue.</p>
 <h2 id="proposition-pour-résoudre-le-problème">Proposition pour résoudre le problème</h2>
 <ul>
@@ -312,54 +312,53 @@ Erreur: Exception envoyée par l<span style="color:#960050;background-color:#1e0
 <p>Une jconsole ou une jvisualvm qui n&rsquo;arrive pas à se connecter à un programme ou une connexion au connecteur d&rsquo;un agent JMX qui échoue avec une exception.</p>
 <p>Chose d&rsquo;autant plus étonnante qu&rsquo;avec une connexion réseau, il n&rsquo;y a pas de problèmes alors qu&rsquo;en mode hors-ligne, impossible d&rsquo;avoir accès à l&rsquo;agent JMX.</p>
 <p>Exemple d&rsquo;exception lors de la tentative de connexion à l&rsquo;agent JMX distant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java.lang.NullPointerException
-at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:281<span style="color:#f92672">)</span>
-at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:227<span style="color:#f92672">)</span>
-at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span>
-at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span>
-<span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
-at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest.main<span style="color:#f92672">(</span>TestJMXServerTest.java:34<span style="color:#f92672">)</span>
-
-</code></pre></div><p>Fenêtre d&rsquo;erreur de la jconsole :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java.lang.NullPointerException
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:281<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:227<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest.main<span style="color:#f92672">(</span>TestJMXServerTest.java:34<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Fenêtre d&rsquo;erreur de la jconsole :</p>
 <p><img src="http://3.bp.blogspot.com/_XLL8sJPQ97g/TTsrkOibDDI/AAAAAAAAAUE/qpX-1nw0OOA/s1600/error02.png" alt="medium"></p>
-<p>Fenêtre d&rsquo;erreur de jvisualvm : <em>&ldquo;Data not available because JMX connection to the JMX agent could not be established.&quot;</em> :</p>
+<p>Fenêtre d&rsquo;erreur de jvisualvm : <em>&ldquo;Data not available because JMX connection to the JMX agent could not be established.&rdquo;</em> :</p>
 <p><img src="http://4.bp.blogspot.com/_XLL8sJPQ97g/TTsroeTxKoI/AAAAAAAAAUI/0aUghCdjv0w/s1600/error01.png" alt="medium"></p>
 <h2 id="analyse">Analyse</h2>
 <p>Après de multiples tentatives pour comprendre, j&rsquo;ai tenté un changement de jre pour voir si cela ne pouvait pas venir d&rsquo;une anomalie (si j&rsquo;avais un problème de connexion en mode hors-ligne, ce n&rsquo;était pas pour rien puisque j&rsquo;étais effectivement hors-ligne et, par conséquent, je devais me débrouiller par moi-même&hellip; ;-) ).</p>
 <p>Ainsi, en passant d&rsquo;une jre hotspot vers une openjdk, j&rsquo;ai obtenu une stacktrace beaucoup plus complète puisqu&rsquo;elle m&rsquo;a clairement indiquée la source du problème :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR c.b.j.j.c.ConnectorStubListener - ConnectorStubListener update: <span style="color:#f92672">{}</span>
-java.rmi.ConnectIOException: Exception creating connection to: 192.168.xxx.xxx; nested exception is:
-java.net.NoRouteToHostException: Network is unreachable
-at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:632<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at sun.rmi.transport.tcp.TCPChannel.createConnection<span style="color:#f92672">(</span>TCPChannel.java:216<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at sun.rmi.transport.tcp.TCPChannel.newConnection<span style="color:#f92672">(</span>TCPChannel.java:202<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at sun.rmi.server.UnicastRef.invoke<span style="color:#f92672">(</span>UnicastRef.java:128<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at javax.management.remote.rmi.RMIServerImpl_Stub.newClient<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at javax.management.remote.rmi.RMIConnector.getConnection<span style="color:#f92672">(</span>RMIConnector.java:2343<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:296<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:244<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
-at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
-...
-at com.blogspot.jetoile.jgroups.connector.JMXServer.start<span style="color:#f92672">(</span>JMXServer.java:152<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
-at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest2.main<span style="color:#f92672">(</span>TestJMXServerTest2.java:34<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>test-classes/:na<span style="color:#f92672">]</span>
- 
- 
-Caused by: java.net.NoRouteToHostException: Network is unreachable
-at java.net.PlainSocketImpl.socketConnect<span style="color:#f92672">(</span>Native Method<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.AbstractPlainSocketImpl.doConnect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:310<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.AbstractPlainSocketImpl.connectToAddress<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:176<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.AbstractPlainSocketImpl.connect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:163<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.SocksSocketImpl.connect<span style="color:#f92672">(</span>SocksSocketImpl.java:384<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:546<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:495<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:392<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
-at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:206<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
-at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket<span style="color:#f92672">(</span>RMIDirectSocketFactory.java:40<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket<span style="color:#f92672">(</span>RMIMasterSocketFactory.java:146<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:613<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
-... <span style="color:#ae81ff">34</span> common frames omitted
-</code></pre></div><h2 id="explication-1">Explication</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ERROR c.b.j.j.c.ConnectorStubListener - ConnectorStubListener update: <span style="color:#f92672">{}</span>
+</span></span><span style="display:flex;"><span>java.rmi.ConnectIOException: Exception creating connection to: 192.168.xxx.xxx; nested exception is:
+</span></span><span style="display:flex;"><span>java.net.NoRouteToHostException: Network is unreachable
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:632<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.tcp.TCPChannel.createConnection<span style="color:#f92672">(</span>TCPChannel.java:216<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.tcp.TCPChannel.newConnection<span style="color:#f92672">(</span>TCPChannel.java:202<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at sun.rmi.server.UnicastRef.invoke<span style="color:#f92672">(</span>UnicastRef.java:128<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIServerImpl_Stub.newClient<span style="color:#f92672">(</span>Unknown Source<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIConnector.getConnection<span style="color:#f92672">(</span>RMIConnector.java:2343<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:296<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at javax.management.remote.rmi.RMIConnector.connect<span style="color:#f92672">(</span>RMIConnector.java:244<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.ConnectorStubListener.update<span style="color:#f92672">(</span>ConnectorStubListener.java:47<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.ConnectorStubManager.put<span style="color:#f92672">(</span>ConnectorStubManager.java:46<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.JMXServer.start<span style="color:#f92672">(</span>JMXServer.java:152<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>classes/:na<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at com.blogspot.jetoile.jgroups.connector.TestJMXServerTest2.main<span style="color:#f92672">(</span>TestJMXServerTest2.java:34<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>test-classes/:na<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>Caused by: java.net.NoRouteToHostException: Network is unreachable
+</span></span><span style="display:flex;"><span>at java.net.PlainSocketImpl.socketConnect<span style="color:#f92672">(</span>Native Method<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.AbstractPlainSocketImpl.doConnect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:310<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.AbstractPlainSocketImpl.connectToAddress<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:176<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.AbstractPlainSocketImpl.connect<span style="color:#f92672">(</span>AbstractPlainSocketImpl.java:163<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.SocksSocketImpl.connect<span style="color:#f92672">(</span>SocksSocketImpl.java:384<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:546<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.Socket.connect<span style="color:#f92672">(</span>Socket.java:495<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:392<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
+</span></span><span style="display:flex;"><span>at java.net.Socket.&lt;init&gt;<span style="color:#f92672">(</span>Socket.java:206<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>&lt;/init&gt;
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.proxy.RMIDirectSocketFactory.createSocket<span style="color:#f92672">(</span>RMIDirectSocketFactory.java:40<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.proxy.RMIMasterSocketFactory.createSocket<span style="color:#f92672">(</span>RMIMasterSocketFactory.java:146<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>at sun.rmi.transport.tcp.TCPEndpoint.newSocket<span style="color:#f92672">(</span>TCPEndpoint.java:613<span style="color:#f92672">)</span> ~<span style="color:#f92672">[</span>na:1.6.0_20<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>... <span style="color:#ae81ff">34</span> common frames omitted
+</span></span></code></pre></div><h2 id="explication-1">Explication</h2>
 <p>En fait, mon problème venait du fait que mon fichier hosts était incorrect (je vous avais prévenu que c&rsquo;était une erreur stupide : n&rsquo;importe qui aurait pensé à vérifier sa configuration réseau&hellip; ! ;-) ).</p>
 <p>En effet, la couche logicielle gérant mes connexions réseaux sur mon ordinateur a tendance à ajouter dans mon fichier /etc/hosts mon adresse réseau. Cependant, lorsque je coupe mon wifi, mon ordinateur passe en mode hors-ligne sans modifier mon fichier hosts, ce qui corrompt ma configuration réseau.</p>
 <h1 id="proposition-pour-résoudre-le-problème-1">Proposition pour résoudre le problème</h1>

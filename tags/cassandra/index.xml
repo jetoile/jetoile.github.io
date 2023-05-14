@@ -16,7 +16,7 @@
       <guid>https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html</guid>
       <description>Parce que je suis parti sur ma lancée des articles des tests d&amp;rsquo;intégration avec &amp;hellip;, à la demande de Duyhai, voilà que je me retrouve à faire un article pour Apache Cassandra&amp;hellip; ;)
 Plus sérieusement, faire des tests d&amp;rsquo;intégration avec Apache Cassandra est beaucoup plus simple qu&amp;rsquo;avec Redis ou Elasticsearch mais il existe cependant 2 projets qui simplifient énormément les tests d&amp;rsquo;intégration avec Cassandra :
- cassandra-unit créé par Jérémy Sevellec achille créé par Duyhai Doan  Ce petit article résume comment utiliser ces 2 solutions.</description>
+cassandra-unit créé par Jérémy Sevellec achille créé par Duyhai Doan Ce petit article résume comment utiliser ces 2 solutions.</description>
     </item>
     
     <item>

@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>JMX pour les nuls... - Les classes de base - Partie 4 &middot; Jetoile</title>
 
@@ -344,17 +344,17 @@ Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-i
 <p><img src="http://1.bp.blogspot.com/_XLL8sJPQ97g/TOk6Iw1WyvI/AAAAAAAAAOA/xCsPcxlmq_U/s1600/jmx39.png" alt="medium"></p>
 <p>Le nom de domaine est une chaîne de caractères sensible à la casse qui fournit la structure d&rsquo;un espace de nommage dans l&rsquo;agent JMX. Il peut être optionnel car le MBean Server est capable d&rsquo;en fournir un par défaut.</p>
 <p>Il peut contenir n&rsquo;importe quel caractère mis à part les caractères &ldquo;:&rdquo;, &ldquo;*&rdquo; et &ldquo;?&rdquo; et prend généralement la forme d&rsquo;un nom de domaine DNS inversé (ex : <code>com.jetoile.myDomain</code>). Il est déconseillé qu&rsquo;il contienne la chaine &ldquo;//&rdquo;.</p>
-<p>La liste de clés-propriétés permet de fournir un nom unique au MBean dans un domain donné. Une clé-propriété est, en fait, un pair de clé/valeur où la valeur est une chaîne de caractères qui ne doit pas contenir les caractères suivants : &ldquo;:&rdquo;, &ldquo;&quot;&rdquo;, &quot; &ldquo;, &ldquo;=&rdquo;, &ldquo;*&rdquo;, &ldquo;?&rdquo;. Une propriété doit obligatoirement être présente.</p>
+<p>La liste de clés-propriétés permet de fournir un nom unique au MBean dans un domain donné. Une clé-propriété est, en fait, un pair de clé/valeur où la valeur est une chaîne de caractères qui ne doit pas contenir les caractères suivants : &ldquo;:&rdquo;, &ldquo;&rdquo;&quot;, &quot; &ldquo;, &ldquo;=&rdquo;, &ldquo;*&rdquo;, &ldquo;?&rdquo;. Une propriété doit obligatoirement être présente.</p>
 <p>Un objectName aura donc la forme suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">[domainName]:property=value[,property=value]*
-</code></pre></div><p>Exemple :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">MyDomain:description=Printer,type=laser
-MyDomain:description=Disk,capacity=2
-DefaultDomain:description=Disk,capacity=1
-DefaultDomain:description=Printer,type=ink
-DefaultDomain:description=Printer,type=laser,date=1993
-Socrates:description=Printer,type=laser,date=1993
-</code></pre></div><p>En outre, JMX propose un moyen pour interroger l&rsquo;annuaire de MBeans présent dans le MBean Server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[domainName]:property=value[,property=value]*
+</span></span></code></pre></div><p>Exemple :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>MyDomain:description=Printer,type=laser
+</span></span><span style="display:flex;"><span>MyDomain:description=Disk,capacity=2
+</span></span><span style="display:flex;"><span>DefaultDomain:description=Disk,capacity=1
+</span></span><span style="display:flex;"><span>DefaultDomain:description=Printer,type=ink
+</span></span><span style="display:flex;"><span>DefaultDomain:description=Printer,type=laser,date=1993
+</span></span><span style="display:flex;"><span>Socrates:description=Printer,type=laser,date=1993
+</span></span></code></pre></div><p>En outre, JMX propose un moyen pour interroger l&rsquo;annuaire de MBeans présent dans le MBean Server.</p>
 <p>Ainsi, pour l&rsquo;exemple donné ci-dessus, il est possible d&rsquo;avoir :</p>
 <ul>
 <li>&ldquo;<em>:</em>&rdquo; renverra tous les objets du MBean Server. Un objet null ou une chaîne de caractère est équivalente à <em>.</em></li>

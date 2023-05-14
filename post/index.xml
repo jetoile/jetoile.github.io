@@ -49,7 +49,7 @@ Cet article va montrer comment il est possible de concilier simplement les tests
       <guid>https://blog.jetoile.fr/2017/07/tester-avec-cassandra.html</guid>
       <description>Parce que je suis parti sur ma lancée des articles des tests d&amp;rsquo;intégration avec &amp;hellip;, à la demande de Duyhai, voilà que je me retrouve à faire un article pour Apache Cassandra&amp;hellip; ;)
 Plus sérieusement, faire des tests d&amp;rsquo;intégration avec Apache Cassandra est beaucoup plus simple qu&amp;rsquo;avec Redis ou Elasticsearch mais il existe cependant 2 projets qui simplifient énormément les tests d&amp;rsquo;intégration avec Cassandra :
- cassandra-unit créé par Jérémy Sevellec achille créé par Duyhai Doan  Ce petit article résume comment utiliser ces 2 solutions.</description>
+cassandra-unit créé par Jérémy Sevellec achille créé par Duyhai Doan Ce petit article résume comment utiliser ces 2 solutions.</description>
     </item>
     
     <item>
@@ -104,7 +104,7 @@ Il existe également de nombreux projets permettant de faire des tests avec Redi
       <description>Si vous êtes un lecteur assidu (ou pas ;)), vous avez pu vous rendre compte que j&amp;rsquo;avais posté précédemment sur un composant au doux nom d&amp;rsquo;Hadoop-Unit.
 J&amp;rsquo;ai le plaisir de vous annoncer qu&amp;rsquo;il a été releasé en version 1.3 et qu&amp;rsquo;il est également disponible sur maven central.
 Il intègre dans sa nouvelle version :
- support d&amp;rsquo;ElasticSearch 5.0.0-alpha2 correction de bugs : la variable d&amp;rsquo;environnement HADOOP_UNIT n&amp;rsquo;est plus nécessaire que pour les utilisateurs de Windows (merci Florent ;)) passage en version 0.</description>
+support d&amp;rsquo;ElasticSearch 5.0.0-alpha2 correction de bugs : la variable d&amp;rsquo;environnement HADOOP_UNIT n&amp;rsquo;est plus nécessaire que pour les utilisateurs de Windows (merci Florent ;)) passage en version 0.</description>
     </item>
     
     <item>
@@ -114,7 +114,7 @@ Il intègre dans sa nouvelle version :
       
       <guid>https://blog.jetoile.fr/2016/04/hadoop-unit.html</guid>
       <description>Dans mon dernier post, j&amp;rsquo;avais parlé d&amp;rsquo;une surcouche que j&amp;rsquo;avais développé afin de faciliter l&amp;rsquo;utilisation de quelques-uns des composants de l&amp;rsquo;écosystème Hadoop, à savoir :
- Hdfs, Zookeeper, HiveMetastore, Hiveserver2, SolR, SolRCloud, Oozie, Kafka, HBase, MongoDB [New \o/ ], et Cassandra [New \o/ ].  Il s&amp;rsquo;appelait alors Hadoop-Bootstrap mais il s&amp;rsquo;agissait aussi d&amp;rsquo;une première version qui a, bien sûr, évolué.
+Hdfs, Zookeeper, HiveMetastore, Hiveserver2, SolR, SolRCloud, Oozie, Kafka, HBase, MongoDB [New \o/ ], et Cassandra [New \o/ ]. Il s&amp;rsquo;appelait alors Hadoop-Bootstrap mais il s&amp;rsquo;agissait aussi d&amp;rsquo;une première version qui a, bien sûr, évolué.
 Cet article présentera donc quels ont été les améliorations qui ont été apportées.</description>
     </item>
     
@@ -171,7 +171,7 @@ L&amp;rsquo;objectif étant extraire une sorte de bench un peu naïf et un peu o
       <description>Il y a quelques temps, j&amp;rsquo;avais fait une série d&amp;rsquo;articles sur resteasy-netty et resteasy-netty4.
 Cette article repart du même besoin, à savoir disposer d&amp;rsquo;une stack légère pour réaliser un service REST, mais en utilisant Undertow plutôt que Resteasy-Netty.
 Au niveau des besoins, ils seront identiques ie. :
- utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur.  RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
+utiliser JAX-RS, intégrer Swagger, intégrer Jolokia, générer un livrable autoporteur. RestEasy-Netty, même s&amp;rsquo;il existe de nombreux points d&amp;rsquo;entrée, demande quelques phases de hack (gestion du crossover domain par exemple) et dispose d&amp;rsquo;un mécanisme un peu limité concernant la partie sécurité.</description>
     </item>
     
     <item>
@@ -182,7 +182,7 @@ Au niveau des besoins, ils seront identiques ie. :
       <guid>https://blog.jetoile.fr/2014/06/breizhcamp-2014-presentation-en-ligne.html</guid>
       <description>Pour ceux qui auraient manqué l&amp;rsquo;information, le BreizhCamp s&amp;rsquo;est déroulé en mai dernier et j&amp;rsquo;y avais la chance d&amp;rsquo;y présenter un talk sur un retour d&amp;rsquo;expérience concernant le passage à l&amp;rsquo;échelle d&amp;rsquo;un SI afin de lui permettre de supporter 4 millions d&amp;rsquo;utilisateurs.
 Le synopsis était le suivant :
- De 20 000 à 4 millions d&amp;rsquo;utilisateurs
+De 20 000 à 4 millions d&amp;rsquo;utilisateurs
 Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de pouvoir stocker en masse les données des utilisateurs mais également afin d&amp;rsquo;être capable de les traiter.</description>
     </item>
     
@@ -193,7 +193,7 @@ Pour ce faire, il a été nécessaire de revoir certaines parties du SI afin de 
       
       <guid>https://blog.jetoile.fr/2014/05/breizhcamp-2014.html</guid>
       <description>Encore un an de plus pour le breizhCamp qui vient de fêter sa quatrième année.
-Pour ceux qui ne seraient pas encore au courant de ce qu&amp;rsquo;est le breizhCamp, il s&amp;rsquo;agit d&amp;rsquo;une conférence technique qui se veut être un mix de technologies (même s&amp;rsquo;il faut bien reconnaitre que Java y est majoritairement représentée&amp;hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&#39;ISTIC.</description>
+Pour ceux qui ne seraient pas encore au courant de ce qu&amp;rsquo;est le breizhCamp, il s&amp;rsquo;agit d&amp;rsquo;une conférence technique qui se veut être un mix de technologies (même s&amp;rsquo;il faut bien reconnaitre que Java y est majoritairement représentée&amp;hellip;) qui a eu lieu du 21 au 23 mai 2014 à Rennes dans les locaux de l&amp;rsquo;ISTIC.</description>
     </item>
     
     <item>
@@ -249,7 +249,7 @@ Cependant, en raison d&amp;rsquo;une limitation de feedburner sur la taille du f
 En effet, j&amp;rsquo;ai décidé de passer de Blogger pour l&amp;rsquo;hébergement de mon blog à une solution basée sur Octopress et un hébergement sur github.io.
 Pourquoi ce choix?
 Et ben, en fait, pour plusieurs raisons :
- J&amp;rsquo;ai toujours aimé la philosophie de LaTeX qui permettait d&amp;rsquo;écrire au kilomètre sans avoir à se soucier de la mise en forme.</description>
+J&amp;rsquo;ai toujours aimé la philosophie de LaTeX qui permettait d&amp;rsquo;écrire au kilomètre sans avoir à se soucier de la mise en forme.</description>
     </item>
     
     <item>
@@ -271,8 +271,7 @@ Pour ce faire, rien de plus simple, un Service Activator de type gateway a été
       <guid>https://blog.jetoile.fr/2014/03/livereload-et-linux-ou-comment-rediger.html</guid>
       <description>Cet article n&amp;rsquo;a rien à voir avec le monde Java.
 Il s&amp;rsquo;agit plus d&amp;rsquo;un petit tutoriel surtout destiné&amp;hellip; à moi-même&amp;hellip; ;-)
-En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&amp;rsquo;avoir une idée de l&amp;rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&amp;rsquo;énerver.
-Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que cela pouvait être pas mal de l&amp;rsquo;utiliser.</description>
+En effet, mon blog étant hébergé sur blogger, lorsque je rédige un article, je le fais le plus souvent directement en HTML. Afin d&amp;rsquo;avoir une idée de l&amp;rsquo;aperçu, je le charge directement dans mon navigateur mais passer son temps à faire du Alt-Tab/F5 a rapidement commencé à m&amp;rsquo;énerver.</description>
     </item>
     
     <item>
@@ -282,8 +281,7 @@ Aussi, ayant entendu parlé depuis un moment de livereload, je me suis dis que c
       
       <guid>https://blog.jetoile.fr/2014/03/jaxrs-netty-4-jackon-2-les-memes-mais.html</guid>
       <description>Pour faire suite à mon article précédent qui montrait comment il était possible de construire une stack légère basée sur Resteasy-Netty3, Jackson, Jolokia et Swagger, cet article montrera comment il est possible de faire la même chose avec Resteasy-Netty4 et Jackson 2.
-Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)
-En fait, les seuls points qui diffèrent, par rapport au code précédent, touchent :</description>
+Même si les changements ne sont pas énormes, il y a quand même quelques variantes, et, histoire d&amp;rsquo;être exhaustif, cela permet de faire le tour complet&amp;hellip; ;-)</description>
     </item>
     
     <item>
@@ -364,9 +362,9 @@ Cette article montrera comment il est possible de faire pour un contexte donné.
       <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
       
       <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html</guid>
-      <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
+      <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&amp;rsquo;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
 Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
- Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
+Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
     </item>
     
     <item>
@@ -418,7 +416,7 @@ En effet, combien de fois n&amp;rsquo;ai-je pas vu un test de charge effectué a
       
       <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
- le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
+le découper fonctionnellement, le découper techniquement. En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
@@ -428,7 +426,7 @@ En effet, combien de fois n&amp;rsquo;ai-je pas vu un test de charge effectué a
       
       <guid>https://blog.jetoile.fr/2012/08/maven-creer-une-branche-mode-demloi.html</guid>
       <description>Il y a un moment déjà, j&amp;rsquo;avais fait un article sur le plugin release oh combien pratique dans notre utilisation de maven. J&amp;rsquo;y avais mentionné les 2 goals prepare et perform qui sont les plus connus et qui, pour rappel, permettent de :
- vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
+vérifier que lors du lancement du processus de génération du livrable, le code est bien conforme à ce qui se trouve sur le SCM, tagger le code source à partir duquel le livrable est produit et permettant ainsi sa reproductivité, incrémenter le numéro de version des poms, générer le livrable, et le déployer sur le remote proxy repository.</description>
     </item>
     
     <item>
@@ -460,7 +458,7 @@ Je tiens toutefois à préciser que je n&amp;rsquo;ai aucune expérience réelle
       <guid>https://blog.jetoile.fr/2012/02/petit-focus-sur-2-plugins-maven.html</guid>
       <description>Bon, ça fait un moment que je n&amp;rsquo;ai rien écrit&amp;hellip; je n&amp;rsquo;ai pas foncièrement d&amp;rsquo;excuses si ce n&amp;rsquo;est que j&amp;rsquo;ai été pas mal occupé sur un projet sur lequel j&amp;rsquo;essaierai de faire un petit retour dans un futur proche&amp;hellip;
 En fait, dans ce rapide post, je tenais à faire partager 2 &amp;ldquo;petits&amp;rdquo; plugins maven que j&amp;rsquo;ai eu l&amp;rsquo;opportunité de découvrir récemment par le biais de 2 Olivier :
- Olivier Lamy (http://olamy.</description>
+Olivier Lamy (http://olamy.</description>
     </item>
     
     <item>
@@ -481,7 +479,7 @@ En fait, Resign Patterns reprend le principe des Design Patterns tels que décri
       <guid>https://blog.jetoile.fr/2011/11/devoxx-2011-whats-probably-coming-in.html</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;aller à Devoxx en Belgique à Anvers.
 Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pêche aux informations sur le site : http://www.devoxx.com/ et même à vous y inscrire l&amp;rsquo;année prochaine et/ou même mieux&amp;hellip; d&amp;rsquo;aller assister à Devoxx France!!
- Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de Nigel Deakin présentée à Devoxx 2011 et à laquelle j&amp;rsquo;ai assisté.</description>
+Bon, sinon, pour revenir à nos moutons, cet article est un petit retour de la session de Nigel Deakin présentée à Devoxx 2011 et à laquelle j&amp;rsquo;ai assisté.</description>
     </item>
     
     <item>
@@ -492,7 +490,7 @@ Pour ceux, qui ne connaissent pas, je vous invite à aller directement à la pê
       <guid>https://blog.jetoile.fr/2011/11/petite-decouverte-de-cloudbees.html</guid>
       <description>La semaine dernière, j&amp;rsquo;ai eu la chance d&amp;rsquo;assister à un atelier sur CloudBees chez nos amis de Xebia.
 Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique pour éviter tout favoritisme ;-) ) :
- Eric Briand Simon Caplette Nicolas De Loof Cyrille Leclerc Olivier Michallat Jean-Louis Rigau Emmanuel Servent  Comme d&amp;rsquo;habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n&amp;rsquo;est pas le but de mon article&amp;hellip;</description>
+Eric Briand Simon Caplette Nicolas De Loof Cyrille Leclerc Olivier Michallat Jean-Louis Rigau Emmanuel Servent Comme d&amp;rsquo;habitude, organisation bien rodée et atelier préparé aux petits oignons mais ce n&amp;rsquo;est pas le but de mon article&amp;hellip;</description>
     </item>
     
     <item>
@@ -503,7 +501,7 @@ Ce dernier a été organisé avec brio par (je le fais par ordre alphabétique p
       <guid>https://blog.jetoile.fr/2011/10/fusesource-community-day-2011.html</guid>
       <description>Ce jeudi 13 octobre dernier a eu lieu la troisième édition du FuseSource Community Day à la Défense. Pour ceux qui ne connaissent pas la société FuseSource, il s&amp;rsquo;agit, en fait, du nouveau nom de Iona et c&amp;rsquo;est une société spécialisée dans l&amp;rsquo;open source qui propose un ensemble de produits packagés et intégrés de différentes solutions de la fondation Apache.
 Parmi ces produits, on peut y trouver :
- Apache CXF (Fuse Service Framework) Apache ServiceMix (Fuse ESB) Apache ActiveMQ (Fuse Message Broker) Apache Camel (Fuse Mediation Router)  En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l&amp;rsquo;accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.</description>
+Apache CXF (Fuse Service Framework) Apache ServiceMix (Fuse ESB) Apache ActiveMQ (Fuse Message Broker) Apache Camel (Fuse Mediation Router) En fait, si elle propose un package gratuit de ces différents produits, elle offre également un support ainsi que l&amp;rsquo;accompagnement aux personnes ou entreprises qui le souhaitent en offrant différentes formules.</description>
     </item>
     
     <item>
@@ -524,7 +522,7 @@ Enfin pour être plus précis, je vais montrer comment il est facilement possibl
       <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur les problématiques liées aux architectures distribuées. Pour information, c&amp;rsquo;est un retour d&amp;rsquo;expérience d&amp;rsquo;une mission qui date un peu puisque c&amp;rsquo;était en 2007 mais les préconisations restent identiques à ce jour.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
-Introduction sur les problématiques d&#39;une architecture distribuée  View more presentations from jetoile  </description>
+Introduction sur les problématiques d&#39;une architecture distribuée View more presentations from jetoile </description>
     </item>
     
     <item>
@@ -535,7 +533,7 @@ Introduction sur les problématiques d&#39;une architecture distribuée  View mo
       <guid>https://blog.jetoile.fr/2011/09/presentation-et-retour-dexperience-sur.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur un retour d&amp;rsquo;expérience sur Maven 2.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
-Présentation sur Maven 2 et petit retour d&#39;expérience  View more presentations from jetoile  </description>
+Présentation sur Maven 2 et petit retour d&#39;expérience View more presentations from jetoile </description>
     </item>
     
     <item>
@@ -557,7 +555,7 @@ Ce fut une journée bien remplie, fatigante mais que du bonheur : des sessions i
       <description>Cela fait un petit moment (plus d&amp;rsquo;un mois déjà&amp;hellip;) qu&amp;rsquo;a eu lieu le BreizhCamp.
 Pour les néophytes, BreizhCamp est une journée de conférence sur diverses technologies allant de Python, en passant par .Net pour, finalement finir sur Java.
 Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l’ISTIC et a été organisée par l’équipe du BreizhJug qui comprend :
- Nicolas De loof, Michel David, Julien Coste.</description>
+Nicolas De loof, Michel David, Julien Coste.</description>
     </item>
     
     <item>
@@ -567,7 +565,7 @@ Cette année, elle a eu lieu le vendredi 17 Juin à Rennes dans les locaux de l�
       
       <guid>https://blog.jetoile.fr/2011/06/ubuntu-1104-probleme-de-completion.html</guid>
       <description>Ubuntu 11.04 est sorti depuis le 28 avril 2011. Je ne reviendrai pas ni sur son ergonomie ni sur ses ajouts puisque cela a déjà été débattu sur de nombreux sites/blogs. Cependant, depuis la mise à jour, un point avait tendance à m&amp;rsquo;agacer.
-En effet, dans un shell bash, sur la complétion de la commande ls (entre autre) avec des répertoires contenant des espaces, il ne m&amp;rsquo;échappait plus ces derniers. Du coup, obligation d&amp;rsquo;aller les échapper manuellement mais chose encore plus embêtante était qu&amp;rsquo;il ne me proposait plus le contenu de mon répertoire.</description>
+En effet, dans un shell bash, sur la complétion de la commande ls (entre autre) avec des répertoires contenant des espaces, il ne m&amp;rsquo;échappait plus ces derniers.</description>
     </item>
     
     <item>
@@ -578,7 +576,7 @@ En effet, dans un shell bash, sur la complétion de la commande ls (entre autre)
       <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html</guid>
       <description>Dans le cadre d&amp;rsquo;une problématique d&amp;rsquo;une usine logiciel, il peut s&amp;rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &amp;ldquo;bonnes&amp;rdquo; pratiques que doivent respecter l&amp;rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
- la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
+la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
     </item>
     
     <item>
@@ -644,7 +642,7 @@ En fait, l&amp;rsquo;idée est partie d&amp;rsquo;un constat assez simple : sur 
       <guid>https://blog.jetoile.fr/2011/01/ouverture-dun-compte-github.html</guid>
       <description>Voilà, ça fait quelques jours que je travaille sur un petit projet perso.
 Aussi, afin de pouvoir le hoster, je me suis créé un compte sur GitHub : https://github.com/jetoile.
-~~Pour toutes informations sur Git, je vous renvoie sur le site : http://blog.gitfr.net/~~
+Pour toutes informations sur Git, je vous renvoie sur le site : http://blog.gitfr.net/
 De mon coté, je continue mon petit projet que je documenterai via de nouveaux articles d&amp;rsquo;ici peu.
 Rester à l&amp;rsquo;écoute ;-)</description>
     </item>
@@ -657,7 +655,7 @@ Rester à l&amp;rsquo;écoute ;-)</description>
       <guid>https://blog.jetoile.fr/2011/01/petites-astuces-avec-jmx.html</guid>
       <description>Ce rapide article fournit un petit retour d&amp;rsquo;expérience de quelques galères que j&amp;rsquo;ai pu avoir avec JMX (Java Management eXtension), galères certes stupides mais qui pourront peut être servir à d&amp;rsquo;autres&amp;hellip; ;-)
 Seront donc abordés deux points :
- Erreur lors de l&amp;rsquo;arrêt de tomcat configuré avec JMX Impossibilité de se connecter à l&amp;rsquo;agent JMX  Message d&amp;rsquo;erreur lors de l&amp;rsquo;arrêt d&amp;rsquo;Apache Tomcat? Cas d&amp;rsquo;usage Les options permettant d&amp;rsquo;activer JMX sur la JVM ont été passées via la variable JAVA_OPTS ou autre (via le catalina.</description>
+Erreur lors de l&amp;rsquo;arrêt de tomcat configuré avec JMX Impossibilité de se connecter à l&amp;rsquo;agent JMX Message d&amp;rsquo;erreur lors de l&amp;rsquo;arrêt d&amp;rsquo;Apache Tomcat? Cas d&amp;rsquo;usage Les options permettant d&amp;rsquo;activer JMX sur la JVM ont été passées via la variable JAVA_OPTS ou autre (via le catalina.</description>
     </item>
     
     <item>
@@ -704,7 +702,7 @@ Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se pr�
       
       <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-le-mbean-server.html</guid>
       <description>Cet article reste dans la lignée de ma petite série d&amp;rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX et partie 4 sur les classes de base) et portera sur le MBean Server.
-Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
+Table des matières JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs MBean Server Le MBean Server est un annuaire de MBeans se trouvant dans l&amp;rsquo;agent JMX.</description>
     </item>
     
     <item>
@@ -714,7 +712,7 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralit�
       
       <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-classes-de-base.html</guid>
       <description>Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification et partie 3 sur les agents JMX) permettra de présenter les classes de bases de JMX c&amp;rsquo;est-à-dire les classes qui sont manipulées en interne par les API de JMX à savoir :
- ObjectName ObjectInstance Attribute AttributeList  Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
+ObjectName ObjectInstance Attribute AttributeList Table des matières JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs ObjectName Un nom d&amp;rsquo;objet permet d&amp;rsquo;identifier un MBean dans le MBean Server de manière unique.</description>
     </item>
     
     <item>
@@ -725,7 +723,7 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralit�
       <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-agents-jmx-partie.html</guid>
       <description>Cette troisième partie sur JMX reste dans la continuité de la série d&amp;rsquo;article sur ce sujet (cf. introduction, partie 1 portant sur les généralités et partie 2 portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&amp;rsquo;est un agent JMX et à quoi il sert.
 Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.
-Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
+Table des matières JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
@@ -736,7 +734,7 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
       <guid>https://blog.jetoile.fr/2010/11/jmx-pour-les-nuls-les-differents-mbeans.html</guid>
       <description>Mon précédent article portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.
 Ainsi, cette partie traitera des différents MBeans et du concept notification.
-Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs</description>
+Table des matières JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs MBean Un MBean est une classe java concrète qui :</description>
     </item>
     
     <item>
@@ -746,7 +744,7 @@ Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralit�
       
       <guid>https://blog.jetoile.fr/2010/10/jmx-pour-les-nuls-les-concepts-partie-1.html</guid>
       <description>Comme promis lors de mon article précédent (et pour éviter de vous faire languir ;-) ) la première partie de cette série d&amp;rsquo;article sur JMX!
-Table des matières  JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs    JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
+Table des matières JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&amp;rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs JMX, qu&amp;rsquo;est ce que c&amp;rsquo;est?</description>
     </item>
     
     <item>
@@ -843,10 +841,9 @@ Cette page récapitule le cycle des phases utilisés pour un packaging donné.</
       <pubDate>Thu, 25 Mar 2010 23:50:56 +0100</pubDate>
       
       <guid>https://blog.jetoile.fr/2010/03/articles-disponibles-sur-mon-retour-du.html</guid>
-      <description>Dans mon précédent post, j&amp;rsquo;avais annoncé la mise à disposition prochaine d&amp;rsquo;une série d&amp;rsquo;articles sur le Salon Linux Open Source qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris.
-C&amp;rsquo;est désormais chose faite et les articles sont disponibles sur le blog de So@t.
+      <description>Dans mon précédent [post](/2010/03/salon-linux-open-source.html), j&#39;avais annoncé la mise à disposition prochaine d&#39;une série d&#39;articles sur le Salon [Linux Open Source](http://www.solutionslinux.fr/) qui s’est déroulé pendant 3 jours, du 16 au 18 mars 2010, à la porte de Versailles sur Paris. C&amp;rsquo;est désormais chose faite et les articles sont disponibles sur le blog de So@t.
 Il est donc possible d&amp;rsquo;y retrouver les 6 articles suivants :
- Retour sur le Salon Linux Open Source, Salon Linux Open Source – Atelier sur le développement logiciel collaboratif : bonnes pratiques, premiers bilans, Salon Linux Open Source – Keynote sur Oracle et l’Open Source : stratégie et initiatives – de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc, Salon Linux Open Source – Table ronde sur &amp;ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&amp;rdquo;, Salon Linux Open Source – Table ronde sur &amp;ldquo;virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&amp;rdquo;, Salon Linux Open Source – Cycle OW2.</description>
+Retour sur le Salon Linux Open Source, Salon Linux Open Source – Atelier sur le développement logiciel collaboratif : bonnes pratiques, premiers bilans, Salon Linux Open Source – Keynote sur Oracle et l’Open Source : stratégie et initiatives – de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc, Salon Linux Open Source – Table ronde sur &amp;ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&amp;rdquo;, Salon Linux Open Source – Table ronde sur &amp;ldquo;virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&amp;rdquo;, Salon Linux Open Source – Cycle OW2.</description>
     </item>
     
     <item>
@@ -856,7 +853,7 @@ Il est donc possible d&amp;rsquo;y retrouver les 6 articles suivants :
       
       <guid>https://blog.jetoile.fr/2010/03/salon-linux-open-source.html</guid>
       <description>Voilà, le salon Linux Open Source a fermé ses portes. Résultat des courses, 3 jours bien remplis où j&amp;rsquo;ai pu assister à pas mal de conférences sur divers sujets tels que :
- l&amp;rsquo;atelier sur &amp;ldquo;Développement logiciel collaboratif : bonnes pratiques, premiers bilans&amp;rdquo; la keynote sur &amp;ldquo;Oracle et l&amp;rsquo;Open Source :stratégie et initiatives - de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc&amp;rdquo; la table ronde sur &amp;ldquo;Interopérabilité : les standards ouverts à la base des architectures&amp;rdquo; la table ronde sur &amp;ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&amp;rdquo; la table ronde sur &amp;ldquo;Virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&amp;rdquo; et le cycle OW2 : &amp;ldquo;Optimiser votre infrastructure d&amp;rsquo;entreprise avec les solutions innovantes du Consortium OW2&amp;rdquo; où j&amp;rsquo;ai plus précisément assisté aux présentations suivantes :  &amp;ldquo;Prenez de l&amp;rsquo;avance avec la nouvelle génération du décisionnel Open Source grâce à l&amp;rsquo;initiative OW2 Business Intelligence&amp;rdquo; &amp;ldquo;Gestion autonomique des infrastructures du nuage pour le PaaS avec JASMINe : état des lieux et perspectives&amp;rdquo; &amp;ldquo;Mettez la Data Integration dans votre ESB avec Talend et PEtALS&amp;rdquo; &amp;ldquo;Comment gérer efficacement vos documents avec eXo DMS et la solutions BPM Bonita&amp;rdquo; &amp;ldquo;Outils d&amp;rsquo;audit et diagnostic pour les développeurs et administrateurs d&amp;rsquo;applications Java EE&amp;rdquo;    La rédaction de CRs est en cours et ils seront disponibles sur le blog de So@t d&amp;rsquo;ici peu.</description>
+l&amp;rsquo;atelier sur &amp;ldquo;Développement logiciel collaboratif : bonnes pratiques, premiers bilans&amp;rdquo; la keynote sur &amp;ldquo;Oracle et l&amp;rsquo;Open Source :stratégie et initiatives - de Linux à MySQL via la virtualisation, GlassFish, Eclipse, les languages dynamiques de scripting, etc&amp;rdquo; la table ronde sur &amp;ldquo;Interopérabilité : les standards ouverts à la base des architectures&amp;rdquo; la table ronde sur &amp;ldquo;Progiciels : le logiciel libre envahit le domaine fonctionnel&amp;rdquo; la table ronde sur &amp;ldquo;Virtualisation : retours sur investissement et bonnes pratiques de la virtualisation&amp;rdquo; et le cycle OW2 : &amp;ldquo;Optimiser votre infrastructure d&amp;rsquo;entreprise avec les solutions innovantes du Consortium OW2&amp;rdquo; où j&amp;rsquo;ai plus précisément assisté aux présentations suivantes : &amp;ldquo;Prenez de l&amp;rsquo;avance avec la nouvelle génération du décisionnel Open Source grâce à l&amp;rsquo;initiative OW2 Business Intelligence&amp;rdquo; &amp;ldquo;Gestion autonomique des infrastructures du nuage pour le PaaS avec JASMINe : état des lieux et perspectives&amp;rdquo; &amp;ldquo;Mettez la Data Integration dans votre ESB avec Talend et PEtALS&amp;rdquo; &amp;ldquo;Comment gérer efficacement vos documents avec eXo DMS et la solutions BPM Bonita&amp;rdquo; &amp;ldquo;Outils d&amp;rsquo;audit et diagnostic pour les développeurs et administrateurs d&amp;rsquo;applications Java EE&amp;rdquo; La rédaction de CRs est en cours et ils seront disponibles sur le blog de So@t d&amp;rsquo;ici peu.</description>
     </item>
     
     <item>
@@ -905,8 +902,7 @@ Dans un post précédent, j&amp;rsquo;avais parler de la façon dont j&amp;rsquo
       <pubDate>Tue, 26 Jan 2010 22:26:44 +0100</pubDate>
       
       <guid>https://blog.jetoile.fr/2010/01/ouvrages-recommandes.html</guid>
-      <description>Ce post présente les ouvrages (techniques) que je recommande vivement&amp;hellip; cependant, certaines références ne sont plus disponibles puisque l&amp;rsquo;éditeur O&amp;rsquo;Reilly a décidé de fermer sa branche française&amp;hellip; dommage&amp;hellip; mais les éditions anglaises sont toujours là!
-A lire absoluement Apache Maven de N. De Loof et A. Héritier chez Pearson Ce livre, qui ne se veut pas une bible maven, raconte la mise en place de maven avec un modèle &amp;ldquo;essai successif&amp;rdquo;, c&amp;rsquo;est à dire en prenant en compte les besoins d&amp;rsquo;un projet fictif au sens gestion de configuration et en suivant le raisonnement des acteurs pour arriver à construire un projet pérenne qui prend en considération la gestion de différentes sources, les tests, l&amp;rsquo;intégration, la mise en production, la gestion du SCM&amp;hellip; en gros tout ce qu&amp;rsquo;un projet à besoin.</description>
+      <description>Ce post présente les ouvrages (techniques) que je recommande vivement... cependant, certaines références ne sont plus disponibles puisque l&#39;éditeur O&#39;Reilly a décidé de fermer sa branche française... dommage... mais les éditions anglaises sont toujours là! # A lire absoluement ## Apache Maven de N. De Loof et A. Héritier chez Pearson Ce livre, qui ne se veut pas une bible maven, raconte la mise en place de maven avec un modèle &#34;</description>
     </item>
     
     <item>

@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Précompiler ses jsp &middot; Jetoile</title>
 
@@ -301,74 +301,74 @@
 </li>
 </ul>
 <p>Rien de bien compliqué si on regarde la documentation officielle puisqu&rsquo;il n&rsquo;y a cas déclarer dans le pom les informations suivantes :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-jspc-maven<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;build&gt;</span>
-            <span style="color:#f92672">&lt;plugins&gt;</span>
-                <span style="color:#f92672">&lt;plugin&gt;</span>
-                    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-                    <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                    <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-3<span style="color:#f92672">&lt;/version&gt;</span>
-                    <span style="color:#f92672">&lt;executions&gt;</span>
-                        <span style="color:#f92672">&lt;execution&gt;</span>
-                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
-                            <span style="color:#f92672">&lt;goals&gt;</span>
-                                <span style="color:#f92672">&lt;goal&gt;</span>compile<span style="color:#f92672">&lt;/goal&gt;</span>
-                            <span style="color:#f92672">&lt;/goals&gt;</span>
-                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
-                            <span style="color:#f92672">&lt;configuration&gt;</span>
-                            <span style="color:#f92672">&lt;/configuration&gt;</span>
-                        <span style="color:#f92672">&lt;/execution&gt;</span>
-                    <span style="color:#f92672">&lt;/executions&gt;</span>
-                    <span style="color:#f92672">&lt;dependencies&gt;</span>
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo.jspc<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-compiler-tomcat6<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-3<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-                <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-            <span style="color:#f92672">&lt;/plugins&gt;</span>
-        <span style="color:#f92672">&lt;/build&gt;</span>
- 
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/profiles&gt;</span>    
-...
-<span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-    <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
-            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
- 
-<span style="color:#f92672">&lt;dependencies&gt;</span>
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>
-</code></pre></div><p>On constate que les dépendances à sitemesh ainsi qu&rsquo;à la jstl ont été déclaré afin de fournir à la compilation des jsp le nécessaire. De même, il est important de noter que le plugin <strong>jspc-maven-plugin</strong> doit obligatoirement fournir un <strong>jspc-compiler</strong> qui est spécifique à la version de tomcat utilisé.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-jspc-maven<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-3<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;goal&gt;</span>compile<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo.jspc<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-compiler-tomcat6<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-3<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>    
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span></code></pre></div><p>On constate que les dépendances à sitemesh ainsi qu&rsquo;à la jstl ont été déclaré afin de fournir à la compilation des jsp le nécessaire. De même, il est important de noter que le plugin <strong>jspc-maven-plugin</strong> doit obligatoirement fournir un <strong>jspc-compiler</strong> qui est spécifique à la version de tomcat utilisé.</p>
 <p>Malheureusement, après un petit coup de :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn test -Pjsp-compile-jspc-maven
-</code></pre></div><p>on peut se rendre compte que, si les jsp contiennent des scritlets avec du code Java 5 telle qu&rsquo;une petite enum (oui, je sais, les scriptlets c&rsquo;est mal&hellip; mais, dans mon cas, c&rsquo;était pour tester&hellip;), on se fait joliment insulté&hellip; :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn test -Pjsp-compile-jspc-maven
+</span></span></code></pre></div><p>on peut se rendre compte que, si les jsp contiennent des scritlets avec du code Java 5 telle qu&rsquo;une petite enum (oui, je sais, les scriptlets c&rsquo;est mal&hellip; mais, dans mon cas, c&rsquo;était pour tester&hellip;), on se fait joliment insulté&hellip; :
 <img src="http://2.bp.blogspot.com/-E1qsxbHRQfI/UIgT-ax6M_I/AAAAAAAAArY/p1RBmt2us0o/s1600/error01.png" alt="medium"></p>
 <p>Après quelques recherches, je suis tombé sur ce lien :
 <a href="http://stackoverflow.com/questions/7156953/maven-jspc-should-use-external-jsp-files">http://stackoverflow.com/questions/7156953/maven-jspc-should-use-external-jsp-files</a></p>
@@ -378,73 +378,73 @@
 <p>Malheureusement, la version actuelle ne semble pas bénéficier de ces modifications (la alpha-3 date de 2008 et le ticket a été mis à jour en 2012&hellip;). Ne reste donc plus qu&rsquo;à récupérer le code source du svn et à le recompiler&hellip; (<code>svn checkout https://svn.codehaus.org/mojo/trunk/mojo/jspc</code>).</p>
 <p>Donc, après avoir modifié dans mon pom les informations adéquates, je lance la précompilation et là&hellip; miracle&hellip;!!! Ca marche ;-)</p>
 <p>Au final, on aura donc le code suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-jspc-maven<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;build&gt;</span>
-            <span style="color:#f92672">&lt;plugins&gt;</span>
-                <span style="color:#f92672">&lt;plugin&gt;</span>
-                    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-                    <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                    <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-4-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-                    <span style="color:#f92672">&lt;executions&gt;</span>
-                        <span style="color:#f92672">&lt;execution&gt;</span>
-                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
-                            <span style="color:#f92672">&lt;goals&gt;</span>
-                                <span style="color:#f92672">&lt;goal&gt;</span>compile<span style="color:#f92672">&lt;/goal&gt;</span>
-                            <span style="color:#f92672">&lt;/goals&gt;</span>
-                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
-                            <span style="color:#f92672">&lt;configuration&gt;</span>
-                                <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
-                                <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
-                            <span style="color:#f92672">&lt;/configuration&gt;</span>
-                        <span style="color:#f92672">&lt;/execution&gt;</span>
-                    <span style="color:#f92672">&lt;/executions&gt;</span>
-                    <span style="color:#f92672">&lt;dependencies&gt;</span>
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo.jspc<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-compiler-tomcat6<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-4-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-                <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-            <span style="color:#f92672">&lt;/plugins&gt;</span>
-        <span style="color:#f92672">&lt;/build&gt;</span>
- 
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/profiles&gt;</span>    
-...
-<span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-    <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
-            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
- 
-<span style="color:#f92672">&lt;dependencies&gt;</span>
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>
-</code></pre></div><h3 id="conclusion">Conclusion</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-jspc-maven<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-4-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;goal&gt;</span>compile<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo.jspc<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>jspc-compiler-tomcat6<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>2.0-alpha-4-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>    
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span></code></pre></div><h3 id="conclusion">Conclusion</h3>
 <p>Au final, ce plugin m&rsquo;aura bien fait suer (et là, je n&rsquo;ai fait qu&rsquo;un rapide condenser de mes recherches et de mes galères - modification des pom en cascade, recherche internet, &hellip;), mais bon&hellip; la solution est fonctionnelle même si elle demande une petite recompilation du plugin.</p>
 <p>Cependant, le plugin <strong>jspc-maven-plugin</strong> ne propose pas (si j&rsquo;ai bien regardé le code source) d&rsquo;exclure certaines pages de la compilation, chose qui m&rsquo;était nécessaire&hellip; :'(</p>
 <p>Du coup, cette solution n&rsquo;a pas été retenue&hellip;</p>
@@ -453,66 +453,66 @@
 <p>Dans cette deuxième tentative de mise en oeuvre, j&rsquo;ai utilisé le goal <code>jspc</code> du plugin <strong>jsp-compile-maven-plugin</strong>. On peut se demander pourquoi choisir le plugin Jetty alors que la cible était Tomcat. La réponse est que, vu que ce qui m&rsquo;intéressait était la partie compilation pure et non la partie packaging, cela m&rsquo;était égal.</p>
 <p>Pour mettre en place, ce plugin, il suffit de suivre la documentation officielle :
 <a href="http://docs.codehaus.org/display/JETTY/Maven+Jetty+Jspc+Plugin">http://docs.codehaus.org/display/JETTY/Maven+Jetty+Jspc+Plugin</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-maven-jetty<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;build&gt;</span>
-            <span style="color:#f92672">&lt;plugins&gt;</span>
-                <span style="color:#f92672">&lt;plugin&gt;</span>
-                    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
-                    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                    <span style="color:#f92672">&lt;version&gt;</span>8.1.7.v20120910<span style="color:#f92672">&lt;/version&gt;</span>
-                    <span style="color:#f92672">&lt;executions&gt;</span>
-                        <span style="color:#f92672">&lt;execution&gt;</span>
-                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
-                            <span style="color:#f92672">&lt;goals&gt;</span>
-                                <span style="color:#f92672">&lt;goal&gt;</span>jspc<span style="color:#f92672">&lt;/goal&gt;</span>
-                            <span style="color:#f92672">&lt;/goals&gt;</span>
-                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
-                            <span style="color:#f92672">&lt;configuration&gt;</span>
-                                <span style="color:#f92672">&lt;includes/&gt;</span>
-                                <span style="color:#f92672">&lt;excludes/&gt;</span>
-                                <span style="color:#f92672">&lt;verbose&gt;</span>true<span style="color:#f92672">&lt;/verbose&gt;</span>
-                            <span style="color:#f92672">&lt;/configuration&gt;</span>
-                        <span style="color:#f92672">&lt;/execution&gt;</span>
-                    <span style="color:#f92672">&lt;/executions&gt;</span>
-                <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-            <span style="color:#f92672">&lt;/plugins&gt;</span>
-        <span style="color:#f92672">&lt;/build&gt;</span>
- 
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/profiles&gt;</span>    
-...
-<span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-    <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
-            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
- 
-<span style="color:#f92672">&lt;dependencies&gt;</span>
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>        
-</code></pre></div><p>Malheureusement, même en épluchant la documentation et le code source, on constate qu&rsquo;il n&rsquo;est pas possible de spécifier la version du compilateur.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-maven-jetty<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-jspc-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;version&gt;</span>8.1.7.v20120910<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;goal&gt;</span>jspc<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;includes/&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;excludes/&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;verbose&gt;</span>true<span style="color:#f92672">&lt;/verbose&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>    
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>        
+</span></span></code></pre></div><p>Malheureusement, même en épluchant la documentation et le code source, on constate qu&rsquo;il n&rsquo;est pas possible de spécifier la version du compilateur.</p>
 <p>Aussi, avec mon code de test qui utilise de superbes &ldquo;switch case&rdquo; avec des String seulement disponible à partir de Java 7, j&rsquo;obtiens le résultat suivant :
 <img src="http://2.bp.blogspot.com/-MM9hVOZq5sg/UIgxyuqIjFI/AAAAAAAAAsA/Y_9ELLHlMM0/s1600/error02.png" alt="medium"></p>
 <p>En effet, après analyses (si je ne me suis pas fourvoyé&hellip;), le code source (<a href="git://git.codehaus.org/jetty-project.git">git://git.codehaus.org/jetty-project.git</a>) ne positionne pas le <code>compilerTarget</code> sur <strong>JspC</strong> et donc, à part hacker le plugin, impossible de surmonter ce manque&hellip;</p>
@@ -522,171 +522,171 @@
 <h2 id="ant">Ant</h2>
 <h3 id="mise-en-oeuvre-3">Mise en oeuvre</h3>
 <p>Dans cette troisième tentative de mise en oeuvre, j&rsquo;ai gentiment suivi les préconisations présentes sur le site de Tomcat pour précompiler les jsp (<a href="http://tomcat.apache.org/tomcat-6.0-doc/jasper-howto.html">http://tomcat.apache.org/tomcat-6.0-doc/jasper-howto.html</a>) :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;profiles&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-ant<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;build&gt;</span>
-            <span style="color:#f92672">&lt;plugins&gt;</span>
-                <span style="color:#f92672">&lt;plugin&gt;</span>
-                    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-                    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-antrun-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                    <span style="color:#f92672">&lt;version&gt;</span>1.6<span style="color:#f92672">&lt;/version&gt;</span>
-                    <span style="color:#f92672">&lt;executions&gt;</span>
-                        <span style="color:#f92672">&lt;execution&gt;</span>
-                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
-                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
-                            <span style="color:#f92672">&lt;configuration&gt;</span>
-                                <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;pre-compile-jsp&#34;</span><span style="color:#f92672">&gt;</span>
-                                    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maven.dependencies.classpath&#34;</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;maven.test.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
-                                    <span style="color:#f92672">&lt;ant</span> <span style="color:#a6e22e">antfile=</span><span style="color:#e6db74">&#34;${basedir}/build.xml&#34;</span><span style="color:#f92672">&gt;</span>
-                                        <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;all&#34;</span><span style="color:#f92672">/&gt;</span>
-                                    <span style="color:#f92672">&lt;/ant&gt;</span>
-                                <span style="color:#f92672">&lt;/target&gt;</span>
-                            <span style="color:#f92672">&lt;/configuration&gt;</span>
-                            <span style="color:#f92672">&lt;goals&gt;</span>
-                                <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
-                            <span style="color:#f92672">&lt;/goals&gt;</span>
-                        <span style="color:#f92672">&lt;/execution&gt;</span>
-                    <span style="color:#f92672">&lt;/executions&gt;</span>
-                    <span style="color:#f92672">&lt;dependencies&gt;</span>
-                        <span style="color:#75715e">&lt;!-- http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK --&gt;</span>
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>com.sun<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>tools<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>1.6.0<span style="color:#f92672">&lt;/version&gt;</span>
-                            <span style="color:#f92672">&lt;scope&gt;</span>system<span style="color:#f92672">&lt;/scope&gt;</span>
-                            <span style="color:#f92672">&lt;systemPath&gt;</span>${java.home}/../lib/tools.jar<span style="color:#f92672">&lt;/systemPath&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>jasper<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>jsp-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-                        <span style="color:#f92672">&lt;dependency&gt;</span>
-                            <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-                            <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                            <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-                        <span style="color:#f92672">&lt;/dependency&gt;</span>
-                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-                <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-            <span style="color:#f92672">&lt;/plugins&gt;</span>
-        <span style="color:#f92672">&lt;/build&gt;</span>
- 
-        <span style="color:#f92672">&lt;dependencies&gt;</span>
-            <span style="color:#f92672">&lt;dependency&gt;</span>
-                <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
-                <span style="color:#f92672">&lt;artifactId&gt;</span>jasper<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
-                <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-            <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-            <span style="color:#f92672">&lt;dependency&gt;</span>
-                <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-                <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-                <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-            <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-        <span style="color:#f92672">&lt;/dependencies&gt;</span>
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-    ...
-<span style="color:#f92672">&lt;/profiles&gt;</span>    
-...
-<span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-    <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
-            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
- 
-<span style="color:#f92672">&lt;dependencies&gt;</span>
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
- 
-    <span style="color:#f92672">&lt;dependency&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;/dependency&gt;</span>
-<span style="color:#f92672">&lt;/dependencies&gt;</span>        
-</code></pre></div><p>avec le fichier <code>build.xml</code> suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
- 
-<span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Webapp Precompilation&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">&gt;</span>
- 
- 
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;webapp.path&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/src/main/webapp&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsp.dest.compile&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/target/jsp-generated&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsp.dest&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/target/jsp&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#75715e">&lt;!--&lt;property name=&#34;tomcat.home&#34; value=&#34;/opt/apache-tomcat-7.0.23&#34;/&gt;--&gt;</span>
-    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;tomcat.home&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;/usr/local/tomcat60&#34;</span><span style="color:#f92672">/&gt;</span>
- 
-    <span style="color:#f92672">&lt;import</span> <span style="color:#a6e22e">file=</span><span style="color:#e6db74">&#34;${tomcat.home}/bin/catalina-tasks.xml&#34;</span><span style="color:#f92672">/&gt;</span>
- 
-    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jspc&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;jasper</span>
-                <span style="color:#a6e22e">validateXml=</span><span style="color:#e6db74">&#34;false&#34;</span>
-                <span style="color:#a6e22e">uriroot=</span><span style="color:#e6db74">&#34;${webapp.path}&#34;</span>
-                <span style="color:#a6e22e">webXmlFragment=</span><span style="color:#e6db74">&#34;${basedir}/target/generated_web.xml&#34;</span>
-                <span style="color:#a6e22e">outputDir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span>
-                <span style="color:#a6e22e">compiler=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
-                <span style="color:#a6e22e">compilersourcevm=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
-                <span style="color:#a6e22e">compilertargetvm=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
-                <span style="color:#a6e22e">failonerror=</span><span style="color:#e6db74">&#34;true&#34;</span>
-                <span style="color:#a6e22e">verbose=</span><span style="color:#e6db74">&#34;9&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/target&gt;</span>
- 
-    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
- 
-        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${jsp.dest.compile}&#34;</span><span style="color:#f92672">/&gt;</span>
- 
-        <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${jsp.dest.compile}&#34;</span>
-               <span style="color:#a6e22e">optimize=</span><span style="color:#e6db74">&#34;off&#34;</span>
-               <span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span>
-               <span style="color:#a6e22e">failonerror=</span><span style="color:#e6db74">&#34;true&#34;</span>
-               <span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span>
-               <span style="color:#a6e22e">memoryinitialsize=</span><span style="color:#e6db74">&#34;1024m&#34;</span>
-               <span style="color:#a6e22e">memoryMaximumSize=</span><span style="color:#e6db74">&#34;1024m&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;classpath&gt;</span>
-                <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;${maven.dependencies.classpath}&#34;</span><span style="color:#f92672">/&gt;</span>
-            <span style="color:#f92672">&lt;/classpath&gt;</span>
-            <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;**&#34;</span> <span style="color:#f92672">/&gt;</span>
-            <span style="color:#75715e">&lt;!--&lt;exclude name=&#34;**/blabla*_jsp.java&#34;/&gt;--&gt;</span>
-        <span style="color:#f92672">&lt;/javac&gt;</span>
- 
-    <span style="color:#f92672">&lt;/target&gt;</span>
- 
-    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;jspc,compile&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;/target&gt;</span>
- 
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>On peut constater quelques petites adaptations sur le script ant par rapport à la version proposée. Les raisons sont les suivantes :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>jsp-compile-ant<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-antrun-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;version&gt;</span>1.6<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;id&gt;</span>pre-compile-jsp<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;pre-compile-jsp&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;maven.dependencies.classpath&#34;</span> <span style="color:#a6e22e">refid=</span><span style="color:#e6db74">&#34;maven.test.classpath&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#f92672">&lt;ant</span> <span style="color:#a6e22e">antfile=</span><span style="color:#e6db74">&#34;${basedir}/build.xml&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                                        <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;all&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#f92672">&lt;/ant&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#75715e">&lt;!-- http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK --&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>com.sun<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>tools<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>1.6.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;scope&gt;</span>system<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;systemPath&gt;</span>${java.home}/../lib/tools.jar<span style="color:#f92672">&lt;/systemPath&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>jasper<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>jsp-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>jasper<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;version&gt;</span>6.0.35<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>    
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;target&gt;</span>1.7<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;source&gt;</span>1.7<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>opensymphony<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>sitemesh<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.4.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>jstl<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jstl<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>        
+</span></span></code></pre></div><p>avec le fichier <code>build.xml</code> suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Webapp Precompilation&#34;</span> <span style="color:#a6e22e">default=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;webapp.path&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/src/main/webapp&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsp.dest.compile&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/target/jsp-generated&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsp.dest&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;${basedir}/target/jsp&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--&lt;property name=&#34;tomcat.home&#34; value=&#34;/opt/apache-tomcat-7.0.23&#34;/&gt;--&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;tomcat.home&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;/usr/local/tomcat60&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;import</span> <span style="color:#a6e22e">file=</span><span style="color:#e6db74">&#34;${tomcat.home}/bin/catalina-tasks.xml&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jspc&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;jasper</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">validateXml=</span><span style="color:#e6db74">&#34;false&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">uriroot=</span><span style="color:#e6db74">&#34;${webapp.path}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">webXmlFragment=</span><span style="color:#e6db74">&#34;${basedir}/target/generated_web.xml&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">outputDir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">compiler=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">compilersourcevm=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">compilertargetvm=</span><span style="color:#e6db74">&#34;${java.version}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">failonerror=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span><span style="color:#a6e22e">verbose=</span><span style="color:#e6db74">&#34;9&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;mkdir</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;${jsp.dest.compile}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;javac</span> <span style="color:#a6e22e">destdir=</span><span style="color:#e6db74">&#34;${jsp.dest.compile}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">optimize=</span><span style="color:#e6db74">&#34;off&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">fork=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">failonerror=</span><span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">srcdir=</span><span style="color:#e6db74">&#34;${jsp.dest}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">memoryinitialsize=</span><span style="color:#e6db74">&#34;1024m&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">               </span><span style="color:#a6e22e">memoryMaximumSize=</span><span style="color:#e6db74">&#34;1024m&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;classpath&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;path</span> <span style="color:#a6e22e">path=</span><span style="color:#e6db74">&#34;${maven.dependencies.classpath}&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/classpath&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;**&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">&lt;!--&lt;exclude name=&#34;**/blabla*_jsp.java&#34;/&gt;--&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/javac&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#a6e22e">depends=</span><span style="color:#e6db74">&#34;jspc,compile&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>On peut constater quelques petites adaptations sur le script ant par rapport à la version proposée. Les raisons sont les suivantes :</p>
 <ul>
 <li>il ne me plaisait pas de dépendre de l&rsquo;emplacement d&rsquo;un conteneur de servlets pour effectuer une simple compilation : j&rsquo;ai préféré déclarer les lib de Tomcat via Maven. Etant dans un profil Maven particulié, l&rsquo;impact était négligeable pour le reste du projet,</li>
 <li>je ne voulais pas que mes ressources générées partent n&rsquo;importe où : j&rsquo;ai donc précisé ces éléments dans les taches jasper et compile,</li>
@@ -700,14 +700,14 @@
 </ul>
 <p>Cependant, il reste encore un point qui mérite qu&rsquo;on s&rsquo;attarde un peu à cette solution&hellip; En effet, le <strong>maven-ant-plugin</strong> utilisé ici pour invoquer la target Ant depuis Maven s&rsquo;exécute avec la variable d&rsquo;environnement <code>JAVA_HOME</code> positionnée sur le JRE : <a href="http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK">http://docs.codehaus.org/display/MAVENUSER/Running+ant+tasks+that+use+the+JDK</a>.</p>
 <p>Afin de palier à ce point, il convient de référencer en dépendance du plugin Ant la librairie <code>tools.jar</code>&hellip; (si ça, c&rsquo;est pas laid&hellip;!!!) et, en plus, de l&rsquo;utiliser avec un scope <code>system</code>&hellip; :'(</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>com.sun<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>tools<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>1.7.0<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>system<span style="color:#f92672">&lt;/scope&gt;</span>
-    <span style="color:#f92672">&lt;systemPath&gt;</span>${java.home}/../lib/tools.jar<span style="color:#f92672">&lt;/systemPath&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><h3 id="conclusion-2">Conclusion</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>com.sun<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>tools<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>1.7.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>system<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;systemPath&gt;</span>${java.home}/../lib/tools.jar<span style="color:#f92672">&lt;/systemPath&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><h3 id="conclusion-2">Conclusion</h3>
 <p>Au final, le plugin Ant fonctionne bien (même si je ne suis pas fan d&rsquo;appeler du Ant via Maven&hellip;) et répond au besoin de mon cahier des charges.</p>
 <p>Même si cela m&rsquo;embête, c&rsquo;est la solution qui a été retenue&hellip; :'(</p>
 <h1 id="conclusion-3">Conclusion</h1>

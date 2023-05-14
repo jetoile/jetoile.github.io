@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Packaging, test et livraison pour Hadoop : Mode d&#39;emploi &middot; Jetoile</title>
 
@@ -293,347 +293,347 @@
 <p>Il s&rsquo;agira de lire des donnnées au format orc, de les indexer dans ElasticSearch et de créer une table Hive dessus. Le tout avec un job Spark.</p>
 <p>Ainsi, le code est le suivant :</p>
 <p><code>Classe Main</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">object Main <span style="color:#f92672">{</span>
-
-  lazy val logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">)</span>
-
-
-  <span style="color:#66d9ef">private</span> def <span style="color:#a6e22e">logArguments</span><span style="color:#f92672">(</span>reader<span style="color:#f92672">:</span> String<span style="color:#f92672">,</span> configPath<span style="color:#f92672">:</span> String<span style="color:#f92672">,</span> persister<span style="color:#f92672">:</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-  <span style="color:#f92672">}</span>
-
-  def <span style="color:#a6e22e">parseArgs</span><span style="color:#f92672">(</span>args<span style="color:#f92672">:</span> Array<span style="color:#f92672">[</span>String<span style="color:#f92672">]):</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">,</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-    val jCommander <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JCommander<span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">,</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">:</span> _<span style="color:#f92672">*)</span>
-
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">help</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      jCommander<span style="color:#f92672">.</span><span style="color:#a6e22e">usage</span><span style="color:#f92672">()</span>
-      System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>0<span style="color:#f92672">)</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">inputPath</span><span style="color:#f92672">,</span> CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">,</span> CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">docType</span><span style="color:#f92672">)</span>
-
-  <span style="color:#f92672">}</span>
-
-  def <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>args<span style="color:#f92672">:</span> Array<span style="color:#f92672">[</span>String<span style="color:#f92672">]):</span> Unit <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-
-    val sparkSession <span style="color:#f92672">=</span> SparkSession<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">.</span><span style="color:#a6e22e">appName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simpleApp&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">config</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.index.auto.create&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">enableHiveSupport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getOrCreate</span>
-
-    val <span style="color:#f92672">(</span>inputPath<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> parseArgs<span style="color:#f92672">(</span>args<span style="color:#f92672">)</span>
-
-    val job <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleJob<span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
-    val dataFrame <span style="color:#f92672">=</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>inputPath<span style="color:#f92672">)</span>
-    dataFrame<span style="color:#f92672">.</span><span style="color:#a6e22e">cache</span><span style="color:#f92672">()</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span>
-    job<span style="color:#f92672">.</span><span style="color:#a6e22e">createExternalTable</span><span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;tmp&#34;</span><span style="color:#f92672">,</span> inputPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/tmp&#34;</span><span style="color:#f92672">)</span>
-  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><code>Classe SimpleJob</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sc<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">SparkSession</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-  <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> sc
-
-  <span style="color:#66d9ef">def</span> read<span style="color:#f92672">(</span>path<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-    sparkSession<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;orc&#34;</span><span style="color:#f92672">).</span>load<span style="color:#f92672">(</span>path<span style="color:#f92672">)</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">def</span> write<span style="color:#f92672">(</span>dataFrame<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span><span style="color:#f92672">,</span> index<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> docType<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">import</span> sparkSession.implicits._
-    <span style="color:#66d9ef">val</span> rdd <span style="color:#66d9ef">=</span> dataFrame<span style="color:#f92672">.</span>map<span style="color:#f92672">(</span>t <span style="color:#66d9ef">=&gt;</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FooData</span><span style="color:#f92672">(</span>t<span style="color:#f92672">.</span>getAs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">),</span> t<span style="color:#f92672">.</span>getAs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)))</span>
-
-    <span style="color:#66d9ef">import</span> org.elasticsearch.spark._
-    rdd<span style="color:#f92672">.</span>rdd<span style="color:#f92672">.</span>saveToEs<span style="color:#f92672">(</span>index <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> docType<span style="color:#f92672">)</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">def</span> createExternalTable<span style="color:#f92672">(</span>dataframe<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span><span style="color:#f92672">,</span> hiveTableName<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> location<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">{</span>
-    dataframe<span style="color:#f92672">.</span>registerTempTable<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my_temp_table&#34;</span><span style="color:#f92672">)</span>
-    sparkSession<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE EXTERNAL TABLE &#34;</span> <span style="color:#f92672">+</span> hiveTableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; (id STRING, value STRING) STORED AS ORC LOCATION &#39;&#34;</span> <span style="color:#f92672">+</span> location <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">)</span>
-    sparkSession<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;INSERT INTO &#34;</span> <span style="color:#f92672">+</span> hiveTableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; SELECT * from my_temp_table&#34;</span><span style="color:#f92672">)</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">def</span> shutdown<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sparkSession <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      sparkSession<span style="color:#f92672">.</span>stop<span style="color:#f92672">()</span>
-    <span style="color:#f92672">}</span>
-  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>object Main <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  lazy val logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> def <span style="color:#a6e22e">logArguments</span><span style="color:#f92672">(</span>reader<span style="color:#f92672">:</span> String<span style="color:#f92672">,</span> configPath<span style="color:#f92672">:</span> String<span style="color:#f92672">,</span> persister<span style="color:#f92672">:</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  def <span style="color:#a6e22e">parseArgs</span><span style="color:#f92672">(</span>args<span style="color:#f92672">:</span> Array<span style="color:#f92672">[</span>String<span style="color:#f92672">]):</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">,</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    val jCommander <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JCommander<span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">,</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">toArray</span><span style="color:#f92672">:</span> _<span style="color:#f92672">*)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">help</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      jCommander<span style="color:#f92672">.</span><span style="color:#a6e22e">usage</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>      System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">inputPath</span><span style="color:#f92672">,</span> CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">index</span><span style="color:#f92672">,</span> CommandLineArgs<span style="color:#f92672">.</span><span style="color:#a6e22e">docType</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  def <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>args<span style="color:#f92672">:</span> Array<span style="color:#f92672">[</span>String<span style="color:#f92672">]):</span> Unit <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    val sparkSession <span style="color:#f92672">=</span> SparkSession<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">.</span><span style="color:#a6e22e">appName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simpleApp&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">config</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.index.auto.create&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">enableHiveSupport</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getOrCreate</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    val <span style="color:#f92672">(</span>inputPath<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> parseArgs<span style="color:#f92672">(</span>args<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    val job <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleJob<span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    val dataFrame <span style="color:#f92672">=</span> job<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>inputPath<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    dataFrame<span style="color:#f92672">.</span><span style="color:#a6e22e">cache</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>    job<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    job<span style="color:#f92672">.</span><span style="color:#a6e22e">createExternalTable</span><span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;tmp&#34;</span><span style="color:#f92672">,</span> inputPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/tmp&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p><code>Classe SimpleJob</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sc<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">SparkSession</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> sc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> read<span style="color:#f92672">(</span>path<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    sparkSession<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;orc&#34;</span><span style="color:#f92672">).</span>load<span style="color:#f92672">(</span>path<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> write<span style="color:#f92672">(</span>dataFrame<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span><span style="color:#f92672">,</span> index<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> docType<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">import</span> sparkSession.implicits._
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> rdd <span style="color:#66d9ef">=</span> dataFrame<span style="color:#f92672">.</span>map<span style="color:#f92672">(</span>t <span style="color:#66d9ef">=&gt;</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">FooData</span><span style="color:#f92672">(</span>t<span style="color:#f92672">.</span>getAs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">),</span> t<span style="color:#f92672">.</span>getAs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">import</span> org.elasticsearch.spark._
+</span></span><span style="display:flex;"><span>    rdd<span style="color:#f92672">.</span>rdd<span style="color:#f92672">.</span>saveToEs<span style="color:#f92672">(</span>index <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> docType<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> createExternalTable<span style="color:#f92672">(</span>dataframe<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">DataFrame</span><span style="color:#f92672">,</span> hiveTableName<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> location<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    dataframe<span style="color:#f92672">.</span>registerTempTable<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my_temp_table&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    sparkSession<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE EXTERNAL TABLE &#34;</span> <span style="color:#f92672">+</span> hiveTableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; (id STRING, value STRING) STORED AS ORC LOCATION &#39;&#34;</span> <span style="color:#f92672">+</span> location <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    sparkSession<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;INSERT INTO &#34;</span> <span style="color:#f92672">+</span> hiveTableName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; SELECT * from my_temp_table&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> shutdown<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sparkSession <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      sparkSession<span style="color:#f92672">.</span>stop<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><blockquote>
 <p>On notera que la création de la session Spark a été dissociée du job afin de permettre la réalisation de tests d&rsquo;intégration.</p>
 </blockquote>
 <p>Afin de réaliser des tests d&rsquo;intégration, <a href="https://github.com/jetoile/hadoop-unit">Hadoop Unit</a> est utilisé avec le mode plugin maven en mode embedded.</p>
 <p>Ainsi les tests d&rsquo;intégrations donnent cela:
 <code>Classe SimpleJobIntegrationTest</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleJobIntegrationTest</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">FeatureSpec</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">BeforeAndAfterAll</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">BeforeAndAfter</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">GivenWhenThen</span> <span style="color:#f92672">{</span>
-
-  <span style="color:#66d9ef">var</span> configuration<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Configuration</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">_</span>
-  <span style="color:#66d9ef">val</span> inputCsvPath<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/input/csv&#34;</span>
-  <span style="color:#66d9ef">val</span> inputOrcPath<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/input/orc&#34;</span>
-  <span style="color:#66d9ef">val</span> index<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test_index&#34;</span>
-  <span style="color:#66d9ef">val</span> docType<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span>
-  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">DROP_TABLES</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Operation</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">_</span>
-
-  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">def</span> beforeAll<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">HadoopUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span>
-
-    configuration <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PropertiesConfiguration</span><span style="color:#f92672">(</span><span style="color:#a6e22e">HadoopUnitConfig</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT_PROPS_FILE</span><span style="color:#f92672">)</span>
-
-    <span style="color:#a6e22e">DROP_TABLES</span> <span style="color:#66d9ef">=</span> sequenceOf<span style="color:#f92672">(</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;DROP TABLE IF EXISTS default.toto&#34;</span><span style="color:#f92672">));</span>
-  <span style="color:#f92672">}</span>
-
-  before <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">val</span> fileSystem <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">HdfsUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getFileSystem
-
-    <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
-
-    <span style="color:#66d9ef">val</span> created <span style="color:#66d9ef">=</span> fileSystem<span style="color:#f92672">.</span>mkdirs<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath<span style="color:#f92672">))</span>
-
-    fileSystem<span style="color:#f92672">.</span>copyFromLocalFile<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span><span style="color:#a6e22e">SimpleJobIntegrationTest</span><span style="color:#f92672">.</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span>getClass<span style="color:#f92672">.</span>getClassLoader<span style="color:#f92672">.</span>getResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simplefile.csv&#34;</span><span style="color:#f92672">).</span>toURI<span style="color:#f92672">),</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.csv&#34;</span><span style="color:#f92672">))</span>
-
-    <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
-
-    <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> sparkSession<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.databricks.spark.csv&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;header&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;delimiter&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span>load<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.csv&#34;</span><span style="color:#f92672">)</span>
-
-    dataFrame<span style="color:#f92672">.</span>write<span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;orc.compress&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ZLIB&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span>mode<span style="color:#f92672">(</span><span style="color:#a6e22e">SaveMode</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Append</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span>orc<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
-
-    sparkSession<span style="color:#f92672">.</span>stop<span style="color:#f92672">()</span>
-  <span style="color:#f92672">}</span>
-
-  after <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">HiveSetup</span><span style="color:#f92672">(</span><span style="color:#a6e22e">HiveConnectionUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getDestination<span style="color:#f92672">,</span> sequenceOf<span style="color:#f92672">(</span><span style="color:#a6e22e">DROP_TABLES</span><span style="color:#f92672">)).</span>launch<span style="color:#f92672">()</span>
-    <span style="color:#a6e22e">HdfsUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getFileSystem<span style="color:#f92672">().</span>delete<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/input&#34;</span><span style="color:#f92672">))</span>
-  <span style="color:#f92672">}</span>
-
-  feature<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simple test&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;read data&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-
-      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
-
-      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
-      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I have the right schema&#34;</span><span style="color:#f92672">)</span>
-      assertThat<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>fieldNames<span style="color:#f92672">).</span>contains<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)</span>
-
-      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
-    <span style="color:#f92672">}</span>
-
-    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;write into es&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-
-      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder
-        <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;spark.driver.allowMultipleContexts&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.index.auto.create&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.nodes&#34;</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_IP_KEY</span><span style="color:#f92672">))</span>
-        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.port&#34;</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_HTTP_PORT_KEY</span><span style="color:#f92672">))</span>
-        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.nodes.wan.only&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>enableHiveSupport
-        <span style="color:#f92672">.</span>getOrCreate
-
-      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
-      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I call write method&#34;</span><span style="color:#f92672">)</span>
-      job<span style="color:#f92672">.</span>write<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span>
-      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
-
-      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;data is indexed into ES&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> client <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PreBuiltTransportClient</span><span style="color:#f92672">(</span><span style="color:#a6e22e">Settings</span><span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY</span><span style="color:#f92672">).</span>addTransportAddress<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">InetSocketTransportAddress</span><span style="color:#f92672">(</span><span style="color:#a6e22e">InetAddress</span><span style="color:#f92672">.</span>getByName<span style="color:#f92672">(</span>configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_IP_KEY</span><span style="color:#f92672">)),</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_TCP_PORT_KEY</span><span style="color:#f92672">)))</span>
-
-      client<span style="color:#f92672">.</span>admin<span style="color:#f92672">.</span>indices<span style="color:#f92672">.</span>prepareRefresh<span style="color:#f92672">(</span>index<span style="color:#f92672">).</span>execute<span style="color:#f92672">.</span>actionGet
-
-      <span style="color:#66d9ef">val</span> response <span style="color:#66d9ef">=</span> client<span style="color:#f92672">.</span>prepareSearch<span style="color:#f92672">(</span>index<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>setTypes<span style="color:#f92672">(</span>docType<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>setSize<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span>setQuery<span style="color:#f92672">(</span><span style="color:#a6e22e">QueryBuilders</span><span style="color:#f92672">.</span>queryStringQuery<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">)).</span>get<span style="color:#f92672">().</span>getHits<span style="color:#f92672">().</span>getTotalHits<span style="color:#f92672">();</span>
-
-      assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">).</span>isEqualTo<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">)</span>
-    <span style="color:#f92672">}</span>
-
-    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create external table&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-
-      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
-
-      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
-      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
-
-      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I call createExternalTable method&#34;</span><span style="color:#f92672">)</span>
-      job<span style="color:#f92672">.</span>createExternalTable<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;default.toto&#34;</span><span style="color:#f92672">,</span> hdfsPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;input/titi&#34;</span><span style="color:#f92672">)</span>
-      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
-
-      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my external table is created&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">val</span> stmt <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">HiveConnectionUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getConnection<span style="color:#f92672">.</span>createStatement
-      <span style="color:#66d9ef">val</span> resultSet <span style="color:#66d9ef">=</span> stmt<span style="color:#f92672">.</span>executeQuery<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SELECT * FROM default.toto&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>resultSet<span style="color:#f92672">.</span>next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">val</span> id <span style="color:#66d9ef">=</span> resultSet<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
-        <span style="color:#66d9ef">val</span> value <span style="color:#66d9ef">=</span> resultSet<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
-        assertThat<span style="color:#f92672">(</span>id<span style="color:#f92672">).</span>isNotNull
-        assertThat<span style="color:#f92672">(</span>value<span style="color:#f92672">).</span>isNotNull
-      <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-  <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleJobIntegrationTest</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">FeatureSpec</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">BeforeAndAfterAll</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">BeforeAndAfter</span> <span style="color:#66d9ef">with</span> <span style="color:#a6e22e">GivenWhenThen</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> configuration<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Configuration</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">_</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> inputCsvPath<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/input/csv&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> inputOrcPath<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/input/orc&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> index<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test_index&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">val</span> docType<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">DROP_TABLES</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Operation</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">_</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">def</span> beforeAll<span style="color:#f92672">()</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Unit</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">HadoopUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    configuration <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PropertiesConfiguration</span><span style="color:#f92672">(</span><span style="color:#a6e22e">HadoopUnitConfig</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT_PROPS_FILE</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DROP_TABLES</span> <span style="color:#66d9ef">=</span> sequenceOf<span style="color:#f92672">(</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;DROP TABLE IF EXISTS default.toto&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  before <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> fileSystem <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">HdfsUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getFileSystem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> created <span style="color:#66d9ef">=</span> fileSystem<span style="color:#f92672">.</span>mkdirs<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fileSystem<span style="color:#f92672">.</span>copyFromLocalFile<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span><span style="color:#a6e22e">SimpleJobIntegrationTest</span><span style="color:#f92672">.</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span>getClass<span style="color:#f92672">.</span>getClassLoader<span style="color:#f92672">.</span>getResource<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simplefile.csv&#34;</span><span style="color:#f92672">).</span>toURI<span style="color:#f92672">),</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.csv&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> sparkSession<span style="color:#f92672">.</span>read<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.databricks.spark.csv&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;header&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;delimiter&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;,&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>load<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputCsvPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.csv&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    dataFrame<span style="color:#f92672">.</span>write<span style="color:#f92672">.</span>option<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;orc.compress&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;ZLIB&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>mode<span style="color:#f92672">(</span><span style="color:#a6e22e">SaveMode</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Append</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">.</span>orc<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    sparkSession<span style="color:#f92672">.</span>stop<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  after <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">HiveSetup</span><span style="color:#f92672">(</span><span style="color:#a6e22e">HiveConnectionUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getDestination<span style="color:#f92672">,</span> sequenceOf<span style="color:#f92672">(</span><span style="color:#a6e22e">DROP_TABLES</span><span style="color:#f92672">)).</span>launch<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">HdfsUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getFileSystem<span style="color:#f92672">().</span>delete<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/input&#34;</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  feature<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;simple test&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;read data&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I have the right schema&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      assertThat<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">.</span>schema<span style="color:#f92672">.</span>fieldNames<span style="color:#f92672">).</span>contains<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;write into es&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;spark.driver.allowMultipleContexts&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.index.auto.create&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.nodes&#34;</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_IP_KEY</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.port&#34;</span><span style="color:#f92672">,</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_HTTP_PORT_KEY</span><span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>config<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;es.nodes.wan.only&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>enableHiveSupport
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>getOrCreate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I call write method&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      job<span style="color:#f92672">.</span>write<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> index<span style="color:#f92672">,</span> docType<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;data is indexed into ES&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> client <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PreBuiltTransportClient</span><span style="color:#f92672">(</span><span style="color:#a6e22e">Settings</span><span style="color:#f92672">.</span><span style="color:#a6e22e">EMPTY</span><span style="color:#f92672">).</span>addTransportAddress<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">InetSocketTransportAddress</span><span style="color:#f92672">(</span><span style="color:#a6e22e">InetAddress</span><span style="color:#f92672">.</span>getByName<span style="color:#f92672">(</span>configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_IP_KEY</span><span style="color:#f92672">)),</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">ELASTICSEARCH_TCP_PORT_KEY</span><span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      client<span style="color:#f92672">.</span>admin<span style="color:#f92672">.</span>indices<span style="color:#f92672">.</span>prepareRefresh<span style="color:#f92672">(</span>index<span style="color:#f92672">).</span>execute<span style="color:#f92672">.</span>actionGet
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> response <span style="color:#66d9ef">=</span> client<span style="color:#f92672">.</span>prepareSearch<span style="color:#f92672">(</span>index<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>setTypes<span style="color:#f92672">(</span>docType<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>setSize<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">.</span>setQuery<span style="color:#f92672">(</span><span style="color:#a6e22e">QueryBuilders</span><span style="color:#f92672">.</span>queryStringQuery<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">)).</span>get<span style="color:#f92672">().</span>getHits<span style="color:#f92672">().</span>getTotalHits<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      assertThat<span style="color:#f92672">(</span>response<span style="color:#f92672">).</span>isEqualTo<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    scenario<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create external table&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Given</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a local spark conf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> sparkSession <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span><span style="color:#f92672">.</span>builder<span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test&#34;</span><span style="color:#f92672">).</span>master<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;local[*]&#34;</span><span style="color:#f92672">).</span>enableHiveSupport<span style="color:#f92672">.</span>getOrCreate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my job&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> job <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SimpleJob</span><span style="color:#f92672">(</span>sparkSession<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">When</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I read an orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> hdfsPath <span style="color:#66d9ef">=</span> <span style="color:#e6db74">&#34;hdfs://&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_HOST_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> configuration<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#a6e22e">HDFS_NAMENODE_PORT_KEY</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> dataFrame <span style="color:#66d9ef">=</span> job<span style="color:#f92672">.</span>read<span style="color:#f92672">(</span>hdfsPath <span style="color:#f92672">+</span> inputOrcPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/simplefile.orc&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">And</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I call createExternalTable method&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      job<span style="color:#f92672">.</span>createExternalTable<span style="color:#f92672">(</span>dataFrame<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;default.toto&#34;</span><span style="color:#f92672">,</span> hdfsPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;input/titi&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      job<span style="color:#f92672">.</span>shutdown<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">Then</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my external table is created&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> stmt <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">HiveConnectionUtils</span><span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span>getConnection<span style="color:#f92672">.</span>createStatement
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">val</span> resultSet <span style="color:#66d9ef">=</span> stmt<span style="color:#f92672">.</span>executeQuery<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SELECT * FROM default.toto&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>resultSet<span style="color:#f92672">.</span>next<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> id <span style="color:#66d9ef">=</span> resultSet<span style="color:#f92672">.</span>getInt<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> value <span style="color:#66d9ef">=</span> resultSet<span style="color:#f92672">.</span>getString<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>        assertThat<span style="color:#f92672">(</span>id<span style="color:#f92672">).</span>isNotNull
+</span></span><span style="display:flex;"><span>        assertThat<span style="color:#f92672">(</span>value<span style="color:#f92672">).</span>isNotNull
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><blockquote>
 <p>On peut noter que la partie <em>before</em> charge un fichier csv dans hdfs et le transforme en orc avec un job Spark (un simple read/write). En effet, il est plus aisé de lire un csv qu&rsquo;un fichier orc pour un être humain&hellip; ;)</p>
 <p>On peut également noter la suppression de la table Hive créée sur la partie <em>after</em> qui utilise DbSetup <em>wrappé</em> par Hadoop Unit.</p>
 <p>Enfin, on peut constater que les job Spark utilisés ici sont bien en mode <strong>local</strong>.</p>
 </blockquote>
 <p>Afin de permettre le démarrage d&rsquo;Hadoop Unit en phase de pré-integration test et son arrêt en phase de post-integration test, la configuration maven est la suivante :
 <code>pom.xml</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">
-  <span style="color:#f92672">&lt;profiles&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-      <span style="color:#f92672">&lt;id&gt;</span>windows<span style="color:#f92672">&lt;/id&gt;</span>
-      <span style="color:#f92672">&lt;activation&gt;</span>
-        <span style="color:#f92672">&lt;os&gt;</span>
-          <span style="color:#f92672">&lt;family&gt;</span>windows<span style="color:#f92672">&lt;/family&gt;</span>
-        <span style="color:#f92672">&lt;/os&gt;</span>
-      <span style="color:#f92672">&lt;/activation&gt;</span>
-      <span style="color:#f92672">&lt;properties&gt;</span>
-        <span style="color:#f92672">&lt;suffix.test&gt;</span>&#34;(?&amp;lt;!Integration)(Test|Case|Suite|Spec)&#34;<span style="color:#f92672">&lt;/suffix.test&gt;</span>
-        <span style="color:#f92672">&lt;suffix.it&gt;</span>&#34;(?&amp;lt;=Integration)(Test|Case|Suite|Spec)&#34;<span style="color:#f92672">&lt;/suffix.it&gt;</span>
-      <span style="color:#f92672">&lt;/properties&gt;</span>
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-    <span style="color:#f92672">&lt;profile&gt;</span>
-      <span style="color:#f92672">&lt;id&gt;</span>default<span style="color:#f92672">&lt;/id&gt;</span>
-      <span style="color:#f92672">&lt;activation&gt;</span>
-        <span style="color:#f92672">&lt;activeByDefault&gt;</span>true<span style="color:#f92672">&lt;/activeByDefault&gt;</span>
-      <span style="color:#f92672">&lt;/activation&gt;</span>
-      <span style="color:#f92672">&lt;properties&gt;</span>
-        <span style="color:#f92672">&lt;suffix.test&gt;</span>(?&amp;lt;!Integration)(Test|Case|Suite|Spec)<span style="color:#f92672">&lt;/suffix.test&gt;</span>
-        <span style="color:#f92672">&lt;suffix.it&gt;</span>(?&amp;lt;=Integration)(Test|Case|Suite|Spec)<span style="color:#f92672">&lt;/suffix.it&gt;</span>
-      <span style="color:#f92672">&lt;/properties&gt;</span>
-    <span style="color:#f92672">&lt;/profile&gt;</span>
-  <span style="color:#f92672">&lt;/profiles&gt;</span>
-
-  <span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.scalatest<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>scalatest-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>${scalatest.maven.plugin.version}<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>IntegrationTest<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>test<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;suffixes&gt;</span>${suffix.it}<span style="color:#f92672">&lt;/suffixes&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>UnitTest<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>test<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;suffixes&gt;</span>${suffix.test}<span style="color:#f92672">&lt;/suffixes&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>${hadoop-unit.version}<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>embedded-start<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>stop<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>embedded-stop<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-          <span style="color:#f92672">&lt;components&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-              <span style="color:#f92672">&lt;componentName&gt;</span>HDFS<span style="color:#f92672">&lt;/componentName&gt;</span>
-              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hdfs:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-              <span style="color:#f92672">&lt;componentName&gt;</span>ZOOKEEPER<span style="color:#f92672">&lt;/componentName&gt;</span>
-              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-zookeeper:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-              <span style="color:#f92672">&lt;componentName&gt;</span>HIVEMETA<span style="color:#f92672">&lt;/componentName&gt;</span>
-              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-              <span style="color:#f92672">&lt;componentName&gt;</span>HIVESERVER2<span style="color:#f92672">&lt;/componentName&gt;</span>
-              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
-              <span style="color:#f92672">&lt;componentName&gt;</span>ELASTICSEARCH<span style="color:#f92672">&lt;/componentName&gt;</span>
-              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-elasticsearch:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
-              <span style="color:#f92672">&lt;properties&gt;</span>
-                <span style="color:#f92672">&lt;elasticsearch.version&gt;</span>${elasticsearch.version}<span style="color:#f92672">&lt;/elasticsearch.version&gt;</span>
-                <span style="color:#f92672">&lt;elasticsearch.download.url&gt;</span>
-                  https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/${elasticsearch.version}/elasticsearch-${elasticsearch.version}.zip
-                <span style="color:#f92672">&lt;/elasticsearch.download.url&gt;</span>
-              <span style="color:#f92672">&lt;/properties&gt;</span>
-            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
-          <span style="color:#f92672">&lt;/components&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-shade-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>${maven-shade-plugin.version}<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>shade<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;filters&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>
-                  <span style="color:#f92672">&lt;artifact&gt;</span>*:*<span style="color:#f92672">&lt;/artifact&gt;</span>
-                  <span style="color:#f92672">&lt;excludes&gt;</span>
-                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.SF<span style="color:#f92672">&lt;/exclude&gt;</span>
-                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.DSA<span style="color:#f92672">&lt;/exclude&gt;</span>
-                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.RSA<span style="color:#f92672">&lt;/exclude&gt;</span>
-                  <span style="color:#f92672">&lt;/excludes&gt;</span>
-                <span style="color:#f92672">&lt;/filter&gt;</span>
-              <span style="color:#f92672">&lt;/filters&gt;</span>
-              <span style="color:#f92672">&lt;shadedClassifierName&gt;</span>uber<span style="color:#f92672">&lt;/shadedClassifierName&gt;</span>
-              <span style="color:#f92672">&lt;shadedArtifactAttached&gt;</span>false<span style="color:#f92672">&lt;/shadedArtifactAttached&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-  <span style="color:#f92672">&lt;/build&gt;</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;profiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;id&gt;</span>windows<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;activation&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;os&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;family&gt;</span>windows<span style="color:#f92672">&lt;/family&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/os&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/activation&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;suffix.test&gt;</span>&#34;(?&amp;lt;!Integration)(Test|Case|Suite|Spec)&#34;<span style="color:#f92672">&lt;/suffix.test&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;suffix.it&gt;</span>&#34;(?&amp;lt;=Integration)(Test|Case|Suite|Spec)&#34;<span style="color:#f92672">&lt;/suffix.it&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;profile&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;id&gt;</span>default<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;activation&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;activeByDefault&gt;</span>true<span style="color:#f92672">&lt;/activeByDefault&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/activation&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;suffix.test&gt;</span>(?&amp;lt;!Integration)(Test|Case|Suite|Spec)<span style="color:#f92672">&lt;/suffix.test&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;suffix.it&gt;</span>(?&amp;lt;=Integration)(Test|Case|Suite|Spec)<span style="color:#f92672">&lt;/suffix.it&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/profile&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/profiles&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.scalatest<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>scalatest-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>${scalatest.maven.plugin.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>IntegrationTest<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>test<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;suffixes&gt;</span>${suffix.it}<span style="color:#f92672">&lt;/suffixes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>UnitTest<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>test<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;suffixes&gt;</span>${suffix.test}<span style="color:#f92672">&lt;/suffixes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>hadoop-unit-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>${hadoop-unit.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>start<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>embedded-start<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>stop<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>embedded-stop<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;components&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;componentName&gt;</span>HDFS<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hdfs:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;componentName&gt;</span>ZOOKEEPER<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-zookeeper:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;componentName&gt;</span>HIVEMETA<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;componentName&gt;</span>HIVESERVER2<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-hive:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;componentArtifact</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;fr.jetoile.hadoopunit.ComponentArtifact&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;componentName&gt;</span>ELASTICSEARCH<span style="color:#f92672">&lt;/componentName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifact&gt;</span>fr.jetoile.hadoop:hadoop-unit-elasticsearch:${hadoop-unit.version}<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;elasticsearch.version&gt;</span>${elasticsearch.version}<span style="color:#f92672">&lt;/elasticsearch.version&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;elasticsearch.download.url&gt;</span>
+</span></span><span style="display:flex;"><span>                  https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/${elasticsearch.version}/elasticsearch-${elasticsearch.version}.zip
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/elasticsearch.download.url&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/componentArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/components&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-shade-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>${maven-shade-plugin.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>shade<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;filters&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;artifact&gt;</span>*:*<span style="color:#f92672">&lt;/artifact&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;excludes&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.SF<span style="color:#f92672">&lt;/exclude&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.DSA<span style="color:#f92672">&lt;/exclude&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;exclude&gt;</span>META-INF/*.RSA<span style="color:#f92672">&lt;/exclude&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;/excludes&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/filters&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;shadedClassifierName&gt;</span>uber<span style="color:#f92672">&lt;/shadedClassifierName&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;shadedArtifactAttached&gt;</span>false<span style="color:#f92672">&lt;/shadedArtifactAttached&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span></code></pre></div><blockquote>
 <p>On peut noter 3 choses dans ce <code>pom.xml</code> :</p>
 <ul>
 <li>la configuration de tous ce qui est post-fixé par Integration(Test|Case|Suite|Spec) dans le scope d&rsquo;integration test. Cela permet de séparer les tests unitaires des tests d&rsquo;intégration</li>
@@ -659,67 +659,67 @@
 </ul>
 <p>De plus, si il existe différent environnement (ie. developpement, recette ou production), il est préférable de variabiliser les choses spécifiques aux environnements (ex: répertoire Hdfs, nom de database Hive, nom d&rsquo;index ElasticSearch, &hellip;)</p>
 <p>Ainsi, il peut être imaginé le format suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── dist
-│   ├── lib
-│   │   └── bigdata-sample-job-1.0-SNAPSHOT.jar
-│   └── oozie
-│       ├── coordinator
-│       │   └── sample
-│       │       └── coordinator.xml
-│       ├── run
-│       │   ├── coordinator
-│       │   │   └── sample
-│       │   │       └── job.properties
-│       │   └── workflow
-│       │       └── sample
-│       │           └── job.properties
-│       └── workflow
-│           └── sample
-│               └── workflow.xml
-</code></pre></div><p>où le <code>workflow.xml</code> pourrait être le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;workflow-app</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sample&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;uri:oozie:workflow:0.5&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;global&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-      <span style="color:#f92672">&lt;property&gt;</span>
-        <span style="color:#f92672">&lt;name&gt;</span>mapred.job.queue.name<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;value&gt;</span>queue<span style="color:#f92672">&lt;/value&gt;</span>
-      <span style="color:#f92672">&lt;/property&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-  <span style="color:#f92672">&lt;/global&gt;</span>
-  <span style="color:#f92672">&lt;start</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;kill</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;kill&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;message&gt;</span>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]<span style="color:#f92672">&lt;/message&gt;</span>
-  <span style="color:#f92672">&lt;/kill&gt;</span>
-  <span style="color:#f92672">&lt;action</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;spark</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;uri:oozie:spark-action:0.2&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;job-tracker&gt;</span>${jobTracker}<span style="color:#f92672">&lt;/job-tracker&gt;</span>
-      <span style="color:#f92672">&lt;name-node&gt;</span>${nameNode}<span style="color:#f92672">&lt;/name-node&gt;</span>
-      <span style="color:#f92672">&lt;master&gt;</span>yarn<span style="color:#f92672">&lt;/master&gt;</span>
-      <span style="color:#f92672">&lt;mode&gt;</span>cluster<span style="color:#f92672">&lt;/mode&gt;</span>
-      <span style="color:#f92672">&lt;name&gt;</span>sampleSpark<span style="color:#f92672">&lt;/name&gt;</span>
-      <span style="color:#f92672">&lt;class&gt;</span>fr.jetoile.hadoop.sample.Main<span style="color:#f92672">&lt;/class&gt;</span>
-      <span style="color:#f92672">&lt;jar&gt;</span>${nameNode}//user/myuser/projects/share/lib/bigdata-sample-job-1.0-SNAPSHOT.jar<span style="color:#f92672">&lt;/jar&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>-p<span style="color:#f92672">&lt;/arg&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>hdfs://namenode/mypath<span style="color:#f92672">&lt;/arg&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>-i<span style="color:#f92672">&lt;/arg&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>sampleIndex<span style="color:#f92672">&lt;/arg&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>-d<span style="color:#f92672">&lt;/arg&gt;</span>
-      <span style="color:#f92672">&lt;arg&gt;</span>sampleDoc<span style="color:#f92672">&lt;/arg&gt;</span>
-    <span style="color:#f92672">&lt;/spark&gt;</span>
-    <span style="color:#f92672">&lt;ok</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;End&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;error</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;kill&#34;</span><span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/action&gt;</span>
-  <span style="color:#f92672">&lt;end</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;End&#34;</span><span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/workflow-app&gt;</span>
-</code></pre></div><p>et le <code>job.properties</code> servant à l&rsquo;exécuter :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">oozie.use.system.libpath<span style="color:#f92672">=</span>True
-send_email<span style="color:#f92672">=</span>False
-dryrun<span style="color:#f92672">=</span>False
-security_enabled<span style="color:#f92672">=</span>False
-nameNode<span style="color:#f92672">=</span>hdfs://namenode
-jobTracker<span style="color:#f92672">=</span>jobtracker:8050
-oozie.wf.application.path<span style="color:#f92672">=</span>hdfs://namenode/user/myuser/projects/oozie/workflow/sample/
-</code></pre></div><p>Par contre, savoir ce qui doit être déployé sur Hdfs est intéressant mais il faut ensuite réaliser le déploiement en lui même.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── dist
+</span></span><span style="display:flex;"><span>│   ├── lib
+</span></span><span style="display:flex;"><span>│   │   └── bigdata-sample-job-1.0-SNAPSHOT.jar
+</span></span><span style="display:flex;"><span>│   └── oozie
+</span></span><span style="display:flex;"><span>│       ├── coordinator
+</span></span><span style="display:flex;"><span>│       │   └── sample
+</span></span><span style="display:flex;"><span>│       │       └── coordinator.xml
+</span></span><span style="display:flex;"><span>│       ├── run
+</span></span><span style="display:flex;"><span>│       │   ├── coordinator
+</span></span><span style="display:flex;"><span>│       │   │   └── sample
+</span></span><span style="display:flex;"><span>│       │   │       └── job.properties
+</span></span><span style="display:flex;"><span>│       │   └── workflow
+</span></span><span style="display:flex;"><span>│       │       └── sample
+</span></span><span style="display:flex;"><span>│       │           └── job.properties
+</span></span><span style="display:flex;"><span>│       └── workflow
+</span></span><span style="display:flex;"><span>│           └── sample
+</span></span><span style="display:flex;"><span>│               └── workflow.xml
+</span></span></code></pre></div><p>où le <code>workflow.xml</code> pourrait être le suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;workflow-app</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;sample&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;uri:oozie:workflow:0.5&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;global&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;property&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;name&gt;</span>mapred.job.queue.name<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;value&gt;</span>queue<span style="color:#f92672">&lt;/value&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/property&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/global&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;start</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;kill</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;kill&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;message&gt;</span>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]<span style="color:#f92672">&lt;/message&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/kill&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;action</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;spark</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;uri:oozie:spark-action:0.2&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;job-tracker&gt;</span>${jobTracker}<span style="color:#f92672">&lt;/job-tracker&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;name-node&gt;</span>${nameNode}<span style="color:#f92672">&lt;/name-node&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;master&gt;</span>yarn<span style="color:#f92672">&lt;/master&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;mode&gt;</span>cluster<span style="color:#f92672">&lt;/mode&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;name&gt;</span>sampleSpark<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;class&gt;</span>fr.jetoile.hadoop.sample.Main<span style="color:#f92672">&lt;/class&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;jar&gt;</span>${nameNode}//user/myuser/projects/share/lib/bigdata-sample-job-1.0-SNAPSHOT.jar<span style="color:#f92672">&lt;/jar&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>-p<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>hdfs://namenode/mypath<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>-i<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>sampleIndex<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>-d<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;arg&gt;</span>sampleDoc<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/spark&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;ok</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;End&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;error</span> <span style="color:#a6e22e">to=</span><span style="color:#e6db74">&#34;kill&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/action&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;end</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;End&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/workflow-app&gt;</span>
+</span></span></code></pre></div><p>et le <code>job.properties</code> servant à l&rsquo;exécuter :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>oozie.use.system.libpath<span style="color:#f92672">=</span>True
+</span></span><span style="display:flex;"><span>send_email<span style="color:#f92672">=</span>False
+</span></span><span style="display:flex;"><span>dryrun<span style="color:#f92672">=</span>False
+</span></span><span style="display:flex;"><span>security_enabled<span style="color:#f92672">=</span>False
+</span></span><span style="display:flex;"><span>nameNode<span style="color:#f92672">=</span>hdfs://namenode
+</span></span><span style="display:flex;"><span>jobTracker<span style="color:#f92672">=</span>jobtracker:8050
+</span></span><span style="display:flex;"><span>oozie.wf.application.path<span style="color:#f92672">=</span>hdfs://namenode/user/myuser/projects/oozie/workflow/sample/
+</span></span></code></pre></div><p>Par contre, savoir ce qui doit être déployé sur Hdfs est intéressant mais il faut ensuite réaliser le déploiement en lui même.</p>
 <p>Ainsi, dans notre exemple, il faut :</p>
 <ul>
 <li>copier le fat jar dans le répertoire Hdfs <code>/user/myuser/projects/share/lib/</code> au travers de Knox (l&rsquo;accès WebHdfs ou le client Hdfs n&rsquo;étant souvent pas accessible pour des raisons de sécurité)</li>
@@ -735,16 +735,16 @@ oozie.wf.application.path<span style="color:#f92672">=</span>hdfs://namenode/use
 <p>Il devient alors possible de fournir un ensemble de méthodes statiques utilisables, par exemple, par un script groovy où serait décrit la procédure de déploiement. Ces méthodes statiques pourraient alors faire un ensemble de vérification (comme, par exemple, vérifier qu&rsquo;il n&rsquo;existe pas déjà les fichiers dans Hdfs et faire un renommage dans le cas contraire)</p>
 </blockquote>
 <p>Ce script de déploiement pourrait être le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">deployOnHdfs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/lib&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/user/myuser/projects/share/lib/&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
-deployOnHdfs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/oozie&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/user/myuser/projects/oozie/&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
-
-runOozieJobs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/oozie/run/workflow/sample/job.properties&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
-
-<span style="color:#75715e">//deleteOnHdfs(&#34;/user/myuser/projects/share/lib&#34;, config, options)
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">//def w = checkOozieCoordinatorStatus(config, options, &#34;status=RUNNING&#34;)
-</span><span style="color:#75715e">//killOrExitCoordinators(&#34;SAMPLE COORD&#34;, w, options, config)
-</span></code></pre></div><p>Ainsi, il a été défini ce qu&rsquo;était un livrable qui est donc constitué de :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>deployOnHdfs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/lib&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/user/myuser/projects/share/lib/&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>deployOnHdfs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/oozie&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;/user/myuser/projects/oozie/&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>runOozieJobs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;dist/oozie/run/workflow/sample/job.properties&#34;</span><span style="color:#f92672">,</span> config<span style="color:#f92672">,</span> options<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//deleteOnHdfs(&#34;/user/myuser/projects/share/lib&#34;, config, options)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//def w = checkOozieCoordinatorStatus(config, options, &#34;status=RUNNING&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//killOrExitCoordinators(&#34;SAMPLE COORD&#34;, w, options, config)
+</span></span></span></code></pre></div><p>Ainsi, il a été défini ce qu&rsquo;était un livrable qui est donc constitué de :</p>
 <ul>
 <li>un jar</li>
 <li>un ensemble de fichiers oozie</li>
@@ -782,255 +782,255 @@ runOozieJobs<span style="color:#f92672">(</span><span style="color:#e6db74">&#34
 </ul>
 <p>Enfin, cerise sur le gateau, il peut également être utile de positionner les <strong>start_date</strong> des coordinateurs Oozie à la date de génération du livrable.</p>
 <p>Pour ce faire, une simple combinaison des bons plugins maven permet d&rsquo;obtenir le résultat escompté :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;resources&gt;</span>
-      <span style="color:#f92672">&lt;resource&gt;</span>
-        <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
-        <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
-      <span style="color:#f92672">&lt;/resource&gt;</span>
-    <span style="color:#f92672">&lt;/resources&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-dependency-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>unpack<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>generate-resources<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>unpack<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;artifactItems&gt;</span>
-                <span style="color:#f92672">&lt;artifactItem&gt;</span>
-                  <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop.sample<span style="color:#f92672">&lt;/groupId&gt;</span>
-                  <span style="color:#f92672">&lt;artifactId&gt;</span>bigdata-commons-conf<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                  <span style="color:#f92672">&lt;type&gt;</span>jar<span style="color:#f92672">&lt;/type&gt;</span>
-                  <span style="color:#f92672">&lt;overWrite&gt;</span>false<span style="color:#f92672">&lt;/overWrite&gt;</span>
-                  <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/global-conf<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-                <span style="color:#f92672">&lt;/artifactItem&gt;</span>
-              <span style="color:#f92672">&lt;/artifactItems&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.gmaven<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>groovy-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;dependencies&gt;</span>
-          <span style="color:#f92672">&lt;dependency&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.groovy<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>groovy-all<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version&gt;</span>${groovy-all.version}<span style="color:#f92672">&lt;/version&gt;</span>
-          <span style="color:#f92672">&lt;/dependency&gt;</span>
-        <span style="color:#f92672">&lt;/dependencies&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>dev-resources<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/dev<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-              <span style="color:#f92672">&lt;filters&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/dev/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/dev/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-              <span style="color:#f92672">&lt;/filters&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>prod-resources<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/prod<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-              <span style="color:#f92672">&lt;filters&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/prd/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/prd/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-              <span style="color:#f92672">&lt;/filters&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>test-resources<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/test<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-              <span style="color:#f92672">&lt;filters&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/test/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/test/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
-              <span style="color:#f92672">&lt;/filters&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>appassembler-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.10<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>assemble<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-          <span style="color:#f92672">&lt;configurationDirectory&gt;</span>conf<span style="color:#f92672">&lt;/configurationDirectory&gt;</span>
-          <span style="color:#f92672">&lt;programs&gt;</span>
-            <span style="color:#f92672">&lt;program&gt;</span>
-              <span style="color:#f92672">&lt;mainClass&gt;</span>Main<span style="color:#f92672">&lt;/mainClass&gt;</span>
-              <span style="color:#f92672">&lt;name&gt;</span>main<span style="color:#f92672">&lt;/name&gt;</span>
-            <span style="color:#f92672">&lt;/program&gt;</span>
-          <span style="color:#f92672">&lt;/programs&gt;</span>
-          <span style="color:#f92672">&lt;repositoryLayout&gt;</span>flat<span style="color:#f92672">&lt;/repositoryLayout&gt;</span>
-          <span style="color:#f92672">&lt;binFileExtensions&gt;</span>
-            <span style="color:#f92672">&lt;unix&gt;</span>.sh<span style="color:#f92672">&lt;/unix&gt;</span>
-          <span style="color:#f92672">&lt;/binFileExtensions&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>deploy-dev<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;descriptors&gt;</span>
-                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-dev.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
-              <span style="color:#f92672">&lt;/descriptors&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>deploy-prd<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;descriptors&gt;</span>
-                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-prd.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
-              <span style="color:#f92672">&lt;/descriptors&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>deploy-test<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-              <span style="color:#f92672">&lt;descriptors&gt;</span>
-                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-test.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
-              <span style="color:#f92672">&lt;/descriptors&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-
-      <span style="color:#f92672">&lt;plugin&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>buildnumber-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>1.4<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;executions&gt;</span>
-          <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>validate<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-              <span style="color:#f92672">&lt;goal&gt;</span>create-timestamp<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-          <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;/executions&gt;</span>
-        <span style="color:#f92672">&lt;configuration&gt;</span>
-          <span style="color:#f92672">&lt;timestampFormat&gt;</span>yyyy-MM-dd&#39;T&#39;HH:mmZ<span style="color:#f92672">&lt;/timestampFormat&gt;</span>
-          <span style="color:#f92672">&lt;timestampPropertyName&gt;</span>build.date<span style="color:#f92672">&lt;/timestampPropertyName&gt;</span>
-        <span style="color:#f92672">&lt;/configuration&gt;</span>
-      <span style="color:#f92672">&lt;/plugin&gt;</span>
-
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-  <span style="color:#f92672">&lt;/build&gt;</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>  <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;resources&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;resource&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/resource&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/resources&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-dependency-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>unpack<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>generate-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>unpack<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;artifactItems&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactItem&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile.hadoop.sample<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;artifactId&gt;</span>bigdata-commons-conf<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;type&gt;</span>jar<span style="color:#f92672">&lt;/type&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;overWrite&gt;</span>false<span style="color:#f92672">&lt;/overWrite&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/global-conf<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/artifactItem&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/artifactItems&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.gmaven<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>groovy-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.groovy<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>groovy-all<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${groovy-all.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>dev-resources<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/dev<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;filters&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/dev/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/dev/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/filters&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>prod-resources<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/prod<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;filters&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/prd/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/prd/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/filters&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>test-resources<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>process-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>resources<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.outputDirectory}/test<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;filters&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${basedir}/src/main/filters/test/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;filter&gt;</span>${project.build.directory}/global-conf/test/conf.properties<span style="color:#f92672">&lt;/filter&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/filters&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>appassembler-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.10<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>assemble<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;configurationDirectory&gt;</span>conf<span style="color:#f92672">&lt;/configurationDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;programs&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;program&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;mainClass&gt;</span>Main<span style="color:#f92672">&lt;/mainClass&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;name&gt;</span>main<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/program&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/programs&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;repositoryLayout&gt;</span>flat<span style="color:#f92672">&lt;/repositoryLayout&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;binFileExtensions&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;unix&gt;</span>.sh<span style="color:#f92672">&lt;/unix&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/binFileExtensions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>deploy-dev<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-dev.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>deploy-prd<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-prd.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>deploy-test<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;descriptor&gt;</span>src/main/assembly/descriptor-deploy-run-test.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;/descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>buildnumber-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.4<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>validate<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;goal&gt;</span>create-timestamp<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;timestampFormat&gt;</span>yyyy-MM-dd&#39;T&#39;HH:mmZ<span style="color:#f92672">&lt;/timestampFormat&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;timestampPropertyName&gt;</span>build.date<span style="color:#f92672">&lt;/timestampPropertyName&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span></code></pre></div><blockquote>
 <p>A noter la configuration du plugin <em>buildnumber-maven-plugin</em> afin d&rsquo;avoir la valeur de <strong>start_date</strong> au format attendu par Oozie.</p>
 </blockquote>
 <blockquote>
 <p>A noter l&rsquo;utilisation du plugin <em>appassembler-maven-plugin</em> permettant la génération du script shell et qui permet de gérer, entre autre, automatiquement la récupération des dépendances nécessaires à l&rsquo;exécution de la classe Java.</p>
 </blockquote>
 <p>Afin de permettre la génération tar.gz du livrable, un assembly maven est utilisable :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
-<span style="color:#f92672">&lt;assembly</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&#34;</span>
-          <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
-          <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-
-  <span style="color:#f92672">&lt;id&gt;</span>deploy-dev<span style="color:#f92672">&lt;/id&gt;</span>
-
-  <span style="color:#f92672">&lt;formats&gt;</span>
-    <span style="color:#f92672">&lt;format&gt;</span>tar.gz<span style="color:#f92672">&lt;/format&gt;</span>
-  <span style="color:#f92672">&lt;/formats&gt;</span>
-
-  <span style="color:#f92672">&lt;fileSets&gt;</span>
-    <span style="color:#f92672">&lt;fileSet&gt;</span>
-      <span style="color:#75715e">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>${project.build.outputDirectory}/dev/<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/dist/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-      <span style="color:#f92672">&lt;excludes&gt;</span>
-        <span style="color:#f92672">&lt;exclude&gt;</span>deploy.properties<span style="color:#f92672">&lt;/exclude&gt;</span>
-      <span style="color:#f92672">&lt;/excludes&gt;</span>
-      <span style="color:#f92672">&lt;lineEnding&gt;</span>unix<span style="color:#f92672">&lt;/lineEnding&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-
-    <span style="color:#f92672">&lt;fileSet&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>${project.build.directory}/appassembler<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-      <span style="color:#f92672">&lt;fileMode&gt;</span>750<span style="color:#f92672">&lt;/fileMode&gt;</span>
-      <span style="color:#f92672">&lt;directoryMode&gt;</span>750<span style="color:#f92672">&lt;/directoryMode&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-  <span style="color:#f92672">&lt;/fileSets&gt;</span>
-
-  <span style="color:#f92672">&lt;dependencySets&gt;</span>
-    <span style="color:#f92672">&lt;dependencySet&gt;</span>
-      <span style="color:#75715e">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
-      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/dist/lib/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>
-          fr.jetoile.hadoop.sample:bigdata-sample-job
-        <span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-      <span style="color:#f92672">&lt;useProjectArtifact&gt;</span>false<span style="color:#f92672">&lt;/useProjectArtifact&gt;</span>
-      <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
-      <span style="color:#f92672">&lt;unpack&gt;</span>false<span style="color:#f92672">&lt;/unpack&gt;</span>
-    <span style="color:#f92672">&lt;/dependencySet&gt;</span>
-  <span style="color:#f92672">&lt;/dependencySets&gt;</span>
-
-  <span style="color:#f92672">&lt;files&gt;</span>
-    <span style="color:#f92672">&lt;file&gt;</span>
-      <span style="color:#f92672">&lt;source&gt;</span>src/main/groovy/deploy.groovy<span style="color:#f92672">&lt;/source&gt;</span>
-      <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-    <span style="color:#f92672">&lt;/file&gt;</span>
-
-    <span style="color:#f92672">&lt;file&gt;</span>
-      <span style="color:#f92672">&lt;source&gt;</span>${project.build.directory}/classes/dev/deploy.properties<span style="color:#f92672">&lt;/source&gt;</span>
-      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-    <span style="color:#f92672">&lt;/file&gt;</span>
-  <span style="color:#f92672">&lt;/files&gt;</span>
-
-<span style="color:#f92672">&lt;/assembly&gt;</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;assembly</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;id&gt;</span>deploy-dev<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;formats&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;format&gt;</span>tar.gz<span style="color:#f92672">&lt;/format&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/formats&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>${project.build.outputDirectory}/dev/<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/dist/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;excludes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;exclude&gt;</span>deploy.properties<span style="color:#f92672">&lt;/exclude&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/excludes&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;lineEnding&gt;</span>unix<span style="color:#f92672">&lt;/lineEnding&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>${project.build.directory}/appassembler<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileMode&gt;</span>750<span style="color:#f92672">&lt;/fileMode&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directoryMode&gt;</span>750<span style="color:#f92672">&lt;/directoryMode&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependencySets&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencySet&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!-- all files to deploy have to be into dist directory --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/dist/lib/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>
+</span></span><span style="display:flex;"><span>          fr.jetoile.hadoop.sample:bigdata-sample-job
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;useProjectArtifact&gt;</span>false<span style="color:#f92672">&lt;/useProjectArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;unpack&gt;</span>false<span style="color:#f92672">&lt;/unpack&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencySet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependencySets&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;files&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;file&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;source&gt;</span>src/main/groovy/deploy.groovy<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/file&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;file&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;source&gt;</span>${project.build.directory}/classes/dev/deploy.properties<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;outputDirectory&gt;</span>/<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/file&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/files&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/assembly&gt;</span>
+</span></span></code></pre></div><blockquote>
 <p>A noter que, afin de récupérer le jar contenant le job Spark, la dépendance a été mis en scopte <em>provided</em>. En effet, le plugin <em>appassembler-maven-plugin</em> prend tout ce qu&rsquo;il trouve en scope compile et aurait embarqué, par défaut, le jar du job entrainant des conflits de classpath.</p>
 </blockquote>
 <h1 id="conclusion">Conclusion</h1>

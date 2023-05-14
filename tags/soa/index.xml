@@ -14,9 +14,9 @@
       <pubDate>Wed, 21 Nov 2012 15:12:51 +0100</pubDate>
       
       <guid>https://blog.jetoile.fr/2012/11/devoxx-2012-versionner-son-service-dans.html</guid>
-      <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&#39;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
+      <description>Ça y est&amp;hellip; Devoxx est fini&amp;hellip; :&amp;rsquo;( Comme je l&amp;rsquo;ai dit dans un article précédent, je ne ferai pas de compte-rendu exhaustif de présentations auxquelles j&amp;rsquo;ai pu assisté à Devoxx.
 Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioning in SOA and Cloud&amp;rdquo; par Ignaz Wanders (@ignazw) dont le synopsis était :
- Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
+Keeping versioning under control is essential in the success of a SOA. However, there are no industry standards for service versioning, thus leaving the responsibility of implementing a service versioning system up to the architects and developers within the IT enterprise.</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@ Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioni
       
       <guid>https://blog.jetoile.fr/2012/08/decoupage-de-projets-projet-vs-modules.html</guid>
       <description>Lorsqu&amp;rsquo;un projet débute, il est important (à mon avis) de se poser la question sur la façon dont celui-ci sera découpé. Pour être plus précis, il existe deux types d&amp;rsquo;approches :
- le découper fonctionnellement, le découper techniquement.  En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
+le découper fonctionnellement, le découper techniquement. En outre, en plus de ce type de découpage, il est également important de s&amp;rsquo;interroger sur la façon dont il sera représenté dans le SCM : faut-il tout mettre dans le même projet (au sens SVN ou git du terme) en utilisant éventuellement des sous modules maven si c&amp;rsquo;est ce dernier qui est utilisé, ou faut-il en créer plusieurs?</description>
     </item>
     
     <item>
@@ -37,7 +37,7 @@ Cependant, je tenais à revenir sur la présentation &amp;ldquo;Service Versioni
       <guid>https://blog.jetoile.fr/2011/09/presentation-aux-problematiques-dune.html</guid>
       <description>Ci-dessous se trouve une présentation que j&amp;rsquo;ai donné sur les problématiques liées aux architectures distribuées. Pour information, c&amp;rsquo;est un retour d&amp;rsquo;expérience d&amp;rsquo;une mission qui date un peu puisque c&amp;rsquo;était en 2007 mais les préconisations restent identiques à ce jour.
 Enjoy et n&amp;rsquo;hésitez pas à commenter ;-)
-Introduction sur les problématiques d&#39;une architecture distribuée  View more presentations from jetoile  </description>
+Introduction sur les problématiques d&#39;une architecture distribuée View more presentations from jetoile </description>
     </item>
     
     <item>

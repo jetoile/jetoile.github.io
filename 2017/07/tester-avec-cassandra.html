@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Des tests d&#39;intégration avec Cassandra &middot; Jetoile</title>
 
@@ -273,183 +273,183 @@
 <!-- more -->
 <h1 id="classe-de-test">Classe de test</h1>
 <p>La classe utilisée comme exemple dans les 2 cas est la suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> com.datastax.driver.core.Cluster<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> com.datastax.driver.core.ResultSet<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> com.datastax.driver.core.Row<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> lombok.AllArgsConstructor<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> lombok.Data<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.stream.Collectors<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDao</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> Cluster cluster<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UserDao</span><span style="color:#f92672">(</span>String localhost<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        cluster <span style="color:#f92672">=</span> Cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">addContactPoints</span><span style="color:#f92672">(</span>localhost<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withPort</span><span style="color:#f92672">(</span>port<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-
-        session <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUsers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        ResultSet execute <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from test.user&#34;</span><span style="color:#f92672">);</span>
-
-        List<span style="color:#f92672">&lt;</span>Row<span style="color:#f92672">&gt;</span> res <span style="color:#f92672">=</span> execute<span style="color:#f92672">.</span><span style="color:#a6e22e">all</span><span style="color:#f92672">();</span>
-
-        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>r <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span>r<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lastName&#34;</span><span style="color:#f92672">),</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firstName&#34;</span><span style="color:#f92672">))).</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@Data</span>
-<span style="color:#a6e22e">@AllArgsConstructor</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> String lastName<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String firstName<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Au niveau dépendance, elles sont les suivantes :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">dependencies {
-    compile group: &#39;com.datastax.cassandra&#39;, name: &#39;cassandra-driver-core&#39;, version:&#39;3.3.0&#39;
-    compile(group: &#39;org.projectlombok&#39;, name: &#39;lombok&#39;, version:&#39;1.16.18&#39;) 
-}
-</code></pre></div><p>Rien de bien compliqué mais il s&rsquo;agit d&rsquo;un cas d&rsquo;exemple ultra simple&hellip; ;)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Cluster<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.ResultSet<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Row<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> lombok.AllArgsConstructor<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> lombok.Data<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.stream.Collectors<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDao</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Cluster cluster<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">UserDao</span><span style="color:#f92672">(</span>String localhost<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        cluster <span style="color:#f92672">=</span> Cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">addContactPoints</span><span style="color:#f92672">(</span>localhost<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">withPort</span><span style="color:#f92672">(</span>port<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getUsers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ResultSet execute <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from test.user&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>Row<span style="color:#f92672">&gt;</span> res <span style="color:#f92672">=</span> execute<span style="color:#f92672">.</span><span style="color:#a6e22e">all</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> res<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>r <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span>r<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lastName&#34;</span><span style="color:#f92672">),</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firstName&#34;</span><span style="color:#f92672">))).</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>Collectors<span style="color:#f92672">.</span><span style="color:#a6e22e">toList</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AllArgsConstructor</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String lastName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String firstName<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Au niveau dépendance, elles sont les suivantes :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>dependencies {
+</span></span><span style="display:flex;"><span>    compile group: &#39;com.datastax.cassandra&#39;, name: &#39;cassandra-driver-core&#39;, version:&#39;3.3.0&#39;
+</span></span><span style="display:flex;"><span>    compile(group: &#39;org.projectlombok&#39;, name: &#39;lombok&#39;, version:&#39;1.16.18&#39;) 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Rien de bien compliqué mais il s&rsquo;agit d&rsquo;un cas d&rsquo;exemple ultra simple&hellip; ;)</p>
 <h1 id="cassandra-unit">Cassandra-Unit</h1>
 <p>Pour utiliser Cassandra-Unit, il suffit de déclarer sa dépendance en scope de test:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.cassandraunit<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>cassandra-unit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>3.1.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>La classe de test ressemble alors à :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> com.datastax.driver.core.Cluster<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.apache.thrift.transport.TTransportException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.cassandraunit.utils.EmbeddedCassandraServerHelper<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.After<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.Before<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDaoIntegrationTest</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> Cluster cluster<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Before</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> InterruptedException<span style="color:#f92672">,</span> IOException<span style="color:#f92672">,</span> TTransportException <span style="color:#f92672">{</span>
-        EmbeddedCassandraServerHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">startEmbeddedCassandra</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cassandra-sample.yaml&#34;</span><span style="color:#f92672">);</span>
-
-        cluster <span style="color:#f92672">=</span> Cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">addContactPoints</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withPort</span><span style="color:#f92672">(</span>9000<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-
-        session <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">();</span>
-
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&#34;</span><span style="color:#f92672">);</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@After</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-        EmbeddedCassandraServerHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">stopEmbeddedCassandra</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-
-    <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">user_should_be_returned</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&#34;</span><span style="color:#f92672">);</span>
-
-        UserDao cassandraJob <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UserDao<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span> 9000<span style="color:#f92672">);</span>
-
-        List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> cassandraJob<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsers</span><span style="color:#f92672">();</span>
-
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(),</span> 1<span style="color:#f92672">);</span>
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">).</span><span style="color:#a6e22e">getFirstName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;firstName1&#34;</span><span style="color:#f92672">);</span>
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">).</span><span style="color:#a6e22e">getLastName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;lastName1&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>A noter que le fichier <code>cassandra-sample.yaml</code> correspond au fichier de configuration par défaut de cassandra avec les spécificités suivantes :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">native_transport_port</span>: <span style="color:#ae81ff">9000</span>
-<span style="color:#f92672">data_file_directories</span>:
-    - <span style="color:#ae81ff">target/embeddedCassandra/data</span>
-<span style="color:#f92672">commitlog_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/commitlog</span>
-<span style="color:#f92672">hints_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/hints</span>
-<span style="color:#f92672">cdc_raw_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/cdc_raw</span>
-<span style="color:#f92672">saved_caches_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/saved_caches</span>
-
-<span style="color:#75715e">#multithreaded_compaction: false</span>
-<span style="color:#75715e">#memtable_flush_queue_size: 4</span>
-<span style="color:#75715e">#compaction_preheat_key_cache: true</span>
-<span style="color:#75715e">#in_memory_compaction_limit_in_mb: 64</span>
-</code></pre></div><p>A noter également que Cassandra-Unit propose également des loader permettant d&rsquo;initialiser les données dans le cluster ainsi que d&rsquo;autres facilités d&rsquo;utilisation telles que des Rules ou un support de Spring. Pour avoir plus d&rsquo;informations, je vous invite à aller voir la documentation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.cassandraunit<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>cassandra-unit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>3.1.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>La classe de test ressemble alors à :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Cluster<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.apache.thrift.transport.TTransportException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.cassandraunit.utils.EmbeddedCassandraServerHelper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.After<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.Before<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDaoIntegrationTest</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Cluster cluster<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Before</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> InterruptedException<span style="color:#f92672">,</span> IOException<span style="color:#f92672">,</span> TTransportException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        EmbeddedCassandraServerHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">startEmbeddedCassandra</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cassandra-sample.yaml&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        cluster <span style="color:#f92672">=</span> Cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">addContactPoints</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">withPort</span><span style="color:#f92672">(</span><span style="color:#ae81ff">9000</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> cluster<span style="color:#f92672">.</span><span style="color:#a6e22e">connect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@After</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        EmbeddedCassandraServerHelper<span style="color:#f92672">.</span><span style="color:#a6e22e">stopEmbeddedCassandra</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">user_should_be_returned</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        UserDao cassandraJob <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UserDao<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">9000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> cassandraJob<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsers</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(),</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">).</span><span style="color:#a6e22e">getFirstName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;firstName1&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">).</span><span style="color:#a6e22e">getLastName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;lastName1&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>A noter que le fichier <code>cassandra-sample.yaml</code> correspond au fichier de configuration par défaut de cassandra avec les spécificités suivantes :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">native_transport_port</span>: <span style="color:#ae81ff">9000</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">data_file_directories</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">target/embeddedCassandra/data</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">commitlog_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/commitlog</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">hints_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/hints</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">cdc_raw_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/cdc_raw</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">saved_caches_directory</span>: <span style="color:#ae81ff">target/embeddedCassandra/saved_caches</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#multithreaded_compaction: false</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#memtable_flush_queue_size: 4</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#compaction_preheat_key_cache: true</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#in_memory_compaction_limit_in_mb: 64</span>
+</span></span></code></pre></div><p>A noter également que Cassandra-Unit propose également des loader permettant d&rsquo;initialiser les données dans le cluster ainsi que d&rsquo;autres facilités d&rsquo;utilisation telles que des Rules ou un support de Spring. Pour avoir plus d&rsquo;informations, je vous invite à aller voir la documentation.</p>
 <h1 id="achille-embedded">Achille-Embedded</h1>
 <p>Pour utiliser Achille-embedded, il suffit de déclarer sa dépendance en scope de test:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>info.archinnov<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>achilles-embedded<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>5.2.1<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>La classe de test ressemble alors à :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> info.archinnov.achilles.embedded.CassandraEmbeddedServerBuilder<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.After<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.Before<span style="color:#f92672">;</span>
-<span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
-
-<span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDaoIntegrationTest</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Before</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        session <span style="color:#f92672">=</span> CassandraEmbeddedServerBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withCQLPort</span><span style="color:#f92672">(</span>9000<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withClusterName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test Cluster&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">cleanDataFilesAtStartup</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">buildNativeSession</span><span style="color:#f92672">();</span>
-
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&#34;</span><span style="color:#f92672">);</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@After</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-
-    <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">user_should_be_returned</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&#34;</span><span style="color:#f92672">);</span>
-
-        UserDao cassandraJob <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UserDao<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span> 9000<span style="color:#f92672">);</span>
-
-        List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> cassandraJob<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsers</span><span style="color:#f92672">();</span>
-
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(),</span> 1<span style="color:#f92672">);</span>
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">).</span><span style="color:#a6e22e">getFirstName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;firstName1&#34;</span><span style="color:#f92672">);</span>
-        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">).</span><span style="color:#a6e22e">getLastName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;lastName1&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>A noter également qu&rsquo;Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d&rsquo;informations, je vous invite à aller voir les différents tests du projet.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>info.archinnov<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>achilles-embedded<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>5.2.1<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>La classe de test ressemble alors à :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> com.datastax.driver.core.Session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> info.archinnov.achilles.embedded.CassandraEmbeddedServerBuilder<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.After<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.Before<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.Test<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> org.junit.Assert.assertEquals<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDaoIntegrationTest</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Session session<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Before</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> CassandraEmbeddedServerBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">withCQLPort</span><span style="color:#f92672">(</span><span style="color:#ae81ff">9000</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">withClusterName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Test Cluster&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">cleanDataFilesAtStartup</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">buildNativeSession</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;create KEYSPACE test WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39; , &#39;replication_factor&#39;: &#39;1&#39; }&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CREATE TABLE test.user (lastName text, firstName text, PRIMARY KEY (lastName))&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@After</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">teardown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">user_should_be_returned</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        session<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;insert into test.user(lastName, firstName) values(&#39;lastName1&#39;, &#39;firstName1&#39;)&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        UserDao cassandraJob <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UserDao<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;localhost&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">9000</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>User<span style="color:#f92672">&gt;</span> users <span style="color:#f92672">=</span> cassandraJob<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsers</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">(),</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">).</span><span style="color:#a6e22e">getFirstName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;firstName1&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        assertEquals<span style="color:#f92672">(</span>users<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">).</span><span style="color:#a6e22e">getLastName</span><span style="color:#f92672">(),</span> <span style="color:#e6db74">&#34;lastName1&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>A noter également qu&rsquo;Achille-Embedded propose également des Rules et offre des facilités pour loader des données pour les tests. Pour avoir plus d&rsquo;informations, je vous invite à aller voir les différents tests du projet.</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>On a donc vu dans ce rapide article comment il était possible de faire des tests d&rsquo;intégration avec Cassandra.</p>
 <p>A noter que le code montré dans cet article est extrêmement simple mais je voulais juste montrer un rapide cas d&rsquo;usage, du coup, pas grand chose à ajouter puisque les exemples parlent d&rsquo;eux-même ;) .</p>

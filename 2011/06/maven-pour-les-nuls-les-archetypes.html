@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Maven pour les nuls... les archetypes &middot; Jetoile</title>
 
@@ -307,317 +307,317 @@
 <p>Sa structure :</p>
 <p><img src="http://4.bp.blogspot.com/-ActIqf-Gkv8/TevBObqDojI/AAAAAAAAAXM/TRHrtsoB8L0/s1600/archetype01.png" alt="center"></p>
 <p>Son pom :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;&lt;build&gt;&lt;plugins&gt;&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
- <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
- <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
- <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile<span style="color:#f92672">&lt;/groupId&gt;</span>
- <span style="color:#f92672">&lt;artifactId&gt;</span>project-template<span style="color:#f92672">&lt;/artifactId&gt;</span>
- <span style="color:#f92672">&lt;version&gt;</span>0.0.1-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
- 
- <span style="color:#f92672">&lt;properties&gt;</span>
-  <span style="color:#f92672">&lt;java.version&gt;</span>1.6<span style="color:#f92672">&lt;/java.version&gt;</span>
- 
-  <span style="color:#f92672">&lt;junit.version&gt;</span>4.8.1<span style="color:#f92672">&lt;/junit.version&gt;</span>
-  <span style="color:#f92672">&lt;slf4j.version&gt;</span>1.6.1<span style="color:#f92672">&lt;/slf4j.version&gt;</span>
-  <span style="color:#f92672">&lt;logback.version&gt;</span>0.9.27<span style="color:#f92672">&lt;/logback.version&gt;</span>
-  <span style="color:#f92672">&lt;commons-lang.version&gt;</span>2.5<span style="color:#f92672">&lt;/commons-lang.version&gt;</span>
-  <span style="color:#f92672">&lt;powermock.version&gt;</span>1.4.7<span style="color:#f92672">&lt;/powermock.version&gt;</span>
-  <span style="color:#f92672">&lt;mockito.version&gt;</span>1.8.5<span style="color:#f92672">&lt;/mockito.version&gt;</span>
- <span style="color:#f92672">&lt;/properties&gt;</span>
- 
- <span style="color:#75715e">&lt;!-- distributionManagement&gt;
-</span><span style="color:#75715e">  &lt;repository&gt;
-</span><span style="color:#75715e">   &lt;id&gt;nexus&lt;/id&gt;
-</span><span style="color:#75715e">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/releases&lt;/url&gt;
-</span><span style="color:#75715e">  &lt;/repository&gt;
-</span><span style="color:#75715e">  &lt;snapshotRepository&gt;
-</span><span style="color:#75715e">   &lt;id&gt;nexus&lt;/id&gt;
-</span><span style="color:#75715e">   &lt;name&gt;Nexus snapshot Repository&lt;/name&gt;
-</span><span style="color:#75715e">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/snapshots&lt;/url&gt;
-</span><span style="color:#75715e">  &lt;/snapshotRepository&gt;
-</span><span style="color:#75715e"> &lt;/distributionManagement&gt;
-</span><span style="color:#75715e"> &lt;scm&gt;
-</span><span style="color:#75715e">  &lt;developerConnection&gt;scm:svn:svn://localhost/projet/trunk/TODO&lt;/developerConnection&gt;
-</span><span style="color:#75715e"> &lt;/scm--&gt;</span>
- 
- 
- <span style="color:#f92672">&lt;developers&gt;</span>
-  <span style="color:#f92672">&lt;developer&gt;</span>
-   <span style="color:#f92672">&lt;email&gt;</span>kmx.petals@gmail.com<span style="color:#f92672">&lt;/email&gt;</span>
-   <span style="color:#f92672">&lt;id&gt;</span>khanh<span style="color:#f92672">&lt;/id&gt;</span>
-   <span style="color:#f92672">&lt;roles&gt;</span>
-    <span style="color:#f92672">&lt;role&gt;</span>developer<span style="color:#f92672">&lt;/role&gt;</span>
-   <span style="color:#f92672">&lt;/roles&gt;</span>
-  <span style="color:#f92672">&lt;/developer&gt;</span>
- <span style="color:#f92672">&lt;/developers&gt;</span>
- 
- <span style="color:#f92672">&lt;dependencies&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${logback.version}<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>slf4j-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${slf4j.version}<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>commons-lang<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${commons-lang.version}<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>org.mockito<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>mockito-all<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${mockito.version}<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>org.powermock<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>powermock-module-junit4<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${powermock.version}<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${junit.version}<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
-  <span style="color:#f92672">&lt;dependency&gt;</span>
-   <span style="color:#f92672">&lt;groupId&gt;</span>org.powermock<span style="color:#f92672">&lt;/groupId&gt;</span>
-   <span style="color:#f92672">&lt;artifactId&gt;</span>powermock-api-mockito<span style="color:#f92672">&lt;/artifactId&gt;</span>
-   <span style="color:#f92672">&lt;version&gt;</span>${powermock.version}<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-  <span style="color:#f92672">&lt;/dependency&gt;</span>
- <span style="color:#f92672">&lt;/dependencies&gt;</span>
- 
- 
- <span style="color:#f92672">&lt;build&gt;</span>
-  <span style="color:#f92672">&lt;plugins&gt;</span>
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-deploy-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.1<span style="color:#f92672">&lt;/version&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-     <span style="color:#f92672">&lt;source&gt;</span>${java.version}<span style="color:#f92672">&lt;/source&gt;</span>
-     <span style="color:#f92672">&lt;target&gt;</span>${java.version}<span style="color:#f92672">&lt;/target&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-checkstyle-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-     <span style="color:#f92672">&lt;configLocation&gt;</span>src/config/custom-checkstyle.xml<span style="color:#f92672">&lt;/configLocation&gt;</span>
-     <span style="color:#f92672">&lt;includeTestSourceDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeTestSourceDirectory&gt;</span>
-     <span style="color:#f92672">&lt;logViolationsToConsole&gt;</span>true<span style="color:#f92672">&lt;/logViolationsToConsole&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-     <span style="color:#f92672">&lt;execution&gt;</span>
-      <span style="color:#f92672">&lt;phase&gt;</span>compile<span style="color:#f92672">&lt;/phase&gt;</span>
-      <span style="color:#f92672">&lt;goals&gt;</span>
-       <span style="color:#f92672">&lt;goal&gt;</span>check<span style="color:#f92672">&lt;/goal&gt;</span>
-      <span style="color:#f92672">&lt;/goals&gt;</span>
-     <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.2.1<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-     <span style="color:#f92672">&lt;descriptors&gt;</span>
-      <span style="color:#f92672">&lt;descriptor&gt;</span>src/assembly/src.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
-     <span style="color:#f92672">&lt;/descriptors&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-     <span style="color:#f92672">&lt;execution&gt;</span>
-      <span style="color:#f92672">&lt;id&gt;</span>make-assembly<span style="color:#f92672">&lt;/id&gt;</span>
-      <span style="color:#f92672">&lt;phase&gt;</span>install<span style="color:#f92672">&lt;/phase&gt;</span>
-      <span style="color:#f92672">&lt;goals&gt;</span>
-       <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
-      <span style="color:#f92672">&lt;/goals&gt;</span>
-     <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-   <span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-source-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-     <span style="color:#f92672">&lt;execution&gt;</span>
-      <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
-      <span style="color:#f92672">&lt;goals&gt;</span>
-       <span style="color:#f92672">&lt;goal&gt;</span>jar<span style="color:#f92672">&lt;/goal&gt;</span>
-      <span style="color:#f92672">&lt;/goals&gt;</span>
-     <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-   <span style="color:#f92672">&lt;/plugin&gt;</span>
-  <span style="color:#f92672">&lt;/plugins&gt;</span>
- <span style="color:#f92672">&lt;/build&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>  <span style="color:#f92672">&lt;/plugins&gt;</span>
- <span style="color:#f92672">&lt;/build&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>Son fichier assembly :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;assembly&gt;</span>
-<span style="color:#f92672">&lt;/assembly&gt;&lt;assembly&gt;</span>
- <span style="color:#f92672">&lt;id&gt;</span>bin<span style="color:#f92672">&lt;/id&gt;</span>
- <span style="color:#f92672">&lt;formats&gt;</span>
-  <span style="color:#f92672">&lt;format&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
- <span style="color:#f92672">&lt;/formats&gt;</span>
- <span style="color:#f92672">&lt;includeBaseDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeBaseDirectory&gt;</span>
- <span style="color:#f92672">&lt;dependencySets&gt;</span>
-  <span style="color:#f92672">&lt;dependencySet&gt;</span>
-   <span style="color:#f92672">&lt;scope&gt;</span>compile<span style="color:#f92672">&lt;/scope&gt;</span>
-   <span style="color:#f92672">&lt;useProjectArtifact&gt;</span>true<span style="color:#f92672">&lt;/useProjectArtifact&gt;</span>
-   <span style="color:#f92672">&lt;useTransitiveDependencies&gt;</span>true<span style="color:#f92672">&lt;/useTransitiveDependencies&gt;</span>
-   <span style="color:#f92672">&lt;outputDirectory&gt;</span>lib<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-  <span style="color:#f92672">&lt;/dependencySet&gt;</span>
- <span style="color:#f92672">&lt;/dependencySets&gt;</span>
- 
- <span style="color:#f92672">&lt;fileSets&gt;</span>
-  <span style="color:#f92672">&lt;fileSet&gt;</span>
-   <span style="color:#f92672">&lt;directory&gt;</span>target/<span style="color:#f92672">&lt;/directory&gt;</span>
-   <span style="color:#f92672">&lt;outputDirectory&gt;</span>sources<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-   <span style="color:#f92672">&lt;includes&gt;</span>
-    <span style="color:#f92672">&lt;include&gt;</span>**sources.jar<span style="color:#f92672">&lt;/include&gt;</span>
-   <span style="color:#f92672">&lt;/includes&gt;</span>
-  <span style="color:#f92672">&lt;/fileSet&gt;</span>
-  <span style="color:#f92672">&lt;fileSet&gt;</span>
-   <span style="color:#f92672">&lt;directory&gt;</span>bin/<span style="color:#f92672">&lt;/directory&gt;</span>
-   <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-  <span style="color:#f92672">&lt;/fileSet&gt;</span>
- <span style="color:#f92672">&lt;/fileSets&gt;</span>
- 
-<span style="color:#f92672">&lt;/assembly&gt;</span>
-</code></pre></div><h1 id="création-de-larchetype">Création de l&rsquo;archetype</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;&lt;build&gt;&lt;plugins&gt;&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span><span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;artifactId&gt;</span>project-template<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;version&gt;</span>0.0.1-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;java.version&gt;</span>1.6<span style="color:#f92672">&lt;/java.version&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;junit.version&gt;</span>4.8.1<span style="color:#f92672">&lt;/junit.version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;slf4j.version&gt;</span>1.6.1<span style="color:#f92672">&lt;/slf4j.version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;logback.version&gt;</span>0.9.27<span style="color:#f92672">&lt;/logback.version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;commons-lang.version&gt;</span>2.5<span style="color:#f92672">&lt;/commons-lang.version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;powermock.version&gt;</span>1.4.7<span style="color:#f92672">&lt;/powermock.version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;mockito.version&gt;</span>1.8.5<span style="color:#f92672">&lt;/mockito.version&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">&lt;!-- distributionManagement&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &lt;repository&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   &lt;id&gt;nexus&lt;/id&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/releases&lt;/url&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &lt;/repository&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &lt;snapshotRepository&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   &lt;id&gt;nexus&lt;/id&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   &lt;name&gt;Nexus snapshot Repository&lt;/name&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">   &lt;url&gt;http://localhost:8080/nexus/content/repositories/snapshots&lt;/url&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &lt;/snapshotRepository&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;/distributionManagement&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;scm&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  &lt;developerConnection&gt;scm:svn:svn://localhost/projet/trunk/TODO&lt;/developerConnection&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> &lt;/scm--&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;developers&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;developer&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;email&gt;</span>kmx.petals@gmail.com<span style="color:#f92672">&lt;/email&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;id&gt;</span>khanh<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;roles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;role&gt;</span>developer<span style="color:#f92672">&lt;/role&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/roles&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/developer&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/developers&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${logback.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>slf4j-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${slf4j.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>commons-lang<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>commons-lang<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${commons-lang.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>org.mockito<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>mockito-all<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${mockito.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>org.powermock<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>powermock-module-junit4<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${powermock.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${junit.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;groupId&gt;</span>org.powermock<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;artifactId&gt;</span>powermock-api-mockito<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;version&gt;</span>${powermock.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-deploy-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.1<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;source&gt;</span>${java.version}<span style="color:#f92672">&lt;/source&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;target&gt;</span>${java.version}<span style="color:#f92672">&lt;/target&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-checkstyle-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;configLocation&gt;</span>src/config/custom-checkstyle.xml<span style="color:#f92672">&lt;/configLocation&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;includeTestSourceDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeTestSourceDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;logViolationsToConsole&gt;</span>true<span style="color:#f92672">&lt;/logViolationsToConsole&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;phase&gt;</span>compile<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&lt;goal&gt;</span>check<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.2.1<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;descriptor&gt;</span>src/assembly/src.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/descriptors&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;id&gt;</span>make-assembly<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;phase&gt;</span>install<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&lt;goal&gt;</span>single<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-source-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.1.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;phase&gt;</span>package<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">&lt;goal&gt;</span>jar<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>  <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>Son fichier assembly :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;assembly&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/assembly&gt;&lt;assembly&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;id&gt;</span>bin<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;formats&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;format&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/formats&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;includeBaseDirectory&gt;</span>false<span style="color:#f92672">&lt;/includeBaseDirectory&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;dependencySets&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;dependencySet&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;scope&gt;</span>compile<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;useProjectArtifact&gt;</span>true<span style="color:#f92672">&lt;/useProjectArtifact&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;useTransitiveDependencies&gt;</span>true<span style="color:#f92672">&lt;/useTransitiveDependencies&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;outputDirectory&gt;</span>lib<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/dependencySet&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/dependencySets&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;directory&gt;</span>target/<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;outputDirectory&gt;</span>sources<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;include&gt;</span>**sources.jar<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;directory&gt;</span>bin/<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;outputDirectory&gt;</span>bin<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/fileSets&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/assembly&gt;</span>
+</span></span></code></pre></div><h1 id="création-de-larchetype">Création de l&rsquo;archetype</h1>
 <p>La création de l&rsquo;archetype est simple puisqu&rsquo;il suffit de lancer la commande suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn archetype:create-from-project
-</code></pre></div><p>Suite à cela, notre archetype se trouve dans le répertoire target/generated-sources/archetype et a la structure suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn archetype:create-from-project
+</span></span></code></pre></div><p>Suite à cela, notre archetype se trouve dans le répertoire target/generated-sources/archetype et a la structure suivante :</p>
 <p><img src="http://4.bp.blogspot.com/-QGyUib6583A/TevDZZVezbI/AAAAAAAAAXQ/lHGC3y6oLew/s1600/archetype02.png" alt="center"></p>
 <p>Son pom :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
- 
-  <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId&gt;</span>project-template-archetype<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version&gt;</span>0.0.1-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;packaging&gt;</span>maven-archetype<span style="color:#f92672">&lt;/packaging&gt;</span>
- 
-  <span style="color:#f92672">&lt;name&gt;</span>project-template-archetype<span style="color:#f92672">&lt;/name&gt;</span>
- 
-  <span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;extensions&gt;</span>
-      <span style="color:#f92672">&lt;extension&gt;</span>
-        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.archetype<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId&gt;</span>archetype-packaging<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
-      <span style="color:#f92672">&lt;/extension&gt;</span>
-    <span style="color:#f92672">&lt;/extensions&gt;</span>
- 
-    <span style="color:#f92672">&lt;pluginManagement&gt;</span>
-      <span style="color:#f92672">&lt;plugins&gt;</span>
-        <span style="color:#f92672">&lt;plugin&gt;</span>
-          <span style="color:#f92672">&lt;artifactId&gt;</span>maven-archetype-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-          <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;/plugin&gt;</span>
-      <span style="color:#f92672">&lt;/plugins&gt;</span>
-    <span style="color:#f92672">&lt;/pluginManagement&gt;</span>
-  <span style="color:#f92672">&lt;/build&gt;</span>
-<span style="color:#f92672">&lt;/project&gt;</span>
-</code></pre></div><p>On constate qu&rsquo;il y a deux points à noter dans cette structure d&rsquo;archetype générée :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xsi:schemalocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;groupId&gt;</span>fr.jetoile<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;artifactId&gt;</span>project-template-archetype<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;version&gt;</span>0.0.1-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;packaging&gt;</span>maven-archetype<span style="color:#f92672">&lt;/packaging&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;name&gt;</span>project-template-archetype<span style="color:#f92672">&lt;/name&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;extensions&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;extension&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.archetype<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>archetype-packaging<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/extension&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/extensions&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;pluginManagement&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;artifactId&gt;</span>maven-archetype-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/pluginManagement&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/build&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span>
+</span></span></code></pre></div><p>On constate qu&rsquo;il y a deux points à noter dans cette structure d&rsquo;archetype générée :</p>
 <ul>
 <li>le patron de notre template de projet qui sera utilisé par maven lors de l&rsquo;appel au goal archetype:generate se trouve dans le répertoire src/main/resources/archetype-resources/src,</li>
 <li>dans le répertoire src/main/resources/META-INF/maven, se trouve le fichier archetype-metadata.xml qui contient le descriptif de ce qui doit être généré :</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;archetype-descriptor</span> <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;project-template&#34;</span>
-    <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0&#34;</span>
-    <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span><span style="color:#f92672">&gt;</span>
-     
-  <span style="color:#f92672">&lt;fileSets&gt;</span>
-    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>src/test/java<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>src/config<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;</span>src/assembly<span style="color:#f92672">&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;directory&gt;&lt;/directory&gt;</span>
-      <span style="color:#f92672">&lt;includes&gt;</span>
-        <span style="color:#f92672">&lt;include&gt;</span>README.txt<span style="color:#f92672">&lt;/include&gt;</span>
-      <span style="color:#f92672">&lt;/includes&gt;</span>
-    <span style="color:#f92672">&lt;/fileSet&gt;</span>
-  <span style="color:#f92672">&lt;/fileSets&gt;</span>
-<span style="color:#f92672">&lt;/archetype-descriptor&gt;</span>
-</code></pre></div><p>A cette étape, il est tout de suite possible d&rsquo;installer l&rsquo;archetype dans le repository maven (cf. Mise à disposition de l&rsquo;archetype) et de l&rsquo;invoquer (cf. Utilisation et résultat de l&rsquo;archetype).
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;archetype-descriptor</span> <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;project-template&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>     
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>src/test/java<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>src/config<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;</span>src/assembly<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;directory&gt;&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;include&gt;</span>README.txt<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/fileSets&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/archetype-descriptor&gt;</span>
+</span></span></code></pre></div><p>A cette étape, il est tout de suite possible d&rsquo;installer l&rsquo;archetype dans le repository maven (cf. Mise à disposition de l&rsquo;archetype) et de l&rsquo;invoquer (cf. Utilisation et résultat de l&rsquo;archetype).
 A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .project, .classpath et .settings si le template a été géré avec eclipse.</p>
 <h1 id="transformation-de-larchetype">Transformation de l&rsquo;archetype</h1>
 <p>Dans le cadre de mon petit use case, je n&rsquo;ai pas beaucoup besoin de customiser mon archetype. En effet, je souhaite seulement pouvoir demander à l&rsquo;utilisateur (en l&rsquo;occurence moi ;-) ), quel sera le nom de ma classe à me générer.</p>
 <p>Pour ce faire, il n&rsquo;y a qu&rsquo;à ajouter une propriété dans le fichier src/main/resources/META-INF/maven/archetype-metadata.xml :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;requiredProperties&gt;</span>
-    <span style="color:#f92672">&lt;requiredProperty</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;className&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;defaultValue&gt;</span>MyClass<span style="color:#f92672">&lt;/defaultValue&gt;</span>
-    <span style="color:#f92672">&lt;/requiredProperty&gt;</span>
-<span style="color:#f92672">&lt;/requiredProperties&gt;</span>
-</code></pre></div><p>Modifier le nom des fichiers java :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;requiredProperties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;requiredProperty</span> <span style="color:#a6e22e">key=</span><span style="color:#e6db74">&#34;className&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;defaultValue&gt;</span>MyClass<span style="color:#f92672">&lt;/defaultValue&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/requiredProperty&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/requiredProperties&gt;</span>
+</span></span></code></pre></div><p>Modifier le nom des fichiers java :</p>
 <ul>
 <li><code>Test.java</code> en <code>__className__.java</code></li>
 <li><code>TestTest</code> en <code>__className__.java</code></li>
 </ul>
 <p>Et remplacer dans les fichiers respectifs :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
-</code></pre></div><p>en</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$</span><span style="color:#f92672">{</span>className<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>
-</code></pre></div><p>et</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestTest</span> <span style="color:#f92672">{</span>
-</code></pre></div><p>en</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$</span><span style="color:#f92672">{</span>className<span style="color:#f92672">}</span>Test <span style="color:#f92672">{</span>
-</code></pre></div><p>En outre, il faut également modifier le fichier src/test/resources/projects/basic/archetype.properties pour y ajouter la ligne suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">className=MyClass
-</code></pre></div><p>Enfin, il est possible de figer la version de l&rsquo;archetype en modifiant le pom du projet ainsi que son artifactId et son groupId. Dans mon cas, il restera identique.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
+</span></span></code></pre></div><p>en</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$</span><span style="color:#f92672">{</span>className<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>
+</span></span></code></pre></div><p>et</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestTest</span> <span style="color:#f92672">{</span>
+</span></span></code></pre></div><p>en</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">$</span><span style="color:#f92672">{</span>className<span style="color:#f92672">}</span>Test <span style="color:#f92672">{</span>
+</span></span></code></pre></div><p>En outre, il faut également modifier le fichier src/test/resources/projects/basic/archetype.properties pour y ajouter la ligne suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>className=MyClass
+</span></span></code></pre></div><p>Enfin, il est possible de figer la version de l&rsquo;archetype en modifiant le pom du projet ainsi que son artifactId et son groupId. Dans mon cas, il restera identique.</p>
 <h1 id="mise-à-disposition-de-larchetype">Mise à disposition de l&rsquo;archetype</h1>
 <p>Une fois que l&rsquo;archetype a été modifié pour répondre aux besoins, il n&rsquo;y a plus qu&rsquo;à exécuter la commande mvn install pour déployer l&rsquo;archetype dans le repository local et la commande mvn deploy pour le déployer dans le repository partagé.</p>
 <h1 id="utilisation-et-résultat-de-larchetype">Utilisation et résultat de l&rsquo;archetype</h1>
 <p>Une fois l&rsquo;archetype déployé dans le repository adéquate, il n&rsquo;y a plus qu&rsquo;à l&rsquo;invoquer via la commande :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn archetype:generate <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> -DarchetypeGroupId<span style="color:#f92672">=</span>fr.jetoile <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> -DarchetypeArtifactId<span style="color:#f92672">=</span>project-template-archetype <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> -DarchetypeVersion<span style="color:#f92672">=</span>0.0.1-SNAPSHOT <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> -DgroupId<span style="color:#f92672">=</span>fr.jetoile <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> -DartifactId<span style="color:#f92672">=</span>test-archetype
-</code></pre></div><p>Ainsi, le résultat obtenu est le suivant :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn archetype:generate <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -DarchetypeGroupId<span style="color:#f92672">=</span>fr.jetoile <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -DarchetypeArtifactId<span style="color:#f92672">=</span>project-template-archetype <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -DarchetypeVersion<span style="color:#f92672">=</span>0.0.1-SNAPSHOT <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -DgroupId<span style="color:#f92672">=</span>fr.jetoile <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span> -DartifactId<span style="color:#f92672">=</span>test-archetype
+</span></span></code></pre></div><p>Ainsi, le résultat obtenu est le suivant :
 <img src="http://3.bp.blogspot.com/-IyLOW6pbUgw/TevFCch0TRI/AAAAAAAAAXU/-8aUatC2M5c/s1600/archetype04.png" alt="center"></p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Nous avons vu dans cet article qu&rsquo;il était extrêmement simple de créer un archetype maven, action qui peut s&rsquo;avérer très utile pour gagner du temps que ce soit pour des besoins personnels ou dans un cadre d&rsquo;industrialisation du processus d&rsquo;initialisation d&rsquo;un projet dans une équipe.</p>
@@ -627,47 +627,47 @@ A noter qu&rsquo;ici, il peut être intéressant de supprimer le support des .pr
 <li>du projet permettant de créer l&rsquo;archetype : <a href="https://github.com/jetoile/project-template-archetype">https://github.com/jetoile/project-template-archetype</a></li>
 </ul>
 <p>Cependant, je n&rsquo;ai pas invoqué ici le cas de projets multimodules mais le principe reste identique, même s&rsquo;il est possible d&rsquo;utiliser d&rsquo;autres templates (tel que <code>__rootArtifactId__</code>) si l&rsquo;on souhaite préfixer le nom des modules avec l&rsquo;artifactId du projet généré ou si l&rsquo;on souhaite customiser plus finement un nom de répertoire (ou package) : dans ce cas, il peut être souhaitable d&rsquo;ajouter d&rsquo;autres propriétés dans le fichier archetype-metadata.xml :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;module</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;${rootArtifactId}-core&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;__rootArtifactId__-core&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;${rootArtifactId}-core&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;fileSets&gt;</span>
-        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
-          <span style="color:#f92672">&lt;/includes&gt;</span>
-        <span style="color:#f92672">&lt;/fileSet&gt;</span>
-        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/test/java<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
-          <span style="color:#f92672">&lt;/includes&gt;</span>
-        <span style="color:#f92672">&lt;/fileSet&gt;</span>
-      <span style="color:#f92672">&lt;/fileSets&gt;</span>
-    <span style="color:#f92672">&lt;/module&gt;</span>
-    <span style="color:#f92672">&lt;module</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;${rootArtifactId}-client&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;__rootArtifactId__-client&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;${rootArtifactId}-client&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;fileSets&gt;</span>
-        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
-          <span style="color:#f92672">&lt;/includes&gt;</span>
-        <span style="color:#f92672">&lt;/fileSet&gt;</span>
-        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
-          <span style="color:#f92672">&lt;/includes&gt;</span>
-        <span style="color:#f92672">&lt;/fileSet&gt;</span>
-        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/test/resources<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;includes&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
-            <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
-          <span style="color:#f92672">&lt;/includes&gt;</span>
-        <span style="color:#f92672">&lt;/fileSet&gt;</span>
-      <span style="color:#f92672">&lt;/fileSets&gt;</span>
-    <span style="color:#f92672">&lt;/module&gt;</span>
-</code></pre></div><p><img src="http://1.bp.blogspot.com/-VL7re_vr97E/TevFPbO9msI/AAAAAAAAAXY/tXBaVB_kG-0/s1600/archetype03.png" alt="center"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;module</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;${rootArtifactId}-core&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;__rootArtifactId__-core&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;${rootArtifactId}-core&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/test/java<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;module</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;${rootArtifactId}-client&#34;</span> <span style="color:#a6e22e">dir=</span><span style="color:#e6db74">&#34;__rootArtifactId__-client&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;${rootArtifactId}-client&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/main/java<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.java<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/main/resources<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;fileSet</span> <span style="color:#a6e22e">filtered=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">encoding=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span> <span style="color:#a6e22e">packaged=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/test/resources<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;includes&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.xml<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;include&gt;</span>**/*.properties<span style="color:#f92672">&lt;/include&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;/includes&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/fileSet&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/fileSets&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/module&gt;</span>
+</span></span></code></pre></div><p><img src="http://1.bp.blogspot.com/-VL7re_vr97E/TevFPbO9msI/AAAAAAAAAXY/tXBaVB_kG-0/s1600/archetype03.png" alt="center"></p>
 <h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <ul>
 <li>Apache Maven de N. De Loof, A. Héritier chez Pearson</li>

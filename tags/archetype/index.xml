@@ -16,7 +16,7 @@
       <guid>https://blog.jetoile.fr/2011/06/maven-pour-les-nuls-les-archetypes.html</guid>
       <description>Dans le cadre d&amp;rsquo;une problématique d&amp;rsquo;une usine logiciel, il peut s&amp;rsquo;avérer utile de posséder un patron ou template de projet qui fournit les &amp;ldquo;bonnes&amp;rdquo; pratiques que doivent respecter l&amp;rsquo;ensemble des applications du projet.
 Bien sûr, notre cher IDE est capable de générer un joli patron de projet. Cependant, il reste toujours nécessaire de modifier la configuration du projet pour y mettre, par exemple :
- la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
+la version de jdk, les libs utilisées (comme mockito par exemple), optionnellement, la configuration de plugins, optionnellemet, l&amp;rsquo;url du SCM, ou tout simplement, la référence à un projet parent qui permet de définir, par exemple, la version des librairies ou des plugins utilisés.</description>
     </item>
     
   </channel>

@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Hadoop ecosysteme bootstrap &middot; Jetoile</title>
 
@@ -283,7 +283,7 @@ Comme je l&rsquo;ai déjà dit dans un article <a href="https://blog.jetoile.fr/
 <!-- more -->
 <h1 id="contexte-et-proposition">Contexte et proposition</h1>
 <p>Comme je l&rsquo;ai dit précédemment, le besoin était de pouvoir disposer de l&rsquo;écosystème nécessaire à l&rsquo;exécution de tests d&rsquo;intégration mais également de pouvoir démarrer l&rsquo;écosystème nécessaire en mode <em>standalone</em>.</p>
-<p>Bien sûr, le tout capable de fonctionner sous Linux mais aussi sous Windows&hellip; (<em>ndlr</em> : oui&hellip; on n&rsquo;a pas toujours la main sur ce que nous impose le client&hellip; :'( )</p>
+<p>Bien sûr, le tout capable de fonctionner sous Linux mais aussi sous Windows&hellip; (<em>ndlr</em> : oui&hellip; on n&rsquo;a pas toujours la main sur ce que nous impose le client&hellip; :&rsquo;( )</p>
 <p><a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> est un composant très pratique mais un peu verbeux. En outre, devoir configurer chacun des composants alors que, souvent, une configuration par défaut est largement suffisante me semblait un peu inutile.</p>
 <p>Enfin, comme je l&rsquo;ai déjà dit, <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> a été conçu pour les TU/TI mais dans un cas de foncionnement en mode <em>standalone</em> il faut alors accéder aux composants de manière <em>remote</em>.</p>
 <p>Parmi les besoins, les composants suivants :</p>
@@ -301,7 +301,7 @@ Comme je l&rsquo;ai déjà dit dans un article <a href="https://blog.jetoile.fr/
 <p>La surcouche proposée (que j&rsquo;ai décidé d&rsquo;appeler <strong>Hadoop-bootstrap</strong>) se trouve <a href="https://github.com/jetoile/hadoop-bootstrap">ici</a></p>
 <p>Elle nécessite cependant quelques pré-requis&hellip;</p>
 <h1 id="prérequis">Prérequis</h1>
-<p>Pour fonctionner, Hadoop-bootstrap nécessite d&rsquo;avoir téléchargé et décompressé Hadoop sur son poste. Dans mon cas, j&rsquo;ai juste récupéré la version d'<a href="http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz">Apache</a> que j&rsquo;ai décompressée dans <code>/opt/hadoop</code></p>
+<p>Pour fonctionner, Hadoop-bootstrap nécessite d&rsquo;avoir téléchargé et décompressé Hadoop sur son poste. Dans mon cas, j&rsquo;ai juste récupéré la version d&rsquo;<a href="http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz">Apache</a> que j&rsquo;ai décompressée dans <code>/opt/hadoop</code></p>
 <p>Il faut ensuite positionner la variable d&rsquo;environnement <code>HADOOP_HOME</code> à l&rsquo;endroit où la version d&rsquo;Hadoop a été décompressée.</p>
 <p>Pour l&rsquo;utilisation de Oozie, il est nécessaire de télécharger les <code>sharelib</code> de Oozie qui contient les librairies permettant de lancer des actions Hive, Spark, Shell ou autre : <a href="http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz">http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz</a></p>
 <p>Il suffit alors de modifier le fichier <code>default.properties</code> en y renseignant les variables <code>HADOOP_HOME</code> et <code>oozie.sharelib.path</code> avec les bonnes valeurs.</p>
@@ -312,8 +312,8 @@ Comme je l&rsquo;ai déjà dit dans un article <a href="https://blog.jetoile.fr/
 <li>le tar.gz si le besoin est d&rsquo;utiliser Hadoop-bootstrap dans son mode <em>standalone</em></li>
 </ul>
 <p>Pour ce faire, exécuter simplement la commande :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn install
-</code></pre></div><h2 id="pour-un-fonctionnement-en-test-dintégration-ou-unitaire">Pour un fonctionnement en test d&rsquo;intégration ou unitaire</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn install
+</span></span></code></pre></div><h2 id="pour-un-fonctionnement-en-test-dintégration-ou-unitaire">Pour un fonctionnement en test d&rsquo;intégration ou unitaire</h2>
 <p>Pour ce mode, il est possible de faire de 2 manières différentes :</p>
 <ul>
 <li>démarrer les composants nécessaires manuellement</li>
@@ -321,226 +321,226 @@ Comme je l&rsquo;ai déjà dit dans un article <a href="https://blog.jetoile.fr/
 </ul>
 <p>Attention cependant, dans les 2 cas, il est faut démarrer/arrêter les composants dans le bon ordre&hellip;</p>
 <h3 id="zookeeper">Zookeeper</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
-
-BeforeClass
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="hdfs">HDFS</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Bootstrap hdfs<span style="color:#f92672">;</span>
-
-BeforeClass
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="hbase">HBase</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hdfs<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hbase<span style="color:#f92672">;</span>
-
-BeforeClass
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-  zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-  hbase <span style="color:#f92672">=</span> HBaseBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-  hbase<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
-  zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
-  hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HBASE</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="hive">Hive</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hiveMetastore<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hiveServer2<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    hiveMetastore <span style="color:#f92672">=</span> HiveMetastoreBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    hiveServer2 <span style="color:#f92672">=</span> HiveServer2Bootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    hiveServer2<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-    hiveMetastore<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HIVEMETA</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HIVESERVER2</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="kafka">Kafka</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap kafka<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    kafka <span style="color:#f92672">=</span> KafkaBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    kafka<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="solrcloud">SolRCloud</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BeforeClass
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="hdfs">HDFS</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Bootstrap hdfs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BeforeClass
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="hbase">HBase</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hdfs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hbase<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BeforeClass
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>  hbase <span style="color:#f92672">=</span> HBaseBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hbase<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HBASE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="hive">Hive</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hiveMetastore<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hiveServer2<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    hiveMetastore <span style="color:#f92672">=</span> HiveMetastoreBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    hiveServer2 <span style="color:#f92672">=</span> HiveServer2Bootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hiveServer2<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    hiveMetastore<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HIVEMETA</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HIVESERVER2</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="kafka">Kafka</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap kafka<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    kafka <span style="color:#f92672">=</span> KafkaBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    kafka<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">KAFKA</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="solrcloud">SolRCloud</h3>
 <p>La difficulté pour intégrer ce composant était que le mode SolR Cloud n&rsquo;existait pas. Dans mon contexte d&rsquo;utilisation, la cible était SolR Cloud qui impose l&rsquo;utilisation de Zookeeper. Concernant l&rsquo;interaction d&rsquo;un client externe, il doit donc récupérer la configuration de SolR au sein de Zookeeper : le mode de fonctionnement est donc différent d&rsquo;un SolR en <em>standalone</em>.</p>
 <p>Pour faire fonctionner le mode SolR Cloud, il a fallu interagir directement avec Zookeeper en y écrivant les informations sur la collection cible car le mode embarqué n&rsquo;offrait pas les API suffisantes pour créer une collection.</p>
 <p>Actuellement, ce mode ne fonctionne qu&rsquo;avec une collection qui doit être connue et renseignée préalablement (schema.xml, &hellip;).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap solr<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    solr <span style="color:#f92672">=</span> SolrCloudBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    solr<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">SOLRCLOUD</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="oozie">Oozie</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap zookeeper<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap solr<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    zookeeper <span style="color:#f92672">=</span> ZookeeperBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    solr <span style="color:#f92672">=</span> SolrCloudBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    solr<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    zookeeper<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">ZOOKEEPER</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">SOLRCLOUD</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="oozie">Oozie</h3>
 <p>La difficulté pour intégrer ce composant était que <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> ne permettait pas à un client extérieur à la JVM ayant démarré Oozie d&rsquo;intéragir avec le serveur.</p>
 <p>En outre, pour utiliser les action Oozie tierce, il était nécesssaire de télécharger oozie. J&rsquo;ai juste simplifié ce mode en obligeant l&rsquo;utilisateur à disposer déjà de oozie sur son poste pour accélérer le mode de fonctionnement.</p>
 <p>Il est donc nécessaire de télécharger les <code>sharelib</code> de Oozie qui contiennet les librairies permettant de lancer des actions Hive, Spark, Shell ou autre (en fait, pour être plus précis, les sharelib sont dans la distribution d&rsquo;Oozie : on télécharge donc Oozie&hellip;) : <a href="http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz">http://s3.amazonaws.com/public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.3.2.0/tars/oozie-4.2.0.2.3.2.0-2950-distro.tar.gz</a></p>
 <p>Il suffit ensuite de modifier le fichier <code>default.properties</code> en y renseignant la variable <code>oozie.sharelib.path</code> avec la bonne valeur.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hdfs<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap oozie<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-    oozie <span style="color:#f92672">=</span> OozieBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-    oozie<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-    hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>ou</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
-
-<span style="color:#a6e22e">@BeforeClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">OOZIE</span><span style="color:#f92672">);</span>
-  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-
-
-<span style="color:#a6e22e">@AfterClass</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
-    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h2 id="pour-un-fonctionnement-en-mode-_standalone_">Pour un fonctionnement en mode <em>standalone</em></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap hdfs<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> Bootstrap oozie<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hdfs <span style="color:#f92672">=</span> HdfsBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    oozie <span style="color:#f92672">=</span> OozieBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">INSTANCE</span><span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    oozie<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    hdfs<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>ou</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">private</span> HadoopBootstrap hadoopBootstrap<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@BeforeClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HadoopBootstrap<span style="color:#f92672">(</span>Component<span style="color:#f92672">.</span><span style="color:#a6e22e">HDFS</span><span style="color:#f92672">,</span> Component<span style="color:#f92672">.</span><span style="color:#a6e22e">OOZIE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">startAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AfterClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> BootstrapException <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    hadoopBootstrap<span style="color:#f92672">.</span><span style="color:#a6e22e">stopAll</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="pour-un-fonctionnement-en-mode-_standalone_">Pour un fonctionnement en mode <em>standalone</em></h2>
 <p>Pour ce mode de fonctionnement, il suffit de récupérer le tar.gz généré lors de la compilation. Il est <em>autoporteur</em> et il suffit de le décompresser puis de démarrer Hadoop-bootstrap.</p>
 <p>Ses fichiers de configuration se trouvent dans le répertoire <code>conf</code>.</p>
 <p>Afin de pouvoir choisir les composants à démarrer, il suffit de modifier le contenu du fichier <code>hadoop.properties</code> se trouvant dans le répertoire <code>conf</code>.</p>
 <p>Pour démarrer l&rsquo;écosystème, il suffit d&rsquo;exécuter la commande suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/hadoop-bootstrap start
-</code></pre></div><p>Pour arrêter hadoop-bootstrap, exécuter la commande suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/hadoop-bootstrap stop
-</code></pre></div><p>Pour démarrer hadoop-bootstrap en mode interactif, exécuter la commande :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./bin/hadoop-bootstrap console
-</code></pre></div><div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./bin/hadoop-bootstrap start
+</span></span></code></pre></div><p>Pour arrêter hadoop-bootstrap, exécuter la commande suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./bin/hadoop-bootstrap stop
+</span></span></code></pre></div><p>Pour démarrer hadoop-bootstrap en mode interactif, exécuter la commande :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./bin/hadoop-bootstrap console
+</span></span></code></pre></div><div>
 <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/ef_9Y7a2ar8" width="560"></iframe></div>
 <p>A noter que ces commandes fonctionnent également sous Windows.</p>
 <p>Concernant macOS, je n&rsquo;ai pas testé mais cela ne devrait pas poser de difficultées.</p>
@@ -549,7 +549,7 @@ BeforeClass
 <p>Cependant, il est plus simple d&rsquo;utilisation car limite plus l&rsquo;utilisation des composants.</p>
 <p>Il permet, en outre, d&rsquo;utiliser l&rsquo;écosystème Hadoop en mode <em>standalone</em> (écosystème fonctionnant, bien sûr, en mode dégradé&hellip;) et d&rsquo;interagir avec avec des clients externes (par exemple, <code>hdfs dfs</code> fonctionne bien avec le hdfs démarré). Pour plus d&rsquo;information, il suffit d&rsquo;aller voir la classe <code>ManualIntegrationBootstrapTest</code> dans le package <code>fr.jetoile.sample.integrationtest</code>.</p>
 <p>Alors, oui, ce n&rsquo;est pas une révolution mais, au moins, ca permettra à l&rsquo;utilisateur de ne pas à avoir à se battre avec les conflits de jar que j&rsquo;ai pu avec avec SolR et Hadoop&hellip; ;)</p>
-<p>Pour plus d&rsquo;informations, les <a href="https://github.com/jetoile/hadoop-bootstrap/tree/master/src/test/java/fr/jetoile/sample/component">tests unitaires</a> et les <a href="https://github.com/jetoile/hadoop-bootstrap/blob/master/src/test/java/fr/jetoile/sample/integrationtest/IntegrationBootstrapTest.java">tests d'<em>intégration</em></a>.</p>
+<p>Pour plus d&rsquo;informations, les <a href="https://github.com/jetoile/hadoop-bootstrap/tree/master/src/test/java/fr/jetoile/sample/component">tests unitaires</a> et les <a href="https://github.com/jetoile/hadoop-bootstrap/blob/master/src/test/java/fr/jetoile/sample/integrationtest/IntegrationBootstrapTest.java">tests d&rsquo;<em>intégration</em></a>.</p>
 <p>A noter que pour faire fonctionner certains composants, je n&rsquo;ai pas fait dans la finesse&hellip; et j&rsquo;ai allègrement <em>hacké</em> certaines classes&hellip;</p>
 <p>A noter également que j&rsquo;ai simplement copier/coller les tests de <a href="https://github.com/sakserv/hadoop-mini-clusters">Hadoop-mini-clusters</a> sauf dans le mode intégration où je les ai un peu modifié pour permettre une connexion <em>remote</em>.</p>
 <p>Voilà, ce n&rsquo;est pas le plus beau code que j&rsquo;ai pu faire, mais j&rsquo;espère que ca pourra aider certains et, au pire, n&rsquo;hésitez pas à contribuer ou à forker pour en faire ce que vous en voulez ;)</p>

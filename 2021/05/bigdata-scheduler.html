@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Big Data et Scheduler : Reflexion &middot; Jetoile</title>
 
@@ -407,35 +407,35 @@ Dans le monde Big Data, rapidement se pose un certain nombre de besoins.</p>
 <p><img src="https://blog.jetoile.fr/images/scheduler/schema01.png" alt="center"></p>
 <p>Supposons que le <strong>schema registry</strong> utilise le format avro pour décrire les données et que le metastore de hive soit utilisé.</p>
 <p>Supposons également qu&rsquo;on représente la qualité de données dans ce cas avec un pseudo langage type:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">d2.count(*) == d1.count(*)
-d2.d2_c1 &gt;= 0
-</code></pre></div><p>Dans ce cas, la déclaration dans le <strong>schema registry</strong> de d1 et d2 aurait pour conséquence la création de la database et des tables dans le metastore hive automatiquement.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>d2.count(*) == d1.count(*)
+</span></span><span style="display:flex;"><span>d2.d2_c1 &gt;= 0
+</span></span></code></pre></div><p>Dans ce cas, la déclaration dans le <strong>schema registry</strong> de d1 et d2 aurait pour conséquence la création de la database et des tables dans le metastore hive automatiquement.</p>
 <p><img src="https://blog.jetoile.fr/images/scheduler/schema02.png" alt="center"></p>
 <p>Concernant le job de traitement, on pourrait avoir dans sa version original :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">val</span> spark <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span>
-  <span style="color:#f92672">.</span>builder<span style="color:#f92672">()</span>
-  <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;job J in Scala&#34;</span><span style="color:#f92672">)</span>
-  <span style="color:#f92672">.</span>enableHiveSupport<span style="color:#f92672">()</span>
-  <span style="color:#f92672">.</span>getOrCreate<span style="color:#f92672">()</span>
-
-<span style="color:#66d9ef">val</span> d1 <span style="color:#66d9ef">=</span> spark<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SELECT d1_c1 FROM d1&#34;</span><span style="color:#f92672">)</span>
-
-<span style="color:#66d9ef">val</span> d2 <span style="color:#66d9ef">=</span> df<span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">,</span> when<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> otherwise col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)).</span>select<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">)</span>
-
-d2<span style="color:#f92672">.</span>write<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;csv&#34;</span><span style="color:#f92672">).</span>save<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://localhost:20112/test/d2&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><p>et dans sa version modifiée permettant l&rsquo;introspection par le <strong>scheduler</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">val</span> spark <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span>
-  <span style="color:#f92672">.</span>builder<span style="color:#f92672">()</span>
-  <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;job J in Scala&#34;</span><span style="color:#f92672">)</span>
-  <span style="color:#f92672">.</span>enableHiveSupport<span style="color:#f92672">()</span>
-  <span style="color:#f92672">.</span>getOrCreate<span style="color:#f92672">()</span>
-
-<span style="color:#66d9ef">val</span> d1 <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">ReaderWrapper</span><span style="color:#f92672">(</span>spark<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span>
-
-<span style="color:#66d9ef">val</span> d2 <span style="color:#66d9ef">=</span> df<span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">,</span> when<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> otherwise col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)).</span>select<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">)</span>
-
-<span style="color:#a6e22e">WriterWrapper</span><span style="color:#f92672">(</span>spark<span style="color:#f92672">,</span> d2<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d2&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><p>A cette étape, on a donc :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> spark <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>builder<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;job J in Scala&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>enableHiveSupport<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>getOrCreate<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d1 <span style="color:#66d9ef">=</span> spark<span style="color:#f92672">.</span>sql<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SELECT d1_c1 FROM d1&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d2 <span style="color:#66d9ef">=</span> df<span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">,</span> when<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> otherwise col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)).</span>select<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>d2<span style="color:#f92672">.</span>write<span style="color:#f92672">.</span>format<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;csv&#34;</span><span style="color:#f92672">).</span>save<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hdfs://localhost:20112/test/d2&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>et dans sa version modifiée permettant l&rsquo;introspection par le <strong>scheduler</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-scala" data-lang="scala"><span style="display:flex;"><span><span style="color:#66d9ef">val</span> spark <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">SparkSession</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>builder<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>appName<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;job J in Scala&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>enableHiveSupport<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">.</span>getOrCreate<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d1 <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">ReaderWrapper</span><span style="color:#f92672">(</span>spark<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d1&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">val</span> d2 <span style="color:#66d9ef">=</span> df<span style="color:#f92672">.</span>withColumn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">,</span> when<span style="color:#f92672">(</span>col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> otherwise col<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d1_c1&#34;</span><span style="color:#f92672">)).</span>select<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d2_c1&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">WriterWrapper</span><span style="color:#f92672">(</span>spark<span style="color:#f92672">,</span> d2<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;d2&#34;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>A cette étape, on a donc :</p>
 <ul>
 <li>les datasets déclarés dans le <strong>schema registry</strong> ainsi que la définition du contrat de qualité</li>
 <li>les databases et tables hive automatiquement créés dans le metastore hive</li>

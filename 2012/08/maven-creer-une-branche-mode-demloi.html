@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Maven : créer une branche - Mode d&#39;emploi &middot; Jetoile</title>
 
@@ -303,25 +303,25 @@
 </ul>
 <p>Enfin, il est possible de préciser la version à utiliser dans le ligne de commande. Cela peut être utile, par exemple, si la commande est exécutée en commande non interactive. Le goal branch peut utiliser les mêmes propriétés utilisées par le goal prepare pour définir les versions à utiliser.</p>
 <p>Exemple :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn --batch-mode release:branch -DbranchName<span style="color:#f92672">=</span>my-branch-1.2 <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-Dproject.rel.org.myCompany:projectA<span style="color:#f92672">=</span>1.2 <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-Dproject.dev.org.myCompany:projectA<span style="color:#f92672">=</span>2.0-SNAPSHOT 
-</code></pre></div><p>Dans cet exemple, le pom dans la nouvelle branche sera en version 1.2-SNAPSHOT alors que le pom local sera en version 2.0-SNAPSHOT.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn --batch-mode release:branch -DbranchName<span style="color:#f92672">=</span>my-branch-1.2 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-Dproject.rel.org.myCompany:projectA<span style="color:#f92672">=</span>1.2 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-Dproject.dev.org.myCompany:projectA<span style="color:#f92672">=</span>2.0-SNAPSHOT 
+</span></span></code></pre></div><p>Dans cet exemple, le pom dans la nouvelle branche sera en version 1.2-SNAPSHOT alors que le pom local sera en version 2.0-SNAPSHOT.</p>
 <p>#La commande! La commande!&hellip; enfin</p>
 <p>Bon, voilà la commande tant attendue que j&rsquo;utilise le plus souvent :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn --batch-mode release:branch <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-DbranchName<span style="color:#f92672">=</span>&lt;nomBrancheACreer&gt; <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-DupdateBranchVersions<span style="color:#f92672">=</span>true <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-DupdateWorkingCopyVersions<span style="color:#f92672">=</span>false <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-DautoVersionSubmodules<span style="color:#f92672">=</span>true <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>-Dproject.rel.&lt;groupId&gt;:&lt;artifactId&gt;<span style="color:#f92672">=</span>&lt;version&gt; 
-</code></pre></div><p>avec la déclaration suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
- <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
- <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
- <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn --batch-mode release:branch <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-DbranchName<span style="color:#f92672">=</span>&lt;nomBrancheACreer&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-DupdateBranchVersions<span style="color:#f92672">=</span>true <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-DupdateWorkingCopyVersions<span style="color:#f92672">=</span>false <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-DautoVersionSubmodules<span style="color:#f92672">=</span>true <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-Dproject.rel.&lt;groupId&gt;:&lt;artifactId&gt;<span style="color:#f92672">=</span>&lt;version&gt; 
+</span></span></code></pre></div><p>avec la déclaration suivante :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;version&gt;</span>2.3.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>En conclusion de ce court article, pas grand chose à ajouter sauf que le goal <code>branch</code> du plugin <strong>release</strong> est vraiment très utile puisqu&rsquo;il permet en une seule commande de faire plusieurs opérations qui se trouvent être assez rébarbatives.</p>
 <h1 id="pour-aller-plus-loin">Pour aller plus loin&hellip;</h1>
 <p><a href="http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html%60">http://maven.apache.org/plugins/maven-release-plugin/branch-mojo.html`</a></p>

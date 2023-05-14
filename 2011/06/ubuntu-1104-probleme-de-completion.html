@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Ubuntu 11.04 &middot; Jetoile</title>
 
@@ -286,17 +286,17 @@
 <p>Du coup, après une ou deux recherche sur mon ami google, je suis tombé sur le <a href="https://bugs.launchpad.net/ubuntu/+source/bash-completion/+bug/769866">bug suivant</a>.</p>
 <p>En fait, pour résumer, il semble que cela vienne du script de complétion utilisé par bash.</p>
 <p>Aussi pour corriger ce problème, il ne vous reste plus qu&rsquo;à éditer le fichier <code>/etc/bash_completion</code> avec les bons droits et à modifier sa ligne 1587 pour y remplacer <code>default</code> par <code>filenames</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># makeinfo and texi2dvi are defined elsewhere.</span>
-<span style="color:#66d9ef">for</span> i in a2ps awk bash bc bison cat colordiff cp csplit <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    curl cut date df diff dir du enscript env expand fmt fold gperf gprof <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    grep grub head indent irb ld ldd less ln ls m4 md5sum mkdir mkfifo mknod <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    mv netstat nl nm objcopy objdump od paste patch pr ptx readelf rm rmdir <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    sed seq sha<span style="color:#f92672">{</span>,1,224,256,384,512<span style="color:#f92672">}</span>sum shar sort split strip tac tail tee <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    texindex touch tr uname unexpand uniq units vdir wc wget who; <span style="color:#66d9ef">do</span>
-    have $i <span style="color:#f92672">&amp;&amp;</span> complete -F _longopt -o filenames $i
-<span style="color:#66d9ef">done</span>
-unset i
-</code></pre></div><p>Après un petit coup de rechargement du <code>bashrc</code> (qui charge le <code>bash_completion</code>), vous aurez alors résolu votre problème ;-)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># makeinfo and texi2dvi are defined elsewhere.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in a2ps awk bash bc bison cat colordiff cp csplit <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    curl cut date df diff dir du enscript env expand fmt fold gperf gprof <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    grep grub head indent irb ld ldd less ln ls m4 md5sum mkdir mkfifo mknod <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    mv netstat nl nm objcopy objdump od paste patch pr ptx readelf rm rmdir <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    sed seq sha<span style="color:#f92672">{</span>,1,224,256,384,512<span style="color:#f92672">}</span>sum shar sort split strip tac tail tee <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    texindex touch tr uname unexpand uniq units vdir wc wget who; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    have $i <span style="color:#f92672">&amp;&amp;</span> complete -F _longopt -o filenames $i
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>unset i
+</span></span></code></pre></div><p>Après un petit coup de rechargement du <code>bashrc</code> (qui charge le <code>bash_completion</code>), vous aurez alors résolu votre problème ;-)</p>
 <p>Rechargement du ~/.bashrc :
 <img src="http://1.bp.blogspot.com/-_e-p2C3ZNPs/TfOJc6I-LoI/AAAAAAAAAX8/Um_QhF9V_18/s1600/ubuntu09.png" alt="center"></p>
 <p>Utilisation basique de la complétion et exécution :

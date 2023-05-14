@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Jetoile</title>
 
@@ -461,7 +461,7 @@ Le MBean Server propose, par défaut, un ensemble de fonctionnalités qui se pr�
 
   <p>
   Cet article reste dans la lignée de ma petite série d&rsquo;articles sur JMX (cf. introduction, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification, partie 3 sur les agents JMX et partie 4 sur les classes de base) et portera sur le MBean Server.
-Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs
+Table des matières JMX, qu&rsquo;est ce que c&rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs MBean Server Le MBean Server est un annuaire de MBeans se trouvant dans l&rsquo;agent JMX.
   </p>
 
   
@@ -507,7 +507,7 @@ Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Archi
 
   <p>
   Cette quatrième partie sur JMX (cf. [introduction](/2010/10/jmx-pour-les-nuls-introduction.html, partie 1 portant sur les généralités, partie 2 portant sur les différents MBeans et le concept de Notification et partie 3 sur les agents JMX) permettra de présenter les classes de bases de JMX c&rsquo;est-à-dire les classes qui sont manipulées en interne par les API de JMX à savoir :
- ObjectName ObjectInstance Attribute AttributeList  Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?
+ObjectName ObjectInstance Attribute AttributeList Table des matières JMX, qu&rsquo;est ce que c&rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs ObjectName Un nom d&rsquo;objet permet d&rsquo;identifier un MBean dans le MBean Server de manière unique.
   </p>
 
   
@@ -554,7 +554,7 @@ Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Archi
   <p>
   Cette troisième partie sur JMX reste dans la continuité de la série d&rsquo;article sur ce sujet (cf. introduction, partie 1 portant sur les généralités et partie 2 portant sur les différents MBeans et le concept de Notification) en introduisant plus précisément ce qu&rsquo;est un agent JMX et à quoi il sert.
 Les articles qui feront suite préciseront les concepts manipulés par un agent JMX beaucoup plus en profondeur.
-Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?
+Table des matières JMX, qu&rsquo;est ce que c&rsquo;est?
   </p>
 
   
@@ -601,7 +601,7 @@ Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?
   <p>
   Mon précédent article portant sur la présentation générale de JMX a permis de poser les bases quant aux concepts fondamentaux. Cette seconde partie ainsi que les suivantes consistent en une descente plus en profondeur dans les entrailles des spécifications en reprenant les différentes notions vues précédemment.
 Ainsi, cette partie traitera des différents MBeans et du concept notification.
-Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs
+Table des matières JMX, qu&rsquo;est ce que c&rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs MBean Un MBean est une classe java concrète qui :
   </p>
 
   
@@ -647,7 +647,7 @@ Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Archi
 
   <p>
   Comme promis lors de mon article précédent (et pour éviter de vous faire languir ;-) ) la première partie de cette série d&rsquo;article sur JMX!
-Table des matières  JMX, qu&rsquo;est ce que c&rsquo;est?  Généralités Architecture JMX  Niveau instrumentation Niveau agent Niveau service distribué   Composants JMX  MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents     Spécifications  JMX Instrumentation  MBean  MBean Standard Dynamic MBean   Notification Open MBean Model MBean   Agent JMX Concepts  ObjectName ObjectInstance Attribute et AttributeList Les Exceptions   MBean Server Chargement dynamique des MBeans Les services JMX  Service Monitoring Service Timer Service Relation Service Sécurité   Les Connecteurs    JMX, qu&rsquo;est ce que c&rsquo;est?
+Table des matières JMX, qu&rsquo;est ce que c&rsquo;est? Généralités Architecture JMX Niveau instrumentation Niveau agent Niveau service distribué Composants JMX MBeans Modèle de notifications Classe de métadonnées de MBeans Serveur de MBeans Service d&rsquo;agents Spécifications JMX Instrumentation MBean MBean Standard Dynamic MBean Notification Open MBean Model MBean Agent JMX Concepts ObjectName ObjectInstance Attribute et AttributeList Les Exceptions MBean Server Chargement dynamique des MBeans Les services JMX Service Monitoring Service Timer Service Relation Service Sécurité Les Connecteurs JMX, qu&rsquo;est ce que c&rsquo;est?
   </p>
 
   

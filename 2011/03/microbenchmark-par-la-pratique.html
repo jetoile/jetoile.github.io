@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>MicroBenchmark : par la pratique &middot; Jetoile</title>
 
@@ -284,48 +284,48 @@
 </ul>
 <p>Ce petit test sera exécuté une centaine de fois afin de pouvoir lisser le résultat.</p>
 <p>Le code utilisé pour faire ce petit test est le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark0</span> <span style="color:#f92672">{</span>
- 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> 100000<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_TEST <span style="color:#f92672">=</span> 100<span style="color:#f92672">;</span>
- 
-    <span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>NB_ITEM<span style="color:#f92672">);</span>
- 
-    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Long<span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Long<span style="color:#f92672">[</span>NB_TEST<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
- 
-            <span style="color:#66d9ef">long</span> startTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#f92672">}</span>
- 
-            <span style="color:#75715e">// for (String value : list) {
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
-</span><span style="color:#75715e"></span> 
-            <span style="color:#75715e">// int i = 0;
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// while (i &lt; list.size()) {
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// i++;
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
-</span><span style="color:#75715e"></span> 
-            res<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> startTime<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
- 
-        <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            total <span style="color:#f92672">+=</span> res<span style="color:#f92672">[</span>j<span style="color:#f92672">];</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>res<span style="color:#f92672">[</span>j<span style="color:#f92672">]);</span>
-        <span style="color:#f92672">}</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sum : &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;moy : &#34;</span> <span style="color:#f92672">+</span> total <span style="color:#f92672">/</span> NB_TEST<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’<code>ArrayList</code> utilisé ici sont faites en dehors du test.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark0</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_TEST <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>NB_ITEM<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Long<span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Long<span style="color:#f92672">[</span>NB_TEST<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> startTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// for (String value : list) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// int i = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// while (i &lt; list.size()) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// i++;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
+</span></span><span style="display:flex;"><span>            res<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> startTime<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            total <span style="color:#f92672">+=</span> res<span style="color:#f92672">[</span>j<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>res<span style="color:#f92672">[</span>j<span style="color:#f92672">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sum : &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;moy : &#34;</span> <span style="color:#f92672">+</span> total <span style="color:#f92672">/</span> NB_TEST<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>On y constate, bien sûr, que la récupération des métriques n’encadre que l’opération à tester mais, également, que l’instanciation et l’initialisation de l’<code>ArrayList</code> utilisé ici sont faites en dehors du test.</p>
 <h3 id="résultats">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :
 <img src="https://lh5.googleusercontent.com/-lI9NU2jROeg/TYfWEzjCs-I/AAAAAAAAAU8/9qW3rgg2xJM/s1600/naif_res01.png" alt="center"></p>
@@ -386,53 +386,53 @@ Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en f
 </ul>
 <p>Comme précédemment, ce petit test sera exécuté une centaine de fois afin de pouvoir lisser le résultat.</p>
 <p>Le code utilisé pour faire ce petit test est le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark1</span> <span style="color:#f92672">{</span>
- 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> 100000<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_TEST <span style="color:#f92672">=</span> 100<span style="color:#f92672">;</span>
- 
-    <span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>NB_ITEM<span style="color:#f92672">);</span>
- 
-    <span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">static</span> StringBuilder sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Long<span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Long<span style="color:#f92672">[</span>NB_TEST<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
- 
-            <span style="color:#66d9ef">long</span> startTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-                sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-            <span style="color:#f92672">}</span>
- 
-            <span style="color:#75715e">// for (String value : list) {
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// sideEffect.append(value);
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
-</span><span style="color:#75715e"></span> 
-            <span style="color:#75715e">// int i = 0;
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// while (i &lt; list.size()) {
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// sideEffect.append(list.get(i));
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// i++;
-</span><span style="color:#75715e"></span>            <span style="color:#75715e">// }
-</span><span style="color:#75715e"></span> 
-            res<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> startTime<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
- 
-        <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            total <span style="color:#f92672">+=</span> res<span style="color:#f92672">[</span>j<span style="color:#f92672">];</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>res<span style="color:#f92672">[</span>j<span style="color:#f92672">]);</span>
-        <span style="color:#f92672">}</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sum : &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;moy : &#34;</span> <span style="color:#f92672">+</span> total <span style="color:#f92672">/</span> NB_TEST<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="résultats-1">Résultats</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark1</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_TEST <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;(</span>NB_ITEM<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">static</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">static</span> StringBuilder sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>Long<span style="color:#f92672">[]</span> res <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Long<span style="color:#f92672">[</span>NB_TEST<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">long</span> startTime <span style="color:#f92672">=</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// for (String value : list) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// sideEffect.append(value);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// int i = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// while (i &lt; list.size()) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// sideEffect.append(list.get(i));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// i++;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#75715e">// }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>res<span style="color:#f92672">[</span>j<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">nanoTime</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> startTime<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> NB_TEST<span style="color:#f92672">;</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>total <span style="color:#f92672">+=</span> res<span style="color:#f92672">[</span>j<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>res<span style="color:#f92672">[</span>j<span style="color:#f92672">]);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;sum : &#34;</span> <span style="color:#f92672">+</span> total<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;moy : &#34;</span> <span style="color:#f92672">+</span> total <span style="color:#f92672">/</span> NB_TEST<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="résultats-1">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
 <p><img src="https://lh5.googleusercontent.com/--yfx7Mdby8c/TYfXtahEIoI/AAAAAAAAAVI/uscIVmjqEsQ/s1600/sideEffect_res01.png" alt="center"></p>
 <p><img src="https://lh4.googleusercontent.com/-Sze5evxC3P0/TYfX867p4ZI/AAAAAAAAAVM/gZU-aP_AeyY/s1600/sideEffect_res02.png" alt="medium"></p>
@@ -457,110 +457,110 @@ Tout simplement, le comportement de la JVM (Hotspot) change du tout au tout en f
 </ul>
 <p><u>Disclaimer</u> : cette partie n&rsquo;abordera ni comment installer, ni comment utiliser Caliper. Elle est juste fournie à titre indicatif.</p>
 <p>Le code utilisé pour faire cette troisième tentative est le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark2</span> <span style="color:#66d9ef">extends</span> SimpleBenchmark <span style="color:#f92672">{</span>
- 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> 100000<span style="color:#f92672">;</span>
- 
-    List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>NB_ITEM<span style="color:#f92672">);</span>
-    StringBuilder sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
- 
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-        sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeFor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-                sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">));</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeForeach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String value <span style="color:#f92672">:</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeWhile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">));</span>
-                j<span style="color:#f92672">++;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>On remarque ici, que, plutôt que d&rsquo;exécuter via un script extérieur mon tir, j&rsquo;ai préféré le faire en invoquant directement le <code>main()</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark2</span> <span style="color:#66d9ef">extends</span> SimpleBenchmark <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>NB_ITEM<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>StringBuilder sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>sideEffect <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeFor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeForeach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String value <span style="color:#f92672">:</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> StringBuilder <span style="color:#a6e22e">timeWhile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>sideEffect<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>j<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>j<span style="color:#f92672">++;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">return</span> sideEffect<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>On remarque ici, que, plutôt que d&rsquo;exécuter via un script extérieur mon tir, j&rsquo;ai préféré le faire en invoquant directement le <code>main()</code>.</p>
 <h3 id="résultats-2">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0% Scenario{vm=java, trial=0, benchmark=For} 3535251,80 ns; σ=197827,29 ns @ 10 trials
-33% Scenario{vm=java, trial=0, benchmark=Foreach} 3676070,55 ns; σ=190018,30 ns @ 10 trials
-67% Scenario{vm=java, trial=0, benchmark=While} 3508898,75 ns; σ=222565,30 ns @ 10 trials
- 
-benchmark   ms linear runtime
-      For 3,54 ============================
-  Foreach 3,68 ==============================
-    While 3,51 ============================
- 
-vm: java
-trial: 0
-</code></pre></div><p><img src="https://lh4.googleusercontent.com/-Z8j93HQc0m4/TYfcBM-QiFI/AAAAAAAAAVU/4IS1Gu0Lon4/s1600/caliper01.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0% Scenario{vm=java, trial=0, benchmark=For} 3535251,80 ns; σ=197827,29 ns @ 10 trials
+</span></span><span style="display:flex;"><span>33% Scenario{vm=java, trial=0, benchmark=Foreach} 3676070,55 ns; σ=190018,30 ns @ 10 trials
+</span></span><span style="display:flex;"><span>67% Scenario{vm=java, trial=0, benchmark=While} 3508898,75 ns; σ=222565,30 ns @ 10 trials
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>benchmark   ms linear runtime
+</span></span><span style="display:flex;"><span>      For 3,54 ============================
+</span></span><span style="display:flex;"><span>  Foreach 3,68 ==============================
+</span></span><span style="display:flex;"><span>    While 3,51 ============================
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>vm: java
+</span></span><span style="display:flex;"><span>trial: 0
+</span></span></code></pre></div><p><img src="https://lh4.googleusercontent.com/-Z8j93HQc0m4/TYfcBM-QiFI/AAAAAAAAAVU/4IS1Gu0Lon4/s1600/caliper01.png" alt="medium"></p>
 <p>Ces résultats sont donnés avec une seul tir.</p>
 <p>Pour montrer comme il est aisé d&rsquo;effectuer plusieurs tirs avec Caliper (tir qui lance à chaque fois une nouvelle JVM dans un process - process au sens UNIX du terme - différent), modifions juste notre méthode <code>main()</code> pour y passer d&rsquo;autres options :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span> <span style="color:#e6db74">&#34;--trials&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">});</span>
-    <span style="color:#f92672">}</span>
-</code></pre></div><p>Ce qui donne le résultat suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0% Scenario{vm=java, trial=0, benchmark=For} 3425915,23 ns; σ=207711,73 ns @ 10 trials
- 7% Scenario{vm=java, trial=1, benchmark=For} 3453313,87 ns; σ=193613,25 ns @ 10 trials
-13% Scenario{vm=java, trial=2, benchmark=For} 3807062,28 ns; σ=278917,43 ns @ 10 trials
-20% Scenario{vm=java, trial=3, benchmark=For} 3807244,53 ns; σ=283377,19 ns @ 10 trials
-27% Scenario{vm=java, trial=4, benchmark=For} 3808771,58 ns; σ=270090,07 ns @ 10 trials
-33% Scenario{vm=java, trial=0, benchmark=Foreach} 3504679,81 ns; σ=190093,88 ns @ 10 trials
-40% Scenario{vm=java, trial=1, benchmark=Foreach} 3620052,15 ns; σ=216116,18 ns @ 10 trials
-47% Scenario{vm=java, trial=2, benchmark=Foreach} 3519711,06 ns; σ=173384,58 ns @ 10 trials
-53% Scenario{vm=java, trial=3, benchmark=Foreach} 3527981,05 ns; σ=232274,54 ns @ 10 trials
-60% Scenario{vm=java, trial=4, benchmark=Foreach} 3549837,79 ns; σ=196295,32 ns @ 10 trials
-67% Scenario{vm=java, trial=0, benchmark=While} 3628542,80 ns; σ=223275,59 ns @ 10 trials
-73% Scenario{vm=java, trial=1, benchmark=While} 3569981,43 ns; σ=225773,17 ns @ 10 trials
-80% Scenario{vm=java, trial=2, benchmark=While} 3596601,06 ns; σ=266773,47 ns @ 10 trials
-87% Scenario{vm=java, trial=3, benchmark=While} 3493799,14 ns; σ=220276,60 ns @ 10 trials
-93% Scenario{vm=java, trial=4, benchmark=While} 3642079,85 ns; σ=185312,29 ns @ 10 trials
- 
-benchmark trial   ms linear runtime
-      For     0 3,43 ==========================
-      For     1 3,45 ===========================
-      For     2 3,81 =============================
-      For     3 3,81 =============================
-      For     4 3,81 ==============================
-  Foreach     0 3,50 ===========================
-  Foreach     1 3,62 ============================
-  Foreach     2 3,52 ===========================
-  Foreach     3 3,53 ===========================
-  Foreach     4 3,55 ===========================
-    While     0 3,63 ============================
-    While     1 3,57 ============================
-    While     2 3,60 ============================
-    While     3 3,49 ===========================
-    While     4 3,64 ============================
- 
-vm: java
-</code></pre></div><p><img src="https://lh6.googleusercontent.com/-0jMElON2GG0/TYfeIplU2lI/AAAAAAAAAVY/8Ws8IPu8_l8/s1600/caliper02.png" alt="medium"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span> <span style="color:#e6db74">&#34;--trials&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;5&#34;</span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Ce qui donne le résultat suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0% Scenario{vm=java, trial=0, benchmark=For} 3425915,23 ns; σ=207711,73 ns @ 10 trials
+</span></span><span style="display:flex;"><span> 7% Scenario{vm=java, trial=1, benchmark=For} 3453313,87 ns; σ=193613,25 ns @ 10 trials
+</span></span><span style="display:flex;"><span>13% Scenario{vm=java, trial=2, benchmark=For} 3807062,28 ns; σ=278917,43 ns @ 10 trials
+</span></span><span style="display:flex;"><span>20% Scenario{vm=java, trial=3, benchmark=For} 3807244,53 ns; σ=283377,19 ns @ 10 trials
+</span></span><span style="display:flex;"><span>27% Scenario{vm=java, trial=4, benchmark=For} 3808771,58 ns; σ=270090,07 ns @ 10 trials
+</span></span><span style="display:flex;"><span>33% Scenario{vm=java, trial=0, benchmark=Foreach} 3504679,81 ns; σ=190093,88 ns @ 10 trials
+</span></span><span style="display:flex;"><span>40% Scenario{vm=java, trial=1, benchmark=Foreach} 3620052,15 ns; σ=216116,18 ns @ 10 trials
+</span></span><span style="display:flex;"><span>47% Scenario{vm=java, trial=2, benchmark=Foreach} 3519711,06 ns; σ=173384,58 ns @ 10 trials
+</span></span><span style="display:flex;"><span>53% Scenario{vm=java, trial=3, benchmark=Foreach} 3527981,05 ns; σ=232274,54 ns @ 10 trials
+</span></span><span style="display:flex;"><span>60% Scenario{vm=java, trial=4, benchmark=Foreach} 3549837,79 ns; σ=196295,32 ns @ 10 trials
+</span></span><span style="display:flex;"><span>67% Scenario{vm=java, trial=0, benchmark=While} 3628542,80 ns; σ=223275,59 ns @ 10 trials
+</span></span><span style="display:flex;"><span>73% Scenario{vm=java, trial=1, benchmark=While} 3569981,43 ns; σ=225773,17 ns @ 10 trials
+</span></span><span style="display:flex;"><span>80% Scenario{vm=java, trial=2, benchmark=While} 3596601,06 ns; σ=266773,47 ns @ 10 trials
+</span></span><span style="display:flex;"><span>87% Scenario{vm=java, trial=3, benchmark=While} 3493799,14 ns; σ=220276,60 ns @ 10 trials
+</span></span><span style="display:flex;"><span>93% Scenario{vm=java, trial=4, benchmark=While} 3642079,85 ns; σ=185312,29 ns @ 10 trials
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>benchmark trial   ms linear runtime
+</span></span><span style="display:flex;"><span>      For     0 3,43 ==========================
+</span></span><span style="display:flex;"><span>      For     1 3,45 ===========================
+</span></span><span style="display:flex;"><span>      For     2 3,81 =============================
+</span></span><span style="display:flex;"><span>      For     3 3,81 =============================
+</span></span><span style="display:flex;"><span>      For     4 3,81 ==============================
+</span></span><span style="display:flex;"><span>  Foreach     0 3,50 ===========================
+</span></span><span style="display:flex;"><span>  Foreach     1 3,62 ============================
+</span></span><span style="display:flex;"><span>  Foreach     2 3,52 ===========================
+</span></span><span style="display:flex;"><span>  Foreach     3 3,53 ===========================
+</span></span><span style="display:flex;"><span>  Foreach     4 3,55 ===========================
+</span></span><span style="display:flex;"><span>    While     0 3,63 ============================
+</span></span><span style="display:flex;"><span>    While     1 3,57 ============================
+</span></span><span style="display:flex;"><span>    While     2 3,60 ============================
+</span></span><span style="display:flex;"><span>    While     3 3,49 ===========================
+</span></span><span style="display:flex;"><span>    While     4 3,64 ============================
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>vm: java
+</span></span></code></pre></div><p><img src="https://lh6.googleusercontent.com/-0jMElON2GG0/TYfeIplU2lI/AAAAAAAAAVY/8Ws8IPu8_l8/s1600/caliper02.png" alt="medium"></p>
 <p><img src="https://lh3.googleusercontent.com/-Lm7FexMT_jg/TYffb2Hsi3I/AAAAAAAAAVc/xspieQ1S0pc/s1600/caliper021.png" alt="medium"></p>
 <h3 id="analyse-2">Analyse</h3>
 <p>On constate ici que les résultats obtenus avec Caliper sont cohérents avec ceux obtenus précédemment (ie. les résultats sont similaires quelque soit la méthode d&rsquo;itération), même si on remarque une légère différence due au bruit ajouté par l&rsquo;utilisation du framework, bruit qui ne doit pas être pris en compte puisque si un tel framework venait à être utilisé, tous les résultats analysés seraient, évidemment, issus de l&rsquo;utilisation de Caliper. En outre, n&rsquo;oublions pas qu&rsquo;il faut raisonner en terme de statistique et non en terme de chiffre pur&hellip;</p>
@@ -568,54 +568,54 @@ vm: java
 <h3 id="scénario-3">Scénario</h3>
 <p>Cette avant dernière tentative est juste faite pour le fun pour montrer le comportement de Caliper avec un microBenchmark douteux&hellip; ie. notre premier test ;-).</p>
 <p>Aussi, reprenons notre troisième tentative et supprimons les effets de bord :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark3</span> <span style="color:#66d9ef">extends</span> SimpleBenchmark <span style="color:#f92672">{</span>
- 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> 100000<span style="color:#f92672">;</span>
- 
-    List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>NB_ITEM<span style="color:#f92672">);</span>
- 
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeFor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeForeach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String value <span style="color:#f92672">:</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeWhile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                j<span style="color:#f92672">++;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="résultats-3">Résultats</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IterableBenchmark3</span> <span style="color:#66d9ef">extends</span> SimpleBenchmark <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NB_ITEM <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span>List list <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">(</span>NB_ITEM<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NB_ITEM<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>i<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeFor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> j<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeForeach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String value <span style="color:#f92672">:</span> list<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">timeWhile</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> reps<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> reps<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>j <span style="color:#f92672">&lt;</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">                </span>j<span style="color:#f92672">++;</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">            </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"> </span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">        </span>Runner<span style="color:#f92672">.</span><span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>IterableBenchmark3<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">    </span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="résultats-3">Résultats</h3>
 <p>Suite à ce test, les résultats obtenus ont été les suivants :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0% Scenario{vm=java, trial=0, benchmark=For}  Failed to execute java -cp /home/khanh/eclipse-workspace/benchmark/target/classes:/home/khanh/eclipse-workspace/caliper-read-only/caliper/target/classes:/home/khanh/.m2/repository/com/google/code/gson/gson/1.7-SNAPSHOT/gson-1.7-SNAPSHOT.jar:/home/khanh/.m2/repository/com/google/guava/guava/r07/guava-r07.jar:/home/khanh/.m2/repository/com/google/code/java-allocation-instrumenter/java-allocation-instrumenter/2.0/java-allocation-instrumenter-2.0.jar com.google.caliper.InProcessRunner --warmupMillis 3000 --runMillis 1000 --measurementType TIME --marker //ZxJ/ -Dbenchmark=For fr.soat.blog.benchmark.IterableBenchmark3
-starting Scenario{vm=java, trial=0, benchmark=For}
-[caliper] [starting warmup]
-[caliper] [starting measured section]
-Error: Doing 2x as much work didn&#39;t take 2x as much time! Is the JIT optimizing away the body of your benchmark?
-</code></pre></div><h3 id="analyse-3">Analyse</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0% Scenario{vm=java, trial=0, benchmark=For}  Failed to execute java -cp /home/khanh/eclipse-workspace/benchmark/target/classes:/home/khanh/eclipse-workspace/caliper-read-only/caliper/target/classes:/home/khanh/.m2/repository/com/google/code/gson/gson/1.7-SNAPSHOT/gson-1.7-SNAPSHOT.jar:/home/khanh/.m2/repository/com/google/guava/guava/r07/guava-r07.jar:/home/khanh/.m2/repository/com/google/code/java-allocation-instrumenter/java-allocation-instrumenter/2.0/java-allocation-instrumenter-2.0.jar com.google.caliper.InProcessRunner --warmupMillis 3000 --runMillis 1000 --measurementType TIME --marker //ZxJ/ -Dbenchmark=For fr.soat.blog.benchmark.IterableBenchmark3
+</span></span><span style="display:flex;"><span>starting Scenario{vm=java, trial=0, benchmark=For}
+</span></span><span style="display:flex;"><span>[caliper] [starting warmup]
+</span></span><span style="display:flex;"><span>[caliper] [starting measured section]
+</span></span><span style="display:flex;"><span>Error: Doing 2x as much work didn&#39;t take 2x as much time! Is the JIT optimizing away the body of your benchmark?
+</span></span></code></pre></div><h3 id="analyse-3">Analyse</h3>
 <p>La bonne surprise est que Caliper nous indique clairement que JIT a optimisé notre code et que, donc, notre microBenchmark est erroné!</p>
 <p>A voir s&rsquo;il se comporte ainsi avec tous les microBenchmark erronés&hellip;</p>
 <h2 id="cinquième-tentative-allez-une-dernière-pour-la-route">Cinquième tentative&hellip; allez, une dernière pour la route</h2>

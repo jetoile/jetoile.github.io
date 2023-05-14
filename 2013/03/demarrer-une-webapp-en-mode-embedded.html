@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Démarrer une webapp en mode embedded avec Maven &middot; Jetoile</title>
 
@@ -278,7 +278,7 @@
 <!-- more -->
 <h1 id="contexte">Contexte</h1>
 <p>Le contexte du projet est le suivant : l&rsquo;application cible est composée de deux applications web qui suivent le même cycle de vie et qui sont dépendantes l&rsquo;une de l&rsquo;autre (au sens <em>runtime</em> en non compilation).</p>
-<p>En effet, elle dispose d&rsquo;une application web proposant un site web écrit en Java et utilisant un framework de type struts 2 (et qui sera nommée par la suite &ldquo;<em>application webapp</em>&quot;) et une application web servant un ensemble de ressources en proposant une interface REST (nommée par la suite &ldquo;<em>application rest</em>&quot;).</p>
+<p>En effet, elle dispose d&rsquo;une application web proposant un site web écrit en Java et utilisant un framework de type struts 2 (et qui sera nommée par la suite &ldquo;<em>application webapp</em>&rdquo;) et une application web servant un ensemble de ressources en proposant une interface REST (nommée par la suite &ldquo;<em>application rest</em>&rdquo;).</p>
 <p>L&rsquo;application webapp nécessitera, en plus de son rendu de page dynamique, des ressources offertes par l&rsquo;application REST (appel ajax, &hellip;).</p>
 <p><em>ndlr</em> : je sais que la mouvance actuelle dit que les framework web java sont le &ldquo;mal&rdquo; pour faire du web et qu&rsquo;il est préférable de tendre vers une solution type framework javascript coté client. Cependant, dans notre cas, une forte contrainte SEO faisait qu&rsquo;il était nécessaire de &ldquo;conserver&rdquo; un rendu dynamique des pages cotés serveur.</p>
 <p>D&rsquo;un point de vu technique, le projet s&rsquo;appuiera sur Maven 3 (encore lui&hellip; ;-) ), et sur des technologies standards à base de Servlets (2.5+), de JSP, de JAX-RS, &hellip; enfin, de techno standard capable de tourner sur un conteneur de Servlet classique type Tomcat 6 ou 7.</p>
@@ -304,102 +304,102 @@
 <li>un appel au goal <code>run-war-only</code> du plugin Tomcat en précisant l&rsquo;emplacement du war éclaté à charger.</li>
 </ul>
 <p>Cela a été fait via la configuration Maven suivante :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-dependency-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>unzip-webapp<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>compile<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>unpack<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;artifactItems&gt;</span>
-                     <span style="color:#f92672">&lt;artifactItem&gt;</span>
-                         <span style="color:#f92672">&lt;groupId&gt;</span>${project.groupId}<span style="color:#f92672">&lt;/groupId&gt;</span>
-                         <span style="color:#f92672">&lt;artifactId&gt;</span>webapp<span style="color:#f92672">&lt;/artifactId&gt;</span>
-                         <span style="color:#f92672">&lt;version&gt;</span>${project.version}<span style="color:#f92672">&lt;/version&gt;</span>
-                         <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
-                     <span style="color:#f92672">&lt;/artifactItem&gt;</span>
-                <span style="color:#f92672">&lt;/artifactItems&gt;</span>
- 
-                <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-                <span style="color:#f92672">&lt;overWriteSnapshots&gt;</span>true<span style="color:#f92672">&lt;/overWriteSnapshots&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-<span style="color:#75715e">&lt;!--use to copy test resources into webapp classpath--&gt;</span>
-<span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>copy-webapp-resources<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>process-test-resources<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>copy-resources<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp/WEB-INF/classes<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
-                <span style="color:#f92672">&lt;resources&gt;</span>
-      <span style="color:#f92672">&lt;resource&gt;</span>
-          <span style="color:#f92672">&lt;directory&gt;</span>src/test/resources/webapp<span style="color:#f92672">&lt;/directory&gt;</span>
-          <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
-      <span style="color:#f92672">&lt;/resource&gt;</span>
-                <span style="color:#f92672">&lt;/resources&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
- 
-<span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>tomcat7-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
- 
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>tomcat-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>run-war-only<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;warDirectory&gt;</span>${project.build.directory}/webapp/<span style="color:#f92672">&lt;/warDirectory&gt;</span>
-                <span style="color:#f92672">&lt;fork&gt;</span>true<span style="color:#f92672">&lt;/fork&gt;</span>
-                <span style="color:#f92672">&lt;ignorePackaging&gt;</span>true<span style="color:#f92672">&lt;/ignorePackaging&gt;</span>
-                <span style="color:#f92672">&lt;contextFile&gt;</span>src/test/resources/webapp/context.xml<span style="color:#f92672">&lt;/contextFile&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>start-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>stop-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>shutdown<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-    <span style="color:#f92672">&lt;/executions&gt;</span>
- 
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-        <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
-        <span style="color:#f92672">&lt;path&gt;</span>/<span style="color:#f92672">&lt;/path&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
- 
-    <span style="color:#f92672">&lt;dependencies&gt;</span>
-        <span style="color:#75715e">&lt;!-- les artéfacts des jars à mettre dans le classpath du serveur Tomcat tels que les drivers de connexion--&gt;</span>
-    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>Il est intéressant de noter plusieurs points :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-dependency-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>unzip-webapp<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>compile<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>unpack<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactItems&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;artifactItem&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;groupId&gt;</span>${project.groupId}<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;artifactId&gt;</span>webapp<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;version&gt;</span>${project.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;type&gt;</span>war<span style="color:#f92672">&lt;/type&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;/artifactItem&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/artifactItems&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;overWriteSnapshots&gt;</span>true<span style="color:#f92672">&lt;/overWriteSnapshots&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!--use to copy test resources into webapp classpath--&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-resources-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>copy-webapp-resources<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>process-test-resources<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>copy-resources<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;outputDirectory&gt;</span>${project.build.directory}/webapp/WEB-INF/classes<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;resources&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;resource&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;directory&gt;</span>src/test/resources/webapp<span style="color:#f92672">&lt;/directory&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;filtering&gt;</span>true<span style="color:#f92672">&lt;/filtering&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/resource&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/resources&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.tomcat.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>tomcat7-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>tomcat-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>run-war-only<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;warDirectory&gt;</span>${project.build.directory}/webapp/<span style="color:#f92672">&lt;/warDirectory&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;fork&gt;</span>true<span style="color:#f92672">&lt;/fork&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;ignorePackaging&gt;</span>true<span style="color:#f92672">&lt;/ignorePackaging&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;contextFile&gt;</span>src/test/resources/webapp/context.xml<span style="color:#f92672">&lt;/contextFile&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>start-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>run<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>stop-tomcat<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>shutdown<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;path&gt;</span>/<span style="color:#f92672">&lt;/path&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- les artéfacts des jars à mettre dans le classpath du serveur Tomcat tels que les drivers de connexion--&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>Il est intéressant de noter plusieurs points :</p>
 <ul>
 <li>la précision du fichier <code>context.xml</code> qui contient, entre autre, le <strong>contextName</strong> de l&rsquo;application web mais surtout, dans notre cas, la déclaration de notre base de données dans l&rsquo;annuaire JNDI,</li>
 <li>le rajout éventuel de jar dans le classpath serveur,</li>
@@ -423,62 +423,62 @@
 <li>appel du bon goal du plugin Jetty en précisant l&rsquo;emplacement du war éclaté à charger.</li>
 </ul>
 <p>Bien sûr, ici, le goal est propre au plugin Jetty, à savoir <code>run-exploded</code> :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>7.6.9.v20130131<span style="color:#f92672">&lt;/version&gt;</span>     
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>jetty-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>run-exploded<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;daemon&gt;</span>true<span style="color:#f92672">&lt;/daemon&gt;</span>             
-                <span style="color:#f92672">&lt;jvmArgs&gt;</span><span style="color:#75715e">&lt;!-- eventuellement les options jvm--&gt;</span><span style="color:#f92672">&lt;/jvmArgs&gt;</span>
-                <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>0<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
-                <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
-                <span style="color:#f92672">&lt;webAppConfig&gt;</span>
-                   <span style="color:#f92672">&lt;contextPath&gt;</span>/webapp<span style="color:#f92672">&lt;/contextPath&gt;</span>
-                   <span style="color:#f92672">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span style="color:#f92672">&lt;/jettyEnvXml&gt;</span>
-                <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
-                <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/war&gt;</span>
-                <span style="color:#f92672">&lt;connectors&gt;</span>
-                   <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
-                       <span style="color:#f92672">&lt;host&gt;</span>127.0.0.1<span style="color:#f92672">&lt;/host&gt;</span>
-                       <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
-                   <span style="color:#f92672">&lt;/connector&gt;</span>
-                <span style="color:#f92672">&lt;/connectors&gt;</span>
- 
-                <span style="color:#f92672">&lt;contextHandlers&gt;</span>
-                   <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
-                       <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/restful<span style="color:#f92672">&lt;/war&gt;</span>
-                       <span style="color:#f92672">&lt;contextPath&gt;</span>/restful<span style="color:#f92672">&lt;/contextPath&gt;</span>
-                   <span style="color:#f92672">&lt;/contextHandler&gt;</span>
-                <span style="color:#f92672">&lt;/contextHandlers&gt;</span>
- 
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
- 
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>stop-jetty<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>stop<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;stopPort&gt;</span>9999<span style="color:#f92672">&lt;/stopPort&gt;</span>
-                <span style="color:#f92672">&lt;stopKey&gt;</span>stopKey<span style="color:#f92672">&lt;/stopKey&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
- 
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-    <span style="color:#f92672">&lt;dependencies&gt;</span>
-        <span style="color:#75715e">&lt;!-- eventuellement les jar à ajouter au classpath du conteneur de servlet--&gt;</span>
-    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>On peut remarquer que la configuration du plugin Jetty est beaucoup plus verbeuse que celle du plugin Tomcat avec, notamment, la nécessité de préciser :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>7.6.9.v20130131<span style="color:#f92672">&lt;/version&gt;</span>     
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>jetty-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>run-exploded<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;daemon&gt;</span>true<span style="color:#f92672">&lt;/daemon&gt;</span>             
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;jvmArgs&gt;</span><span style="color:#75715e">&lt;!-- eventuellement les options jvm--&gt;</span><span style="color:#f92672">&lt;/jvmArgs&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>0<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;contextPath&gt;</span>/webapp<span style="color:#f92672">&lt;/contextPath&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span style="color:#f92672">&lt;/jettyEnvXml&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/war&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;connectors&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">&lt;host&gt;</span>127.0.0.1<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;/connector&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/connectors&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;contextHandlers&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/restful<span style="color:#f92672">&lt;/war&gt;</span>
+</span></span><span style="display:flex;"><span>                       <span style="color:#f92672">&lt;contextPath&gt;</span>/restful<span style="color:#f92672">&lt;/contextPath&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#f92672">&lt;/contextHandler&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/contextHandlers&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>stop-jetty<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>stop<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;stopPort&gt;</span>9999<span style="color:#f92672">&lt;/stopPort&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;stopKey&gt;</span>stopKey<span style="color:#f92672">&lt;/stopKey&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- eventuellement les jar à ajouter au classpath du conteneur de servlet--&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>On peut remarquer que la configuration du plugin Jetty est beaucoup plus verbeuse que celle du plugin Tomcat avec, notamment, la nécessité de préciser :</p>
 <ul>
 <li>un fichier de configuration jetty permettant, dans notre cas, de préciser que Jetty doit démarrer son module pour charger l&rsquo;annuaire JNDI (fichier <code>jetty.xml</code>),</li>
 <li>la déclaration d&rsquo;un connecteur pour pouvoir préciser le port de lancement du conteneur de Servlet,</li>
@@ -486,109 +486,109 @@
 <li>l&rsquo;obligation de rajouter l&rsquo;élément <code>contextHandlers</code> pour pouvoir déclarer la deuxième application web à démarrer.</li>
 </ul>
 <p>A noter qu&rsquo;il est également possible de déclarer les deux applications web via des <strong>contextHandler</strong>, permettant d&rsquo;avoir une configuration plus symétrique :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>7.6.9.v20130131<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;executions&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>jetty-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>start<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;daemon&gt;</span>true<span style="color:#f92672">&lt;/daemon&gt;</span>
-                <span style="color:#f92672">&lt;jvmArgs&gt;&lt;/jvmArgs&gt;</span>
-                <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>0<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
-                <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
-                <span style="color:#f92672">&lt;webAppConfig&gt;</span>
-                     <span style="color:#f92672">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span style="color:#f92672">&lt;/jettyEnvXml&gt;</span>
-                <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
-                <span style="color:#f92672">&lt;connectors&gt;</span>
-                     <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
-                         <span style="color:#f92672">&lt;host&gt;</span>127.0.0.1<span style="color:#f92672">&lt;/host&gt;</span>
-                         <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
-                     <span style="color:#f92672">&lt;/connector&gt;</span>
-                <span style="color:#f92672">&lt;/connectors&gt;</span>
- 
-                <span style="color:#f92672">&lt;contextHandlers&gt;</span>
-                     <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
-                         <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/war&gt;</span>
-                         <span style="color:#f92672">&lt;contextPath&gt;</span>/webapp<span style="color:#f92672">&lt;/contextPath&gt;</span>
-                     <span style="color:#f92672">&lt;/contextHandler&gt;</span>
- 
-                     <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
-                         <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/restful<span style="color:#f92672">&lt;/war&gt;</span>
-                         <span style="color:#f92672">&lt;contextPath&gt;</span>/restful<span style="color:#f92672">&lt;/contextPath&gt;</span>
-                     <span style="color:#f92672">&lt;/contextHandler&gt;</span>
-                <span style="color:#f92672">&lt;/contextHandlers&gt;</span>
- 
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
-        <span style="color:#f92672">&lt;execution&gt;</span>
-            <span style="color:#f92672">&lt;id&gt;</span>stop-jetty<span style="color:#f92672">&lt;/id&gt;</span>
-            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
-            <span style="color:#f92672">&lt;goals&gt;</span>
-                <span style="color:#f92672">&lt;goal&gt;</span>stop<span style="color:#f92672">&lt;/goal&gt;</span>
-            <span style="color:#f92672">&lt;/goals&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;stopPort&gt;</span>9999<span style="color:#f92672">&lt;/stopPort&gt;</span>
-                <span style="color:#f92672">&lt;stopKey&gt;</span>stopKey<span style="color:#f92672">&lt;/stopKey&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/execution&gt;</span>
- 
- 
-    <span style="color:#f92672">&lt;/executions&gt;</span>
-    <span style="color:#f92672">&lt;dependencies&gt;</span>
-         
-    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>A titre informatif, le fichier <code>jetty.xml</code> permettant de charger le module JNDI est le suivant :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
-<span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Jetty//Configure//EN&#34; &#34;http://www.eclipse.org/jetty/configure.dtd&#34;&gt;</span>
- 
- 
-<span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Server&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.Server&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;Array</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;plusConfig&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebInfConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebXmlConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.MetaInfConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.FragmentConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.EnvConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>                  <span style="color:#75715e">&lt;!-- add for JNDI --&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.PlusConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>                 <span style="color:#75715e">&lt;!-- add for JNDI --&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.annotations.AnnotationConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.JettyWebXmlConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.TagLibConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
-    <span style="color:#f92672">&lt;/Array&gt;</span>
- 
-    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;setAttribute&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;Arg&gt;</span>org.eclipse.jetty.webapp.configuration<span style="color:#f92672">&lt;/Arg&gt;</span>
-        <span style="color:#f92672">&lt;Arg&gt;</span>
-            <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;plusConfig&#34;</span><span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;/Arg&gt;</span>
-    <span style="color:#f92672">&lt;/Call&gt;</span>
-<span style="color:#f92672">&lt;/Configure&gt;</span>
-</code></pre></div><p>et le fichier <code>jetty-webapp-context.xml</code> pendant du fichier <code>context.xml</code> de Tomcat est :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
-<span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Jetty//Configure//EN&#34; &#34;http://www.eclipse.org/jetty/configure.dtd&#34;&gt;</span>
- 
-<span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
- 
-<span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;myoracle&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.plus.jndi.Resource&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;Arg&gt;</span>jdbc/myoracle<span style="color:#f92672">&lt;/Arg&gt;</span>
-    <span style="color:#f92672">&lt;Arg&gt;</span>
-        <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.commons.dbcp.BasicDataSource&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driverClassName&#34;</span><span style="color:#f92672">&gt;</span>driver.jdbc.class<span style="color:#f92672">&lt;/Set&gt;</span>
-            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span><span style="color:#f92672">&gt;</span>jdbc:url_connection<span style="color:#f92672">&lt;/Set&gt;</span>
-            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>login<span style="color:#f92672">&lt;/Set&gt;</span>
-            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">&gt;</span>password<span style="color:#f92672">&lt;/Set&gt;</span>
-        <span style="color:#f92672">&lt;/New&gt;</span>
-    <span style="color:#f92672">&lt;/Arg&gt;</span>
-<span style="color:#f92672">&lt;/New&gt;</span>
- 
-<span style="color:#f92672">&lt;/Configure&gt;</span>
-</code></pre></div><h2 id="conclusion-1">Conclusion</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.mortbay.jetty<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>jetty-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>7.6.9.v20130131<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>jetty-war-exec<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>start<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>pre-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;daemon&gt;</span>true<span style="color:#f92672">&lt;/daemon&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;jvmArgs&gt;&lt;/jvmArgs&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;scanIntervalSeconds&gt;</span>0<span style="color:#f92672">&lt;/scanIntervalSeconds&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;jettyConfig&gt;</span>${basedir}/src/test/resources/jetty.xml<span style="color:#f92672">&lt;/jettyConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;webAppConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;jettyEnvXml&gt;</span>${basedir}/src/test/resources/webapp/jetty-webapp-context.xml<span style="color:#f92672">&lt;/jettyEnvXml&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/webAppConfig&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;connectors&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;connector</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.nio.SelectChannelConnector&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;host&gt;</span>127.0.0.1<span style="color:#f92672">&lt;/host&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;port&gt;</span>9090<span style="color:#f92672">&lt;/port&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;/connector&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/connectors&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;contextHandlers&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/webapp<span style="color:#f92672">&lt;/war&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;contextPath&gt;</span>/webapp<span style="color:#f92672">&lt;/contextPath&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;/contextHandler&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;contextHandler</span> <span style="color:#a6e22e">implementation=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;war&gt;</span>${project.build.directory}/restful<span style="color:#f92672">&lt;/war&gt;</span>
+</span></span><span style="display:flex;"><span>                         <span style="color:#f92672">&lt;contextPath&gt;</span>/restful<span style="color:#f92672">&lt;/contextPath&gt;</span>
+</span></span><span style="display:flex;"><span>                     <span style="color:#f92672">&lt;/contextHandler&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;/contextHandlers&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>stop-jetty<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>post-integration-test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>stop<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;stopPort&gt;</span>9999<span style="color:#f92672">&lt;/stopPort&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;stopKey&gt;</span>stopKey<span style="color:#f92672">&lt;/stopKey&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>A titre informatif, le fichier <code>jetty.xml</code> permettant de charger le module JNDI est le suivant :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Jetty//Configure//EN&#34; &#34;http://www.eclipse.org/jetty/configure.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;Server&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.server.Server&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Array</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;plusConfig&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebInfConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.WebXmlConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.MetaInfConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.FragmentConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.EnvConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>                  <span style="color:#75715e">&lt;!-- add for JNDI --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.plus.webapp.PlusConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>                 <span style="color:#75715e">&lt;!-- add for JNDI --&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.annotations.AnnotationConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.JettyWebXmlConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Item&gt;</span>org.eclipse.jetty.webapp.TagLibConfiguration<span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/Array&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Call</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;setAttribute&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Arg&gt;</span>org.eclipse.jetty.webapp.configuration<span style="color:#f92672">&lt;/Arg&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;Arg&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;Ref</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;plusConfig&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/Arg&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/Call&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Configure&gt;</span>
+</span></span></code></pre></div><p>et le fichier <code>jetty-webapp-context.xml</code> pendant du fichier <code>context.xml</code> de Tomcat est :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE Configure PUBLIC &#34;-//Jetty//Configure//EN&#34; &#34;http://www.eclipse.org/jetty/configure.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;Configure</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.webapp.WebAppContext&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;myoracle&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.eclipse.jetty.plus.jndi.Resource&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Arg&gt;</span>jdbc/myoracle<span style="color:#f92672">&lt;/Arg&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Arg&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;New</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;org.apache.commons.dbcp.BasicDataSource&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;driverClassName&#34;</span><span style="color:#f92672">&gt;</span>driver.jdbc.class<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;url&#34;</span><span style="color:#f92672">&gt;</span>jdbc:url_connection<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">&gt;</span>login<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;Set</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">&gt;</span>password<span style="color:#f92672">&lt;/Set&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/New&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/Arg&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/New&gt;</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/Configure&gt;</span>
+</span></span></code></pre></div><h2 id="conclusion-1">Conclusion</h2>
 <p>On a pu constater que l&rsquo;utilisation du plugin Maven Jetty a parfaitement répondu à notre petit cahier des charges. C&rsquo;est vrai que cela peut sembler un peu poussif mais cela est surtout dû au fonctionnement même de Jetty.</p>
 <p>Enfin, il est à noter que la configuration présentée dans le paragraphe précédent ne fonctionne pas pour la version 6 du plugin (connecteurs et packages différents, &hellip;) et qu&rsquo;elle a été testé avec la version 7.6.9.v20130131. Normalement, cela devrait fonctionner avec la version 8 mais n&rsquo;ayant pas testé, je ne pourrais pas le certifier&hellip;</p>
 <h1 id="conclusion-2">Conclusion</h1>

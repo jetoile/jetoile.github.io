@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.111.3">
 
   <title>Le plugin release (un peu) démystifié &middot; Jetoile</title>
 
@@ -331,38 +331,38 @@ rewrite-poms-for-release qui appelle la classe <code>RewritePomsForReleasePhase<
 <p>On a donc vu ce que faisait concrètement le plugin release. Cependant, il peut parfois être utile de redéfinir certaines de ses actions, soit en précisant le profile à utiliser lors de la phase de déploiement (si le plugin <a href="http://maven.apache.org/plugins/maven-assembly-plugin/">assembly</a> est utilisé par exemple), soit si l&rsquo;environnement où est effectué le livrable dispose d&rsquo;une configuration folklorique (oui, oui, c&rsquo;est possible&hellip; :( ).</p>
 <p>En fait, il est possible de préciser les goals à exécuter lors de l&rsquo;action run-preparation-goal de la goal <code>prepare</code> (qui, pour rappel, exécute par défaut les goals <code>clean</code> et <code>verify</code>) en configurant le plugin release via la balise <code>&lt;preparationGoals&gt;</code> :</p>
 <p>exemple :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
- <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
- <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
- <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;configuration&gt;</span>
-   <span style="color:#f92672">&lt;preparationGoals&gt;</span>clean verify -Plivraison<span style="color:#f92672">&lt;/preparationGoals&gt;</span>
-   <span style="color:#75715e">&lt;!-- clean et verify sont les goals de preparations par defaut --&gt;</span>
-  <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>De même, il est également possible de préciser le profile à utiliser lors de l&rsquo;action run-perform-goals de la phase <code>perform</code> via la balise.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&lt;preparationGoals&gt;</span>clean verify -Plivraison<span style="color:#f92672">&lt;/preparationGoals&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">&lt;!-- clean et verify sont les goals de preparations par defaut --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>De même, il est également possible de préciser le profile à utiliser lors de l&rsquo;action run-perform-goals de la phase <code>perform</code> via la balise.</p>
 <p>exemple :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
- <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
- <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
- <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;configuration&gt;</span>
-    <span style="color:#f92672">&lt;releaseProfiles&gt;</span>livraison<span style="color:#f92672">&lt;/releaseProfiles&gt;</span>
-    <span style="color:#75715e">&lt;!-- during release:perform, enable livraison profile --&gt;</span>
-  <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>En outre, si les sources du projet ainsi que la javadoc ne sont pas désirés dans la phase de déploiement (par exemple à cause de ça), il est possible de positionner <code>useReleaseProfile</code> à <code>false</code> :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mvn release:perform -DuseReleaseProfile<span style="color:#f92672">=</span>fals
-</code></pre></div><p>ou en le configurant dans le pom :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
- <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
- <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
- <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
-  <span style="color:#f92672">&lt;configuration&gt;</span>
-    <span style="color:#f92672">&lt;useReleaseProfile&gt;</span>false<span style="color:#f92672">&lt;/useReleaseProfile&gt;</span>
-  <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><h1 id="conclusion">Conclusion</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;releaseProfiles&gt;</span>livraison<span style="color:#f92672">&lt;/releaseProfiles&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- during release:perform, enable livraison profile --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>En outre, si les sources du projet ainsi que la javadoc ne sont pas désirés dans la phase de déploiement (par exemple à cause de ça), il est possible de positionner <code>useReleaseProfile</code> à <code>false</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn release:perform -DuseReleaseProfile<span style="color:#f92672">=</span>fals
+</span></span></code></pre></div><p>ou en le configurant dans le pom :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;artifactId&gt;</span>maven-release-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;version&gt;</span>2.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;useReleaseProfile&gt;</span>false<span style="color:#f92672">&lt;/useReleaseProfile&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><h1 id="conclusion">Conclusion</h1>
 <p>Vous l&rsquo;aurez donc compris, le maven-release-plugin est vraiment un outil puissant qui effectue un certain nombre d&rsquo;opérations prédéfinis et qui sont généralement faites manuellement par l&rsquo;utilisateur&hellip; Ainsi, il permet de gagner beaucoup de temps.</p>
 <p>Attention toutefois à ne pas oublier ce qu&rsquo;il fait. Cela évitera les petites surprises (enfin c&rsquo;est le cas de tous les outils&hellip;) et permettra de le configurer aux petits oignons (par exemple, en utilisant les options disponibles ou un fichier de configuration pour éviter d&rsquo;avoir un prompt de sa part)&hellip; ;-)</p>
 <p>A noter que certains points n&rsquo;ont pas été traités dans cet article puisque le plugin release permet également d&rsquo;effectuer, entre autre, :</p>
